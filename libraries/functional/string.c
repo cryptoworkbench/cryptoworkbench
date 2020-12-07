@@ -1,6 +1,6 @@
-// This library contains all of the string functions.
-// 
-// See the header file for function descriptions.
+/* This library contains all of the string functions.
+ *
+ * See the header file for function descriptions. */
 #include "stdlib.h"
 #include "string.h"
 #include "../mathematics/maths.h"
