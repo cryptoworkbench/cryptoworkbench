@@ -1,1 +1,1 @@
-This folder contains functions needed for formalitities like interpreting a command line argument as a number instead of a string.
+This folder contains functions needed for formalitities like processing a command line argument as a number instead of a string.
