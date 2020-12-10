@@ -68,7 +68,7 @@ struct unit *lookup_unit(struct vertibrae *upstream_link, unsigned long number) 
 }
 
 void vertibrae_insert(struct vertibrae **tracer, unsigned long new_ulong) {
-    struct vertibrae *new_vertibrae = malloc(sizeof(struct vertibrae)); // Fix existence of new pointer_list element
+    struct vertibrae *new_vertibrae = (struct vertibrae *) malloc(sizeof(struct vertibrae)); // Fix existence of new pointer_list element
     new_vertibrae->next = NULL;
     new_vertibrae->unit.number = new_ulong;
     new_vertibrae->unit.ascii = NULL;
@@ -196,7 +196,7 @@ void *disintermediate(void **to_be_dereferenced) {
 }
 
 struct vertibrae *build_backbone(struct vertibrae **linked_list_connection, struct set_of_group_parameters *group) {
-    // ### Establish lineair linked list containing all group elements using the tripple ref technique
+    // ### Establish lineair linked list containing all group elements using the triple ref technique
     for (unsigned long element = group->identity; element < group->modulus; element++)
 	if (group->identity == ADDITIVE_IDENTITY || coprime(GCD(group->modulus, element)))
 	    vertibrae_insert(linked_list_connection, element);
