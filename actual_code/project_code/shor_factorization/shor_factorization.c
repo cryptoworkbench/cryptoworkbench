@@ -6,10 +6,27 @@
  *
  * This to serve me multiple purposes:
  * ### AS AN EXCERCISE
- * 	To become a better programmer
+ *      To become a better programmer
  *
  * ### TO ASSERT THIS NOTION IN THE VIDEO THAT SHOR'S ALGORITHM IS NOT EFFICIENT ON A CLASSICAL COMPUTER
- * 	To me this is the main purpose
+ *      To me this is the main purpose
+ *
+ * This is the first prototype.
+ *
+ * What I desire is that it will work for any number I put in.
+ *
+ * Shor factorization cannot be achieved under two circumstances:
+ * #1. When the period of the chosen number coprime with the composite is not even
+ * #2. When this chosen number raised to half it's period (it's period over two) is equivalent to one modulus the composite (watch the video to understand this)
+ *
+ * Currently, this program is equiped to deal with the first case by automatically skipping to the first even 'a'.
+ * However, this program does not yet automatically go on to the next 'a' when the condition that a^(r/2) - 1 may not be equivalent to 0 is not met.
+ *
+ * Of course, I do not just want the program to go to the next 'a' once after it detects a^(r/2) - 1 is equivalent to 0 modulus the composite.
+ *
+ * I will need a loop.
+ *
+ * I will fix this.
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -21,8 +38,8 @@
 unsigned long find_a(unsigned long previous_a, unsigned long composite) {
     unsigned long current_gcd;
     do {
-	previous_a++;
-	current_gcd = euclidean_algorithm(composite, previous_a);
+        previous_a++;
+        current_gcd = euclidean_algorithm(composite, previous_a);
     } while (current_gcd != 1);
 
     /* 'previous_a' has now been updated to the next suitable a */
@@ -33,8 +50,8 @@ unsigned long find_period(unsigned long a, unsigned long modulus) {
     unsigned long modular_logarithm = ADDITIVE_IDENTITY;
     unsigned long residue = MULTIPLICATIVE_IDENTITY;
     do {
-	modular_logarithm++;
-	residue = (residue * a ) % modulus;
+        modular_logarithm++;
+        residue = (residue * a ) % modulus;
     } while (residue != 1); return modular_logarithm;
 }
 
@@ -43,16 +60,16 @@ int main(int argc, char **argv) {
 
     unsigned long *composite_number = (unsigned long *) malloc(sizeof(unsigned long));
     if (argc > 1) {
-	*composite_number = string_to_unsigned_long(argv[1]);
-	printf("%lu\n", *composite_number);
+        *composite_number = string_to_unsigned_long(argv[1]);
+        printf("%lu\n", *composite_number);
     } else
-	scanf("%lu", &composite_number);
+        scanf("%lu", &composite_number);
 
     /* FIND A */
     unsigned long a = 0;
     do {
-	a++;
-	a = find_a(a, *composite_number);
+        a++;
+        a = find_a(a, *composite_number);
     } while (find_period(a, *composite_number) % 2 != 0);
     printf("First integer coprime to %lu with an even period: %lu\n", *composite_number, *composite_number, a);
 
@@ -63,12 +80,12 @@ int main(int argc, char **argv) {
 
     /* CHECK TO SEE IF a^(r/2) - 1 IS A MULTIPLE OF 'N' */
     if (mod_exponentiate(a, period / 2, *composite_number) == 1) {
-	printf("%lu^(%lu/2) \u2261 %lu^%lu \u2261 1 (mod %lu)\n", a, period, period / 2, *composite_number);
-	printf("\n\nExiting -1.\n");
-	return -1;
+        printf("%lu^(%lu/2) \u2261 %lu^%lu \u2261 1 (mod %lu)\n", a, period, period / 2, *composite_number);
+        printf("\n\nExiting -1.\n");
+        return -1;
     } else {
-	printf("%lu^(%lu/2) \u2261 %lu^%lu \u2261 0 (mod %lu)\n", a, period, a, period / 2, *composite_number);
-	printf("\n\nProceeding to calculation of factors.\n");
+        printf("%lu^(%lu/2) \u2261 %lu^%lu \u2261 0 (mod %lu)\n", a, period, a, period / 2, *composite_number);
+        printf("\n\nProceeding to calculation of factors.\n");
     }
     unsigned long factor_a = euclidean_algorithm(exponentiate(a, period / 2) - 1, *composite_number);
     unsigned long factor_b = euclidean_algorithm(exponentiate(a, period / 2) + 1, *composite_number);
