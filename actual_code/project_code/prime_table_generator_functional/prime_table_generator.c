@@ -1,13 +1,12 @@
 /* Hello, I am ./prime_table_generator; the prime table creator.
  *
- *
  * I use the sieve of Eratosthenes to generate prime tables.
  *
  * I am very picky with my input, I only listen when you supply me one with argument, or one and a second one which may only constitute 'stdout', '-nr', or '--no-rename'
  *
  * When the second argument you supply me with is anything else, I refuse to cooperate.
  *
- * The first argument you supply me with I will interpret as the upper bound to my sieve; this means I will not be able to confirm primality for any number greater than this limit.
+ * The first argument you supply me with I will interpret as the upper bound to my sieve: this means I will not be able to confirm primality for any number greater than this limit.
  */
 #include <stdio.h>
 #include <stdlib.h>
