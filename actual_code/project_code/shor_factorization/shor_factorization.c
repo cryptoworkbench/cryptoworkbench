@@ -15,18 +15,13 @@
  *
  * What I desire is that it will work for any number I put in.
  *
- * Shor factorization cannot be achieved under two circumstances:
+ * Shor factorization cannot be achieved when any of the following two conditions are met:
  * #1. When the period of the chosen number coprime with the composite is not even
  * #2. When this chosen number raised to half it's period (it's period over two) is equivalent to one modulus the composite (watch the video to understand this)
  *
- * Currently, this program is equiped to deal with the first case by automatically skipping to the first even 'a'.
- * However, this program does not yet automatically go on to the next 'a' when the condition that a^(r/2) - 1 may not be equivalent to 0 is not met.
+ * Currently, this program is equiped to deal with both cases by automatically going on to the next a when either one of these cases emerges.
  *
- * Of course, I do not just want the program to go to the next 'a' once after it detects a^(r/2) - 1 is equivalent to 0 modulus the composite.
- *
- * I will need a loop.
- *
- * I will fix this.
+ * I know 65 doesn't work.
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -56,41 +51,54 @@ unsigned long find_period(unsigned long a, unsigned long modulus) {
 }
 
 int main(int argc, char **argv) {
-    printf("Composite number to factorize: ");
+    printf("Hello, I am %s.\n\n", argv[0]);
+    printf("I am an implementation of Shor's algorithm on a classical machine. Most of you would probably call my faculty (prime) factorization.\n");
+    printf("I would like to redefine my faculty as dissecting the factor set of a composite number.\n");
+    printf("I think it is best to keep the underlying set dynamics transparent.\n");
+    printf("\nFor example, let's from now on denote the union of the sets {3, \u2205}, {7, \u2205}, and {13, \u2205} as '273'. Way to go. Now you understand my notation.\n");
+    /* ### PART ONE: TAKE IN NUMBER TO FACTORIZE ### */
+    printf("Factor set to dissect: '");
 
     unsigned long *composite_number = (unsigned long *) malloc(sizeof(unsigned long));
     if (argc > 1) {
         *composite_number = string_to_unsigned_long(argv[1]);
-        printf("%lu\n", *composite_number);
+        printf("%lu'\n", *composite_number);
     } else
-        scanf("%lu", &composite_number);
+        scanf("'%lu'", composite_number);
+    /* ### END PART ONE ### */
 
-    /* FIND A */
+    /* ### PART TWO: FIND SUITABLE A ### */
+    unsigned long period;
     unsigned long a = 0;
     do {
         a++;
         a = find_a(a, *composite_number);
-    } while (find_period(a, *composite_number) % 2 != 0);
-    printf("First integer coprime to %lu with an even period: %lu\n", *composite_number, a);
+	period = find_period(a, *composite_number);
+    } while (period % 2 != 0 || mod_exponentiate(a, period / 2, *composite_number) == 1);
+    printf("\nALGEBRAS:\n");
+    printf("$ \u2208 <\u2124/%lu, *> = <%lu>.\n", *composite_number, a);
+    printf("|$| = %lu\n", period);
+    printf("|$| % 2 = %lu % 2 = 0  \u21D2  2 \u2223 %lu", period, period);
+    /* Supplementary information for stdout: */ printf("		2 DIVIDES %lu  \u21D2  \u2713 THE PERIOD OF %lu UNDER MOD %lu ARITHMATIC IS EVEN\n", period, a, *composite_number);
+    printf("%lu^(%lu/2) \u2261 %lu^%lu \u2262 1 (mod %lu)", a, period, a, period / 2, *composite_number);
+    /* Supplementary information for stdout: */ printf("		a^(r/2) - 1 != k * N\n");
 
+    /* ### END PART TWO ### */
 
-    /* CALCULATE THE PERIOD OF A MOD 'N' */
-    unsigned long period = find_period(a, *composite_number);
-    printf("The period of %lu mod %lu is %lu.\n", a, *composite_number, period);
+    /* ### PART THREE: FIND FACTOR SET INTERSECTIONS OF '*composite_number' WITH "a^(r/2) - 1" and "a^(r/2) + 1" ### */
+    unsigned long intermediary = exponentiate(a, period / 2);
+    printf("\nIntersection of the factor set '%lu' with '(a^(r/2) + 1)':\n", *composite_number);
+    printf("'%lu' \u2229 '(%lu^%lu + 1)'  =  '%lu' \u2229 '%lu + 1'  =  '%lu' \u2229 '%lu'  ", *composite_number, a, period / 2, *composite_number, intermediary, *composite_number, intermediary + 1);
+    unsigned long factor_a = euclidean_algorithm(intermediary + 1, *composite_number);
+    printf("=  '%lu'\n", factor_a);
 
-    /* CHECK TO SEE IF a^(r/2) - 1 IS A MULTIPLE OF 'N' */
-    if (mod_exponentiate(a, period / 2, *composite_number) == 1) {
-        printf("%lu^(%lu/2) \u2261 %lu^%lu \u2261 1 (mod %lu)\n", a, period, period / 2, *composite_number);
-        printf("\n\nExiting -1.\n");
-        return -1;
-    } else {
-        printf("%lu^(%lu/2) \u2261 %lu^%lu \u2261 0 (mod %lu)\n", a, period, a, period / 2, *composite_number);
-        printf("\n\nProceeding to calculation of factors.\n");
-    }
-    unsigned long factor_a = euclidean_algorithm(exponentiate(a, period / 2) - 1, *composite_number);
-    unsigned long factor_b = euclidean_algorithm(exponentiate(a, period / 2) + 1, *composite_number);
+    printf("\nIntersection of the factor set '%lu' with '(a^(r/2) - 1)':\n", *composite_number);
+    printf("'%lu' \u2229 '(%lu^%lu - 1)'  =  '%lu' \u2229 '%lu - 1'  =  '%lu' \u2229 '%lu'  ", *composite_number, a, period / 2, *composite_number, intermediary, *composite_number, intermediary - 1);
+    unsigned long factor_b = euclidean_algorithm(intermediary - 1, *composite_number);
+    printf("=  '%lu'\n", factor_b);
+    /* ### END PART THREE ### */
     
-    printf("Factor a: %lu\n", factor_a);
+    printf("\nFactor a: %lu\n", factor_a);
     printf("Factor b: %lu\n", factor_b);
     return 0;
 }
