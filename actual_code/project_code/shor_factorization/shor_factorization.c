@@ -51,20 +51,21 @@ unsigned long find_period(unsigned long a, unsigned long modulus) {
 }
 
 int main(int argc, char **argv) {
-    printf("Hello, I am %s.\n\n", argv[0]);
-    printf("I am an implementation of Shor's algorithm on a classical machine. Most of you would probably call my faculty (prime) factorization.\n");
-    printf("I would like to redefine my faculty as dissecting the factor set of a composite number.\n");
-    printf("I think it is best to keep the underlying set dynamics transparent.\n");
-    printf("\nFor example, let's from now on denote the union of the sets {3, \u2205}, {7, \u2205}, and {13, \u2205} as '273'. Way to go. Now you understand my notation.\n");
     /* ### PART ONE: TAKE IN NUMBER TO FACTORIZE ### */
-    printf("Factor set to dissect: '");
 
     unsigned long *composite_number = (unsigned long *) malloc(sizeof(unsigned long));
-    if (argc > 1) {
+    if (argc == 2) {
         *composite_number = string_to_unsigned_long(argv[1]);
-        printf("%lu'\n", *composite_number);
-    } else
-        scanf("'%lu'", composite_number);
+	printf("Factor set to dissect: '%lu'\n", *composite_number);
+    } else {
+	printf("Hello, I am %s.\n\n", argv[0]);
+	printf("I am an implementation of Shor's algorithm on a classical machine. Most of you would probably call my faculty (prime) factorization.\n");
+	printf("I would like to redefine my faculty as dissecting the factor set of a composite number.\n");
+	printf("I think it is best to keep the underlying set dynamics transparent.\n");
+	printf("\nFor example, let's from now on denote the union of the sets {3, \u2205}, {7, \u2205}, and {13, \u2205} as '273'. Way to go. Now you understand my notation.\n");
+	printf("\nThe way to get my to dissect any 'composite number' is by running me as:\n%s <composite number>\n", argv[0]);
+	return -1;
+    }
     /* ### END PART ONE ### */
 
     /* ### PART TWO: FIND SUITABLE A ### */
@@ -76,7 +77,7 @@ int main(int argc, char **argv) {
 	period = find_period(a, *composite_number);
     } while (period % 2 != 0 || mod_exponentiate(a, period / 2, *composite_number) == 1);
     printf("\nALGEBRAS:\n");
-    printf("$ \u2208 <\u2124/%lu, *> = <%lu>.\n", *composite_number, a);
+    printf("$ \u2208 <\u2124/%lu, *> = <%lu>\n", *composite_number, a);
     printf("|$| = %lu\n", period);
     printf("|$| % 2 = %lu % 2 = 0  \u21D2  2 \u2223 %lu", period, period);
     /* Supplementary information for stdout: */ printf("		2 DIVIDES %lu  \u21D2  \u2713 THE PERIOD OF %lu UNDER MOD %lu ARITHMATIC IS EVEN\n", period, a, *composite_number);
