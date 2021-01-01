@@ -11,19 +11,20 @@ unsigned long euclidean_algorithm(unsigned long big, unsigned long small) {
 }
 
 int main(int argc, char *argv[]) {
-    unsigned long *small_factor_set = malloc(sizeof(unsigned long));
-    unsigned long *big_factor_set = malloc(sizeof(unsigned long));
+    unsigned long *small_factor_set = (unsigned long *) malloc(sizeof(unsigned long));
+    unsigned long *big_factor_set = (unsigned long *) malloc(sizeof(unsigned long));
 
     /* ## Take in supplied variables ## */
     switch (argc) {
 	case 3:
-	    string_to_unsigned_long(argv[2], small_factor_set);
+	    *small_factor_set = string_to_unsigned_long(argv[2]);
 	case 2:
-	    string_to_unsigned_long(argv[1], big_factor_set);
+	    *big_factor_set = string_to_unsigned_long(argv[1]);
 	    break;
 	default:
-	    printf("Program takes the union of factor sets %s <first factor set denoted as representative composite number> <second factor set denoted as representative composite number>\n", argv[0]);
-	    printf("\nWrong program usage.\n\n\nExiting -1\n");
+	    printf("This program takes the union of two factor sets.\n");
+	    printf("\nUSAGE:\n%s <first factor set denoted as representative composite number> <second factor set denoted as representative composite number>\n", argv[0]);
+	    printf("\nWrong program usage. Exiting -1.\n");
 	    return -1;
     }
 

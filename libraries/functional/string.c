@@ -1,13 +1,14 @@
 /* This library contains all of the string functions.
  *
  * See the header file for function descriptions. */
-#include "stdlib.h"
+#include <stdlib.h>
 #include "string.h"
 #include "../mathematics/maths.h"
 #define STRING_TERMINATING_CHARACTER 0
 #define BASE 10
 #define ASCII_BASE 48
 
+/* Returns 1 if string_a and string_b are equal, returns 0 if not */
 unsigned int streql(char *string_a, char *string_b) {
     unsigned long iter;
     for (iter = 0; !(string_a[iter] == STRING_TERMINATING_CHARACTER || string_b[iter] == STRING_TERMINATING_CHARACTER) && (string_a[iter] == string_b[iter]); iter++) {}
@@ -17,15 +18,17 @@ unsigned int streql(char *string_a, char *string_b) {
 	return 0;
 }
 
-unsigned long strlen(const char *string) {
+/* Returns an unsigned long containing the number of characters in the string pointed at by the constant char pointer 'string_pointer' */
+unsigned long strlen(const char *string_pointer) {
     unsigned long index = 0;
-    for (; string[index] != STRING_TERMINATING_CHARACTER; index++) {}
+    for (; string_pointer[index] != STRING_TERMINATING_CHARACTER; index++) {}
     return index;
 }
 
-int strlen_int(char *string) {
+/* Returns an int containing the number of characters in the string pointed at by the char pointer 'string_pointer' */
+int strlen_int(char *string_pointer) {
     int index = 0;
-    for (; string[index] != STRING_TERMINATING_CHARACTER; index++) {}
+    for (; string_pointer[index] != STRING_TERMINATING_CHARACTER; index++) {}
     return index;
 }
 

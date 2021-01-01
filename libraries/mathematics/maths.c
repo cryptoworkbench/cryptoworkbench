@@ -12,6 +12,13 @@
     return 1;
 } */
 
+unsigned long euclidean_algorithm(unsigned long big, unsigned long small) {
+    if (big % small == 0)
+	return small;
+
+    return euclidean_algorithm(small, big % small);
+}
+
 long extended_gcd(long a, long b, long *x, long *y) {
     if (a == 0) {
 	*x = 0;
@@ -68,27 +75,27 @@ unsigned long down_rounded_base_2_logarithm(unsigned long exponent) {
     return return_value;
 }
 
-unsigned long mod_exponentiate(unsigned long base, unsigned long exponent, unsigned long modulus) {
+unsigned long mod_exponentiate(unsigned long base, unsigned long base_exponent, unsigned long modulus) {
     /* Prepare variables */
-    unsigned long greatest_power_of_two = down_rounded_base_2_logarithm(exponent);
-    unsigned long *residue_array = (unsigned long *) malloc(sizeof(unsigned long) * greatest_power_of_two);
-    unsigned long log = ADDITIVE_IDENTITY;
-    unsigned long ret_val = MULTIPLICATIVE_IDENTITY;
+    unsigned long least_base_two_logarithm = down_rounded_base_2_logarithm(base_exponent);
+    unsigned long *residue_array = (unsigned long *) malloc(sizeof(unsigned long) * least_base_two_logarithm);
+    unsigned long index = ADDITIVE_IDENTITY;
+    unsigned long return_value = MULTIPLICATIVE_IDENTITY;
 
     /* Initialize array */
-    residue_array[log] = base % modulus;
+    residue_array[index] = base % modulus;
     do {
-	residue_array[log + 1] = (residue_array[log] * residue_array[log]) % modulus;
-	log++;
-    } while (log < greatest_power_of_two);
+	residue_array[index + 1] = (residue_array[index] * residue_array[index]) % modulus;
+	index++;
+    } while (index < least_base_two_logarithm);
 
     /* Process array, arrive at result, and free array */
-    while (exponent != 0) {
-	ret_val %= (ret_val * residue_array[greatest_power_of_two]);
-	exponent -= exponentiate(2, greatest_power_of_two);
-	greatest_power_of_two = down_rounded_base_2_logarithm(exponent);
+    while (base_exponent != 0) {
+	return_value = (return_value * residue_array[least_base_two_logarithm]) % modulus;
+	base_exponent -= exponentiate(2, least_base_two_logarithm);
+	least_base_two_logarithm = down_rounded_base_2_logarithm(base_exponent);
     } free(residue_array);
 
-    /* Return ret_val */
-    return ret_val;
+    /* Return return_value */
+    return return_value;
 }
