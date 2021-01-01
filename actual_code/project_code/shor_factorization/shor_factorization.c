@@ -10,13 +10,33 @@
  *
  * ### TO ASSERT THIS NOTION IN THE VIDEO THAT SHOR'S ALGORITHM IS NOT EFFICIENT ON A CLASSICAL COMPUTER
  * 	To me this is the main purpose
- *
- * I will implement it at first with a modular exponentiation library.
  */
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../../libraries/functional/string.h"
 #include "../../../libraries/mathematics/maths.h"
+#define ADDITIVE_IDENTITY 0
+#define MULTIPLICATIVE_IDENTITY 1
+
+unsigned long find_a(unsigned long previous_a, unsigned long composite) {
+    unsigned long current_gcd;
+    do {
+	previous_a++;
+	current_gcd = euclidean_algorithm(composite, previous_a);
+    } while (current_gcd != 1);
+
+    /* 'previous_a' has now been updated to the next suitable a */
+    return previous_a;
+}
+
+unsigned long find_period(unsigned long a, unsigned long modulus) {
+    unsigned long modular_logarithm = ADDITIVE_IDENTITY;
+    unsigned long residue = MULTIPLICATIVE_IDENTITY;
+    do {
+	modular_logarithm++;
+	residue = (residue * a ) % modulus;
+    } while (residue != 1); return modular_logarithm;
+}
 
 int main(int argc, char **argv) {
     printf("Composite number to factorize: ");
@@ -28,21 +48,32 @@ int main(int argc, char **argv) {
     } else
 	scanf("%lu", &composite_number);
 
-    /* Temporary */
-    printf("SETTING COMPOSITE_NUMBER TO 35!\n");
-    *composite_number = 35;
-
-    printf("\n\nFinding 'a'; the first number coprime to composite (%lu) . . .\n", *composite_number);
-    unsigned long current_gcd;
-    unsigned long iter = 1;
+    /* FIND A */
+    unsigned long a = 0;
     do {
-	iter++;
-	current_gcd = euclidean_algorithm(*composite_number, iter);
-	printf("Current GCD:\n");
-	printf("%lu \u2229 %lu = %lu\n", *composite_number, iter, current_gcd);
-    } while (current_gcd != 1);
-    printf("\nFirst number coprime with the composite: %lu\n", iter);
-    printf("SETTING a TO 8.\n");
+	a++;
+	a = find_a(a, *composite_number);
+    } while (find_period(a, *composite_number) % 2 != 0);
+    printf("First integer coprime to %lu with an even period: %lu\n", *composite_number, *composite_number, a);
 
+
+    /* CALCULATE THE PERIOD OF A MOD 'N' */
+    unsigned long period = find_period(a, *composite_number);
+    printf("The period of %lu mod %lu is %lu.\n", a, *composite_number, period);
+
+    /* CHECK TO SEE IF a^(r/2) - 1 IS A MULTIPLE OF 'N' */
+    if (mod_exponentiate(a, period / 2, *composite_number) == 1) {
+	printf("%lu^(%lu/2) \u2261 %lu^%lu \u2261 1 (mod %lu)\n", a, period, period / 2, *composite_number);
+	printf("\n\nExiting -1.\n");
+	return -1;
+    } else {
+	printf("%lu^(%lu/2) \u2261 %lu^%lu \u2261 0 (mod %lu)\n", a, period, a, period / 2, *composite_number);
+	printf("\n\nProceeding to calculation of factors.\n");
+    }
+    unsigned long factor_a = euclidean_algorithm(exponentiate(a, period / 2) - 1, *composite_number);
+    unsigned long factor_b = euclidean_algorithm(exponentiate(a, period / 2) + 1, *composite_number);
+    
+    printf("Factor a: %lu\n", factor_a);
+    printf("Factor b: %lu\n", factor_b);
     return 0;
 }

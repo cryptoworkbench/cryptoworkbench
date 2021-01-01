@@ -54,28 +54,31 @@ unsigned long exponentiate(unsigned long base, unsigned long exponent) {
 }
 
 /* Two functions for modular exponentiation */
-unsigned long down_rounded_base_2_logarithm(unsigned long exponent) {
+unsigned long down_rounded_base_2_logarithm(unsigned long base_exponent) {
     unsigned long return_value = ADDITIVE_IDENTITY; // Initialize the logarithm of the base 2 exponentiation
     unsigned long power_of_two = MULTIPLICATIVE_IDENTITY; // Initialize the variable on which we will perform base 2 exponentiation
 
-    /* Find the first power of 2 which is not smaller than the exponent */
-    while (!(power_of_two >= exponent)) {
+    /* Find the first power of 2 which is not smaller than the base_exponent */
+    while (!(power_of_two >= base_exponent)) {
 	power_of_two *= 2;
 	return_value++;
     }
 
-    /* If the first power of 2 which is not smaller than the exponent, is equal to the exponent, then the exponent is a power of two, and all is set and done.
+    /* If the first power of 2 which is not smaller than the base_exponent, is equal to the base_exponent, then the base_exponent is a power of two, and all is set and done.
      *
-     * If however, as will be in most cases, the first power of two which is not smaller than 'exponent' is actually greater than 'exponent', we over-estimated.
+     * If however, as will be in most cases, the first power of two which is not smaller than 'base_exponent' is actually greater than 'base_exponent', we over-estimated.
      *
-     * In this case 'power_of_two' over 2 ('power_of_two / 2' in code) will be less than exponent, but also the greatest power of two which still fits exponent. */
-    if (power_of_two > exponent)
+     * In this case 'power_of_two' over 2 ('power_of_two / 2' in code) will be less than base_exponent, but also the greatest power of two which still fits base_exponent. */
+    if (power_of_two > base_exponent)
 	return_value--;
 
     return return_value;
 }
 
 unsigned long mod_exponentiate(unsigned long base, unsigned long base_exponent, unsigned long modulus) {
+    /* if (base_exponent == 0)
+	return base; */
+
     /* Prepare variables */
     unsigned long least_base_two_logarithm = down_rounded_base_2_logarithm(base_exponent);
     unsigned long *residue_array = (unsigned long *) malloc(sizeof(unsigned long) * least_base_two_logarithm);

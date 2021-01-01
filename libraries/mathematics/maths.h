@@ -16,5 +16,5 @@ long multiplicative_inverse(long a, long b);
 unsigned long exponentiate(unsigned long base, unsigned long exponent); // READ BELOW
 
 /* Two functions for modular exponentiation */
-unsigned long down_rounded_base_2_logarithm(unsigned long exponent);
+unsigned long down_rounded_base_2_logarithm(unsigned long base_exponent);
 unsigned long mod_exponentiate(unsigned long base, unsigned long exponent, unsigned long modulus);
