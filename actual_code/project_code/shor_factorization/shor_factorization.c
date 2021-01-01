@@ -71,7 +71,7 @@ int main(int argc, char **argv) {
         a++;
         a = find_a(a, *composite_number);
     } while (find_period(a, *composite_number) % 2 != 0);
-    printf("First integer coprime to %lu with an even period: %lu\n", *composite_number, *composite_number, a);
+    printf("First integer coprime to %lu with an even period: %lu\n", *composite_number, a);
 
 
     /* CALCULATE THE PERIOD OF A MOD 'N' */
