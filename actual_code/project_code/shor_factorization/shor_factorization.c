@@ -75,14 +75,14 @@ int main(int argc, char **argv) {
         a++;
         a = find_a(a, *composite_number);
 	period = find_period(a, *composite_number);
-    } while (period % 2 != 0 || mod_exponentiate(a, period / 2, *composite_number) == 1);
+    } while (period % 2 != 0 || mod_exponentiate(a, period / 2, *composite_number) == *composite_number - 1); /* ### DEV NOTE #1: MAKE A SIGNED VERSION OF THIS FUNCTION ### */
     printf("\nALGEBRAS:\n");
     printf("$ \u22B4 <\u2124/%lu, *> = <%lu>\n", *composite_number, a);
     printf("|$| = %lu\n", period);
     printf("|$| % 2 = %lu % 2 = 0  \u21D2  2 \u2223 %lu", period, period);
     /* Supplementary information for stdout: */ printf("		2 DIVIDES %lu  \u21D2  \u2713 THE PERIOD OF %lu UNDER MOD %lu ARITHMATIC IS EVEN\n", period, a, *composite_number);
-    printf("%lu^(%lu/2) \u2261 %lu^%lu \u2262 1 (mod %lu)", a, period, a, period / 2, *composite_number);
-    /* Supplementary information for stdout: */ printf("		%lu^%lu \u2262 1 (mod %lu) \u21D2 %lu^%lu - 1 \u2262 0 (mod %lu) \u21D2 \u2204 k \u2208 \u2115 : k | (%lu^%lu - 1)\n", a, period / 2, *composite_number, a, period / 2, *composite_number, a, period / 2);
+    printf("%lu^(%lu/2) \u2261 %lu^%lu \u2262 - 1 (mod %lu)", a, period, a, period / 2, *composite_number);
+    /* Supplementary information for stdout: */ printf("		%lu^%lu \u2262 - 1 (mod %lu) \u21D2 %lu^%lu + 1 \u2262 0 (mod %lu) \u21D2 \u2713 \u2204 k \u2208 \u2115 : k | (%lu^%lu + 1)\n", a, period / 2, *composite_number, a, period / 2, *composite_number, a, period / 2);
 
     /* ### END PART TWO ### */
 
@@ -99,7 +99,20 @@ int main(int argc, char **argv) {
     printf("=  '%lu'\n", factor_b);
     /* ### END PART THREE ### */
     
-    printf("\nFactor a: %lu\n", factor_a);
+    /* ### PART FOUR: VERIFY CALCULATIONS ### */
+    printf("\nSuspected factors:\n");
+    printf("Factor a: %lu\n", factor_a);
     printf("Factor b: %lu\n", factor_b);
-    return 0;
+    unsigned long suspected_original = factor_a * factor_b;
+    printf("\nFactor a * factor b = %lu * %lu = %lu ", factor_a, factor_b, suspected_original);
+    if (suspected_original == *composite_number) {
+	printf("\nSuccesfull in determining the factor set of '%lu'\n", *composite_number);
+	return 0;
+    } else if (suspected_original != *composite_number) {
+	printf("\nUnsuccesfull in determining the factor set of '%lu'\n", *composite_number);
+	return -1;
+    }
 }
+/* ### DEV NOTES:
+ *     #1. MAKE A SIGNED VERSION OF THIS FUNCTION, THIS WAY I COULD JUST WRITE - 1 IN THIS CLAUSE
+ */

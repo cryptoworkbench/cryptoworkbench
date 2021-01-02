@@ -272,8 +272,12 @@ int main(int argc, char **argv) {
 	fprintf(fs, "%lu\u2124 + %lu = {... , ", group_properties->modulus, i);
 	for (long multiplier = -3; multiplier < 4; multiplier++) {
 	    fprintf(fs, "%li, ", i * multiplier);
-	} fprintf(fs, "... }\n");
-	    
+	} fprintf(fs, "... }\n"); /* ### ===> ALTERNATIVE VERSION FOR THIS LINE OF CODE:
+	} fprintf(fs, "... } = \u0305%lu\n", i);
+	IF YOU REPLACE THE LINE ABOVE THE LINE ABOVE (l275) WITH THE LINE ABOVE (l276) AND
+	COMPILE, YOU WILL GET AN IDEA OF WHAT DIRECTION I WANT TO TAKE THE DEVELOPMENT OF
+	THIS PROGRAM. BECAUSE \u0305 ONLY OVERSTRIKES OVE CHARACTER, I WILL HAVE TO WRITE
+	A LIBRARY TO DEAL WITH THIS */
     }
 
     /* ### Free stuff ### */
