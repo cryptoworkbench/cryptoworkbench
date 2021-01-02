@@ -77,12 +77,12 @@ int main(int argc, char **argv) {
 	period = find_period(a, *composite_number);
     } while (period % 2 != 0 || mod_exponentiate(a, period / 2, *composite_number) == 1);
     printf("\nALGEBRAS:\n");
-    printf("$ \u2208 <\u2124/%lu, *> = <%lu>\n", *composite_number, a);
+    printf("$ \u22B4 <\u2124/%lu, *> = <%lu>\n", *composite_number, a);
     printf("|$| = %lu\n", period);
     printf("|$| % 2 = %lu % 2 = 0  \u21D2  2 \u2223 %lu", period, period);
     /* Supplementary information for stdout: */ printf("		2 DIVIDES %lu  \u21D2  \u2713 THE PERIOD OF %lu UNDER MOD %lu ARITHMATIC IS EVEN\n", period, a, *composite_number);
     printf("%lu^(%lu/2) \u2261 %lu^%lu \u2262 1 (mod %lu)", a, period, a, period / 2, *composite_number);
-    /* Supplementary information for stdout: */ printf("		a^(r/2) - 1 != k * N\n");
+    /* Supplementary information for stdout: */ printf("		%lu^%lu \u2262 1 (mod %lu) \u21D2 %lu^%lu - 1 \u2262 0 (mod %lu) \u21D2 \u2204 k \u2208 \u2115 : k | (%lu^%lu - 1)\n", a, period / 2, *composite_number, a, period / 2, *composite_number, a, period / 2);
 
     /* ### END PART TWO ### */
 
