@@ -1,13 +1,13 @@
 # Project description
 My project is to create an environment for studying cryptography and the properties of numbers.
 
-# Non-exclusive list of implemented mathematics
-## The Sieve of Eratosthenes
+## Non-exclusive list of implemented mathematics
+### The Sieve of Eratosthenes
 My implementation of the Sieve of Eratosthenes is located at '/actual\_code/project\_code/prime\_table\_generator/prime\_table\_generator'.
 Here this ancient algorithm for finding primes is wrapped into a nice, easy to use, _ergonomic_ prime table generator.
 This generator generates prime tables in stdout or into an external file. By default it creates external prime tables.
 
-## Fermat's factorization algorithm
+### Fermat's factorization algorithm
 I especially like '/libraries/mathematics/factorization\_engines/fermats\_algorithm.c'
 It's a library I wrote for factorizing composite numbers using Fermat's algorithm.
 
