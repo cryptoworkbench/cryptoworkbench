@@ -5,7 +5,7 @@ prime_table_generator.o: prime_table_generator.c
 	gcc -c prime_table_generator.c -o prime_table_generator.o
 
 prime_table_generator: ../../../libraries/mathematics/maths.o ../../../libraries/functional/string.o prime_table_generator.o
-	gcc ../../../libraries/mathematics/maths.o ../../../libraries/functional/string.o prime_table_generator.o -o prime_table_generator
+	gcc ../../../libraries/mathematics/maths.o ../../../libraries/functional/string.o prime_table_generator.o -o prime_table_generator && rm prime_table_generator.o
 
 prime_table_reader.o: prime_table_reader.c
 	gcc -c prime_table_reader.c -o prime_table_reader.o
