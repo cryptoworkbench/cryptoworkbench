@@ -1,3 +1,6 @@
+# Project description
+My project is to create an environment for studying cryptography and the properties of numbers.
+
 # Non-exclusive list of implemented mathematics
 ## The Sieve of Eratosthenes
 My implementation of the Sieve of Eratosthenes is located at '/actual\_code/project\_code/prime\_table\_generator/prime\_table\_generator'.
