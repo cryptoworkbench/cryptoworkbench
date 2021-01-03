@@ -31,13 +31,15 @@
 #define MULTIPLICATIVE_IDENTITY 1
 
 unsigned long find_a(unsigned long previous_a, unsigned long composite) {
-    unsigned long current_gcd;
-    do {
-        previous_a++;
-        current_gcd = euclidean_algorithm(composite, previous_a);
-    } while (current_gcd != 1);
+    if (euclidean_algorithm(composite, previous_a) != 1) {
+	unsigned long current_gcd;
+	do {
+	    previous_a++;
+	    current_gcd = euclidean_algorithm(composite, previous_a);
+	} while (current_gcd != 1);
+    }
 
-    /* 'previous_a' has now been updated to the next suitable a */
+    /* 'previous_a' is now the first a in the infinite open interval with as open minimum endpoint a, and a maximum endpoint infinity. That's [a, infinity) */
     return previous_a;
 }
 
@@ -51,12 +53,12 @@ unsigned long find_period(unsigned long a, unsigned long modulus) {
 }
 
 int main(int argc, char **argv) {
-    /* ### PART ONE: TAKE IN NUMBER TO FACTORIZE ### */
+    unsigned long composite_number;
 
-    unsigned long *composite_number = (unsigned long *) malloc(sizeof(unsigned long));
+    /* ### PART ONE: TAKE IN NUMBER TO FACTORIZE ### */
     if (argc == 2) {
-        *composite_number = string_to_unsigned_long(argv[1]);
-	printf("Factor set to dissect: '%lu'\n", *composite_number);
+        composite_number = string_to_unsigned_long(argv[1]);
+	printf("Factor set to dissect: '%lu'\n", composite_number);
     } else {
 	printf("Hello, I am %s.\n\n", argv[0]);
 	printf("I am an implementation of Shor's algorithm on a classical machine. Most of you would probably call my faculty (prime) factorization.\n");
@@ -71,32 +73,36 @@ int main(int argc, char **argv) {
     /* ### PART TWO: FIND SUITABLE A ### */
     unsigned long period;
     unsigned long a = 0;
+    unsigned long candidate = 1;
+    printf("Candidates for a:\n");
     do {
         a++;
-        a = find_a(a, *composite_number);
-	period = find_period(a, *composite_number);
-    } while (period % 2 != 0 || mod_exponentiate(a, period / 2, *composite_number) == *composite_number - 1); /* ### DEV NOTE #1: MAKE A SIGNED VERSION OF THIS FUNCTION ### */
+        a = find_a(a, composite_number);
+	printf("Candidate #%lu: %lu\n", candidate, a);
+	candidate++;
+	period = find_period(a, composite_number);
+    } while (period % 2 != 0 || mod_exponentiate(a, period / 2, composite_number) == composite_number - 1); /* ### DEV NOTE #1: MAKE A SIGNED VERSION OF THIS FUNCTION ### */
     printf("\nALGEBRAS:\n");
-    printf("$ \u22B4 <\u2124/%lu, *> = <%lu>\n", *composite_number, a);
+    printf("$ \u22B4 <\u2124/%lu, *> = <%lu>\n", composite_number, a);
     printf("|$| = %lu\n", period);
     printf("|$| % 2 = %lu % 2 = 0  \u21D2  2 \u2223 %lu", period, period);
-    /* Supplementary information for stdout: */ printf("		2 DIVIDES %lu  \u21D2  \u2713 THE PERIOD OF %lu UNDER MOD %lu ARITHMATIC IS EVEN\n", period, a, *composite_number);
-    printf("%lu^(%lu/2) \u2261 %lu^%lu \u2262 - 1 (mod %lu)", a, period, a, period / 2, *composite_number);
-    /* Supplementary information for stdout: */ printf("		%lu^%lu \u2262 - 1 (mod %lu) \u21D2 %lu^%lu + 1 \u2262 0 (mod %lu) \u21D2 \u2713 \u2204 k \u2208 \u2115 : k | (%lu^%lu + 1)\n", a, period / 2, *composite_number, a, period / 2, *composite_number, a, period / 2);
+    /* Supplementary information for stdout: */ printf("		2 DIVIDES %lu  \u21D2  \u2713 THE PERIOD OF %lu UNDER MOD %lu ARITHMATIC IS EVEN\n", period, a, composite_number);
+    printf("%lu^(%lu/2) \u2261 %lu^%lu \u2262 - 1 (mod %lu)", a, period, a, period / 2, composite_number);
+    /* Supplementary information for stdout: */ printf("		%lu^%lu \u2262 - 1 (mod %lu) \u21D2 %lu^%lu + 1 \u2262 0 (mod %lu) \u21D2 \u2713 \u2204 k \u2208 \u2115 : k * %lu = %lu^%lu + 1\n", a, period / 2, composite_number, a, period / 2, composite_number, composite_number, a, period / 2);
 
     /* ### END PART TWO ### */
 
-    /* ### PART THREE: FIND FACTOR SET INTERSECTIONS OF '*composite_number' WITH "a^(r/2) - 1" and "a^(r/2) + 1" ### */
+    /* ### PART THREE: FIND FACTOR SET INTERSECTIONS OF 'composite_number' WITH "a^(r/2) - 1" and "a^(r/2) + 1" ### */
     unsigned long intermediary = exponentiate(a, period / 2);
-    printf("\nIntersection of the factor set '%lu' with '(a^(r/2) + 1)':\n", *composite_number);
-    printf("'%lu' \u2229 '(%lu^%lu + 1)'  =  '%lu' \u2229 '%lu + 1'  =  '%lu' \u2229 '%lu'  ", *composite_number, a, period / 2, *composite_number, intermediary, *composite_number, intermediary + 1);
-    unsigned long factor_a = euclidean_algorithm(intermediary + 1, *composite_number);
-    printf("=  '%lu'\n", factor_a);
+    printf("\nIntersection of factor set '%lu' with factor set '%lu^(%lu/2) + 1':\n", composite_number, a, period);
+    printf("'%lu' \u2229 '%lu^(%lu/2) + 1' = '%lu' \u2229 '%lu^%lu + 1' = '%lu' \u2229 '%lu + 1' = '%lu' \u2229 '%lu' ", composite_number, a, period, composite_number, a, period / 2, composite_number, intermediary, composite_number, intermediary + 1);
+    unsigned long factor_a = euclidean_algorithm(intermediary + 1, composite_number);
+    printf("= '%lu'\n", factor_a);
 
-    printf("\nIntersection of the factor set '%lu' with '(a^(r/2) - 1)':\n", *composite_number);
-    printf("'%lu' \u2229 '(%lu^%lu - 1)'  =  '%lu' \u2229 '%lu - 1'  =  '%lu' \u2229 '%lu'  ", *composite_number, a, period / 2, *composite_number, intermediary, *composite_number, intermediary - 1);
-    unsigned long factor_b = euclidean_algorithm(intermediary - 1, *composite_number);
-    printf("=  '%lu'\n", factor_b);
+    printf("\nIntersection of factor set '%lu' with factor set '%lu^(%lu/2) - 1':\n", composite_number, a, period);
+    printf("'%lu' \u2229 '%lu^(%lu/2) - 1' = '%lu' \u2229 '%lu^%lu - 1' = '%lu' \u2229 '%lu - 1' = '%lu' \u2229 '%lu' ", composite_number, a, period, composite_number, a, period / 2, composite_number, intermediary, composite_number, intermediary - 1);
+    unsigned long factor_b = euclidean_algorithm(intermediary - 1, composite_number);
+    printf("= '%lu'\n", factor_b);
     /* ### END PART THREE ### */
     
     /* ### PART FOUR: VERIFY CALCULATIONS ### */
@@ -105,11 +111,11 @@ int main(int argc, char **argv) {
     printf("Factor b: %lu\n", factor_b);
     unsigned long suspected_original = factor_a * factor_b;
     printf("\nFactor a * factor b = %lu * %lu = %lu ", factor_a, factor_b, suspected_original);
-    if (suspected_original == *composite_number) {
-	printf("\nSuccesfull in determining the factor set of '%lu'\n", *composite_number);
+    if (suspected_original == composite_number) {
+	printf("\nSuccesfull in determining the factor set of '%lu'\n", composite_number);
 	return 0;
-    } else if (suspected_original != *composite_number) {
-	printf("\nUnsuccesfull in determining the factor set of '%lu'\n", *composite_number);
+    } else if (suspected_original != composite_number) {
+	printf("\nUnsuccesfull in determining the factor set of '%lu'\n", composite_number);
 	return -1;
     }
 }

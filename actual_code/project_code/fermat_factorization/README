@@ -1,0 +1,13 @@
+For an alternate version of this ./fermat_factorization program:
+#1. Replace the contents of 'fermat_factorization.c'
+    with the content of 'fermat_factorization_exquisite.c'.
+    
+    Rename 'fermat_factorization_exquisite.c' to 
+    'fermat_factorization.c'.
+    
+    Or save a copy of 'fermat_factorization.c' somewhere
+    else if you do not want to lose the first version,
+    and rename 'fermat_factorization_exquisite.c' to 
+    'fermat_factorization.c'.
+
+#2. Execute: 'make fermat_factorization'
