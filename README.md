@@ -1,4 +1,4 @@
-# IMPLEMENTED MATHEMATICS (non-exclusive list):
+# Non-exclusive list of implemented mathematics
 ## The Sieve of Eratosthenes
 My implementation of the Sieve of Eratosthenes is located at '/actual\_code/project\_code/prime\_table\_generator/prime\_table\_generator'.
 Here this ancient algorithm for finding primes is wrapped into a nice, easy to use, _ergonomic_ prime table generator.
