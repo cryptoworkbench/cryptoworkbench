@@ -5,5 +5,4 @@ RSA.o: RSA.c
 	gcc -c RSA.c -o RSA.o
 
 RSA: ../../../libraries/mathematics/maths.o ../../../libraries/functional/string.o RSA.o
-	gcc ../../../libraries/mathematics/maths.o ../../../libraries/functional/string.o RSA.o -o RSA
-	rm RSA.o
+	gcc ../../../libraries/mathematics/maths.o ../../../libraries/functional/string.o RSA.o -o RSA && rm RSA.o

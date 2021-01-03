@@ -5,5 +5,4 @@ general_subgroup_generator.o: general_subgroup_generator.c
 	gcc -c general_subgroup_generator.c -o general_subgroup_generator.o
 
 general_subgroup_generator: ../../../libraries/mathematics/maths.o ../../../libraries/functional/string.o general_subgroup_generator.o
-	gcc ../../../libraries/mathematics/maths.o ../../../libraries/functional/string.o general_subgroup_generator.o -o general_subgroup_generator
-	rm general_subgroup_generator.o
+	gcc ../../../libraries/mathematics/maths.o ../../../libraries/functional/string.o general_subgroup_generator.o -o general_subgroup_generator && rm general_subgroup_generator.o
