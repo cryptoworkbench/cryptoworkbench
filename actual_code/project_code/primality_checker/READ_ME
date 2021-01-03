@@ -2,7 +2,7 @@ Checks for primality with a prime table.
 
 Prime tables can be generated using the program prime_table_generator, which uses the sieve of eratosthenes.
 
-The folder 'tables' contains some elemantary prime tables.
+The folder 'tables' contains some elementary prime tables.
 
 To generate a new table and deposit it in this folder execute '../prime_table_generator <upper sieve limit> ../primality_checker/tables'
 
