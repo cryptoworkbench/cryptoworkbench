@@ -3,10 +3,10 @@ Project cryptoworkbench is a project to create an environment for studying crypt
 
 ## Non-exclusive list of implemented mathematics
 ### The Sieve of Eratosthenes
-[actual\_code/project\_code/prime\_table\_generator/prime\_table\_generator.c](https://github.com/cryptoworkbench/cryptoworkbench/blob/main/actual_code/project_code/prime_table_generator/prime_table_generator.c) is the location of my implementation of the Sieve of Eratosthenes.
-Here this ancient method for finding prime numbers comes in the packaging of a nice, easy to use and _ergonomic_ generator of prime tables.
+[./actual\_code/project\_code/prime\_table\_generator/prime\_table\_generator.c](https://github.com/cryptoworkbench/cryptoworkbench/blob/main/actual_code/project_code/prime_table_generator/prime_table_generator.c) is the location of my implementation of the Sieve of Eratosthenes.
+Here this ancient method for finding prime numbers comes in the form of a nice, _ergonomic_, intuitive generator of prime tables.
 This prime table generator can generate compact binary prime tables but also basic ASCII tables one can 'cat' or alternatively load intelligibly into vim.
-Of course this generator can also write to the output _standard output_ (stdout) filestream, this looks like this:
+Of course this generator can also just direct it's table generation into standard output, which is the default filestream (colloquially abbreviated as _stdout_):
 ```bash
 ./actual_code/project_code/prime_table_generator/prime_table_generator 20 stdout
 Complete list of primes less than 20:
@@ -23,10 +23,10 @@ Complete list of primes less than 20:
 ```
 
 ### Fermat's factorization algorithm
-I especially like [libraries/mathematics/factorization_engines/fermats_algorithm.c](https://github.com/cryptoworkbench/cryptoworkbench/blob/main/libraries/mathematics/factorization_engines/fermats_algorithm.c).
-It's a library I wrote for factorizing odd composite numbers using Fermat's factorization algorithm. I am sincerely convinced this is the best possible implementation of Fermat's factorization engine. The leanest, meanest, and cleanest code imaginable.
+I especially like [./libraries/mathematics/factorization_engines/fermats_algorithm.c](https://github.com/cryptoworkbench/cryptoworkbench/blob/main/libraries/mathematics/factorization_engines/fermats_algorithm.c).
+It's a library for factorizing odd composite numbers using Fermat's factorization algorithm. I am sincerely convinced this is the best possible implementation of Fermat's factorization algorithm in C. The leanest, meanest, and cleanest code imaginable.
 
 
-See [actual_code/example_code/library_drivers/fermat_factorization/](https://github.com/cryptoworkbench/cryptoworkbench/tree/main/actual_code/example_code/library_drivers/fermat_factorization) for two front-ends for this factorization engine.
+See [./actual_code/example_code/library_drivers/fermat_factorization/](https://github.com/cryptoworkbench/cryptoworkbench/tree/main/actual_code/example_code/library_drivers/fermat_factorization) for two front-ends for this factorization engine.
 
 Ps. These frontends can of course be generalized to any factorization engine.
