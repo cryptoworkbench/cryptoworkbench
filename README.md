@@ -24,10 +24,16 @@ Complete list of primes less than 20:
 ```
 
 Example #2
+```bash
+./actual_code/project_code/prime_table_generator/prime_table_generator 20
+Enable binary mode (0/1): 0
+
+8 primes printed to ASCII file 'first_8_primes'.
+```
 
 ### Fermat's factorization algorithm
 I especially like [./libraries/mathematics/factorization_engines/fermats_algorithm.c](https://github.com/cryptoworkbench/cryptoworkbench/blob/main/libraries/mathematics/factorization_engines/fermats_algorithm.c).
-It's a library for factorizing odd composite numbers using Fermat's factorization algorithm. I am sincerely convinced this is the best possible implementation of Fermat's factorization algorithm in C. The leanest, meanest, and cleanest code imaginable.
+It's a library for factorizing odd composite numbers using Fermat's factorization algorithm. I am sincerely convinced this is the best possible implementation of Fermat's factorization algorithm in C. Literally the leanest, meanest, and cleanest code imaginable.
 
 
 See [./actual_code/example_code/library_drivers/fermat_factorization/](https://github.com/cryptoworkbench/cryptoworkbench/tree/main/actual_code/example_code/library_drivers/fermat_factorization) for two front-ends for this factorization engine.

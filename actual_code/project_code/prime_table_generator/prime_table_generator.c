@@ -97,7 +97,7 @@ int main(int argc, char *argv[]) {
     } free(array);
 
     if (filestream == stdout) {
-	fprintf(stdout, "\n%lu primes printed to stdout.", no_of_primes);
+	fprintf(stdout, "\n%lu primes printed to stdout", no_of_primes);
     } else if (filestream != stdout) { // If we just wrote to an external file
 	fclose(filestream); // Close this external file
 	char *current_name = temporary_prime_table_name; // Save the old external file name so we can free it later (or otherwise it will be freed in the following if statement)
@@ -114,9 +114,14 @@ int main(int argc, char *argv[]) {
 	    
 	    free(temporary_prime_table_name);
 	    current_name = final_table_name;
-	} fprintf(stdout, "%lu primes printed to %s.", no_of_primes, current_name);
+	} fprintf(stdout, "%lu primes printed to ", no_of_primes);
+	if (binary_mode) {
+	    printf("binary ");
+	} else {
+	    printf("ASCII ");
+	} printf("file '%s'", current_name);
 	free(current_name);
-    } fprintf(stdout, "\n");
+    } fprintf(stdout, ".\n");
 
     /* Exit cleanly */
     return 0; }
