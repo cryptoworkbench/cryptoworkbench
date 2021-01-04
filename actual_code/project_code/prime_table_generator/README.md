@@ -4,7 +4,7 @@ This I am, with at my core an implementation of the sieve of Eratosthenes.
 
 My _most_ basic usage case would be:
 ```bash
-./prime\_table\_generator \<sieve limit>
+./prime\_table\_generator <sieve limit>
 ```
 
 For example:
@@ -15,7 +15,7 @@ For example:
 This command would make me generate an external prime table with all the primes greater than 1 and less than 20 in it.
 
 I do like to store in the name of such a prime table file the number of primes within it.
-Unfortunately however, at the moment when I open a new filestream for generating such an external prime table file, I do not yet know how many primes will be in there by the time that I close this filestream (a pitfall of using Eratosthenes's sieve for finding prime numbers that inherently cannot be dealt with, since it's intrinsic to it's methodology). So instead I write to 'primes\_less\_than\_20'.
+Unfortunately however, at the moment when I open a new filestream for generating such an external prime table file, I do not yet know how many primes will be in there by the time that I close this filestream (a pitfall of using Eratosthenes's sieve for finding prime numbers that inherently cannot be dealt with, since it's intrinsic to it's methodology). So initially I output to 'primes\_less\_than\_20'.
 
 Then:
 ```bash
