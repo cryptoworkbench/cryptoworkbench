@@ -3,7 +3,7 @@ Project cryptoworkbench is a project to create an environment for studying crypt
 
 ## Non-exclusive list of implemented mathematics
 ### The Sieve of Eratosthenes
-[./actual\_code/project\_code/prime\_table\_generator/prime\_table\_generator.c](https://github.com/cryptoworkbench/cryptoworkbench/blob/main/actual_code/project_code/prime_table_generator/prime_table_generator.c) is the location of my implementation of the Sieve of Eratosthenes.
+[./actual\_code/project\_code/prime\_table\_generator/prime\_table\_generator.c](https://github.com/cryptoworkbench/cryptoworkbench/blob/main/actual_code/project_code/prime_table_generator/prime_table_generator.c) is my implementation of the Sieve of Eratosthenes.
 Here this ancient method for finding prime numbers comes in the form of a nice, ergonomic and intuitive generator of prime tables.
 This prime table generator supports the generation of prime tables of both the binary and the ASCII flavours.
 
