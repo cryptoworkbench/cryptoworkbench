@@ -8,6 +8,7 @@ struct pure_square {
 };
 ```
 
+From _fermats_algorithm.c_ :
 ```c
 void inflate(struct pure_square *square_pair) {
     square_pair->square += square_pair->root;
