@@ -23,7 +23,7 @@ mv primes\_less\_than\_20 first\_8\_primes
 ```
 In order to output to stdout, append 'stdout', like this:
 ```bash
-'./prime\_table\_generator 20 stdout'
+./prime\_table\_generator 20 stdout
 ```
 
 When you put 'stdout' like this, there is no external prime table generated.
