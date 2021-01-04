@@ -1,5 +1,5 @@
 #include <stdlib.h> // 'malloc()' for line 5 and 'free()' for line 29 and 30
-#include "fermats_algorithm.h"
+#include "fermat_factorization.h"
 
 struct pure_square *construct_square(unsigned long root, unsigned long square) {
     struct pure_square *constructed_number_pair_struct = (struct pure_square *) malloc(sizeof(struct pure_square));
