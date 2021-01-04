@@ -2,7 +2,7 @@ This is my implementation of the sieve of Eratosthenes.
 This implementation of the sieve of Eratosthenes is nicely embedded within an interface for creating prime tables.
 
 My most basic usage case would be:
-'./prime\_table\_generator <sieve limit>'
+'./prime\_table\_generator \<sieve limit>'
 
 For example:
 './prime\_table\_generator 20'
