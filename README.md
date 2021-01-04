@@ -1,5 +1,5 @@
 # Project description
-My project is to create an environment for studying cryptography and the properties of numbers.
+Project cryptoworkbench is a project to create an environment for studying cryptography and the properties of numbers.
 
 ## Non-exclusive list of implemented mathematics
 ### The Sieve of Eratosthenes
