@@ -8,7 +8,7 @@ Here this ancient method for finding prime numbers comes in the form of a nice, 
 This prime table generator supports the generation of prime tables of both the binary and the ASCII flavours.
 Two general use cases follow below.
 
-#### Case \#1. _for the generation of prime tables:_
+#### Use case \#1. _generating prime tables:_
 ```bash
 ./actual_code/project_code/prime_table_generator/prime_table_generator 1000000
 Enable binary mode (0/1): 1
@@ -16,7 +16,7 @@ Enable binary mode (0/1): 1
 78498 primes printed to binary file 'first_78498_primes'.
 ```
 
-#### Case \#2. _for quickly inspection of the first primes:_
+#### Use case \#2. _quickly inspecting of the first few primes:_
 ```bash
 ./actual_code/project_code/prime_table_generator/prime_table_generator 20 stdout
 Complete list of primes less than 20:
