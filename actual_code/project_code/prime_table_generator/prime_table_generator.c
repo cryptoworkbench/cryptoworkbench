@@ -1,18 +1,32 @@
-/* Hello, I am ./prime_table_generator; the prime table creator.
+/* DESCRIPTION:
+ * You have stumbled across an implementation of the algorithm for finding primes known as Eratosthenes's Sieve.
+ * At this place in the universe, I come wrapped into the packaging of a nice, easy to use and ergonomic generator for prime tables.
  *
- * I use the sieve of Eratosthenes to generate prime tables.
+ * My most basic usage case would be:
+ * './prime_table_generator <sieve limit>'
+ * 
+ * For example:
+ * './prime_table_generator 20'
  *
- * I am very picky with my input, I only listen when you supply me one with argument, or one and a second one which may only constitute 'stdout', '-nr', or '--no-rename'
+ * This would make me generate an external prime table with all the primes greater than 1 and less than 20 in it.
  *
- * When the second argument you supply me with is anything else, I refuse to cooperate.
+ * I do like to store in the name of such a prime table file the number of primes within it.
+ * Unfortunatly I do not know how many primes will be in a prime table until I finish generating it (sieve mechanics).
+ * So I would write to 'primes_less_than_100' and then rename to 'first_25_primes'; because there are 25 primes less than 100.
+ * You get the idea: I use temporary filenames.
  *
- * The first argument you supply me with I will interpret as the upper bound to my sieve: this means I will not be able to confirm primality for any number greater than this limit.
- */
+ * In order to output to stdout, append 'stdout', like this:
+ * './prime_table_generator 20 stdout'
+ *
+ * When you put 'stdout' like this, there is no external prime table generated.
+ *
+ * If you like to output to an external table file, but like my initial naming sceme better, put '--no-rename' or '-nr' instead. */
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../../libraries/functional/string.h"
 #define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
+/* global const char * declarations below */
 const char *temporary_name_prefix = "primes_less_than_";
 const char *rename_command = "mv";
 const char *final_name_prefix = "first_";

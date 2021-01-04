@@ -3,7 +3,7 @@ My project is to create an environment for studying cryptography and the propert
 
 ## Non-exclusive list of implemented mathematics
 ### The Sieve of Eratosthenes
-My implementation of the Sieve of Eratosthenes is located at '/actual\_code/project\_code/prime\_table\_generator/prime\_table\_generator'.
+My implementation of the Sieve of Eratosthenes is located at '/actual\_code/project\_code/prime\_table\_generator/prime\_table\_generator.c'.
 Here this ancient algorithm for finding primes is wrapped into a nice, easy to use, _ergonomic_ prime table generator.
 This generator generates prime tables in stdout or into an external file. By default it creates external prime tables.
 
