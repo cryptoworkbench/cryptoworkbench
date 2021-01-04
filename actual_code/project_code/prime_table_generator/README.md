@@ -1,6 +1,6 @@
 From the outside, _from the perspective of my executable_, you could probably only percieve of me as some sort of a remarkably cool prime table generator.
 
-_This I am_, but at my core I stay an implementation of the sieve of Eratosthenes.
+_This I am_, but at my core I still am an implementation of the sieve of Eratosthenes.
 
 My _most_ basic usage case would be:
 ```bash
