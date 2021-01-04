@@ -1,4 +1,4 @@
-#include <stdlib.h>
+#include <stdlib.h> // 'malloc()' for line 5 and 'free()' for line 29 and 30
 #include "fermats_algorithm.h"
 
 struct pure_square *construct_square(unsigned long root, unsigned long square) {
