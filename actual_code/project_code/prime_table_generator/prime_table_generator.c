@@ -1,6 +1,6 @@
 /* DESCRIPTION:
- * You have stumbled across an implementation of the algorithm for finding primes known as Eratosthenes's Sieve.
- * At this place in the universe, I come wrapped into the packaging of a nice, easy to use and ergonomic generator for prime tables.
+ * This is my implementation of the sieve of Eratosthenes.
+ * This implementation of the sieve of Eratosthenes is nicely embedded within an interface for creating prime tables.
  *
  * My most basic usage case would be:
  * './prime_table_generator <sieve limit>'
