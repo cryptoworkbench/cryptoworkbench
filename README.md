@@ -6,10 +6,22 @@ My project is to create an environment for studying cryptography and the propert
 My implementation of the Sieve of Eratosthenes is located at '/actual\_code/project\_code/prime\_table\_generator/prime\_table\_generator.c'.
 Here this ancient method for finding prime numbers comes in the packaging of a nice, easy to use and _ergonomic_ generator of prime tables.
 This prime table generator can generate compact binary prime tables but also basic ASCII tables one can 'cat' or alternatively load intelligibly into vim.
+Of course this generator can also output back into the terminal (stdout).
 
-In order to display all primes less than 100 in terminal, try:
+To echo all primes less than 20:
 ```bash
-./actual_code/project_code/prime_table_generator/prime_table_generator 100 stdout
+./actual_code/project_code/prime_table_generator/prime_table_generator 20 stdout
+Complete list of primes less than 20:
+2
+3
+5
+7
+11
+13
+17
+19
+
+8 primes printed to stdout.
 ```
 
 ### Fermat's factorization algorithm
