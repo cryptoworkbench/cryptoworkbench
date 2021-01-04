@@ -1,3 +1,4 @@
+_An exquisition of snippets_
 From _fermats_algorithm.h_:
 ```c
 struct pure_square {
