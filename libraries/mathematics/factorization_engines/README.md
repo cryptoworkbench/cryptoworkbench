@@ -1,4 +1,4 @@
-_An exquisition of snippets_
+_an exquisition of snippets_
 
 From _fermats_algorithm.h_:
 ```c
@@ -30,7 +30,7 @@ struct pure_square factors =
     { pair_one->root - pair_two->root,
     pair_one->root + pair_two->root };
 ```
-Then just before main()
+Then just before _main()_:
 ```c
 struct pure_square fermat_factorize(unsigned long odd_composite) {
     return _fermat_factorize(construct_square(0, 0), construct_square(0, odd_composite)); // the first and second pure_square structs are automatically freed by _fermat_factorize()
@@ -40,3 +40,6 @@ struct pure_square fermat_factorize(unsigned long odd_composite) {
 This is the gist of it. Do ya get it? It is pretty easy to guess.
 
 See what I mean?
+
+Got curious?
+[fermat_factorization](https://github.com/cryptoworkbench/cryptoworkbench/edit/main/libraries/mathematics/factorization_engines/fermats_algorithm.c)
