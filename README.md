@@ -8,7 +8,7 @@ Here this ancient method for finding prime numbers comes in the packaging of a n
 This prime table generator can generate compact binary prime tables but also basic ASCII tables one can 'cat' or alternatively load intelligibly into vim.
 Of course this generator can also output back into the terminal (stdout).
 
-To echo all primes less than 20:
+Example:
 ```bash
 ./actual_code/project_code/prime_table_generator/prime_table_generator 20 stdout
 Complete list of primes less than 20:
