@@ -25,8 +25,7 @@ while (pair_one->square != pair_two->square) {
     while (pair_one->square > pair_two->square)
 	inflate(pair_two);
 }
-```
-```c
+
 struct pure_square factors =
     { pair_one->root - pair_two->root,
     pair_one->root + pair_two->root };
