@@ -26,7 +26,8 @@ Complete list of primes less than 20:
 
 ### Fermat's factorization algorithm
 I especially like [libraries/mathematics/factorization_engines/fermats_algorithm.c](https://github.com/cryptoworkbench/cryptoworkbench/blob/main/libraries/mathematics/factorization_engines/fermats_algorithm.c).
-It's a library I wrote for factorizing composite numbers using Fermat's algorithm.
+It's a library I wrote for factorizing composite numbers using Fermat's factorization algorithm. I am sincerely convinced this is the best possible implementation of Fermat's factorization engine. The leanest and meanest, and the cleanest, code phathomable.
+
 
 See [actual_code/example_code/library_drivers/fermat_factorization/](https://github.com/cryptoworkbench/cryptoworkbench/tree/main/actual_code/example_code/library_drivers/fermat_factorization) for two front-ends for this factorization engine.
 PS. Front-ends can of course be generalized to any factorization engine.
