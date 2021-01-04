@@ -14,10 +14,9 @@ struct pure_square factors =
 
 The inflate function:
 ```c
-struct pure_square *construct_square(unsigned long root, unsigned long square) {
-    struct pure_square *constructed_number_pair_struct = (struct pure_square *) malloc(sizeof(struct pure_square));
-    constructed_number_pair_struct->root = root;
-    constructed_number_pair_struct->square = square;
-    return constructed_number_pair_struct;
+void inflate(struct pure_square *square_pair) {
+    square_pair->square += square_pair->root;
+    square_pair->root += 1;
+    square_pair->square += square_pair->root;
 }
 ```
