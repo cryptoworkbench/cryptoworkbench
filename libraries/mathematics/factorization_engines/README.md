@@ -1,6 +1,6 @@
 This is some of the exceptionally beautiful code in this library.
 
-From fermats_algorithm.h:
+From _fermats_algorithm.h_:
 ```c
 struct pure_square {
     unsigned long root;
@@ -8,7 +8,7 @@ struct pure_square {
 };
 ```
 
-From _fermats_algorithm.c_ :
+From _fermats_algorithm.c_:
 ```c
 void inflate(struct pure_square *square_pair) {
     square_pair->square += square_pair->root;
