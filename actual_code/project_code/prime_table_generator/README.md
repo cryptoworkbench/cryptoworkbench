@@ -15,18 +15,16 @@ For example:
 This command would make me generate an external prime table with all the primes greater than 1 and less than 20 in it.
 
 I do like to store in the name of such a prime table file the number of primes within it.
-Unfortunately however, at the moment when I open a new filestream for generating such an external prime table file, I do not yet know how many primes will be in there by the time that I close this filestream (a pitfall of using Eratosthenes's sieve for finding prime numbers that inherently cannot be dealt with, since it's intrinsic to it's methodology). So initially I output to 'primes\_less\_than\_20'.
+Unfortunately however, at the moment when I open a new filestream for generating such an external prime table file, I do not yet know how many primes will be in there by the time that I close this filestream (a pitfall of using Eratosthenes's sieve for finding prime numbers that inherently cannot be dealt with, since it's intrinsic to it's methodology). So initially I'd output to 'primes\_less\_than\_20'.
 
-Then:
+Then, since there are 8 primes in between 1 and 20, I actually
 ```bash
 mv primes\_less\_than\_20 first\_8\_primes
 ```
-
-Then rename to 'first\_8\_primes' since there are 8 primes less than 20.
-You get the idea: I use temporary filenames.
-
 In order to output to stdout, append 'stdout', like this:
+```bash
 './prime\_table\_generator 20 stdout'
+```
 
 When you put 'stdout' like this, there is no external prime table generated.
 
