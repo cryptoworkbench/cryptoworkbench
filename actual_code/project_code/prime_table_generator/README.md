@@ -1,15 +1,15 @@
 From the outside, _from the perspective of my executable_, you could probably only percieve of me as some sort of a prime table generator.
 
-This I am, with at my core I am an implementation of the sieve of Eratosthenes.
+This I am, with at my core an implementation of the sieve of Eratosthenes.
 
 My _most_ basic usage case would be:
 ```bash
-'./prime\_table\_generator \<sieve limit>'
+./prime\_table\_generator \<sieve limit>
 ```
 
 For example:
 ```bash
-'./prime\_table\_generator 20'
+./prime\_table\_generator 20
 ```
 
 This command would make me generate an external prime table with all the primes greater than 1 and less than 20 in it.
