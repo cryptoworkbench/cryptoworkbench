@@ -1,5 +1,3 @@
-This is some of the exceptionally beautiful code in this library.
-
 From _fermats_algorithm.h_:
 ```c
 struct pure_square {
@@ -30,3 +28,5 @@ struct pure_square factors =
     { pair_one->root - pair_two->root,
     pair_one->root + pair_two->root };
 ```
+
+This is the gist of it. What do ya think?
