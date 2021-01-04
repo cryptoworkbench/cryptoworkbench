@@ -6,8 +6,9 @@ Project cryptoworkbench is a project to create an environment for studying crypt
 [./actual\_code/project\_code/prime\_table\_generator/prime\_table\_generator.c](https://github.com/cryptoworkbench/cryptoworkbench/blob/main/actual_code/project_code/prime_table_generator/prime_table_generator.c) is my implementation of the Sieve of Eratosthenes.
 Here this ancient method for finding prime numbers comes in the form of a nice, ergonomic and intuitive generator of prime tables.
 This prime table generator supports the generation of prime tables of both the binary and the ASCII flavours.
+Two example outputs follow below.
 
-_Example #1:_
+_First:_
 ```bash
 ./actual_code/project_code/prime_table_generator/prime_table_generator 20 stdout
 Complete list of primes less than 20:
@@ -23,7 +24,7 @@ Complete list of primes less than 20:
 8 primes printed to stdout.
 ```
 
-_Example #2:_
+_Second:_
 ```bash
 ./actual_code/project_code/prime_table_generator/prime_table_generator 1000000
 Enable binary mode (0/1): 1
