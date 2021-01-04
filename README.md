@@ -25,10 +25,10 @@ Complete list of primes less than 20:
 
 Example #2
 ```bash
-./actual_code/project_code/prime_table_generator/prime_table_generator 20
-Enable binary mode (0/1): 0
+./actual_code/project_code/prime_table_generator/prime_table_generator 1000000
+Enable binary mode (0/1): 1
 
-8 primes printed to ASCII file 'first_8_primes'.
+78498 primes printed to binary file 'first_78498_primes'.
 ```
 
 ### Fermat's factorization algorithm
