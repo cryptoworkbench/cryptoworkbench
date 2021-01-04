@@ -4,28 +4,41 @@ _This I am_, but at my core I stay an implementation of the sieve of Eratosthene
 
 My _most_ basic usage case would be:
 ```bash
-./prime\_table\_generator <sieve limit>
+./prime_table_generator <sieve limit>
 ```
 
 For example:
 ```bash
-./prime\_table\_generator 20
+./prime_table_generator 20
 ```
 
-This command would make me generate an external prime table with all the primes greater than 1 and less than 20 in it.
+Running this command would make me generate an external prime table with all the primes greater than 1 and less than 20 in it (of either the binary or the ASCII flavour).
 
-I do like to store in the name of such a prime table file the number of primes within it.
-Unfortunately however, at the moment when I open a new filestream for generating such an external prime table file, I do not yet know how many primes will be in there by the time that I close this filestream (a pitfall of using Eratosthenes's sieve for finding prime numbers that inherently cannot be dealt with, since it's intrinsic to it's methodology). So initially I'd output to 'primes\_less\_than\_20'.
+I do like to mention a prime table's number of primes in it's filename. Unfortunately however, when I open a new filestream in order to output a prime table, I do not yet know how many primes will be in there by the time that I close this new filestream (a pitfall of using Eratosthenes's sieve for finding prime numbers that inherently cannot be dealt with, since it's intrinsic to it's methodology). In this example I output to 'primes\_less\_than\_20'.
 
-Then, since there are 8 primes in between 1 and 20, I actually
+Then, I rename 'primes\_less\_than\_20' to 'first\_8\_primes':
 ```bash
 mv primes_less_than_20 first_8_primes
 ```
-In order to output to stdout, append 'stdout', like this:
+
+To prevent me from renaming, append '--no-rename' ir '-nr', like the following:
 ```bash
-./prime_table_generator 20 stdout
+./prime_table_generator 20 --no-rename
+./prime_table_generator 20 -nr
 ```
 
-When you put 'stdout' like this, there is no external prime table generated.
+Or alternatively in order to prevent me from generating an external file at all there is;
+```bash
+./prime_table_generator 20 stdout
+Complete list of primes less than 20:
+2
+3
+5
+7
+11
+13
+17
+19
 
-If you like to output to an external table file, but like my initial naming sceme better, put '--no-rename' or '-nr' instead. */
+8 primes printed to stdout.
+```
