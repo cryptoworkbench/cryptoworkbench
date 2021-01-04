@@ -7,6 +7,8 @@ Project cryptoworkbench is a project to create an environment for studying crypt
 Here this ancient method for finding prime numbers comes in the form of a nice, _ergonomic_, intuitive generator of prime tables.
 This prime table generator can generate compact binary prime tables but also basic ASCII tables one can 'cat' or alternatively load intelligibly into vim.
 Of course this generator can also just direct it's table generation into standard output, which is the default filestream (colloquially abbreviated as _stdout_):
+
+Append _stdout_ after the upper sieve limit in order to stick to the standard filestream as the default filestream:
 ```bash
 ./actual_code/project_code/prime_table_generator/prime_table_generator 20 stdout
 Complete list of primes less than 20:
