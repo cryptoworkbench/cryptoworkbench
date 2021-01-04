@@ -17,7 +17,7 @@ void inflate(struct pure_square *square_pair) {
 }
 ```
 
-Then couple lines further we find:
+A couple of lines further we find:
 ```c
 while (pair_one->square != pair_two->square) {
     while (pair_one->square < pair_two->square)
@@ -30,7 +30,7 @@ struct pure_square factors =
     { pair_one->root - pair_two->root,
     pair_one->root + pair_two->root };
 ```
-Then just before _main()_:
+Then we find just before _main()_:
 ```c
 struct pure_square fermat_factorize(unsigned long odd_composite) {
     return _fermat_factorize(construct_square(0, 0), construct_square(0, odd_composite)); // the first and second pure_square structs are automatically freed by _fermat_factorize()
