@@ -5,7 +5,12 @@ My project is to create an environment for studying cryptography and the propert
 ### The Sieve of Eratosthenes
 My implementation of the Sieve of Eratosthenes is located at '/actual\_code/project\_code/prime\_table\_generator/prime\_table\_generator.c'.
 Here this ancient method for finding prime numbers comes in the packaging of a nice, easy to use and _ergonomic_ generator of prime tables.
-This prime table generator can generate compact binary prime tables but also basic ASCII tables that one can 'cat' and intelligibly load into vim.
+This prime table generator can generate compact binary prime tables but also basic ASCII tables that one can 'cat' or alternatively load intelligibly into vim.
+
+Try:
+```bash
+./actual_code/project_code/prime_table_generator/prime_table_generator 100 stdout
+```
 
 ### Fermat's factorization algorithm
 I especially like '/libraries/mathematics/factorization\_engines/fermats\_algorithm.c'
