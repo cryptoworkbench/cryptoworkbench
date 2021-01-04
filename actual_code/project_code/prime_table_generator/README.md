@@ -16,12 +16,12 @@ Running this command would make me generate an external prime table with all the
 
 I do like to mention a prime table's number of primes in it's filename. Unfortunately however, when I open a new filestream in order to output a new prime table, I do not yet know how many primes will be in there by the time that I close this new filestream (a pitfall of using Eratosthenes's sieve for finding prime numbers that inherently cannot be dealt with, since it's intrinsic to it's methodology). In this example I output to "primes\_less\_than\_20".
 
-Then I "primes\_less\_than\_20" => "first\_8\_primes":
+Then I rename "primes\_less\_than\_20" to "first\_8\_primes":
 ```bash
 mv primes_less_than_20 first_8_primes
 ```
 
-To prevent me from renaming, append "--no-rename" or "-nr", like the following:
+To prevent me from renaming, append "--no-rename" or "-nr":
 ```bash
 ./prime_table_generator 20 --no-rename
 ./prime_table_generator 20 -nr
