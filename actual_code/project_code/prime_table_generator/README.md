@@ -19,11 +19,11 @@ Unfortunately however, at the moment when I open a new filestream for generating
 
 Then, since there are 8 primes in between 1 and 20, I actually
 ```bash
-mv primes\_less\_than\_20 first\_8\_primes
+mv primes_less_than_20 first_8_primes
 ```
 In order to output to stdout, append 'stdout', like this:
 ```bash
-./prime\_table\_generator 20 stdout
+./prime_table_generator 20 stdout
 ```
 
 When you put 'stdout' like this, there is no external prime table generated.
