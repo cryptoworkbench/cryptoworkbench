@@ -28,5 +28,13 @@ struct pure_square factors =
     { pair_one->root - pair_two->root,
     pair_one->root + pair_two->root };
 ```
+Then just before main()
+```c
+struct pure_square fermat_factorize(unsigned long odd_composite) {
+    return _fermat_factorize(construct_square(0, 0), construct_square(0, odd_composite)); // the first and second pure_square structs are automatically freed by _fermat_factorize()
+}
+```
 
-This is the gist of it. What do ya think?
+This is the gist of it. Do ya get it? It is pretty easy to guess.
+
+See what I mean?
