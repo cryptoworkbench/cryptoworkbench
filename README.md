@@ -7,7 +7,7 @@ Project cryptoworkbench is a project to create an environment for studying crypt
 Here this ancient method for finding prime numbers comes in the form of a nice, ergonomic and intuitive generator of prime tables.
 This prime table generator supports the generation of prime tables of both the binary and the ASCII flavours.
 
-Example #1:
+_Example #1:_
 ```bash
 ./actual_code/project_code/prime_table_generator/prime_table_generator 20 stdout
 Complete list of primes less than 20:
@@ -23,7 +23,7 @@ Complete list of primes less than 20:
 8 primes printed to stdout.
 ```
 
-Example #2
+_Example #2:_
 ```bash
 ./actual_code/project_code/prime_table_generator/prime_table_generator 1000000
 Enable binary mode (0/1): 1
