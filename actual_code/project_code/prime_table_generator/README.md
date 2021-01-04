@@ -1,17 +1,27 @@
-This is my implementation of the sieve of Eratosthenes.
-This implementation of the sieve of Eratosthenes is nicely embedded within an interface for creating prime tables.
+From the outside, _from the perspective of my executable_, you could probably only percieve of me as some sort of a prime table generator.
+This I am, but at my core I am an implementation of the sieve of Eratosthenes.
 
-My most basic usage case would be:
+My _most_ basic usage case would be:
+```bash
 './prime\_table\_generator \<sieve limit>'
+```
 
 For example:
+```bash
 './prime\_table\_generator 20'
+```
 
-This would make me generate an external prime table with all the primes greater than 1 and less than 20 in it.
+This command would make me generate an external prime table with all the primes greater than 1 and less than 20 in it.
 
 I do like to store in the name of such a prime table file the number of primes within it.
-Unfortunatly I do not know how many primes will be in a prime table until I finish generating it (sieve mechanics).
-So I would write to 'primes\_less\_than\_100' and then rename to 'first\_25\_primes'; because there are 25 primes less than 100.
+Unfortunately however, at the moment when I open a new filestream for generating such an external prime table file, I do not yet know how many primes will be in there by the time that I close this filestream (a pitfall of using Eratosthenes's sieve for finding prime numbers that inherently cannot be dealt with, since it's intrinsic to it's methodology). So instead I write to 'primes\_less\_than\_20'.
+
+Then:
+```bash
+mv primes\_less\_than\_20 first\_8\_primes
+```
+
+Then rename to 'first\_8\_primes' since there are 8 primes less than 20.
 You get the idea: I use temporary filenames.
 
 In order to output to stdout, append 'stdout', like this:
