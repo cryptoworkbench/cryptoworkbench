@@ -21,9 +21,11 @@ Then I rename "primes\_less\_than\_20" to "first\_8\_primes":
 mv primes_less_than_20 first_8_primes
 ```
 
-To prevent me from renaming append "--no-rename" or "-nr":
+To prevent me from renaming you can use both "--no-rename" and "-nr":
 ```bash
 ./prime_table_generator 20 --no-rename
+```
+```bash
 ./prime_table_generator 20 -nr
 ```
 
