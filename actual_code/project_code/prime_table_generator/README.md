@@ -21,13 +21,13 @@ Then, I rename 'primes\_less\_than\_20' to 'first\_8\_primes':
 mv primes_less_than_20 first_8_primes
 ```
 
-To prevent me from renaming, append '--no-rename' ir '-nr', like the following:
+To prevent me from renaming, append '--no-rename' or '-nr', like the following:
 ```bash
 ./prime_table_generator 20 --no-rename
 ./prime_table_generator 20 -nr
 ```
 
-Or alternatively in order to prevent me from generating an external file at all there is;
+Or alternatively in order to prevent me from generating an external file at all try appending "stdout":
 ```bash
 ./prime_table_generator 20 stdout
 Complete list of primes less than 20:
