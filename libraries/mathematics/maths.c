@@ -76,9 +76,6 @@ unsigned long down_rounded_base_2_logarithm(unsigned long base_exponent) {
 }
 
 unsigned long mod_exponentiate(unsigned long base, unsigned long base_exponent, unsigned long modulus) {
-    /* if (base_exponent == 0)
-	return base; */
-
     /* Prepare variables */
     unsigned long least_base_two_logarithm = down_rounded_base_2_logarithm(base_exponent);
     unsigned long *residue_array = (unsigned long *) malloc(sizeof(unsigned long) * least_base_two_logarithm);
