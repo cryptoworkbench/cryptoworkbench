@@ -10,24 +10,20 @@
  */
 #include <stdio.h>
 #include <stdlib.h> // 'fopen()', 'fclose()'
-#include "../../../libraries/mathematics/primality_checkers/prime_lookup_library.h" // 'prime()';
 #include "../../../libraries/functional/string.h"
+#include "../../../libraries/mathematics/primality_checkers/table_lookup_library/table_lookup_library.h" // 'prime()';
 
-int main(int argc, char *argv[]) {
-    if (argc != 2) {
+int main(int argc, char **argv) {
+    if (argc != 3) {
 	fprintf(stderr, "Wrong number of arguments.\n");
 	return -1;
-    } fprintf(stdout, "Hello, I'm %s, I check for primality using a prime table in order to lookup potential prime divisors quickly.\n\n", argv[0]);
-
-    unsigned long potential_prime;
-    fprintf(stdout, "Please tell me what number to check for primality: ");
-    fscanf(stdin, "%lu", &potential_prime); fprintf(stdout, "\n");
+    } unsigned long potential_prime = string_to_unsigned_long(argv[1]);
 
     int binary_mode = 0; // We start of assuming binary_mode is off
-    fprintf(stdout, "Did you supply me with a binary prime table? (0/1): ");
+    printf("Is %s a binary prime table? (0/1): ", argv[2]);
     fscanf(stdin, "%i", &binary_mode); if (binary_mode < 0) { binary_mode = 0; }
 
-    switch (prime(potential_prime, argv[1], binary_mode)) {
+    switch (prime(potential_prime, argv[2], binary_mode)) {
 	case 0:
 	    fprintf(stdout, "%lu is not prime.\n", potential_prime);
 	    return 0;
