@@ -1,5 +1,5 @@
-/* Returns an unsigned long containing the number of characters in the string pointed at by the constant char pointer 'string_pointer' */
-unsigned long strlen(const char *string_pointer); // Works just as expected
+/* Returns an unsigned long containing the number of characters in the string pointed at by variable 'string_pointer' of type 'constant char *' */
+unsigned long strlen(const char *string_pointer); // Just like in the standard library, works just as expected
 
 /* Returns an int containing the number of characters in the string pointed at by the char pointer 'string_pointer' */
 int strlen_int(char *string_pointer); // Almost the same functionality as the above function

@@ -49,7 +49,7 @@ unsigned long find_period(unsigned long a, unsigned long modulus) {
     do {
         modular_logarithm++;
         residue = (residue * a ) % modulus;
-    } while (residue != 1); return modular_logarithm;
+    } while (residue != MULTIPLICATIVE_IDENTITY); return modular_logarithm;
 }
 
 int main(int argc, char **argv) {
@@ -72,14 +72,10 @@ int main(int argc, char **argv) {
 
     /* ### PART TWO: FIND SUITABLE A ### */
     unsigned long period;
-    unsigned long a = 0;
-    unsigned long candidate = 1;
-    printf("Candidates for a:\n");
+    unsigned long a = 1;
     do {
         a++;
         a = find_a(a, composite_number);
-	printf("Candidate #%lu: %lu\n", candidate, a);
-	candidate++;
 	period = find_period(a, composite_number);
     } while (period % 2 != 0 || mod_exponentiate(a, period / 2, composite_number) == composite_number - 1); /* ### DEV NOTE #1: MAKE A SIGNED VERSION OF THIS FUNCTION ### */
     printf("\nALGEBRAS:\n");

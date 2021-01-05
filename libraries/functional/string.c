@@ -8,7 +8,7 @@
 #define BASE 10
 #define ASCII_BASE 48
 
-/* Returns 1 if string_a and string_b are equal, returns 0 if not */
+/* Returns 1 if string_a and string_b are equal, if not; returns 0 */
 unsigned int streql(char *string_a, char *string_b) {
     unsigned long iter;
     for (iter = 0; !(string_a[iter] == STRING_TERMINATING_CHARACTER || string_b[iter] == STRING_TERMINATING_CHARACTER) && (string_a[iter] == string_b[iter]); iter++) {}
@@ -90,8 +90,8 @@ char *ul_to_str(unsigned long a, unsigned long min_out_length) { // Works!
 	number_of_heading_zeros = min_out_length - char_index; // If there is any need for heading zeros, calculate how many
 
     /* Assign the space needed */
-    char *unsigned_long_as_string = malloc(sizeof(char) * (char_index + number_of_heading_zeros + 1)); // + 1 for the string terminating NULL character
-    unsigned_long_as_string[char_index + number_of_heading_zeros] = 0; // Set it
+    char *unsigned_long_as_string = (char *) malloc(sizeof(char) * (char_index + number_of_heading_zeros + 1)); // + 1 for the string terminating NULL character
+    unsigned_long_as_string[number_of_heading_zeros + char_index] = 0; // Set this string terminating NULL character
 
     for (unsigned long iter = 0; iter < number_of_heading_zeros; iter++)
 	unsigned_long_as_string[iter] = ASCII_BASE;
