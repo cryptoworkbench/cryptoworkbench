@@ -5,19 +5,10 @@
 #define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
 
-/* unsigned int prime(unsigned long potential_prime) {
-    for (unsigned long i = 2; i <= (potential_prime - (potential_prime % 2)) / 2; i++)
-	if (potential_prime % i == 0)
-	    return 0;
-    return 1;
-} */
-
-unsigned long euclidean_algorithm(unsigned long big, unsigned long small) {
-    if (big % small == 0)
-	return small;
-
-    return euclidean_algorithm(small, big % small);
-}
+unsigned long GCD(unsigned long a, unsigned long b) {
+    unsigned long remainder = a % b;
+    while (remainder != 0) { a = b; b = remainder; remainder = a % b; } return b; }
+/* ^^^ Calculates the GCD using a procedural implementation of the euclidean algorithm ^^^ */
 
 long extended_gcd(long a, long b, long *x, long *y) {
     if (a == 0) {

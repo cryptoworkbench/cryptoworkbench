@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../../libraries/functional/string.h"
-#include "../../../libraries/mathematics/maths.h"
+#include "../../libraries/functional/string.h"
+#include "../../libraries/mathematics/maths.h"
 
 int main(int argc, char *argv[]) {
     if (argc != 3) {
@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
 	set_two = set_one; set_one = temp; }
     /* ### ^^ ### SWITCH AROUND set_one AND BIG_FACTOR_SET IF SMALL_FACTOR_SET IS GREATER THAN set_two ### ^^ ### */
 
-    unsigned long itersection_of_small_factor_set_and_big_factor_set = euclidean_algorithm(set_two, set_one);
-    printf("\n'%lu' \u2229 '%lu' = '%lu'\n", set_two, set_one, euclidean_algorithm(set_two, set_one));
+    unsigned long itersection_of_small_factor_set_and_big_factor_set = GCD(set_two, set_one);
+    printf("\n'%lu' \u2229 '%lu' = '%lu'\n", set_two, set_one, itersection_of_small_factor_set_and_big_factor_set);
     return 0;
 }

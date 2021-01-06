@@ -2,11 +2,11 @@
 #include "factorization_engines.h"
 
 unsigned long classic_shor_find_a(unsigned long previous_a, unsigned long composite) {
-    if (euclidean_algorithm(composite, previous_a) != 1) {
+    if (GCD(composite, previous_a) != 1) {
 	unsigned long current_gcd;
 	do {
 	    previous_a++;
-	    current_gcd = euclidean_algorithm(composite, previous_a);
+	    current_gcd = GCD(composite, previous_a);
 	} while (current_gcd != 1);
     }
 
@@ -34,8 +34,8 @@ struct number_pair classic_shor(unsigned long composite_number) {
 
     unsigned long intermediary = exponentiate(a, period / 2);
     struct number_pair factors = {
-	euclidean_algorithm(intermediary + 1, composite_number),
-	euclidean_algorithm(intermediary - 1, composite_number) };
+	GCD(intermediary + 1, composite_number),
+	GCD(intermediary - 1, composite_number) };
 
     return factors; }
 /* ##### ^^^^^^^^^^^^^ ##### Functions for shor factorization, call 'classic_shor(unsigned long)'  ##### ^^^^^^^^^^^^^ ##### */

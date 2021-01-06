@@ -1,5 +1,8 @@
-// unsigned int prime(unsigned long potential_prime); // Returns 1 if potential_prime is prime, returns 0 if potential_prime is composite
-unsigned long euclidean_algorithm(unsigned long big, unsigned long small);
+unsigned long GCD(unsigned long a, unsigned long b);
+/* ^^ Calculates the GCD using a procedural implementation of the euclidean algorithm: ^^
+ * Order of inputs does not matter.
+ */
+
 long extended_gcd(long a, long b, long *x, long *y);
 long multiplicative_inverse(long a, long b);
 
