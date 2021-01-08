@@ -11,6 +11,7 @@
 struct ll {
     unsigned long logarithm;
     unsigned long multiplier;
+    unsigned long partition;
     struct ll *next;
 };
 
@@ -62,7 +63,8 @@ struct ll *base_B_notation_of(unsigned long number, unsigned long base, char **s
 	cumulator = digit * power;
 	if (cumulator != 0) {
 	    struct ll *new_element = (struct ll *) malloc(sizeof(struct ll));
-	    new_element->logarithm = logarithm; // Strictly, the following line is not neccesary:
+	    new_element->logarithm = logarithm;
+	    new_element->partition = (new_element->multiplier = digit) * exponentiate(base, logarithm); 
 	    new_element->next = *tracer;
 	    // ^ Create new partition in partitions list
 
@@ -82,19 +84,18 @@ struct ll *base_B_notation_of(unsigned long number, unsigned long base, char **s
     if (string_tail != *string_head) return NULL;
 }
 
+void print_partitions(unsigned long base, struct ll *head) {
+    printf("(%lu * %lu) ", exponentiate(base, head->logarithm), head->multiplier); do {
+	head = head->next;
+	printf("+ (%lu * %lu) ", exponentiate(base, head->logarithm), head->multiplier);
+    } while (head->next != NULL); }
+
 void print_logs(unsigned long base, struct ll *head) {
     unsigned long partition;
     while (head->next != NULL) {
-	partition = head->logarithm;
-	fprintf(stdout, "%lu^%lu + ", base, partition);
+	fprintf(stdout, "(%lu^%lu * %lu) + ", base, head->logarithm, head->multiplier);
 	head = head->next;
-    } fprintf(stdout, "%lu^%lu", base, head->logarithm); }
-
-void print_partitions(unsigned long base, struct ll *head) {
-    while (head->next != NULL) {
-	fprintf(stdout, "%lu + ", exponentiate(base, head->logarithm));
-	head = head->next;
-    } fprintf(stdout, "%lu", exponentiate(base, head->logarithm)); }
+    } fprintf(stdout, "(%lu^%lu * %lu)", base, head->logarithm, head->multiplier); }
 
 int main(int argc, char **argv) {
     if (argc != 3)
@@ -112,9 +113,13 @@ int main(int argc, char **argv) {
 	free(answer);
 
 	fprintf(stdout, "\nNamely because %lu = ", number);
-	print_partitions(base, head); printf(" = "); print_logs(base, head);
+	print_partitions(base, head); printf(" = "); /* print_multipliers(base, head); printf(" = "); */ print_logs(base, head);
 
 	fprintf(stdout, "\n\nDissection:\n");
+	/* for (unsigned long logarithm = 0; head != NULL; logarithm++) {
+	    printf("%lu^%lu *"
+	} */
+
 	system("cat .ignore && rm .ignore");
 	return 0;
     } else {
