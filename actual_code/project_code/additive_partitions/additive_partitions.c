@@ -8,6 +8,7 @@
 #define MULTIPLICATIVE_IDENTITY 1
 #define ASCII_BASE 48
 #define RED "\x1B[31m"
+#define NORMAL "\x1B[0m"
 
 struct ll {
     unsigned long logarithm;
@@ -37,13 +38,6 @@ unsigned long down_rounded_base_B_logarithm(unsigned long B, unsigned long expon
 }
 
 struct ll *base_B_notation_of(unsigned long number, unsigned long base, char **string_head) {
-    FILE *out = stdout;
-    if (!(out = fopen(".ignore", "w"))) {
-	fprintf(stderr, "I/O Error.\n");
-	fprintf(stderr, "Exiting -2.\n");
-	return NULL; }
-    // ^ <-- Open temporary storage file
-
     unsigned long digit, power, cumulator, decumulator, accumulator, logarithm;
     decumulator = number; logarithm = accumulator = ADDITIVE_IDENTITY;
 
@@ -71,13 +65,10 @@ struct ll *base_B_notation_of(unsigned long number, unsigned long base, char **s
 	    *tracer = new_element;
 	}
 
-	fprintf(out, "%lu^%lu * %c = %lu * %c = %lu\n", base, logarithm, *string_tail, power, *string_tail, cumulator);
-
 	accumulator += cumulator;
 	logarithm++;
 	decumulator = (decumulator - digit) / base; // <-- Remove digit from number
     } while (decumulator -= 0);
-    fclose(out);
 
     /* ## Success check --> */
     if (string_tail == *string_head) return a;
@@ -85,6 +76,13 @@ struct ll *base_B_notation_of(unsigned long number, unsigned long base, char **s
 }
 
 void print_partitions(unsigned long base, struct ll *head) {
+    while (1) {
+	fprintf(stdout, "%lu", exponentiate(base, head->logarithm) * head->multiplier);
+	if (head->next != NULL) { fprintf(stdout, " + "); head = head->next; continue; }
+	else if (head->next == NULL) break; }
+} // ^ print_partitions ==> 
+
+void print_multipliers(unsigned long base, struct ll *head) {
     while (1) {
 	fprintf(stdout, "(%lu * %lu)", exponentiate(base, head->logarithm), head->multiplier);
 	if (head->next != NULL) { fprintf(stdout, " + "); head = head->next; continue; }
@@ -99,9 +97,12 @@ void print_logs(unsigned long base, struct ll *head) {
 } // ^ print_logs ==> 
 
 int main(int argc, char **argv) {
-    if (argc != 3)
+    if (argc != 3) {
+	fprintf(stderr, "Program usage:\n");
+	fprintf(stderr, "%s <number> <base>\n\n", argv[0]);
+	fprintf(stderr, "Wrong program usage.\n\n\nExiting '-1'.\n");
 	return -1;
-    // ^ Terminate upon wrong number of arguments
+    } // ^ Terminate upon wrong number of arguments
 
     unsigned long number = string_to_unsigned_long(argv[1]);
     unsigned long base = string_to_unsigned_long(argv[2]);
@@ -110,26 +111,28 @@ int main(int argc, char **argv) {
     char *answer;
     struct ll *head = NULL;
     if (head = base_B_notation_of(number, base, &answer)) {
-	fprintf(stdout, "How to write %lu in base %lu notation: %s\n", number, base, answer);
+	fprintf(stdout, "How to write %lu in base %lu notation: %s\n\n", number, base, answer);
 	free(answer);
 
-	fprintf(stdout, "\nNamely because %lu = ", number);
-	print_partitions(base, head); printf(" = "); /* print_multipliers(base, head); printf(" = "); */ print_logs(base, head);
+	fprintf(stdout, "%lu = ", number);
+	print_partitions(base, head); printf(" \u21D2\n");
 
-	fprintf(stdout, "\n\nDissection:\n");
-	for (unsigned long logarithm = 0; logarithm < down_rounded_base_B_logarithm(base, number); logarithm++) {
+	fprintf(stdout, "%lu = ", number);
+	print_multipliers(base, head); printf(" \u21D2\n");
+
+	fprintf(stdout, "%lu = ", number);
+	print_logs(base, head); printf("\n\n");
+
+	fprintf(stdout, "Dissection:\n");
+	unsigned long logarithm = head->logarithm + 1;
+	do {logarithm--;
 	    unsigned long i = exponentiate(base, logarithm);
-
-	    if (logarithm == head->logarithm) {
+	    if (head != NULL && logarithm == head->logarithm) {
 		printf("%s%lu^%lu * %lu = %lu * %lu = %lu\n", RED, base, logarithm, head->multiplier, i, head->multiplier, head->multiplier * i);
-		head = head->next;
-	    } else if (logarithm != head->logarithm)
-		printf("%lu^%lu * %lu = %lu * %lu = %lu\n", base, logarithm, head->multiplier, i, head->multiplier, head->multiplier * i);
-	}
-	// ^ Seems like I will need double linked for this
-
-	// system("cat .ignore && rm .ignore");
-	return 0;
+		head = head->next; }
+	    else
+		printf("%s%lu^%lu * 0 = %lu * 0 = 0\n", NORMAL, base, logarithm, i);
+	} while (logarithm != 0); printf("%s", NORMAL); return 0;
     } else {
 	fprintf(stderr, "Calculation incorrect!\n\n");
 	fprintf(stderr, "Exiting -1.\n");
