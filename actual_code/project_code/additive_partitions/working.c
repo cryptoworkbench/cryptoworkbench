@@ -11,7 +11,6 @@
 struct ll {
     unsigned long logarithm;
     unsigned long multiplier;
-    unsigned long partition;
     struct ll *next;
 };
 
@@ -64,7 +63,7 @@ struct ll *base_B_notation_of(unsigned long number, unsigned long base, char **s
 	if (cumulator != 0) {
 	    struct ll *new_element = (struct ll *) malloc(sizeof(struct ll));
 	    new_element->logarithm = logarithm;
-	    new_element->partition = (new_element->multiplier = digit) * exponentiate(base, logarithm); 
+	    new_element->multiplier = digit;
 	    new_element->next = *tracer;
 	    // ^ Create new partition in partitions list
 
@@ -85,17 +84,18 @@ struct ll *base_B_notation_of(unsigned long number, unsigned long base, char **s
 }
 
 void print_partitions(unsigned long base, struct ll *head) {
-    printf("(%lu * %lu) ", exponentiate(base, head->logarithm), head->multiplier); do {
-	head = head->next;
-	printf("+ (%lu * %lu) ", exponentiate(base, head->logarithm), head->multiplier);
-    } while (head->next != NULL); }
+    while (1) {
+	fprintf(stdout, "(%lu * %lu)", exponentiate(base, head->logarithm), head->multiplier);
+	if (head->next != NULL) { fprintf(stdout, " + "); head = head->next; continue; }
+	else if (head->next == NULL) break; }
+} // ^ print_partitions ==> 
 
 void print_logs(unsigned long base, struct ll *head) {
-    unsigned long partition;
-    while (head->next != NULL) {
-	fprintf(stdout, "(%lu^%lu * %lu) + ", base, head->logarithm, head->multiplier);
-	head = head->next;
-    } fprintf(stdout, "(%lu^%lu * %lu)", base, head->logarithm, head->multiplier); }
+    while (1) {
+	fprintf(stdout, "(%lu^%lu * %lu)", base, head->logarithm, head->multiplier);
+	if (head->next != NULL) { fprintf(stdout, " + "); head = head->next; continue; }
+	else if (head->next == NULL) break; }
+} // ^ print_logs ==> 
 
 int main(int argc, char **argv) {
     if (argc != 3)

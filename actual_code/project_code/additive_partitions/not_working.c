@@ -7,31 +7,30 @@
 #define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
 #define ASCII_BASE 48
-#define RED "\x1B[31m"
 
 struct ll {
     unsigned long logarithm;
     unsigned long multiplier;
+    unsigned long partition;
     struct ll *next;
 };
 
 unsigned long down_rounded_base_B_logarithm(unsigned long B, unsigned long exponent) {
-    unsigned long logarithm = ADDITIVE_IDENTITY;
+    unsigned long logarithm = 0;
     unsigned long power_of_Base = MULTIPLICATIVE_IDENTITY;
 
     /* Find the first power of B which is not smaller than the base_exponent */
-    while (!(power_of_Base >= exponent)) {
+    do {
+	power_of_Base *= B;
+	logarithm++;
+    } while (power_of_Base < exponent);
+    /* while (!(power_of_Base >= exponent)) {
 	power_of_Base *= B;
 	logarithm++;
     }
 
-    /* If the first power of 2 which is not smaller than the base_exponent, is equal to the base_exponent, then the base_exponent is a power of two, and all is set and done.
-     *
-     * If however, as will be in most cases, the first power of two which is not smaller than 'base_exponent' is actually greater than 'base_exponent', we over-estimated.
-     *
-     * In this case 'power_of_Base' over 2 ('power_of_Base / 2' in code) will be less than base_exponent, but also the greatest power of two which still fits base_exponent. */
     if (power_of_Base > exponent)
-	logarithm--;
+	logarithm--; */
 
     return logarithm;
 }
@@ -64,7 +63,7 @@ struct ll *base_B_notation_of(unsigned long number, unsigned long base, char **s
 	if (cumulator != 0) {
 	    struct ll *new_element = (struct ll *) malloc(sizeof(struct ll));
 	    new_element->logarithm = logarithm;
-	    new_element->multiplier = digit;
+	    new_element->partition = (new_element->multiplier = digit) * exponentiate(base, logarithm); 
 	    new_element->next = *tracer;
 	    // ^ Create new partition in partitions list
 
@@ -85,18 +84,17 @@ struct ll *base_B_notation_of(unsigned long number, unsigned long base, char **s
 }
 
 void print_partitions(unsigned long base, struct ll *head) {
-    while (1) {
-	fprintf(stdout, "(%lu * %lu)", exponentiate(base, head->logarithm), head->multiplier);
-	if (head->next != NULL) { fprintf(stdout, " + "); head = head->next; continue; }
-	else if (head->next == NULL) break; }
-} // ^ print_partitions ==> 
+    printf("(%lu * %lu) ", exponentiate(base, head->logarithm), head->multiplier); do {
+	head = head->next;
+	printf("+ (%lu * %lu) ", exponentiate(base, head->logarithm), head->multiplier);
+    } while (head->next != NULL); }
 
 void print_logs(unsigned long base, struct ll *head) {
-    while (1) {
-	fprintf(stdout, "(%lu^%lu * %lu)", base, head->logarithm, head->multiplier);
-	if (head->next != NULL) { fprintf(stdout, " + "); head = head->next; continue; }
-	else if (head->next == NULL) break; }
-} // ^ print_logs ==> 
+    unsigned long partition;
+    while (head->next != NULL) {
+	fprintf(stdout, "(%lu^%lu * %lu) + ", base, head->logarithm, head->multiplier);
+	head = head->next;
+    } fprintf(stdout, "(%lu^%lu * %lu)", base, head->logarithm, head->multiplier); }
 
 int main(int argc, char **argv) {
     if (argc != 3)
@@ -117,18 +115,11 @@ int main(int argc, char **argv) {
 	print_partitions(base, head); printf(" = "); /* print_multipliers(base, head); printf(" = "); */ print_logs(base, head);
 
 	fprintf(stdout, "\n\nDissection:\n");
-	for (unsigned long logarithm = 0; logarithm < down_rounded_base_B_logarithm(base, number); logarithm++) {
-	    unsigned long i = exponentiate(base, logarithm);
+	/* for (unsigned long logarithm = 0; head != NULL; logarithm++) {
+	    printf("%lu^%lu *"
+	} */
 
-	    if (logarithm == head->logarithm) {
-		printf("%s%lu^%lu * %lu = %lu * %lu = %lu\n", RED, base, logarithm, head->multiplier, i, head->multiplier, head->multiplier * i);
-		head = head->next;
-	    } else if (logarithm != head->logarithm)
-		printf("%lu^%lu * %lu = %lu * %lu = %lu\n", base, logarithm, head->multiplier, i, head->multiplier, head->multiplier * i);
-	}
-	// ^ Seems like I will need double linked for this
-
-	// system("cat .ignore && rm .ignore");
+	system("cat .ignore && rm .ignore");
 	return 0;
     } else {
 	fprintf(stderr, "Calculation incorrect!\n\n");
