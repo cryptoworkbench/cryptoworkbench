@@ -6,3 +6,9 @@ partition_dissector.o: partition_dissector.c
 
 partition_dissector: ../../../libraries/mathematics/maths.o ../../../libraries/functional/string.o partition_dissector.o
 	gcc ../../../libraries/mathematics/maths.o ../../../libraries/functional/string.o partition_dissector.o -o partition_dissector && rm partition_dissector.o
+
+base_converter.o: base_converter.c
+	gcc -c base_converter.c -o base_converter.o
+
+base_converter: ../../../libraries/mathematics/maths.o ../../../libraries/functional/string.o base_converter.o
+	gcc ../../../libraries/mathematics/maths.o ../../../libraries/functional/string.o base_converter.o -o base_converter && rm base_converter.o

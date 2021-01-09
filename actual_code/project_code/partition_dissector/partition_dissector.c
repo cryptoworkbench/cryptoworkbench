@@ -13,6 +13,7 @@
 #define NORMAL "\x1B[0m"
 #define RED "\x1B[31m"
 #define GREEN "\x1B[32m"
+#define YELLOW "\x1B[33m"
 #define BLUE "\x1B[34m"
 
 struct ll {
@@ -92,21 +93,21 @@ struct ll *base_B_notation_of(unsigned long number, unsigned long base, char **s
 
 void print_partitions(unsigned long base, struct ll *head) {
     while (1) {
-	fprintf(stdout, "%lu", exponentiate(base, head->logarithm) * head->multiplier);
+	fprintf(stdout, BLUE "%lu" NORMAL, exponentiate(base, head->logarithm) * head->multiplier);
 	if (head->next != NULL) { fprintf(stdout, " + "); head = head->next; continue; }
 	else if (head->next == NULL) break; }
 } // ^ print_partitions ==> 
 
 void print_multipliers(unsigned long base, struct ll *head) {
     while (1) {
-	fprintf(stdout, "(%lu * " GREEN "%lu" NORMAL ")", exponentiate(base, head->logarithm), head->multiplier);
+	fprintf(stdout, "(%lu * " BLUE "%lu" NORMAL ")", exponentiate(base, head->logarithm), head->multiplier);
 	if (head->next != NULL) { fprintf(stdout, " + "); head = head->next; continue; }
 	else if (head->next == NULL) break; }
 } // ^ print_partitions ==> 
 
 void print_logs(unsigned long base, struct ll *head) {
     while (1) {
-	fprintf(stdout, "(%lu^%lu * " GREEN "%lu" NORMAL ")", base, head->logarithm, head->multiplier);
+	fprintf(stdout, "(" RED "%lu" NORMAL "^%lu * " BLUE "%lu" NORMAL ")", base, head->logarithm, head->multiplier);
 	if (head->next != NULL) { fprintf(stdout, " + "); head = head->next; continue; }
 	else if (head->next == NULL) break; }
 } // ^ print_logs ==> 
@@ -127,28 +128,54 @@ int main(int argc, char **argv) {
     char *answer;
     struct ll *head = NULL;
     if (head = base_B_notation_of(number, base, &answer)) {
-	fprintf(stdout, "How to write %lu in base %lu notation: ", number, base);
-	coloured_print_base_B_notation(answer, GREEN, RED); printf("\n\n");
-	free(answer);
-
-	fprintf(stdout, "%lu = ", number);
+	/*
+	fprintf(stdout, GREEN "%lu" NORMAL " = ", number);
 	print_partitions(base, head); printf(" \u21D2\n");
 
-	fprintf(stdout, "%lu = ", number);
+	fprintf(stdout, GREEN "%lu" NORMAL " = ", number);
 	print_multipliers(base, head); printf(" \u21D2\n");
-
-	fprintf(stdout, "%lu = ", number);
-	print_logs(base, head); printf(" \u21D2 %lu =\n", number);
+	*/
+	fprintf(stdout, GREEN "%lu" NORMAL " = 0", number);
 
 	unsigned long logarithm = head->logarithm + 1;
+	struct ll *traitor = head;
 	do {logarithm--;
-	    unsigned long i = exponentiate(base, logarithm);
-	    if (head != NULL && logarithm == head->logarithm) {
-		printf(GREEN"%lu^%lu * %lu = %lu * %lu = %lu\n", base, logarithm, head->multiplier, i, head->multiplier, head->multiplier * i);
-		head = head->next; }
+	    fprintf(stdout, "\n");
+	    if (traitor != NULL && logarithm == traitor->logarithm) {
+		printf(NORMAL "+ " RED "%lu" NORMAL "^%lu * " BLUE "%lu", base, logarithm, traitor->multiplier);
+		traitor = traitor->next; }
 	    else
-		printf(RED"%lu^%lu * 0 = %lu * 0 = 0\n", base, logarithm, i);
-	} while (logarithm != 0); printf("%s", NORMAL); return 0;
+		printf(NORMAL "+ " RED "%lu" NORMAL "^%lu * " YELLOW "0" NORMAL, base, logarithm);
+	} while (logarithm != 0); printf(NORMAL " \u21D2\n\n" GREEN "%lu " NORMAL "= 0", number);
+	// ^ Print out first round
+	
+	logarithm = head->logarithm + 1; traitor = head;
+	// ^ Reset
+	do {logarithm--;
+	    fprintf(stdout, "\n");
+	    unsigned long i = exponentiate(base, logarithm);
+	    if (traitor != NULL && logarithm == traitor->logarithm) {
+		printf(NORMAL "+ %lu * " BLUE "%lu", i, traitor->multiplier);
+		traitor = traitor->next; }
+	    else
+		printf(NORMAL "+ %lu * " YELLOW "0" NORMAL, i);
+	} while (logarithm != 0); printf(NORMAL " \u21D2\n\n" GREEN "%lu " NORMAL "= 0", number);
+
+	logarithm = head->logarithm + 1; traitor = head;
+	// ^ Reset again
+	do {logarithm--;
+	    fprintf(stdout, "\n");
+	    unsigned long i = exponentiate(base, logarithm);
+	    if (traitor != NULL && logarithm == traitor->logarithm) {
+		printf(NORMAL "+ " BLUE "%lu ", i * traitor->multiplier);
+		traitor = traitor->next; }
+	    else
+		printf(NORMAL "+ " YELLOW "0 ");
+	} while (logarithm != 0); fprintf(stdout, NORMAL "\u21D2 " GREEN "%lu " NORMAL "= ", number); /* & -> */ print_partitions(base, head);
+	fprintf(stdout, NORMAL "\n\nThe only way to write " GREEN "%lu " NORMAL "in base " RED "%lu " NORMAL "notation must then be:\n", number, base);
+	coloured_print_base_B_notation(answer, BLUE, YELLOW); fprintf(stdout, "\n");
+	free(answer);
+	return 0;
     } else {
 	fprintf(stderr, "Calculation incorrect!\n\n");
 	fprintf(stderr, "Exiting -1.\n");
