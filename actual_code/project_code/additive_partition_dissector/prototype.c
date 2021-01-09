@@ -1,10 +1,7 @@
 /* This is genius, a function that spits the digits of any number in the notation of any base, woedie.
  * Try 22292 2.
  *
- * Version 1.2
- *
- * INTENTIONS FOR THIS CODE:
- * */
+ * Version 1.1 */
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../../libraries/functional/string.h"
@@ -53,18 +50,6 @@ unsigned long down_rounded_base_B_logarithm(unsigned long B, unsigned long expon
 }
 
 void coloured_print_base_B_notation(char *answer) {
-    for (unsigned long index = 0; answer[index] != '\0'; index++) {
-	if (answer[index] == '0')
-	    fprintf(stdout, "%s", YELLOW);
-
-	else if (answer[index] != '0')
-	    fprintf(stdout, "%s", BLUE);
-
-	fprintf(stdout, "%c", answer[index]);
-    } fprintf(stdout, "%s", RESET);
-} // ^^ Print colored digits
-
-void coloured_print_base_B_notation_2(char *answer) {
     for (unsigned long index = 0; answer[index] != '\0'; index++) {
 	if (answer[index] == '0')
 	    fprintf(stdout, "%s", YELLOW);
@@ -170,11 +155,11 @@ void first_print(struct ll *head, unsigned long base, int all) {
 	logarithm--;
 	unsigned long i = exponentiate(base, logarithm);
 	if (head != NULL && logarithm == head->logarithm) {
-	    fprintf(stdout, BLUE "%lu * %lu" RESET, i, head->multiplier);
+	    fprintf(stdout, BLUE "(%lu * %lu)" RESET, i, head->multiplier);
 	    head = head->next;
 	    printed = 1;
 	} else if (all) {
-	    fprintf(stdout, YELLOW "%lu * 0" RESET, i);
+	    fprintf(stdout, YELLOW "(%lu * 0)" RESET, i);
 	    printed = 1;
 	}
 
@@ -192,11 +177,12 @@ void second_print(struct ll *head, unsigned long base, int all) {
 	logarithm--;
 	unsigned long i = exponentiate(base, logarithm);
 	if (head != NULL && logarithm == head->logarithm) {
-	    fprintf(stdout, BLUE "" RED "%lu " BLUE "* %lu", i, head->multiplier);
+	    fprintf(stdout, BLUE "(" RED "%lu " BLUE "* %lu)", i, head->multiplier);
 	    head = head->next;
 	    printed = 1;
 	} else if (all) {
-	    fprintf(stdout, YELLOW "" RED "%lu " YELLOW "* 0" YELLOW "", i);
+	    fprintf(stdout, YELLOW "(" RED "%lu " YELLOW "* 0" YELLOW ")", i);
+	    // fprintf(stdout, YELLOW "0" RESET);
 	    printed = 1;
 	}
 
@@ -213,11 +199,11 @@ void extensive_print(struct ll *head, unsigned long base, int all) {
 	printed = 0;
 	logarithm--;
 	if (head != NULL && logarithm == head->logarithm) {
-	    fprintf(stdout, BLUE "" RED "%lu" BLUE "^%lu " BLUE "* %lu", base, logarithm, head->multiplier);
+	    fprintf(stdout, BLUE "(" RED "%lu" BLUE "^%lu " BLUE "* %lu)", base, logarithm, head->multiplier);
 	    head = head->next;
 	    printed = 1;
 	} else if (all) {
-	    fprintf(stdout, YELLOW "" RED "%lu" YELLOW "^%lu * 0", base, logarithm);
+	    fprintf(stdout, YELLOW "(" RED "%lu" YELLOW "^%lu * 0)", base, logarithm);
 	    // fprintf(stdout, YELLOW "0" RESET);
 	    printed = 1;
 	}
@@ -235,11 +221,11 @@ void last_print(struct ll *head, unsigned long base, int all) {
 	printed = 0;
 	logarithm--;
 	if (head != NULL && logarithm == head->logarithm) {
-	    fprintf(stdout, RESET "" RED "%lu" RESET "^%lu * " BLUE "%lu" RESET "", base, logarithm, head->multiplier);
+	    fprintf(stdout, RESET "(" RED "%lu" RESET "^%lu * " BLUE "%lu" RESET ")", base, logarithm, head->multiplier);
 	    head = head->next;
 	    printed = 1;
 	} else if (all) {
-	    fprintf(stdout, RESET "" RED "%lu" RESET "^%lu * " YELLOW "0" RESET "", base, logarithm);
+	    fprintf(stdout, RESET "(" RED "%lu" RESET "^%lu * " YELLOW "0" RESET ")", base, logarithm);
 	    // fprintf(stdout, YELLOW "0" RESET);
 	    printed = 1;
 	}
@@ -269,6 +255,9 @@ int main(int argc, char **argv) {
 	fprintf(stdout, GREEN "%lu" RESET " = ", number);
 	included_partitions(head, base); fprintf(stdout, RESET " \u21D4\n");
 
+	/* fprintf(stdout, GREEN "%lu" RESET " = ", number);
+	excluded_partitions(head, base); */
+
 	fprintf(stdout, GREEN "%lu" RESET " = ", number);
 	reveal_partitions(head, base, 1); fprintf(stdout, RESET " \u21D4\n");
 
@@ -282,12 +271,9 @@ int main(int argc, char **argv) {
 	extensive_print(head, base, 1); fprintf(stdout, RESET " \u21D4\n");
 
 	fprintf(stdout, GREEN "%lu" RESET " = ", number);
-	last_print(head, base, 1); fprintf(stdout, RESET " \u21D4\n");
+	last_print(head, base, 1); fprintf(stdout, RESET " \u21D2\n");
 
-	fprintf(stdout, GREEN "%lu" RESET " in base " RED "%lu " RESET "notation is ", number, base);
-	coloured_print_base_B_notation(answer); fprintf(stdout, RESET ".\n");
-
-	// fprintf(stdout, GREEN "%lu" RESET " = '", number); coloured_print_base_B_notation(answer); fprintf(stdout, "' (in base " RED "%lu " RESET "notation)\n", base);
+	fprintf(stdout, GREEN "%lu" RESET " = '", number); coloured_print_base_B_notation(answer); fprintf(stdout, "' (in base " RED "%lu " RESET "notation)\n", base);
 	free(answer); return 0;
     } else {
 	fprintf(stderr, "Calculation incorrect!\n\n");
