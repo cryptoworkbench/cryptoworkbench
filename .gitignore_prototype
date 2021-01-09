@@ -1,0 +1,6 @@
+# Ignore everything except c and make files
+!*.c
+!*.h
+!makefile
+
+# Do not transmit test code
