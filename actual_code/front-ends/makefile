@@ -4,11 +4,11 @@ string.o: ../../libraries/mathematics/maths.c ../../libraries/mathematics/maths.
 factorization_engines.o: ../../libraries/mathematics/factorization_engines.h ../../libraries/mathematics/factorization_engines.c
 	gcc -c ../../libraries/mathematics/factorization_engines.c -o ../../libraries/mathematics/factorization_engines.o
 
-factorization.o: factorization.c
-	gcc -c factorization.c -o factorization.o
+multiplicative_partition_dissection.o: multiplicative_partition_dissection.c
+	gcc -c multiplicative_partition_dissection.c -o multiplicative_partition_dissection.o
 
-factorization: ../../libraries/mathematics/maths.o ../../libraries/functional/string.o ../../libraries/mathematics/factorization_engines.o factorization.o
-	gcc ../../libraries/mathematics/maths.o ../../libraries/functional/string.o ../../libraries/mathematics/factorization_engines.o factorization.o -o factorization && rm factorization.o
+multiplicative_partition_dissection: ../../libraries/mathematics/maths.o ../../libraries/functional/string.o ../../libraries/mathematics/factorization_engines.o multiplicative_partition_dissection.o
+	gcc ../../libraries/mathematics/maths.o ../../libraries/functional/string.o ../../libraries/mathematics/factorization_engines.o multiplicative_partition_dissection.o -o multiplicative_partition_dissection && rm multiplicative_partition_dissection.o
 
 euclidean_algorithm.o: euclidean_algorithm.c
 	gcc -c euclidean_algorithm.c -o euclidean_algorithm.o

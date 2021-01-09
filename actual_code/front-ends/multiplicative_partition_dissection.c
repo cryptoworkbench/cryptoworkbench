@@ -10,12 +10,12 @@ int main(int argc, char *argv[]) {
 	fprintf(stderr, "\n\nWrong program usage.\n\nExiting with '-1'.\n");
 	return -1;
     } unsigned long factor_set = string_to_unsigned_long(argv[1]);
-    printf("Multiplicative factor set to dissect :  '%lu'\n", factor_set);
-    printf("Choose factorization algorithm to use:\n");
-    printf("#0. Fermat's factorization algorithm.\n");
-    printf("#1. Shor's factorization algorithm.\n\n");
+    printf("Multiplicative partition set to dissect: '%lu'\n\n", factor_set);
+    printf("Factorization engines available under the hood:\n");
+    printf("#0. The factorization engine based on Fermat's factorization method.\n");
+    printf("#1. The factorization engine based on Shor's factorization method.\n\n");
     int decision;
-    printf("I choose number: ");
+    printf("This execution '%s' is using factorization engine #", argv[0]);
     scanf("%i", &decision); printf("\n");
 
     struct number_pair (*factorize)(unsigned long);
@@ -25,6 +25,7 @@ int main(int argc, char *argv[]) {
 	factorize = classic_shor;
     } struct number_pair suspected_factors = factorize(factor_set);
 
+    system("clear");
     printf("Suspected subset a                   :  '%lu'\n", suspected_factors.number_one);
     printf("Suspected subset b                   :  '%lu'\n", suspected_factors.number_two);
 
