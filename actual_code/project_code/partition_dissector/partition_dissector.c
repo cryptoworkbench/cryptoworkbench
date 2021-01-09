@@ -10,8 +10,10 @@
 #define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
 #define ASCII_BASE 48
-#define RED "\x1B[31m"
 #define NORMAL "\x1B[0m"
+#define RED "\x1B[31m"
+#define GREEN "\x1B[32m"
+#define BLUE "\x1B[34m"
 
 struct ll {
     unsigned long logarithm;
@@ -40,17 +42,15 @@ unsigned long down_rounded_base_B_logarithm(unsigned long B, unsigned long expon
     return logarithm;
 }
 
-void print_base_B_notation(char *answer) {
-    unsigned long index = 0;
-    for (; answer[index] != '\0'; index++) {
+void coloured_print_base_B_notation(char *answer, char *COLOUR, char *NORM) {
+    for (unsigned long index = 0; answer[index] != '\0'; index++) {
 	if (answer[index] != '0') {
-	    fprintf(stdout, "%s", RED);
+	    fprintf(stdout, "%s", COLOUR);
 	} else if (answer[index] == '0') {
-	    fprintf(stdout, "%s", NORMAL);
+	    fprintf(stdout, "%s", NORM);
 	} fprintf(stdout, "%c", answer[index]);
-    }
-}
-/* Print colored digits */
+    } fprintf(stdout, "%s", NORMAL); }
+// ^^ Print colored digits
 
 struct ll *base_B_notation_of(unsigned long number, unsigned long base, char **string_head) {
     unsigned long digit, power, cumulator, decumulator, accumulator, logarithm;
@@ -99,14 +99,14 @@ void print_partitions(unsigned long base, struct ll *head) {
 
 void print_multipliers(unsigned long base, struct ll *head) {
     while (1) {
-	fprintf(stdout, "(%lu * %lu)", exponentiate(base, head->logarithm), head->multiplier);
+	fprintf(stdout, "(%lu * " GREEN "%lu" NORMAL ")", exponentiate(base, head->logarithm), head->multiplier);
 	if (head->next != NULL) { fprintf(stdout, " + "); head = head->next; continue; }
 	else if (head->next == NULL) break; }
 } // ^ print_partitions ==> 
 
 void print_logs(unsigned long base, struct ll *head) {
     while (1) {
-	fprintf(stdout, "(%lu^%lu * %lu)", base, head->logarithm, head->multiplier);
+	fprintf(stdout, "(%lu^%lu * " GREEN "%lu" NORMAL ")", base, head->logarithm, head->multiplier);
 	if (head->next != NULL) { fprintf(stdout, " + "); head = head->next; continue; }
 	else if (head->next == NULL) break; }
 } // ^ print_logs ==> 
@@ -128,7 +128,7 @@ int main(int argc, char **argv) {
     struct ll *head = NULL;
     if (head = base_B_notation_of(number, base, &answer)) {
 	fprintf(stdout, "How to write %lu in base %lu notation: ", number, base);
-	print_base_B_notation(answer); printf("%s\n\n", NORMAL);
+	coloured_print_base_B_notation(answer, GREEN, RED); printf("\n\n");
 	free(answer);
 
 	fprintf(stdout, "%lu = ", number);
@@ -138,17 +138,16 @@ int main(int argc, char **argv) {
 	print_multipliers(base, head); printf(" \u21D2\n");
 
 	fprintf(stdout, "%lu = ", number);
-	print_logs(base, head); printf("\n\n");
+	print_logs(base, head); printf(" \u21D2 %lu =\n", number);
 
-	fprintf(stdout, "Dissection:\n");
 	unsigned long logarithm = head->logarithm + 1;
 	do {logarithm--;
 	    unsigned long i = exponentiate(base, logarithm);
 	    if (head != NULL && logarithm == head->logarithm) {
-		printf("%s%lu^%lu * %lu = %lu * %lu = %lu\n", RED, base, logarithm, head->multiplier, i, head->multiplier, head->multiplier * i);
+		printf(GREEN"%lu^%lu * %lu = %lu * %lu = %lu\n", base, logarithm, head->multiplier, i, head->multiplier, head->multiplier * i);
 		head = head->next; }
 	    else
-		printf("%s%lu^%lu * 0 = %lu * 0 = 0\n", NORMAL, base, logarithm, i);
+		printf(RED"%lu^%lu * 0 = %lu * 0 = 0\n", base, logarithm, i);
 	} while (logarithm != 0); printf("%s", NORMAL); return 0;
     } else {
 	fprintf(stderr, "Calculation incorrect!\n\n");
