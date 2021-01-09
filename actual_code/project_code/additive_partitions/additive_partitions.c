@@ -1,5 +1,8 @@
 /* This is genius, a function that spits the digits of any number in the notation of any base, woedie
- * Version 4.0 */
+ * Version 1.0
+ *
+ * Try 292 2
+ * */
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../../libraries/functional/string.h"
@@ -36,6 +39,18 @@ unsigned long down_rounded_base_B_logarithm(unsigned long B, unsigned long expon
 
     return logarithm;
 }
+
+void print_base_B_notation(char *answer) {
+    unsigned long index = 0;
+    for (; answer[index] != '\0'; index++) {
+	if (answer[index] != '0') {
+	    fprintf(stdout, "%s", RED);
+	} else if (answer[index] == '0') {
+	    fprintf(stdout, "%s", NORMAL);
+	} fprintf(stdout, "%c", answer[index]);
+    }
+}
+/* Print colored digits */
 
 struct ll *base_B_notation_of(unsigned long number, unsigned long base, char **string_head) {
     unsigned long digit, power, cumulator, decumulator, accumulator, logarithm;
@@ -100,7 +115,8 @@ int main(int argc, char **argv) {
     if (argc != 3) {
 	fprintf(stderr, "Program usage:\n");
 	fprintf(stderr, "%s <number> <base>\n\n", argv[0]);
-	fprintf(stderr, "Wrong program usage.\n\n\nExiting '-1'.\n");
+	fprintf(stderr, "For example: %s 292 7\n\n\n", argv[0]);
+	fprintf(stderr, "Wrong program usage.\n\nExiting '-1'.\n");
 	return -1;
     } // ^ Terminate upon wrong number of arguments
 
@@ -111,7 +127,8 @@ int main(int argc, char **argv) {
     char *answer;
     struct ll *head = NULL;
     if (head = base_B_notation_of(number, base, &answer)) {
-	fprintf(stdout, "How to write %lu in base %lu notation: %s\n\n", number, base, answer);
+	fprintf(stdout, "How to write %lu in base %lu notation: ", number, base);
+	print_base_B_notation(answer); printf("%s\n\n", NORMAL);
 	free(answer);
 
 	fprintf(stdout, "%lu = ", number);

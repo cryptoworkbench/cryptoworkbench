@@ -48,12 +48,6 @@ void **phallus() {
     return source;
 } FILE *fs = NULL;
 
-unsigned long GCD(unsigned long big, unsigned long small) { // Calculates the Greatest Common Divisor (GCD) of two numbers using the Euclidean algorithm
-    if (big % small == 0)
-        return small;
-    return GCD(small, big % small);
-}
-
 unsigned int coprime(unsigned long greatest_common_divisor) // Call as coprime(GCD(big, small)) ===>
   { return (greatest_common_divisor == 1) ? 1 : 0; } // <=== If the Greatest Common Divisor of the unsigned long variables 'big' and 'small' in GCD(big, small) = 1, big & small are coprime
 
