@@ -1,6 +1,8 @@
 # Project description
 Project cryptoworkbench is a project to create an environment for studying cryptography and the properties of numbers.
 
+Add "tools/" to your PATH variable.
+
 ## Non-exclusive list of implemented mathematics
 ### The Sieve of Eratosthenes
 [./actual\_code/project\_code/prime\_table\_generator/prime\_table\_generator.c](https://github.com/cryptoworkbench/cryptoworkbench/blob/main/actual_code/project_code/prime_table_generator/prime_table_generator.c) is my implementation of the Sieve of Eratosthenes.
