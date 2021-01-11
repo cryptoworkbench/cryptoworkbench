@@ -15,3 +15,15 @@ euclidean_algorithm.o: euclidean_algorithm.c
 
 euclidean_algorithm: ../../libraries/mathematics/maths.o ../../libraries/functional/string.o euclidean_algorithm.o
 	gcc ../../libraries/mathematics/maths.o ../../libraries/functional/string.o euclidean_algorithm.o -o euclidean_algorithm && rm euclidean_algorithm.o
+
+primality_checker.o: primality_checker.c
+	gcc -c primality_checker.c -o primality_checker.o
+
+primality_checker: ../../libraries/mathematics/maths.o ../../libraries/functional/string.o primality_checker.o
+	gcc ../../libraries/mathematics/maths.o ../../libraries/functional/string.o primality_checker.o -o primality_checker && rm primality_checker.o
+
+factorization.o: factorization.c
+	gcc -c factorization.c -o factorization.o
+
+factorization: ../../libraries/mathematics/maths.o ../../libraries/functional/string.o factorization.o
+	gcc ../../libraries/mathematics/maths.o ../../libraries/functional/string.o factorization.o -o factorization && rm factorization.o

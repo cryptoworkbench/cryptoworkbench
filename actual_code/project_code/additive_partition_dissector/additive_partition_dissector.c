@@ -25,7 +25,7 @@
 #define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
 #define ASCII_BASE 48
-#define RESET "\x1B[0m"
+#define WHITE "\x1B[0m"
 #define RED "\x1B[31m"
 #define GREEN "\x1B[32m"
 #define YELLOW "\x1B[33m"
@@ -74,7 +74,7 @@ void coloured_print_base_B_notation(char *answer) {
 	    fprintf(stdout, "%s", BLUE);
 
 	fprintf(stdout, "%c", answer[index]);
-    } fprintf(stdout, "%s", RESET);
+    } fprintf(stdout, "%s", WHITE);
 } // ^^ Print colored digits
 
 void coloured_print_base_B_notation_2(char *answer) {
@@ -86,7 +86,7 @@ void coloured_print_base_B_notation_2(char *answer) {
 	    fprintf(stdout, "%s", BLUE);
 
 	fprintf(stdout, "%c", answer[index]);
-    } fprintf(stdout, "%s", RESET);
+    } fprintf(stdout, "%s", WHITE);
 } // ^^ Print colored digits
 
 struct ll *base_B_notation_of(unsigned long number, unsigned long base, char **string_head) {
@@ -127,15 +127,15 @@ struct ll *base_B_notation_of(unsigned long number, unsigned long base, char **s
     if (string_tail != *string_head) return NULL;
 }
 
-void included_partitions(struct ll *head, unsigned long base) {
+void seventh_print(struct ll *head, unsigned long base) {
     while (head != NULL) {
 	fprintf(stdout, BLUE "%lu", exponentiate(base, head->logarithm) * head->multiplier);
 	head = head->next;
 	if (head != NULL)
-	    fprintf(stdout, RESET " + ");
+	    fprintf(stdout, WHITE " + ");
     } }
 
-void reveal_partitions(struct ll *head, unsigned long base, int all) {
+void first_line(struct ll *head, unsigned long base, int all) {
     unsigned long logarithm = head->logarithm + 1;
     int printed;
     while (1) {
@@ -143,21 +143,21 @@ void reveal_partitions(struct ll *head, unsigned long base, int all) {
 	logarithm--;
 	unsigned long i = exponentiate(base, logarithm);
 	if (head != NULL && logarithm == head->logarithm) {
-	    fprintf(stdout, RED "%lu" RESET "^%lu * " BLUE "%lu", base, logarithm, head->multiplier);
+	    fprintf(stdout, WHITE "(" RED "%lu" WHITE "^%lu * " BLUE "%lu" WHITE ")", base, logarithm, head->multiplier);
 	    head = head->next;
 	    printed = 1;
 	} else if (all) {
-	    fprintf(stdout, RED "%lu" RESET "^%lu * " YELLOW "0", base, logarithm);
+	    fprintf(stdout, WHITE "(" RED "%lu" WHITE "^%lu * " YELLOW "0" WHITE ")", base, logarithm);
 	    printed = 1;
 	}
 
 	if (!all && head == NULL) break;
-	if (printed && logarithm != 0) fprintf(stdout, RESET " + ");
+	if (printed && logarithm != 0) fprintf(stdout, WHITE " + ");
 	if (logarithm == 0) break;
     }
 } // ^^ Print one
 
-void reveal_partitions_2(struct ll *head, unsigned long base, int all) {
+void second_line(struct ll *head, unsigned long base, int all) {
     unsigned long logarithm = head->logarithm + 1;
     int printed;
     while (1) {
@@ -165,21 +165,21 @@ void reveal_partitions_2(struct ll *head, unsigned long base, int all) {
 	logarithm--;
 	unsigned long i = exponentiate(base, logarithm);
 	if (head != NULL && logarithm == head->logarithm) {
-	    fprintf(stdout, RED "%lu^%lu " RESET "* " BLUE "%lu", base, logarithm, head->multiplier);
+	    fprintf(stdout, WHITE "(" RED "%lu^%lu " WHITE "* " BLUE "%lu" WHITE ")", base, logarithm, head->multiplier);
 	    head = head->next;
 	    printed = 1;
 	} else if (all) {
-	    fprintf(stdout, RED "%lu^%lu " RESET "* " YELLOW "0", base, logarithm);
+	    fprintf(stdout, WHITE "(" RED "%lu^%lu " WHITE "* " YELLOW "0" WHITE ")", base, logarithm);
 	    printed = 1;
 	}
 
 	if (!all && head == NULL) break;
-	if (printed && logarithm != 0) fprintf(stdout, RESET " + ");
+	if (printed && logarithm != 0) fprintf(stdout, WHITE " + ");
 	if (logarithm == 0) break;
     }
 } // ^^ Print one
 
-void second_print(struct ll *head, unsigned long base, int all) {
+void third_line(struct ll *head, unsigned long base, int all) {
     unsigned long logarithm = head->logarithm + 1;
     int printed;
     while (1) {
@@ -187,21 +187,20 @@ void second_print(struct ll *head, unsigned long base, int all) {
 	logarithm--;
 	unsigned long i = exponentiate(base, logarithm);
 	if (head != NULL && logarithm == head->logarithm) {
-	    fprintf(stdout, RED "%lu " RESET "* " BLUE "%lu", i, head->multiplier);
+	    fprintf(stdout, WHITE "(" RED "%lu " WHITE "* " BLUE "%lu" WHITE ")", i, head->multiplier);
 	    head = head->next;
 	    printed = 1;
 	} else if (all) {
-	    fprintf(stdout, RED "%lu " RESET "* " YELLOW "0" YELLOW "", i);
+	    fprintf(stdout, WHITE "(" RED "%lu " WHITE "* " YELLOW "0" WHITE ")", i);
 	    printed = 1;
 	}
 
 	if (!all && head == NULL) break;
-	if (printed && logarithm != 0) fprintf(stdout, RESET " + ");
+	if (printed && logarithm != 0) fprintf(stdout, WHITE " + ");
 	if (logarithm == 0) break;
-    }
-} // ^^ Print two
+    } }
 
-void extensive_print(struct ll *head, unsigned long base, int all) {
+void fourth_line(struct ll *head, unsigned long base, int all) {
     unsigned long logarithm = head->logarithm + 1;
     int printed;
     while (1) {
@@ -209,21 +208,42 @@ void extensive_print(struct ll *head, unsigned long base, int all) {
 	logarithm--;
 	unsigned long i = exponentiate(base, logarithm);
 	if (head != NULL && logarithm == head->logarithm) {
-	    fprintf(stdout, BLUE "%lu * %lu", i, head->multiplier);
+	    fprintf(stdout, BLUE "(" RED "%lu " BLUE "* %lu" BLUE ")", i, head->multiplier);
 	    head = head->next;
 	    printed = 1;
 	} else if (all) {
-	    fprintf(stdout, YELLOW "%lu * 0", i);
+	    fprintf(stdout, YELLOW "(" RED "%lu " YELLOW "* 0" YELLOW ")", i);
 	    printed = 1;
 	}
 
 	if (!all && head == NULL) break;
-	if (printed && logarithm != 0) fprintf(stdout, RESET " + ");
+	if (printed && logarithm != 0) fprintf(stdout, WHITE " + ");
+	if (logarithm == 0) break;
+    } }
+
+void fifth_print(struct ll *head, unsigned long base, int all) {
+    unsigned long logarithm = head->logarithm + 1;
+    int printed;
+    while (1) {
+	printed = 0;
+	logarithm--;
+	unsigned long i = exponentiate(base, logarithm);
+	if (head != NULL && logarithm == head->logarithm) {
+	    fprintf(stdout, BLUE "(%lu * %lu)", i, head->multiplier);
+	    head = head->next;
+	    printed = 1;
+	} else if (all) {
+	    fprintf(stdout, YELLOW "(%lu * 0)", i);
+	    printed = 1;
+	}
+
+	if (!all && head == NULL) break;
+	if (printed && logarithm != 0) fprintf(stdout, WHITE " + ");
 	if (logarithm == 0) break;
     }
 } // ^^ Print two
 
-void last_print(struct ll *head, unsigned long base, int all) {
+void sixth_print(struct ll *head, unsigned long base, int all) {
     unsigned long logarithm = head->logarithm + 1;
     int printed;
     while (1) {
@@ -240,7 +260,7 @@ void last_print(struct ll *head, unsigned long base, int all) {
 	}
 
 	if (!all && head == NULL) break;
-	if (printed && logarithm != 0) fprintf(stdout, RESET " + ");
+	if (printed && logarithm != 0) fprintf(stdout, WHITE " + ");
 	if (logarithm == 0) break;
     }
 } // ^^ Print two
@@ -261,29 +281,16 @@ int main(int argc, char **argv) {
     char *answer;
     struct ll *head = NULL;
     if (head = base_B_notation_of(number, base, &answer)) {
+	first_line(head, base, 1); fprintf(stdout, WHITE " = " GREEN "%lu " WHITE "\u21D2\n", number);
+	second_line(head, base, 1); fprintf(stdout, WHITE " = " GREEN "%lu " WHITE "\u21D2\n", number);
+	third_line(head, base, 1); fprintf(stdout, WHITE " = " GREEN "%lu " WHITE "\u21D2\n", number);
+	fourth_line(head, base, 1); fprintf(stdout, WHITE " = " GREEN "%lu " WHITE "\u21D2\n", number);
+	fifth_print(head, base, 1); fprintf(stdout, WHITE " = " GREEN "%lu " WHITE "\u21D2\n", number);
+	sixth_print(head, base, 1); fprintf(stdout, WHITE " = " GREEN "%lu " WHITE "\u21D2\n", number);
+	seventh_print(head, base); fprintf(stdout, WHITE " = " GREEN "%lu " WHITE "\u2713\n\n'", number); // "\u2713" is the unicode checkmark symbol
+	coloured_print_base_B_notation(answer); fprintf(stdout, WHITE "' is the base " RED "%lu " WHITE "notation of " GREEN "%lu" WHITE ".\n", base, number);
 
-	reveal_partitions(head, base, 1);
-	fprintf(stdout, RESET " = " GREEN "%lu " RESET "\u21D2\n", number);
-
-	reveal_partitions_2(head, base, 1);
-	fprintf(stdout, RESET " = " GREEN "%lu " RESET "\u21D2\n", number);
-
-	second_print(head, base, 1);
-	fprintf(stdout, RESET " = " GREEN "%lu " RESET "\u21D2\n", number);
-
-	extensive_print(head, base, 1);
-	fprintf(stdout, RESET " = " GREEN "%lu " RESET "\u21D2\n", number);
-
-	last_print(head, base, 1);
-	fprintf(stdout, RESET " = " GREEN "%lu " RESET "\u21D2\n", number);
-
-	included_partitions(head, base);
-	fprintf(stdout, RESET " = " GREEN "%lu " RESET "\u2713\n", number);
-
-	fprintf(stdout, "\n'"); coloured_print_base_B_notation(answer);
-	fprintf(stdout, RESET "' is the base " RED "%lu " RESET "notation of " GREEN "%lu" RESET ".\n", base, number);
-
-	// fprintf(stdout, GREEN "%lu" RESET " = '", number); coloured_print_base_B_notation(answer); fprintf(stdout, "' (in base " RED "%lu " RESET "notation)\n", base);
+	// fprintf(stdout, GREEN "%lu" WHITE " = '", number); coloured_print_base_B_notation(answer); fprintf(stdout, "' (in base " RED "%lu " WHITE "notation)\n", base);
 	free(answer); return 0;
     } else {
 	fprintf(stderr, "Calculation incorrect!\n\n");

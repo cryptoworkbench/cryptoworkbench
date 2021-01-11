@@ -10,8 +10,8 @@
  */
 #include <stdio.h>
 #include <stdlib.h> // 'fopen()', 'fclose()'
-#include "../../../libraries/functional/string.h"
-#include "../../../libraries/mathematics/primality_checkers/table_lookup_library/table_lookup_library.h" // 'prime()';
+#include "../../libraries/functional/string.h"
+#include "../../libraries/mathematics/maths.h"
 
 int main(int argc, char **argv) {
     if (argc != 3) {
@@ -23,18 +23,16 @@ int main(int argc, char **argv) {
     printf("Is %s a binary prime table? (0/1): ", argv[2]);
     fscanf(stdin, "%i", &binary_mode); if (binary_mode < 0) { binary_mode = 0; }
 
-    switch (prime(potential_prime, argv[2], binary_mode)) {
-	case 0:
-	    fprintf(stdout, "%lu is not prime.\n", potential_prime);
-	    return 0;
-	case 1:
-	    fprintf(stdout, "%lu is prime.\n", potential_prime);
-	    return 0;
-	case 2:
-	    fprintf(stderr, "Prime table too short!\n");
-	    return -1;
-	case 3:
-	    fprintf(stderr, "Failed to open prime table file.\n");
-	    return -1;
-    }
+    FILE *prime_table_fs;
+    if (!(prime_table_fs = fopen(argv[2], "r"))) {
+	fprintf(stderr, "Error\n");
+	return -2; }
+
+    if (prime(potential_prime, binary_mode, prime_table_fs))
+	fprintf(stdout, "%lu is prime.\n", potential_prime);
+    else {
+	fprintf(stdout, "%lu is not prime.\n", potential_prime);
+    } fclose(prime_table_fs);
+
+    return 0;
 }
