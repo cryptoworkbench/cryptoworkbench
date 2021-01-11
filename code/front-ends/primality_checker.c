@@ -10,8 +10,8 @@
  */
 #include <stdio.h>
 #include <stdlib.h> // 'fopen()', 'fclose()'
-#include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/maths.h"
+#include "../libraries/functional/string.h"
+#include "../libraries/mathematics/maths.h"
 
 int main(int argc, char **argv) {
     if (argc != 3) {

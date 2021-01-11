@@ -1,7 +1,7 @@
 # Project description
 Project cryptoworkbench is a project to create an environment for studying cryptography and the properties of numbers.
 
-Add "tools/" to your PATH variable.
+Add "workbench/" to your PATH variable.
 
 ## Non-exclusive list of implemented mathematics
 ### The Sieve of Eratosthenes

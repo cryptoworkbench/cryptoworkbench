@@ -5,8 +5,8 @@
  * */
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../../libraries/functional/string.h"
-#include "../../../libraries/mathematics/maths.h"
+#include "../../libraries/functional/string.h"
+#include "../../libraries/mathematics/maths.h"
 #define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
 #define ASCII_BASE 48

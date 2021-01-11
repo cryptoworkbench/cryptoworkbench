@@ -23,7 +23,7 @@
  * If you like to output to an external table file, but like my initial naming sceme better, put '--no-rename' or '-nr' instead. */
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../../libraries/functional/string.h"
+#include "../../libraries/functional/string.h"
 #define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
 /* global const char * declarations below */

@@ -2,8 +2,8 @@
  * Modify the prime() function so that it
  */
 #include <stdio.h>
-#include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/maths.h"
+#include "../libraries/functional/string.h"
+#include "../libraries/mathematics/maths.h"
 #define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
 const char *wrong_argument_count = "Wrong number of arguments.\n";

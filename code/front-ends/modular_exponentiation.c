@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../../libraries/functional/string.h"
-#include "../../../libraries/mathematics/maths.h" // mod_exponentiate();
+#include "../libraries/functional/string.h"
+#include "../libraries/mathematics/maths.h" // mod_exponentiate();
 
 int main(int argc, char **argv) {
     unsigned long modulus, exponent, base;

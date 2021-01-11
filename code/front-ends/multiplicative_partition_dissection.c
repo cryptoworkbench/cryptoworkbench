@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../libraries/functional/string.h" // needed to call string_to_unsigned_long()
-#include "../../libraries/mathematics/factorization_engines.h" // 'classic_shor()', 'fermat_factorize()'
+#include "../libraries/functional/string.h" // needed to call string_to_unsigned_long()
+#include "../libraries/mathematics/factorization_engines.h" // 'classic_shor()', 'fermat_factorize()'
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {

@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../../libraries/mathematics/maths.h"
-#include "../../../libraries/functional/string.h"
+#include "../../libraries/mathematics/maths.h"
+#include "../../libraries/functional/string.h"
 #define ADDITIVE_IDENTITY 0
 
 unsigned long _the_unary_operator_addition_under_modular_arithmatic(unsigned long generated_element, unsigned long generating_element, unsigned long group_modulus) {
