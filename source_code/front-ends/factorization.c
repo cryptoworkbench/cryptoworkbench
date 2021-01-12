@@ -32,7 +32,7 @@ int main(int argc, char **argv) {
     fscanf(stdin, "%i", &binary_mode); if (binary_mode < 0) { binary_mode = 0; }
     // ^ Check, by asking, if the supplied prime table is binary
 
-    unsigned long result = factorize(potential_prime, binary_mode, prime_table_fs); fclose(prime_table_fs);
+    unsigned long result = lookup_factorize(potential_prime, binary_mode, prime_table_fs); fclose(prime_table_fs);
     fprintf(stdout, "\nThe first divisor of %lu greater than 1 is %lu.\n\n", potential_prime, result);
 
     if (result < potential_prime) {
@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
 	    fprintf(stderr, "%s is too short to determine if %lu is prime.\n", argv[2], potential_prime);
 	    return -3; // <-- Factorization failed because the prime table is too short
 	} else {
-	    fprintf(stdout, "%lu / %lu = %lu + 0 \u21D2 %lu \u2261 0 (mod %lu) \u21D2 %lu | %lu \u21D2 %lu \u2209 {n \u2208 \u2115 : n is prime}\n", result, potential_prime, potential_prime / result, potential_prime, result, result, potential_prime, potential_prime);
+	    fprintf(stdout, "%lu / %lu = %lu + 0 \u21D2 %lu \u2261 0 (mod %lu) \u21D2 %lu | %lu \u21D2 %lu \u2209 {n \u2208 \u2115 : n is prime}\n", potential_prime, result, potential_prime / result, potential_prime, result, result, potential_prime, potential_prime);
 	    return 0; // <-- Successfully factorized
 	}
     } else {

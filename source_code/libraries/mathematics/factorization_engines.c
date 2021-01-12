@@ -16,11 +16,13 @@ struct number_pair *lookup_factorize_wrapper(unsigned long composite) {
 	fprintf(stdout, "Please provide the path to your prime table (relative to the current working directory): ");
 	fscanf(stdin, "%s", prime_table_filename);
 	if (!(prime_table_fs = fopen(prime_table_filename, "r"))) {
-	    fprintf(stderr, "No such prime table '%s'.\n\n", prime_table_filename);
 	    struct number_pair lengths = { strlen(command_name), strlen(prime_table_filename) };
 	    char *command = (char *) malloc(sizeof(char) * (lengths.number_one + lengths.number_two) + 1);
 	    *copy_over(copy_over(command, (char *) command_name), (char *) prime_table_filename) = 0;
-	    system(command); free(command); continue;
+	    system(command);
+	    free(command);
+	    fprintf(stderr, RED "\nERROR: " RESET "Failed to open prime table '%s'.\n", prime_table_filename);
+	    continue;
 	} else {
 	    fprintf(stdout, "If this prime table a binary prime table? (0/1): ");
 	    int binary_mode;
@@ -103,6 +105,19 @@ struct number_pair *_fermat_factorize(struct number_pair *pair_one, struct numbe
     return factors;
 }
 
-struct number_pair *fermat_factorize(unsigned long odd_composite) {
-    return _fermat_factorize(fermat_factorize_construct_square(0, 0), fermat_factorize_construct_square(0, odd_composite)); /* the first and second pure_square structs are automatically freed by _fermat_factorize() */ }
+struct number_pair *fermat_factorize(unsigned long composite) {
+    if (composite % 2 == 0) {
+	fprintf(stderr, "%lu / 2 = %lu + 0 \u21D2 2 | %lu \u21D2 %lu \u2261 0 (mod 2) \u21D2 %lu \u2262 0 (mod 2)\n\n", composite, composite / 2, composite, composite, composite);
+	fprintf(stdout, "This is a problem.\n", composite);
+	fprintf(stdout, "Factorizing %lu .. .. ..\n", composite);
+	unsigned long twos = 0;
+	while (composite % 2 == 0) {
+	    composite *= 0.5;
+	    twos++; }
+	fprintf(stdout, "Took out %lu factors of 2.\n", twos);
+    } else {
+	fprintf(stderr, "%lu / 2 = %lu + 1 \u21D2 %lu \u2261 1 (mod 2) \u21D2 \u2713 %lu \u2262 0 (mod 2)\n", composite, composite / 2, composite, composite);
+    }
+    return _fermat_factorize(fermat_factorize_construct_square(0, 0), fermat_factorize_construct_square(0, composite)); /* the first and second pure_square structs are automatically freed by _fermat_factorize() */
+}
 /* ##### ^^^^^^^^^^^^^ ##### Functions for fermat factorization, call 'fermat_factorize(unsigned long)'  ##### ^^^^^^^^^^^^^ ##### */
