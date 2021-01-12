@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/functional/string.h"
+#include "../../libraries/functional/linked_lists.h"
 #define ADDITIVE_IDENTITY 0
 
 unsigned long _the_unary_operator_addition_under_modular_arithmatic(unsigned long generated_element, unsigned long generating_element, unsigned long group_modulus) {
@@ -40,13 +41,13 @@ struct set_of_group_parameters {
     unsigned long identity;
 };
 
-void **phallus() {
+/* void **phallus() {
     void ***link;
     *(*(link = (void ***) malloc(sizeof(void *))) = (void **) malloc(sizeof(void *))) = NULL;
     void **source = *link;
     free(link);
-    return source;
-} FILE *fs = NULL;
+    return source; } */
+FILE *fs = NULL;
 
 unsigned int coprime(unsigned long greatest_common_divisor) // Call as coprime(GCD(big, small)) ===>
   { return (greatest_common_divisor == 1) ? 1 : 0; } // <=== If the Greatest Common Divisor of the unsigned long variables 'big' and 'small' in GCD(big, small) = 1, big & small are coprime
@@ -184,10 +185,9 @@ struct vertibrae *setup_table(struct vertibrae *last_element, struct set_of_grou
     return identity_element;
 }
 
-void *disintermediate(void **to_be_dereferenced) {
+/* void *disintermediate(void **to_be_dereferenced) {
     void *return_value = *to_be_dereferenced; free(to_be_dereferenced);
-    return return_value;
-}
+    return return_value; } */
 
 struct vertibrae *build_backbone(struct vertibrae **linked_list_connection, struct set_of_group_parameters *group) {
     // ### Establish lineair linked list containing all group elements using the triple ref technique
