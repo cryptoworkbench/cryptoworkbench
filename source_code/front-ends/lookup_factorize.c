@@ -25,9 +25,9 @@ int main(int argc, char **argv) {
     if (!(prime_table_fs = fopen(argv[2], "r"))) {
 	fprintf(stdout, cannot_open_fs, argv[2]);
 	return -2; }
-    // ^ Check a filestream to the proposed prime table can be opened
+    // ^ Check a filestream to the proposed prime table can indeed be opened
 
-    int binary_mode = 0; // We start of assuming binary_mode is off
+    int binary_mode = 0; // Start of assuming binary_mode is off
     printf("Is %s a binary prime table? (0/1): ", argv[2]);
     fscanf(stdin, "%i", &binary_mode); if (binary_mode < 0) { binary_mode = 0; }
     // ^ Check, by asking, if the supplied prime table is binary

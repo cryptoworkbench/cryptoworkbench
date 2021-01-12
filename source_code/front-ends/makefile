@@ -28,12 +28,12 @@ primality_checker: ../libraries/functional/.string.o ../libraries/mathematics/.m
 	gcc ../libraries/mathematics/.maths.o ../libraries/functional/.string.o .primality_checker.o -o ../../workbench/primality_checker
 	echo "APPLICATION 'primality_checker' is now ready in /workbench/"
 
-.factorization.o: factorization.c
-	gcc -c factorization.c -o .factorization.o
+.lookup_factorize.o: lookup_factorize.c
+	gcc -c lookup_factorize.c -o .lookup_factorize.o
 
-factorization: ../libraries/functional/.string.o ../libraries/mathematics/.maths.o .factorization.o
-	gcc ../libraries/mathematics/.maths.o ../libraries/functional/.string.o .factorization.o -o ../../workbench/factorization
-	echo "APPLICATION 'factorization' is now ready in /workbench/"
+lookup_factorize: ../libraries/functional/.string.o ../libraries/mathematics/.maths.o .lookup_factorize.o
+	gcc ../libraries/mathematics/.maths.o ../libraries/functional/.string.o .lookup_factorize.o -o ../../workbench/lookup_factorize
+	echo "APPLICATION 'lookup_factorize' is now ready in /workbench/"
 
 .modular_exponentiation.o: modular_exponentiation.c
 	gcc -c modular_exponentiation.c -o .modular_exponentiation.o

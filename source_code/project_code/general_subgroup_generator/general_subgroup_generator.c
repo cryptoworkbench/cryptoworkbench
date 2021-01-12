@@ -4,6 +4,7 @@
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
 #define ADDITIVE_IDENTITY 0
+FILE *fs = NULL;
 
 unsigned long _the_unary_operator_addition_under_modular_arithmatic(unsigned long generated_element, unsigned long generating_element, unsigned long group_modulus) {
     unsigned long return_value = (generated_element + generating_element) % group_modulus;
@@ -40,14 +41,6 @@ struct set_of_group_parameters {
     unsigned long modulus;
     unsigned long identity;
 };
-
-/* void **phallus() {
-    void ***link;
-    *(*(link = (void ***) malloc(sizeof(void *))) = (void **) malloc(sizeof(void *))) = NULL;
-    void **source = *link;
-    free(link);
-    return source; } */
-FILE *fs = NULL;
 
 unsigned int coprime(unsigned long greatest_common_divisor) // Call as coprime(GCD(big, small)) ===>
   { return (greatest_common_divisor == 1) ? 1 : 0; } // <=== If the Greatest Common Divisor of the unsigned long variables 'big' and 'small' in GCD(big, small) = 1, big & small are coprime
@@ -173,6 +166,7 @@ void free_table(struct vertibrae *link) {
 	free(suspend);
     } while (iterator != link);
 }
+
 struct vertibrae *setup_table(struct vertibrae *last_element, struct set_of_group_parameters *group_parameters) {
     unsigned long cell_width = char_in_val(last_element->unit.number);
     struct vertibrae *identity_element = last_element->next;
@@ -184,10 +178,6 @@ struct vertibrae *setup_table(struct vertibrae *last_element, struct set_of_grou
     } while (do_loop_iterator != identity_element); // ### Return linked list at identity element
     return identity_element;
 }
-
-/* void *disintermediate(void **to_be_dereferenced) {
-    void *return_value = *to_be_dereferenced; free(to_be_dereferenced);
-    return return_value; } */
 
 struct vertibrae *build_backbone(struct vertibrae **linked_list_connection, struct set_of_group_parameters *group) {
     // ### Establish lineair linked list containing all group elements using the triple ref technique
