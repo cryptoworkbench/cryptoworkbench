@@ -10,8 +10,8 @@ int main(int argc, char **argv) {
 	return -1; }
     /* ### ^^ ### EXIT WHEN NOT ALL PRIMES WERE SUPPLIED ### ^^ ### */
     unsigned long p_1, p_2, totient, modulus;
-    p_1 = string_to_unsigned_long(argv[1]);
-    p_2 = string_to_unsigned_long(argv[2]);
+    p_1 = str_to_ul(argv[1]);
+    p_2 = str_to_ul(argv[2]);
     totient = (p_1 - 1) * (p_2 - 1);
     modulus = p_1 * p_2;
 

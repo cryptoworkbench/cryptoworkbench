@@ -7,7 +7,7 @@ int strlen_int(char *string_pointer); // Almost the same functionality as the ab
 unsigned int streql(char *string_a, char *string_b); // Returns 1 if string_a and string_b are equal, returns 0 if not
 char *copy_over(char *recipient_adress, char *source_adress); // Copies over source onto recipient, terminating at the string terminating character 0 in the byte sequence pointed at by source_adres, then appends one onto the string pointed at by char *repicient_adress
 
-unsigned long string_to_unsigned_long(char *string); // Returns the numeric value represented by the string pointed to by char *string as unsigned long
+unsigned long str_to_ul(char *string); // Returns the numeric value represented by the string pointed to by char *string as unsigned long
 int string_to_int(char *string); // Returns the numeric value represented by the string pointed to by char *string as int
 
 unsigned long char_in_val(unsigned long a); // Calculates the number of characters needed to display a in base BASE notation (BASE = 10)

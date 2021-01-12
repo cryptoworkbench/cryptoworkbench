@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/functional/string.h"
-#include "../../libraries/functional/linked_lists.h"
+#include "../../libraries/functional/triple_ref_pointers.h"
 #define ADDITIVE_IDENTITY 0
 
 unsigned long _the_unary_operator_addition_under_modular_arithmatic(unsigned long generated_element, unsigned long generating_element, unsigned long group_modulus) {
@@ -212,13 +212,13 @@ int main(int argc, char **argv) {
 	case 6: // When a fifth argument is supplied, output calculations to this file
 	    fs = fopen(argv[5], "w");
 	case 5:
-	    table_properties->horizontal_offset = string_to_unsigned_long(argv[4]);
+	    table_properties->horizontal_offset = str_to_ul(argv[4]);
 	case 4:
-	    table_properties->vertical_offset = string_to_unsigned_long(argv[3]);
+	    table_properties->vertical_offset = str_to_ul(argv[3]);
 	case 3:
-	    group_properties->identity = string_to_unsigned_long(argv[2]);
+	    group_properties->identity = str_to_ul(argv[2]);
 	case 2:
-	    group_properties->modulus = string_to_unsigned_long(argv[1]);
+	    group_properties->modulus = str_to_ul(argv[1]);
     }
 
     if (6 > argc) { // When a fifth argument was not supplied, output to stdout

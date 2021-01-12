@@ -22,7 +22,7 @@ void ll_insert(struct ll **tracer, unsigned long factor_set) {
 
 struct ll *build_HW(struct ll **linked_list_connection, int argc, char **argv) {
     while (argc != 1) {
-	ll_insert(linked_list_connection, string_to_unsigned_long(argv[argc - 1]));
+	ll_insert(linked_list_connection, str_to_ul(argv[argc - 1]));
 	argc--; }
     // ^^ Establish lineair linked list containing all group elements using the triple ref technique
 

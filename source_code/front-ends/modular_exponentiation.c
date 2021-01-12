@@ -7,11 +7,11 @@ int main(int argc, char **argv) {
     unsigned long modulus, exponent, base;
     switch (argc) {
 	case 4:
-	    modulus = string_to_unsigned_long(argv[3]);
+	    modulus = str_to_ul(argv[3]);
 	case 3:
-	    exponent = string_to_unsigned_long(argv[2]);
+	    exponent = str_to_ul(argv[2]);
 	case 2:
-	    base = string_to_unsigned_long(argv[1]);
+	    base = str_to_ul(argv[1]);
     }
     
     printf("Modulus: ");

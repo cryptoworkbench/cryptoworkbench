@@ -39,7 +39,7 @@ char *copy_over(char *recipient_adress, char *source_adress) {
     } return recipient_adress;
 }
 
-unsigned long string_to_unsigned_long(char *string) {
+unsigned long str_to_ul(char *string) {
     unsigned long iteration_count, string_as_integer, length_of_string; // Declare needed variables
     iteration_count = string_as_integer = 0; length_of_string = strlen(string); // Initialize variables
 

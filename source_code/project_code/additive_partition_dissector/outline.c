@@ -121,8 +121,8 @@ int main(int argc, char **argv) {
 	return -1;
     } // ^ Terminate upon wrong number of arguments
 
-    unsigned long number = string_to_unsigned_long(argv[1]);
-    unsigned long base = string_to_unsigned_long(argv[2]);
+    unsigned long number = str_to_ul(argv[1]);
+    unsigned long base = str_to_ul(argv[2]);
     // ^ Process input arguments
 
     char *answer;

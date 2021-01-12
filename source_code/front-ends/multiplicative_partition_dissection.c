@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../libraries/functional/string.h" // needed to call string_to_unsigned_long()
+#include "../libraries/functional/string.h" // needed to call str_to_ul()
 #include "../libraries/mathematics/factorization_engines.h" // 'classic_shor()', 'fermat_factorize()'
 
 int main(int argc, char *argv[]) {
@@ -9,7 +9,7 @@ int main(int argc, char *argv[]) {
 	fprintf(stderr, "%s <factor set to dissect denoted as composite number>\n", argv[0]);
 	fprintf(stderr, "\n\nWrong program usage.\n\nExiting with '-1'.\n");
 	return -1;
-    } unsigned long factor_set = string_to_unsigned_long(argv[1]);
+    } unsigned long factor_set = str_to_ul(argv[1]);
     fprintf(stdout, "Multiplicative partition set to dissect: '%lu'\n\n", factor_set);
     fprintf(stdout, "Factorization engines available under the hood:\n");
     fprintf(stdout, "#1. A factorization engine based a simple prime divisor lookup function (requires a prime table).\n");
