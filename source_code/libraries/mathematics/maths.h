@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 int _read_prime(unsigned long *prime_space_ptr, FILE *prime_table_fs, int binary_mode);
-unsigned long factorize(unsigned long presumed_composite, int binary_mode, FILE *prime_table_fs);
+unsigned long lookup_factorize(unsigned long presumed_composite, int binary_mode, FILE *prime_table_fs);
 /* ^^ Returns the least natural divisor of "presumed_composite" greater than 1, WITH OTHER WORDS: ==>
  * When "presumed_composite" is prime, this function returns "presumed_composite"
  * When "presumed_composite" is composite, this function returns the least (prime) divisor of "presumed_composite"

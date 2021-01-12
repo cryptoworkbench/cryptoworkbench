@@ -11,7 +11,7 @@ int _read_prime(unsigned long *prime_space_ptr, FILE *prime_table_fs, int binary
     else
 	return fscanf(prime_table_fs, "%lu\n", prime_space_ptr) + 1; }
 
-unsigned long factorize(unsigned long presumed_composite, int binary_mode, FILE *prime_table_fs) {
+unsigned long lookup_factorize(unsigned long presumed_composite, int binary_mode, FILE *prime_table_fs) {
     unsigned long potential_divisor;
     while (_read_prime(&potential_divisor, prime_table_fs, binary_mode)) {
 	if (potential_divisor * potential_divisor <= presumed_composite)
@@ -21,7 +21,7 @@ unsigned long factorize(unsigned long presumed_composite, int binary_mode, FILE 
     } return 0; }
 
 int prime(unsigned long presumed_composite, int binary_mode, FILE *prime_table_fs)
-{ return (factorize(presumed_composite, binary_mode, prime_table_fs) == presumed_composite) ? 1 : 0; }
+{ return (lookup_factorize(presumed_composite, binary_mode, prime_table_fs) == presumed_composite) ? 1 : 0; }
 // ^^ Ternary function in order to funnel factorize
 
 unsigned long GCD(unsigned long a, unsigned long b) {
