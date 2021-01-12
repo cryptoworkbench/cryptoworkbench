@@ -118,6 +118,9 @@ struct number_pair *fermat_factorize(unsigned long composite) {
     } else {
 	fprintf(stderr, "%lu / 2 = %lu + 1 \u21D2 %lu \u2261 1 (mod 2) \u21D2 \u2713 %lu \u2262 0 (mod 2)\n", composite, composite / 2, composite, composite);
     }
-    return _fermat_factorize(fermat_factorize_construct_square(0, 0), fermat_factorize_construct_square(0, composite)); /* the first and second pure_square structs are automatically freed by _fermat_factorize() */
+    return _fermat_factorize(fermat_factorize_construct_square(0, 0), fermat_factorize_construct_square(0, composite));
+    // ^^ the first and second pure_square structs are automatically freed by _fermat_factorize()
+
+    // The problem now is that while _fermat_factorize may factorize correctly, I cant return the two factors
 }
 /* ##### ^^^^^^^^^^^^^ ##### Functions for fermat factorization, call 'fermat_factorize(unsigned long)'  ##### ^^^^^^^^^^^^^ ##### */
