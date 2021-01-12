@@ -1,22 +1,36 @@
 #include <stdio.h> // 'fprintf()', 'fopen()' 'fclose()'
 #include <stdlib.h> // 'malloc()' for line 5 and 'free()' for line 29 and 30
 #include "factorization_engines.h"
+#include "../functional/string.h"
+#define RESET "\x1B[0m"
+#define RED "\x1B[31m"
+#define GREEN "\x1B[32m"
+#define YELLOW "\x1B[33m"
+#define BLUE "\x1B[34m"
+const char *command_name = "ls -lha ";
 
 struct number_pair *lookup_factorize_wrapper(unsigned long composite) {
     char *prime_table_filename = (char *) malloc(sizeof(char) * 80);
-    fprintf(stdout, "Please provide path to prime table lookup file: ");
-    fscanf(stdin, "%s", prime_table_filename);
     FILE *prime_table_fs;
-    if (!(prime_table_fs = fopen(prime_table_filename, "r")))
-	return NULL;
-    else {
-	fprintf(stdout, "If this prime table a binary prime table? (0/1): ");
-	int binary_mode;
-	fscanf(stdin, "%i", &binary_mode);
-	struct number_pair *factors = (struct number_pair *) malloc(sizeof(struct number_pair));
-	factors->number_one = lookup_factorize(composite, binary_mode, prime_table_fs);
-	factors->number_two = composite / factors->number_one;
-	return factors; }
+    while (1) {
+	fprintf(stdout, "Please provide the path to your prime table (relative to the current working directory): ");
+	fscanf(stdin, "%s", prime_table_filename);
+	if (!(prime_table_fs = fopen(prime_table_filename, "r"))) {
+	    fprintf(stderr, "No such prime table '%s'.\n\n", prime_table_filename);
+	    struct number_pair lengths = { strlen(command_name), strlen(prime_table_filename) };
+	    char *command = (char *) malloc(sizeof(char) * (lengths.number_one + lengths.number_two) + 1);
+	    *copy_over(copy_over(command, (char *) command_name), (char *) prime_table_filename) = 0;
+	    system(command); free(command); continue;
+	} else {
+	    fprintf(stdout, "If this prime table a binary prime table? (0/1): ");
+	    int binary_mode;
+	    fscanf(stdin, "%i", &binary_mode);
+	    struct number_pair *factors = (struct number_pair *) malloc(sizeof(struct number_pair));
+	    factors->number_two = composite / (factors->number_one = lookup_factorize(composite, binary_mode, prime_table_fs));
+	    fclose(prime_table_fs);
+	    return factors;
+	}
+    }
 }
 
 unsigned long classic_shor_find_a(unsigned long previous_a, unsigned long composite) {
@@ -25,8 +39,7 @@ unsigned long classic_shor_find_a(unsigned long previous_a, unsigned long compos
 	do {
 	    previous_a++;
 	    current_gcd = GCD(composite, previous_a);
-	} while (current_gcd != 1);
-    }
+	} while (current_gcd != 1); }
 
     /* 'previous_a' is now the first a in the infinite open interval with as open minimum endpoint a, and a maximum endpoint infinity. That's [a, infinity) */
     return previous_a;

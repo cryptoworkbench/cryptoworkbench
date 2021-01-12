@@ -10,26 +10,25 @@ int main(int argc, char *argv[]) {
 	fprintf(stderr, "\n\nWrong program usage.\n\nExiting with '-1'.\n");
 	return -1;
     } unsigned long factor_set = string_to_unsigned_long(argv[1]);
-    printf("Multiplicative partition set to dissect: '%lu'\n\n", factor_set);
-    printf("Factorization engines available under the hood:\n");
-    printf("#0. The factorization engine based on Fermat's factorization method.\n");
-    printf("#1. The factorization engine based on Shor's factorization method.\n");
-    printf("#2. The factorization engine based a simple prime divisor lookup function.\n\n");
+    fprintf(stdout, "Multiplicative partition set to dissect: '%lu'\n\n", factor_set);
+    fprintf(stdout, "Factorization engines available under the hood:\n");
+    fprintf(stdout, "#1. A factorization engine based a simple prime divisor lookup function (requires a prime table).\n");
+    fprintf(stdout, "#2. A factorization engine based on Fermat's factorization method.\n");
+    fprintf(stdout, "#3. A factorization engine based on Shor's factorization method.\n\n");
     int decision;
-    printf("This execution '%s' is using factorization engine #", argv[0]);
-    scanf("%i", &decision); printf("\n");
+    fprintf(stdout, "This execution of \"%s\" should use factorization engine #", argv[0]);
+    fscanf(stdin, "%i", &decision);
 
     struct number_pair *(*factorize)(unsigned long);
     switch (decision) {
-	case 0:
-	    factorize = fermat_factorize;
 	case 1:
-	    factorize = classic_shor;
+	    factorize = lookup_factorize_wrapper; break;
 	case 2:
-	    factorize = lookup_factorize_wrapper;
+	    factorize = fermat_factorize; break;
+	case 3:
+	    factorize = classic_shor;
     } struct number_pair *suspected_factors = factorize(factor_set);
 
-    system("clear");
     printf("Suspected subset a                   :  '%lu'\n", suspected_factors->number_one);
     printf("Suspected subset b                   :  '%lu'\n", suspected_factors->number_two);
 
