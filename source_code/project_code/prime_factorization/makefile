@@ -7,3 +7,10 @@
 prime_factorization: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o  .prime_factorization.o
 	gcc ../../libraries/mathematics/.maths.o ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o .prime_factorization.o -o ../../../workbench/prime_factorization
 	echo "APPLICATION 'prime_factorization' is now ready in /workbench/"
+
+.nice.o: nice.c
+	gcc -c nice.c -o .nice.o
+
+nice: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o  .nice.o
+	gcc ../../libraries/mathematics/.maths.o ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o .nice.o -o ../../../workbench/nice
+	echo "APPLICATION 'nice' is now ready in /workbench/"
