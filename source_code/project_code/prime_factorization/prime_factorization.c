@@ -1,14 +1,11 @@
 /* DESCRIPTION:
- * This is a rather convoluted design.
+ * Works neatly. Happens to open and close prime_table_fs constantly in order to start reading from the beginning again. I do not know if this is neccesary.
  *
- * Closes and opens prime_table_fs constantly in order to start reading from the beginning again.
- */
+ * This will form the basis for nicer.c */
 #include <stdio.h>
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
-#define RESET "\x1B[30m"
-#define RED "\x1B[31m"
 
 struct prime_power {
     unsigned long prime;
@@ -30,22 +27,24 @@ void update(struct prime_power **ll_conx, unsigned long new, unsigned long *fact
     insert_prime_power(ll_conx, new);
     *factor_set = *factor_set / new; }
 
-struct prime_power **prime_factorize(struct prime_power **ll_conx, unsigned long factor_set, int binary_mode, char *name) {
+unsigned long prime_factorize(struct prime_power **ll_conx, unsigned long factor_set, int binary_mode, char *name) {
     unsigned long potential_divisor; int read; FILE *table_fs; 
-    do {
-	if (factor_set == 1) { return ll_conx; }
+    unsigned long prime_divisors = 0; do {
+	if (factor_set == 1) { return prime_divisors; }
 	// ^^ Base case
 
 	if ( !(table_fs = fopen(name, "r"))) {
 	    fprintf(stderr, "Failed to open!\n");
-	    return ll_conx; }
+	    return prime_divisors; }
 	// ^^ Open fs
 
 	while (read = _read_prime(&potential_divisor, table_fs, binary_mode)) {
-	    if (potential_divisor * potential_divisor > factor_set) { update(ll_conx, factor_set, &factor_set); break; }
-	    else if (factor_set % potential_divisor == 0) { do update(ll_conx, potential_divisor, &factor_set); while (factor_set % potential_divisor == 0); break; } }
+	    if (potential_divisor * potential_divisor > factor_set) { update(ll_conx, factor_set, &factor_set); prime_divisors++; break; }
+	    else if (factor_set % potential_divisor == 0) {
+		do { update(ll_conx, potential_divisor, &factor_set); prime_divisors++; }
+		while (factor_set % potential_divisor == 0); break; } }
 	fclose(table_fs);
-    } while (read); fprintf(stderr, "Too short\n"); return ll_conx; }
+    } while (read); fprintf(stderr, "Too short\n"); return prime_divisors; }
 
 unsigned long combined_factors(struct prime_power *origin) {
     unsigned long ret_val = 1;
@@ -55,7 +54,8 @@ unsigned long combined_factors(struct prime_power *origin) {
 	if (origin->next != NULL)
 	    fprintf(stdout, " * ");
 
-	origin = origin->next;
+	struct prime_power *next = origin->next;
+	free(origin); origin = next;
     } while (origin != NULL); return ret_val; }
 // ^^ prints and combines the prime factors
 
@@ -64,8 +64,24 @@ int main(int argc, char **argv) {
 	fprintf(stderr, "Wrong argument count.\n");
 	return -1;
     } unsigned long factor_set = str_to_ul(argv[1]);
-    struct prime_power *head;
-    if (!(head = (struct prime_power *) disintermediate((void **) prime_factorize((struct prime_power **) phallus(), factor_set, 1, argv[2])))) {
+
+    struct prime_power ***link;
+    *(*(link = (struct prime_power ***) malloc(sizeof(struct prime_power *))) = (struct prime_power **) malloc(sizeof(struct prime_power *))) = NULL;
+    struct prime_power **head = *link; free(link);
+
+    unsigned long result = prime_factorize(head, factor_set, 1, argv[2]);
+    fprintf(stdout, "Result: %lu\n", result);
+
+    unsigned long resulting_set = combined_factors((struct prime_power *) disintermediate((void **) head));
+    if (resulting_set == factor_set) {
+	fprintf(stdout, " = %lu\n", resulting_set);
+	fprintf(stdout, "\nPrime factorization succesfull.\n");
+    } else {
+	fprintf(stderr, " != %lu\n", factor_set);
+	fprintf(stderr, "\nPrime factorization unsuccesfull.\n");
+    } return 0;
+
+    /* if (!(head = (struct prime_power *) disintermediate((void **) prime_factorize((struct prime_power **) phallus(), factor_set, 1, argv[2])))) {
 	fprintf(stderr, "Factorization failed because there was a problem accessing the neccessary information; namely the first n primes required for factorizing %lu.\n", factor_set);
 	fprintf(stderr, "Where n is from the natural numbers such that:\nn <= %lu^(1/2)\n", factor_set);
 	fprintf(stderr, "\nExiting '-3'.\n");
@@ -80,7 +96,7 @@ int main(int argc, char **argv) {
 	fprintf(stderr, "\nPrime factorization unsuccesfull.\n");
 	fprintf(stderr, "\nprime table at specified path \"%s\" must be corrupt.\n", argv[1]);
 	fprintf(stderr, "\nExiting '-2'.\n");
-	return -2; }
+	return -2; } */
     return 0; }
 // ^^ RETURN CODE LEGENDA:
 // 0. Prime factorization successfully completed

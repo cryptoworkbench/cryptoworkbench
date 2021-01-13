@@ -8,9 +8,9 @@ prime_factorization: ../../libraries/functional/.string.o ../../libraries/mathem
 	gcc ../../libraries/mathematics/.maths.o ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o .prime_factorization.o -o ../../../workbench/prime_factorization
 	echo "APPLICATION 'prime_factorization' is now ready in /workbench/"
 
-.nice.o: nice.c
-	gcc -c nice.c -o .nice.o
+.nicer.o: nicer.c
+	gcc -c nicer.c -o .nicer.o
 
-nice: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o  .nice.o
-	gcc ../../libraries/mathematics/.maths.o ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o .nice.o -o ../../../workbench/nice
-	echo "APPLICATION 'nice' is now ready in /workbench/"
+nicer: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o  .nicer.o
+	gcc ../../libraries/mathematics/.maths.o ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o .nicer.o -o ../../../workbench/nicer
+	echo "APPLICATION 'nicer' is now ready in /workbench/"
