@@ -1,7 +1,9 @@
 /* DESCRIPTION:
  * Works neatly. Happens to open and close prime_table_fs constantly in order to start reading from the beginning again. I do not know if this is neccesary.
  *
- * This will form the basis for nicer.c */
+ * prime_factorization.c hsa formed the basis of this code.
+ *
+ * For the life of me I do not know what malfunctions, so I'll have to use a debugger. */
 #include <stdio.h>
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/functional/string.h"
@@ -65,26 +67,30 @@ void free_set(struct prime_power *origin) {
     } while (origin != NULL); }
 
 int main(int argc, char **argv) {
-    if (argc != 3) {
+    if (argc != 2) {
 	fprintf(stderr, "Wrong argument count.\n");
-	return -1;
-    } unsigned long factor_set = str_to_ul(argv[1]);
+	return -1; }
+    // ^^ Check number of arguments
 
-    struct prime_power ***link;
-    *(*(link = (struct prime_power ***) malloc(sizeof(struct prime_power *))) = (struct prime_power **) malloc(sizeof(struct prime_power *))) = NULL;
-    struct prime_power **head = *link; free(link);
+    for (unsigned long factor_set = 2; factor_set < 100; factor_set++) {
+	struct prime_power ***link;
+	*(*(link = (struct prime_power ***) malloc(sizeof(struct prime_power *))) = (struct prime_power **) malloc(sizeof(struct prime_power *))) = NULL;
+	struct prime_power **head = *link; free(link);
 
-    unsigned long result = prime_factorize(head, factor_set, 1, argv[2]);
-    fprintf(stdout, "Result: %lu\n", result);
+	// printf("hang\n");
+	unsigned long result = prime_factorize(head, factor_set, 1, argv[1]);
+	// printf("hang\n");
+	fprintf(stdout, "Factor set: %lu | ", factor_set);
+	fprintf(stdout, "Result: %lu | ", result);
 
-    struct prime_power *ll = *head; free(head);
-    unsigned long resulting_set = combined_factors(ll);
-    if (resulting_set == factor_set)
-	fprintf(stdout, " = %lu\n", resulting_set);
-    else
-	fprintf(stderr, " = %lu != \n", resulting_set, factor_set);
-    free_set(ll);
-    return 0; }
+	struct prime_power *ll = *head; free(head);
+	if (combined_factors(ll) == factor_set)
+	    fprintf(stdout, " = %lu\n", factor_set);
+	else
+	    fprintf(stderr, " != %lu\n", factor_set);
+
+	free_set(ll);
+    } return 0; }
 // ^^ RETURN CODE LEGENDA:
 // 0. Prime factorization successfully completed
 // -1. Wrong argument count.
@@ -93,4 +99,3 @@ int main(int argc, char **argv) {
 //     #2 And yet all the prime sloths of the linked list elements multiplied together does not add up to the original factor set again.
 //     #3 But 
 // -3. Failed because cannot open the prime table or the prime table is too short
-
