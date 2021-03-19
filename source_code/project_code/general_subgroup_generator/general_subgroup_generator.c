@@ -202,9 +202,9 @@ int main(int argc, char **argv) {
 	case 6: // When a fifth argument is supplied, output calculations to this file
 	    fs = fopen(argv[5], "w");
 	case 5:
-	    table_properties->horizontal_offset = str_to_ul(argv[4]);
+	    table_properties->vertical_offset = str_to_ul(argv[4]); // y coordinate
 	case 4:
-	    table_properties->vertical_offset = str_to_ul(argv[3]);
+	    table_properties->horizontal_offset = str_to_ul(argv[3]); // x coordinate
 	case 3:
 	    group_properties->identity = str_to_ul(argv[2]);
 	case 2:
@@ -215,12 +215,12 @@ int main(int argc, char **argv) {
 	fs = stdout; }
 
     if (5 > argc) {
-	fprintf(stdout, "Horizontal offset: ");
-	fscanf(stdin, "%lu", &table_properties->horizontal_offset); }
-
-    if (4 > argc) {
 	fprintf(stdout, "Vertical offset: ");
 	fscanf(stdin, "%lu", &table_properties->vertical_offset); }
+
+    if (4 > argc) {
+	fprintf(stdout, "Horizontal offset: ");
+	fscanf(stdin, "%lu", &table_properties->horizontal_offset); }
 
     if (3 > argc) { // If the group identity was not supplied.
 	fprintf(stdout, "Group identity_element: "); // Kindly emphasize the issue, and;
