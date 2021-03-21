@@ -8,15 +8,22 @@
  *
  * Then this program creates a linked list of possible combinations and their outcome (again non-circular and singly-linked).
  *
- * I have finished writting the code which creates the linked list of possible combinations. Now all I have left to do make the table graphics and I am done.
+ * Then this code looks up every outcome for every combination from this linked list in order to fill out a cayley table.
+ *
+ * Results of unary operations are never calculated twice.
  */
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
+// Mathematical definitions
 #define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
+
+// Colour definitions
+#define RESET   "\033[0m"
+#define RED     "\033[31m"      /* Red */
 FILE *fs; // the line where main starts sets this to stdout  
 
 // Group operation for addition under modular arithmetic
@@ -130,7 +137,7 @@ struct combination *combine(struct combination **ll_conx, struct group_meta *gro
     if (group->identity)
 	group_operation = _the_unary_operator_multiplication_under_modular_arithmatic;
     else
-	group_operation = _the_unary_operator_multiplication_under_modular_arithmatic;
+	group_operation = _the_unary_operator_addition_under_modular_arithmatic;
 
     // Prepare variables for function
     unsigned long round_no = MULTIPLICATIVE_IDENTITY; 
@@ -195,7 +202,12 @@ int main(int argc, char **argv) { fs = stdout;
 	case 3:
 	    group->identity = str_to_ul(argv[2]);
 	case 2:
-	    group->modulus = str_to_ul(argv[1]); }
+	    group->modulus = str_to_ul(argv[1]);
+	    break;
+	case 1:
+	    fprintf(stderr, "Program usage:\n");
+	    fprintf(stderr, "%s <group modulus> <group identity>\n\n", argv[0]);
+    }
 
     // Ask for, or emphasize, the group identity
     if (3 > argc) {
@@ -222,25 +234,21 @@ int main(int argc, char **argv) { fs = stdout;
     combination_ll = combine((struct combination **) phallus(), group);
 
     // Print first table row
-    bar(group->cell_width + 1);
+    fprintf(fs, "\e[4m"" *"); bar(group->cell_width - 1);
     struct element *element = group->ll;
     for (unsigned long counter = 0; counter < group->order; counter++) {
-	fprintf(fs, " | %s", element->ascii);
+	fprintf(fs, " | " RED "%s" RESET "\e[4m", element->ascii);
 	element = element->next; }
-    fprintf(fs, "\n");
-
-    for (unsigned long iter = 0; iter < (group->cell_width + 1) + ( (3 + group->cell_width) * group->order); iter++) {
-	fprintf(fs, "-");
-    } fprintf(fs, "\n");
+    fprintf(fs, " \n");
 
     // Start rest of table
     struct combination *iterator = combination_ll;
     for (unsigned long outer = 0; outer < group->order; outer++) {
-	fprintf(fs, " %s", lookup_el(group, outer)->ascii);
+	fprintf(fs, " " RED "%s" RESET "\e[4m", lookup_el(group, outer)->ascii);
 	for (unsigned long inner = 0; inner < group->order; inner++) {
 	    fprintf(fs, " | %s", lookup_combination(combination_ll, lookup_el(group, outer)->number, lookup_el(group, inner)->number )->ascii);
-	} fprintf(fs, "\n");
-    }
+	} fprintf(fs, " \n");
+    } fprintf(stdout, RESET);
 
     return 0;
 }
