@@ -234,7 +234,13 @@ int main(int argc, char **argv) { fs = stdout;
     combination_ll = combine((struct combination **) phallus(), group);
 
     // Print first table row
-    fprintf(fs, "\e[4m"" *"); bar(group->cell_width - 1);
+    fprintf(fs, "\e[4m ");
+    if (group->identity)
+	fprintf(fs, "*");
+    else
+	fprintf(fs, "+");
+    
+    bar(group->cell_width - 1);
     struct element *element = group->ll;
     for (unsigned long counter = 0; counter < group->order; counter++) {
 	fprintf(fs, " | " RED "%s" RESET "\e[4m", element->ascii);
