@@ -4,11 +4,8 @@ The idea is to create a virtual mathematics laboratory. A laboratory whose instr
 To get started using my environment, go to the directory in which you with to install to and execute the following commands:
 
     # git clone https://github.com/cryptoworkbench/cryptoworkbench.git
-
     # cd cryptoworkbench/workbench
-
     # chmod +x .setup_workbench.sh && ./.setup_workbench.sh
-
     # export PATH=$(pwd):$PATH && echo "export PATH=$(pwd):$PATH" | tee -a /home/$USER/.bashrc >/dev/null
 
 This will initialize my repository on your computer and add the "workbench/" folder to your $PATH variable so you can acess it's tools from everywhere.
