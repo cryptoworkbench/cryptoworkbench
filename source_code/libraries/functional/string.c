@@ -32,7 +32,7 @@ int strlen_int(char *string_pointer) {
     return index;
 }
 
-char *copy_over(char *recipient_adress, char *source_adress) {
+char *copy_over(char *recipient_adress, const char *source_adress) {
     while (*source_adress != 0) {
 	*recipient_adress = *source_adress;
 	source_adress++; recipient_adress++;

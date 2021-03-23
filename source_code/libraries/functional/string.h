@@ -5,7 +5,7 @@ unsigned long strlen(const char *string_pointer); // Just like in the standard l
 int strlen_int(char *string_pointer); // Almost the same functionality as the above function
 
 unsigned int streql(char *string_a, char *string_b); // Returns 1 if string_a and string_b are equal, returns 0 if not
-char *copy_over(char *recipient_adress, char *source_adress); // Copies over source onto recipient, terminating at the string terminating character 0 in the byte sequence pointed at by source_adres, then appends one onto the string pointed at by char *repicient_adress
+char *copy_over(char *recipient_adress, const char *source_adress); // Copies over source onto recipient, terminating at the string terminating character 0 in the byte sequence pointed at by source_adress, then appends one onto the string pointed at by char *repicient_adress
 
 unsigned long str_to_ul(char *string); // Returns the numeric value represented by the string pointed to by char *string as unsigned long
 int string_to_int(char *string); // Returns the numeric value represented by the string pointed to by char *string as int

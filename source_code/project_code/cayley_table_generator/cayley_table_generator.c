@@ -11,6 +11,11 @@
  * Then this code looks up every outcome for every combination from this linked list in order to fill out a cayley table.
  *
  * Results of unary operations are never calculated twice.
+ *
+ *
+ * DEVELOPERS NOTES:
+ * Contemporary imperfections:
+ * ~ When a custom output filename is not supplied, the numeric part of the automatically determined filename is copied over from argv, this will not work when the modulus was supplied from stdin
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,6 +31,12 @@
 #define RED "\033[31m"
 #define UNDERLINE "\e[4m"
 FILE *fs; // the line where main starts sets this to stdout  
+
+const char *prepend = "cayley_table_for_the_";
+const char *multiplicative_adjective = "multiplicative";
+const char *additive_adjective = "additive";
+const char *middle = "_group_of_integers_under_modulo_";
+const char *end = "_arithmatic";
 
 // Group operation for addition under modular arithmetic
 unsigned long _the_unary_operator_addition_under_modular_arithmatic(unsigned long generated_element, unsigned long generating_element, unsigned long group_modulus) {
@@ -193,11 +204,8 @@ struct element *lookup_el(struct group_meta *group, unsigned long number) {
 
 int main(int argc, char **argv) { fs = stdout;
     struct group_meta *group = (struct group_meta *) malloc(sizeof(struct group_meta));
-
+    char *output_filename = NULL; unsigned long filename_length = 0;
     switch (argc) { // Process supplied variables 
-	case 4:
-	    if ( !(streql(argv[3], "stdout")) )
-		fs = fopen(argv[3], "w");
 	case 3:
 	    group->identity = str_to_ul(argv[2]);
 	case 2:
@@ -217,6 +225,48 @@ int main(int argc, char **argv) { fs = stdout;
     if (2 > argc) {
 	fprintf(stdout, "Group modulus: ");
 	fscanf(stdin, "%lu", &group->modulus); }
+
+    if (4 > argc) {
+	// Determine filename length
+	filename_length += strlen(prepend);
+
+	if (group->identity)
+	    filename_length += strlen(multiplicative_adjective);
+	else
+	    filename_length += strlen(additive_adjective);
+	
+	filename_length += strlen(middle);
+	filename_length += char_in_val(group->modulus);
+	filename_length += strlen(end);
+
+	// Allocate memory
+	output_filename = (char *) malloc(sizeof(char) * (filename_length + 1));
+
+	// Start creation
+	char *filename_iterator = output_filename;
+	filename_iterator = copy_over(output_filename, prepend);
+	if (group->identity)
+	    filename_iterator = copy_over(filename_iterator, multiplicative_adjective);
+	else
+	    filename_iterator = copy_over(filename_iterator, additive_adjective);
+
+	sprintf(filename_iterator, "%s%s%s", middle, argv[1], end);
+	// ^^ The only thing I might overlook here is setting the string terminating character in the filename
+	fs = fopen(output_filename, "w");
+	fprintf(stdout, "Generated to file:\n");
+	fprintf(stdout, "	\"%s\"\n", output_filename);
+	fprintf(stdout, "\n\nA cayley table for the ");
+	if (group->identity)
+	    fprintf(stdout, "%s", multiplicative_adjective);
+	else
+	    fprintf(stdout, "%s", additive_adjective);
+
+	fprintf(stdout, " group of integers under modulus %lu arithmatic.", group->modulus);
+    } else if (!streql(argv[3], "stdout")) {
+	fs = fopen(argv[3], "w");
+	printf("not stdout: %s\n", argv[3]);
+    } else
+	printf("%s\n", argv[3]);
 
     // Initialize group
     group->ll = setup_group((struct element **) phallus(), group);
@@ -255,10 +305,6 @@ int main(int argc, char **argv) { fs = stdout;
 	} fprintf(fs, " \n");
     } fprintf(stdout, RESET "\n");
     
-    if (group->identity) { // Display cardinality of multiplicative group of integers
-	fprintf(stdout, "|<\u2124/%lu\u2124, " RED "*" RESET ">| = %lu", group->modulus, group->order);
-    } else { // Display cardinality of additive group of integers
-	fprintf(stdout, "|<\u2124/%lu\u2124, " RED "+" RESET ">| = %lu", group->modulus, group->order);
-    } fprintf(stdout, "\n");
+    fprintf(stdout, "\nThis group contains %lu elements and the cell width is %lu characters.\n", group->order, group->cell_width + 2);
     return 0;
 }
