@@ -3,16 +3,14 @@ The idea is to create a virtual mathematics laboratory. A laboratory whose instr
 
 To get started using my environment:
 ```bash
-cd ~
-git clone https://github.com/cryptoworkbench/cryptoworkbench.git
-export PATH=/home/$USER/cryptoworkbench/workbench:$PATH
+# cd ~
+# git clone https://github.com/cryptoworkbench/cryptoworkbench.git
+# export PATH=/home/$USER/cryptoworkbench/workbench:$PATH
 ```
-
-Add "/workbench/" to your PATH variable.
 
 ## Non-exclusive list of implemented mathematics
 ### The Sieve of Eratosthenes
-[./source_code/project_code/prime_table_generator/prime_table_generator.c](https://github.com/cryptoworkbench/cryptoworkbench/blob/main/actual_code/project_code/prime_table_generator/prime_table_generator.c) is my implementation of the Sieve of Eratosthenes.
+[./source_code/project_code/prime_table_generator/prime_table_generator.c](https://github.com/cryptoworkbench/cryptoworkbench/blob/main/source_code/project_code/prime_table_generator/prime_table_generator.c) is my implementation of the Sieve of Eratosthenes.
 Here this ancient method for finding prime numbers comes in the form of a nice, ergonomic and intuitive generator of prime tables.
 This prime table generator supports the generation of prime tables of both the binary and the ASCII flavours.
 Two general use cases follow below.
@@ -46,6 +44,6 @@ I especially like [./libraries/mathematics/factorization_engines/fermats_algorit
 It's a library for factorizing odd composite numbers using Fermat's factorization algorithm. I am sincerely convinced this is the best possible implementation of Fermat's factorization algorithm in C. Literally the leanest, meanest, and cleanest code imaginable.
 
 
-See [./source_code/example_code/library_drivers/fermat_factorization/](https://github.com/cryptoworkbench/cryptoworkbench/tree/main/actual_code/example_code/library_drivers/fermat_factorization) for two front-ends for this factorization engine.
+See [./source_code/example_code/library_drivers/fermat_factorization/](https://github.com/cryptoworkbench/cryptoworkbench/tree/main/source_code/example_code/library_drivers/fermat_factorization) for two front-ends for this factorization engine.
 
 Ps. These frontends can of course be generalized to any factorization engine.
