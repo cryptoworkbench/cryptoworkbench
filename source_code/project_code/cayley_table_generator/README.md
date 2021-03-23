@@ -1,8 +1,8 @@
-# cayley_table_generator
+# *cayley_table_generator*
 
-## Examples:
+## Example use cases:
 
-### Using cayley_table_generator to inspect the additive group of integers modulo 12
+### Using *cayley_table_generator* to inspect the additive group of integers modulo 12
 ```bash
 # cayley_table_generator 12 0 additive_group_of_integers_modulo_12
 # cat additive_group_of_integers_modulo_12
@@ -21,7 +21,7 @@
  11 | 11 | 00 | 01 | 02 | 03 | 04 | 05 | 06 | 07 | 08 | 09 | 10 
 ```
 
-### Using cayley_table_generator to inspect the multiplicative group of integers modulo 13
+### Using *cayley_table_generator* to inspect the multiplicative group of integers modulo 13
 ```bash
 # cayley_table_generator 13 1 multiplicative_group_of_integers_modulo_13
 # cat multiplicative_group_of_integers_modulo_13
@@ -40,7 +40,7 @@
  12 | 12 | 11 | 10 | 09 | 08 | 07 | 06 | 05 | 04 | 03 | 02 | 01 
 ```
 
-### Using cayley_table_generator to create an XOR-gate truth table
+### Using *cayley_table_generator* to create an XOR-gate truth table
 ```bash
 # cayley_table_generator 2 0 xor_gate_truth_table
 # cat xor_gate_truth_table
