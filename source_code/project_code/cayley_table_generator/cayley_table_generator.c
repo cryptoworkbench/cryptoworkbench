@@ -14,14 +14,14 @@
  *
  *
  * DEVELOPERS NOTES:
- * Contemporary imperfections:
- * ~ When a custom output filename is not supplied, the numeric part of the automatically determined filename is copied over from argv, this will not work when the modulus was supplied from stdin
+ * - Start all over again and do it right.
  */
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
+#include "../../libraries/mathematics/group_operations.h"
 // Mathematical definitions
 #define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
@@ -32,21 +32,13 @@
 #define UNDERLINE "\e[4m"
 FILE *fs; // the line where main starts sets this to stdout  
 
+const char *Error_one = "Program usage:\n";
+const char *Error_two = " <group modulus> <group identity>\n";
 const char *prepend = "cayley_table_for_the_";
 const char *multiplicative_adjective = "multiplicative";
 const char *additive_adjective = "additive";
 const char *middle = "_group_of_integers_under_modulo_";
 const char *end = "_arithmatic";
-
-// Group operation for addition under modular arithmetic
-unsigned long _the_unary_operator_addition_under_modular_arithmatic(unsigned long generated_element, unsigned long generating_element, unsigned long group_modulus) {
-    unsigned long return_value = (generated_element + generating_element) % group_modulus;
-    return return_value; }
-
-// Group operation for multiplication under modular arithmetic
-unsigned long _the_unary_operator_multiplication_under_modular_arithmatic(unsigned long generated_element, unsigned long generating_element, unsigned long group_modulus) {
-    unsigned long return_value = (generated_element * generating_element) % group_modulus;
-    return return_value; }
 
 // Set global variable for this shit
 unsigned long (*group_operation) (unsigned long, unsigned long, unsigned long);
@@ -203,6 +195,11 @@ struct element *lookup_el(struct group_meta *group, unsigned long number) {
 }
 
 int main(int argc, char **argv) { fs = stdout;
+    if (4 < argc) { // <-- Check argument count
+	fprintf(stderr, "%s%s%s", Error_one, argv[0], Error_two);
+	return -1; }
+
+    // Start program
     struct group_meta *group = (struct group_meta *) malloc(sizeof(struct group_meta));
     char *output_filename = NULL; unsigned long filename_length = 0;
     switch (argc) { // Process supplied variables 
@@ -210,6 +207,45 @@ int main(int argc, char **argv) { fs = stdout;
 	    group->identity = str_to_ul(argv[2]);
 	case 2:
 	    group->modulus = str_to_ul(argv[1]);
+
+	    if (3 < argc /* a.k.a. argc == 4 */) {
+
+	    }
+	    // Determine filename length
+	    filename_length += strlen(prepend);
+
+	    if (group->identity)
+		filename_length += strlen(multiplicative_adjective);
+	    else
+		filename_length += strlen(additive_adjective);
+	    
+	    filename_length += strlen(middle);
+	    filename_length += char_in_val(group->modulus);
+	    filename_length += strlen(end);
+
+	    // Allocate memory
+	    output_filename = (char *) malloc(sizeof(char) * (filename_length + 1));
+
+	    // Start creation
+	    char *filename_iterator = output_filename;
+	    filename_iterator = copy_over(output_filename, prepend);
+	    if (group->identity)
+		filename_iterator = copy_over(filename_iterator, multiplicative_adjective);
+	    else
+		filename_iterator = copy_over(filename_iterator, additive_adjective);
+
+	    sprintf(filename_iterator, "%s%s%s", middle, argv[1], end);
+	    // ^^ The only thing I might overlook here is setting the string terminating character in the filename
+	    fs = fopen(output_filename, "w");
+	    fprintf(stdout, "Generated to file:\n");
+	    fprintf(stdout, "	\"%s\"\n", output_filename);
+	    fprintf(stdout, "\n\nA cayley table for the ");
+	    if (group->identity)
+		fprintf(stdout, "%s", multiplicative_adjective);
+	    else
+		fprintf(stdout, "%s", additive_adjective);
+
+	    fprintf(stdout, " group of integers under modulus %lu arithmatic.", group->modulus);
 	    break;
 	case 1:
 	    fprintf(stderr, "Program usage:\n");
@@ -227,44 +263,9 @@ int main(int argc, char **argv) { fs = stdout;
 	fscanf(stdin, "%lu", &group->modulus); }
 
     if (4 > argc) {
-	// Determine filename length
-	filename_length += strlen(prepend);
-
-	if (group->identity)
-	    filename_length += strlen(multiplicative_adjective);
-	else
-	    filename_length += strlen(additive_adjective);
-	
-	filename_length += strlen(middle);
-	filename_length += char_in_val(group->modulus);
-	filename_length += strlen(end);
-
-	// Allocate memory
-	output_filename = (char *) malloc(sizeof(char) * (filename_length + 1));
-
-	// Start creation
-	char *filename_iterator = output_filename;
-	filename_iterator = copy_over(output_filename, prepend);
-	if (group->identity)
-	    filename_iterator = copy_over(filename_iterator, multiplicative_adjective);
-	else
-	    filename_iterator = copy_over(filename_iterator, additive_adjective);
-
-	sprintf(filename_iterator, "%s%s%s", middle, argv[1], end);
-	// ^^ The only thing I might overlook here is setting the string terminating character in the filename
-	fs = fopen(output_filename, "w");
-	fprintf(stdout, "Generated to file:\n");
-	fprintf(stdout, "	\"%s\"\n", output_filename);
-	fprintf(stdout, "\n\nA cayley table for the ");
-	if (group->identity)
-	    fprintf(stdout, "%s", multiplicative_adjective);
-	else
-	    fprintf(stdout, "%s", additive_adjective);
-
-	fprintf(stdout, " group of integers under modulus %lu arithmatic.", group->modulus);
     } else if (!streql(argv[3], "stdout")) {
 	fs = fopen(argv[3], "w");
-	printf("not stdout: %s\n", argv[3]);
+	printf("Filestream opened to %s\n", argv[3]);
     } else
 	printf("%s\n", argv[3]);
 
@@ -284,7 +285,6 @@ int main(int argc, char **argv) { fs = stdout;
     bar(group->cell_width - 1); fprintf(stdout, RESET UNDERLINE);
     struct element *element = group->ll;
     for (unsigned long counter = 0; counter < group->order; counter++) {
-	// fprintf(fs, " | " RED "%s" RESET UNDERLINE, element->ascii);
 	fprintf(fs, " | ");
 	fprintf(stdout, RED);
 	fprintf(fs, "%s", element->ascii);
