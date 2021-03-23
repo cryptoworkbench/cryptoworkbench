@@ -1,4 +1,4 @@
-# *cayley_table_generator*
+# cayley_table_generator
 
 ## Example use cases:
 
