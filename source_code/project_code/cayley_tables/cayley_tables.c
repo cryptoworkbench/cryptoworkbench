@@ -234,13 +234,13 @@ int main(int argc, char **argv) { fs = stdout;
     combination_ll = combine((struct combination **) phallus(), group);
 
     // Print first table row
-    fprintf(fs, "\e[4m ");
+    fprintf(fs, "\e[4m " RED);
     if (group->identity)
 	fprintf(fs, "*");
     else
 	fprintf(fs, "+");
-    
-    bar(group->cell_width - 1);
+
+    bar(group->cell_width - 1); fprintf(fs, RESET "\e[4m");
     struct element *element = group->ll;
     for (unsigned long counter = 0; counter < group->order; counter++) {
 	fprintf(fs, " | " RED "%s" RESET "\e[4m", element->ascii);
@@ -254,7 +254,12 @@ int main(int argc, char **argv) { fs = stdout;
 	for (unsigned long inner = 0; inner < group->order; inner++) {
 	    fprintf(fs, " | %s", lookup_combination(combination_ll, lookup_el(group, outer)->number, lookup_el(group, inner)->number )->ascii);
 	} fprintf(fs, " \n");
-    } fprintf(stdout, RESET);
-
+    } fprintf(stdout, RESET "\n");
+    
+    if (group->identity) { // Display cardinality of multiplicative group of integers
+	fprintf(fs, "|<\u2124/%lu\u2124, " RED "*" RESET ">| = %lu", group->modulus, group->order);
+    } else { // Display cardinality of additive group of integers
+	fprintf(fs, "|<\u2124/%lu\u2124, " RED "+" RESET ">| = %lu", group->modulus, group->order);
+    } fprintf(fs, "\n");
     return 0;
 }
