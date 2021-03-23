@@ -22,8 +22,8 @@
 #define MULTIPLICATIVE_IDENTITY 1
 
 // Colour definitions
-#define RESET   "\033[0m"
-#define RED     "\033[31m"      /* Red */
+#define RESET "\033[0m"
+#define RED "\033[31m"
 FILE *fs; // the line where main starts sets this to stdout  
 
 // Group operation for addition under modular arithmetic
@@ -206,30 +206,21 @@ int main(int argc, char **argv) { fs = stdout;
 	    break;
 	case 1:
 	    fprintf(stderr, "Program usage:\n");
-	    fprintf(stderr, "%s <group modulus> <group identity>\n\n", argv[0]);
+	    fprintf(stderr, "%s <group modulus> <group identity>\n", argv[0]);
     }
 
-    // Ask for, or emphasize, the group identity
+    // If neccesary, ask for the group identity
     if (3 > argc) {
 	fprintf(stdout, "Group identity: "); 
 	fscanf(stdin, "%lu", &group->identity); }
 
-    // Ask for, or emphasize, the group modulus
+    // If neccesary, ask for the group modulus
     if (2 > argc) {
-	fscanf(stdin, "%lu", &group->modulus);
-	fprintf(stdout, "Group modulus: "); }
+	fprintf(stdout, "Group modulus: ");
+	fscanf(stdin, "%lu", &group->modulus); }
 
     // Initialize group
     setup_group((struct element **) phallus(), group);
-
-    unsigned long cumulator = ADDITIVE_IDENTITY;
-    unsigned long iter = group->order;
-    while (1) {
-	cumulator += iter;
-	iter--;
-	if (iter == 0)
-	    break;
-    }
 
     combination_ll = combine((struct combination **) phallus(), group);
 
