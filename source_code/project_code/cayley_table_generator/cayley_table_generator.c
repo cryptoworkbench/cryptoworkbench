@@ -24,6 +24,7 @@
 // Colour definitions
 #define RESET "\033[0m"
 #define RED "\033[31m"
+#define UNDERLINE "\e[4m"
 FILE *fs; // the line where main starts sets this to stdout  
 
 // Group operation for addition under modular arithmetic
@@ -77,7 +78,7 @@ void spawn_element(struct element **tracer, unsigned long new_ulong) {
     *tracer = new_element; // ## And place the location of new_element into the next field of this last insertion
 }
 
-void setup_group(struct element **linked_list_connection, struct group_meta *group) {
+struct element *setup_group(struct element **linked_list_connection, struct group_meta *group) {
     // ### Establish lineair linked list containing all group elements using the triple ref technique
     for (unsigned long element = group->identity; element < group->modulus; element++)
 	if (group->identity == ADDITIVE_IDENTITY || coprime(GCD(group->modulus, element))) {
@@ -98,7 +99,7 @@ void setup_group(struct element **linked_list_connection, struct group_meta *gro
 	iterator = iterator->next; }
 
     // Finalize work
-    group->ll = identity;
+    return identity;
 }
 
 void print(struct group_meta *group) {
@@ -109,7 +110,7 @@ void print(struct group_meta *group) {
     } fprintf(fs, "%s", element->ascii);
 }
 
-struct element *lookup(struct group_meta *group, unsigned long mark) {
+struct element *lookup(unsigned long mark, struct group_meta *group) {
     struct element *element = group->ll;
     while (element) {
 	if (element->number == mark)
@@ -119,7 +120,7 @@ struct element *lookup(struct group_meta *group, unsigned long mark) {
     }
 }
 
-void spawn_combination(struct combination **tracer, struct element *unary_head, struct element *unary_tail, struct element *outcome) {
+void spawn_association(struct combination **tracer, struct element *unary_head, struct element *unary_tail, struct element *outcome) {
     // Then we create the rest
     struct combination *new_combi = (struct combination *) malloc(sizeof(struct combination)); // Fix existence of new combination
     new_combi->first = unary_head;
@@ -132,7 +133,7 @@ void spawn_combination(struct combination **tracer, struct element *unary_head, 
     *tracer = new_combi; // ## And place the location of new_combi into the next field of this last insertion
 }
 
-struct combination *combine(struct combination **ll_conx, struct group_meta *group) { 
+struct combination *combine(struct combination **source, struct group_meta *group) { 
     // First we determine the group operation
     if (group->identity)
 	group_operation = _the_unary_operator_multiplication_under_modular_arithmatic;
@@ -140,24 +141,23 @@ struct combination *combine(struct combination **ll_conx, struct group_meta *gro
 	group_operation = _the_unary_operator_addition_under_modular_arithmatic;
 
     // Prepare variables for function
-    unsigned long round_no = MULTIPLICATIVE_IDENTITY; 
     struct element *unary_head = group->ll;
 
     // Perform loop
     for (unsigned long round_no = ADDITIVE_IDENTITY; round_no < group->order; round_no++, unary_head = unary_head->next) {
 	struct element *unary_tail = unary_head; // Start combining
-	do{ // Lookup the adress of the element that results from performing the group operation using the selected unary_head and unary_tail
+	do {// Lookup the adress of the element that results from performing the group operation using the selected unary_head and unary_tail
 	    struct element *outcome = lookup(
-		    group,
-		    group_operation( // <-- Performs the group operation
+		    group_operation( // <-- Performs the group operation and sends the outcome along with the linked list connection to the lookup function
 			unary_head->number,
 			unary_tail->number,
-			group->modulus)
+			group->modulus),
+		    group
 		    );
 
 	    // Spawn the new association into memory
-	    spawn_combination(
-		    ll_conx,
+	    spawn_association(
+		    source,
 		    unary_head,
 		    unary_tail,
 		    outcome
@@ -165,10 +165,8 @@ struct combination *combine(struct combination **ll_conx, struct group_meta *gro
 
 	    // Move along the vertical axis (y)
 	    unary_tail = unary_tail->next;
-	} while (unary_tail);
-    } struct combination *return_value = (struct combination *) disintermediate( (void **) ll_conx);
-    return return_value;
-}
+	} while (unary_tail); }
+    return (struct combination *) disintermediate( (void **) source); }
 
 void bar(unsigned long spaces) {
     for (unsigned long iter = 0; iter < spaces; iter++)
@@ -198,7 +196,8 @@ int main(int argc, char **argv) { fs = stdout;
 
     switch (argc) { // Process supplied variables 
 	case 4:
-	    fs = fopen(argv[3], "w");
+	    if ( !(streql(argv[3], "stdout")) )
+		fs = fopen(argv[3], "w");
 	case 3:
 	    group->identity = str_to_ul(argv[2]);
 	case 2:
@@ -220,37 +219,37 @@ int main(int argc, char **argv) { fs = stdout;
 	fscanf(stdin, "%lu", &group->modulus); }
 
     // Initialize group
-    setup_group((struct element **) phallus(), group);
+    group->ll = setup_group((struct element **) phallus(), group);
 
     // Initialize combination ll
     combination_ll = combine((struct combination **) phallus(), group);
 
     // Print first table row
-    fprintf(stdout, "\e[4m"); fprintf(fs, " "); fprintf(stdout, RED);
+    fprintf(stdout, UNDERLINE); fprintf(fs, " "); fprintf(stdout, RED);
     if (group->identity)
 	fprintf(fs, "*");
     else
 	fprintf(fs, "+");
 
-    bar(group->cell_width - 1); fprintf(stdout, RESET "\e[4m");
+    bar(group->cell_width - 1); fprintf(stdout, RESET UNDERLINE);
     struct element *element = group->ll;
     for (unsigned long counter = 0; counter < group->order; counter++) {
-	// fprintf(fs, " | " RED "%s" RESET "\e[4m", element->ascii);
+	// fprintf(fs, " | " RED "%s" RESET UNDERLINE, element->ascii);
 	fprintf(fs, " | ");
 	fprintf(stdout, RED);
 	fprintf(fs, "%s", element->ascii);
-	fprintf(stdout, RESET "\e[4m");
+	fprintf(stdout, RESET UNDERLINE);
 	element = element->next; }
     fprintf(fs, " \n");
 
     // Start rest of table
     struct combination *iterator = combination_ll;
     for (unsigned long outer = 0; outer < group->order; outer++) {
-	// fprintf(fs, " " RED "%s" RESET "\e[4m", lookup_el(group, outer)->ascii);
+	// fprintf(fs, " " RED "%s" RESET UNDERLINE, lookup_el(group, outer)->ascii);
 	fprintf(fs, " ");
 	fprintf(stdout, RED);
         fprintf(fs, "%s", lookup_el(group, outer)->ascii);
-	fprintf(stdout, RESET "\e[4m");
+	fprintf(stdout, RESET UNDERLINE);
 	for (unsigned long inner = 0; inner < group->order; inner++) {
 	    fprintf(fs, " | %s", lookup_combination(combination_ll, lookup_el(group, outer)->number, lookup_el(group, inner)->number )->ascii);
 	} fprintf(fs, " \n");
