@@ -3,11 +3,11 @@ The idea is to create a virtual mathematics laboratory. A laboratory whose instr
 
 To get started using my environment:
 
-    $ cd ~
+    # cd ~
 
     # git clone https://github.com/cryptoworkbench/cryptoworkbench.git
-
-    # export PATH=/home/$USER/cryptoworkbench/workbench:$PATH
+    
+    # echo "export PATH=/home/$USER/cryptoworkbench/workbench:$PATH" | tee -a /home/$USER/.bashrc >/dev/null
 
 ## Non-exclusive list of implemented mathematics
 ### The Sieve of Eratosthenes
