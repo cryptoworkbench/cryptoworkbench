@@ -2,9 +2,9 @@
 The idea is to create a virtual mathematics laboratory. A laboratory whose instruments that can be accessed through the Linux terminal.
 
 To get started using my environment:
-# cd ~
-# git clone https://github.com/cryptoworkbench/cryptoworkbench.git
-# export PATH=/home/$USER/cryptoworkbench/workbench:$PATH
+    # cd ~
+    # git clone https://github.com/cryptoworkbench/cryptoworkbench.git
+    # export PATH=/home/$USER/cryptoworkbench/workbench:$PATH
 
 ## Non-exclusive list of implemented mathematics
 ### The Sieve of Eratosthenes
