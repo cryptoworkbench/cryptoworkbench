@@ -222,35 +222,44 @@ int main(int argc, char **argv) { fs = stdout;
     // Initialize group
     setup_group((struct element **) phallus(), group);
 
+    // Initialize combination ll
     combination_ll = combine((struct combination **) phallus(), group);
 
     // Print first table row
-    fprintf(fs, "\e[4m " RED);
+    fprintf(stdout, "\e[4m"); fprintf(fs, " "); fprintf(stdout, RED);
     if (group->identity)
 	fprintf(fs, "*");
     else
 	fprintf(fs, "+");
 
-    bar(group->cell_width - 1); fprintf(fs, RESET "\e[4m");
+    bar(group->cell_width - 1); fprintf(stdout, RESET "\e[4m");
     struct element *element = group->ll;
     for (unsigned long counter = 0; counter < group->order; counter++) {
-	fprintf(fs, " | " RED "%s" RESET "\e[4m", element->ascii);
+	// fprintf(fs, " | " RED "%s" RESET "\e[4m", element->ascii);
+	fprintf(fs, " | ");
+	fprintf(stdout, RED);
+	fprintf(fs, "%s", element->ascii);
+	fprintf(stdout, RESET "\e[4m");
 	element = element->next; }
     fprintf(fs, " \n");
 
     // Start rest of table
     struct combination *iterator = combination_ll;
     for (unsigned long outer = 0; outer < group->order; outer++) {
-	fprintf(fs, " " RED "%s" RESET "\e[4m", lookup_el(group, outer)->ascii);
+	// fprintf(fs, " " RED "%s" RESET "\e[4m", lookup_el(group, outer)->ascii);
+	fprintf(fs, " ");
+	fprintf(stdout, RED);
+        fprintf(fs, "%s", lookup_el(group, outer)->ascii);
+	fprintf(stdout, RESET "\e[4m");
 	for (unsigned long inner = 0; inner < group->order; inner++) {
 	    fprintf(fs, " | %s", lookup_combination(combination_ll, lookup_el(group, outer)->number, lookup_el(group, inner)->number )->ascii);
 	} fprintf(fs, " \n");
     } fprintf(stdout, RESET "\n");
     
     if (group->identity) { // Display cardinality of multiplicative group of integers
-	fprintf(fs, "|<\u2124/%lu\u2124, " RED "*" RESET ">| = %lu", group->modulus, group->order);
+	fprintf(stdout, "|<\u2124/%lu\u2124, " RED "*" RESET ">| = %lu", group->modulus, group->order);
     } else { // Display cardinality of additive group of integers
-	fprintf(fs, "|<\u2124/%lu\u2124, " RED "+" RESET ">| = %lu", group->modulus, group->order);
-    } fprintf(fs, "\n");
+	fprintf(stdout, "|<\u2124/%lu\u2124, " RED "+" RESET ">| = %lu", group->modulus, group->order);
+    } fprintf(stdout, "\n");
     return 0;
 }
