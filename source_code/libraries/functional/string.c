@@ -39,7 +39,7 @@ char *copy_over(char *recipient_adress, const char *source_adress) {
     } return recipient_adress;
 }
 
-unsigned long str_to_ul(char *string) {
+unsigned long ul_from_str(char *string) {
     unsigned long iteration_count, string_as_integer, length_of_string; // Declare needed variables
     iteration_count = string_as_integer = 0; length_of_string = strlen(string); // Initialize variables
 
@@ -83,11 +83,11 @@ unsigned long char_in_val(unsigned long a) {
     return char_index;
 }
 
-char *ul_to_str(unsigned long a, unsigned long min_out_length) { // Works!
+char *str_from_ul(unsigned long a, unsigned long min_out_length) { // Works!
     unsigned long char_index = char_in_val(a);
     unsigned long number_of_heading_zeros = 0; // Start off assuming there is no need for heading zeros
     if (min_out_length > char_index) // Check to see if there is any need for heading zeros
-	number_of_heading_zeros = min_out_length - char_index; // If there is any need for heading zeros, calculate how many
+	number_of_heading_zeros = min_out_length - char_index; // If there is need for heading zeros, the number of heading zeros that are needed is the difference calculation
 
     /* Assign the space needed */
     char *unsigned_long_as_string = (char *) malloc(sizeof(char) * (char_index + number_of_heading_zeros + 1)); // + 1 for the string terminating NULL character

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../../libraries/functional/string.h"
+// #include "../../libraries/mathematics/maths.h"
+#include "../../libraries/functional/string.h"
 
 int main(int argc, char **argv) {
     if (argc != 3) {
@@ -18,5 +19,6 @@ int main(int argc, char **argv) {
     printf("p_1: %lu\n", p_1);
     printf("p_2: %lu\n", p_2);
     printf("totient: %lu\n", totient);
+    printf("Modulus: %lu\n", modulus);
     return 0;
 }

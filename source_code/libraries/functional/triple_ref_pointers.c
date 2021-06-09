@@ -1,6 +1,6 @@
 #include "triple_ref_pointers.h"
 
-void **phallus() {
+void **sub_ordinator() {
     void ***link;
     *(*(link = (void ***) malloc(sizeof(void *))) = (void **) malloc(sizeof(void *))) = NULL;
     void **source = *link; free(link);

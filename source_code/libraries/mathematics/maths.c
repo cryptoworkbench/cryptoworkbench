@@ -94,8 +94,7 @@ unsigned long mod_exponentiate(unsigned long base, unsigned long base_exponent, 
     unsigned long return_value = MULTIPLICATIVE_IDENTITY;
 
     /* Initialize array */
-    residue_array[index] = base % modulus;
-    do {
+    residue_array[index] = base % modulus; do {
 	residue_array[index + 1] = (residue_array[index] * residue_array[index]) % modulus;
 	index++;
     } while (index < least_base_two_logarithm);

@@ -1,15 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
+// ^^ STANDARD LIBRARY INCLUSIONS
+
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
 #include "../../libraries/mathematics/group_operations.h"
+// ^^ PERSONAL LIBRARY INCLUSIONS
+
 #define ADDITIVE_IDENTITY 0
-FILE *fs = NULL;
+#define MULTIPLICATIVE_IDENTITY 1
+// ^^ MATHEMATICAL DEFINITIONS
+
+FILE *main_fs; // <<< ALL calls to "fprintf()" use main_fs
 
 struct unit {
     unsigned long number;
-    char *ascii;
+    char *str;
 };
 
 struct permutation_piece {
@@ -50,7 +57,7 @@ void vertibrae_insert(struct vertibrae **tracer, unsigned long new_ulong) {
     struct vertibrae *new_vertibrae = (struct vertibrae *) malloc(sizeof(struct vertibrae)); // Fix existence of new pointer_list element
     new_vertibrae->next = NULL;
     new_vertibrae->unit.number = new_ulong;
-    new_vertibrae->unit.ascii = NULL;
+    new_vertibrae->unit.str = NULL;
 
     while (*tracer) // ###==-- Find last insertion --===>
 	tracer = &(*tracer)->next;
@@ -99,21 +106,21 @@ struct permutation_piece *move_along_horizontally(struct permutation_piece *link
 
 void print_row(struct permutation_piece *identifier_shackle, unsigned long horizontal_offset) {
     /* ### Always display first the generator ### */
-    fprintf(fs, "<%s> = {", identifier_shackle->next->unit->ascii);
+    fprintf(main_fs, "<%s> = {", identifier_shackle->next->unit->str);
 
     /* ### Move along the horizontal axis ### */
     struct permutation_piece *first_to_print = move_along_horizontally(identifier_shackle, horizontal_offset);
 
     /* ### Start the subgroup printing do loop ### */
     struct permutation_piece *do_loop_iterator = first_to_print; do {
-	fprintf(fs, "%s", do_loop_iterator->unit->ascii);
+	fprintf(main_fs, "%s", do_loop_iterator->unit->str);
 	do_loop_iterator = do_loop_iterator->next;
 	
 	if (do_loop_iterator == first_to_print)
 	    break;
 	else
-	    fprintf(fs, ", ");
-    } while (1); fprintf(fs, "}\n");
+	    fprintf(main_fs, ", ");
+    } while (1); fprintf(main_fs, "}\n");
 }
 
 void table_effect(unsigned long cardinality, unsigned long cell_width) {
@@ -128,7 +135,8 @@ void table_effect(unsigned long cardinality, unsigned long cell_width) {
 }
 
 struct vertibrae *print_table(struct vertibrae *initial_row, struct set_of_table_properties *table_properties, unsigned long *group_cardinality) {
-    for (unsigned long i = 0; i < table_properties->vertical_offset; initial_row = initial_row->next, i++) {} // Move along the vertical axis
+    for (unsigned long i = 0; i < table_properties->vertical_offset; initial_row = initial_row->next, i++) {}
+    // ^^^ Move along the vertical axis
 
     struct vertibrae *current_row = initial_row; do {
 	print_row(current_row->permutation, table_properties->horizontal_offset);
@@ -149,7 +157,7 @@ void free_substrate(struct permutation_piece *substrate) {
 
 void free_table(struct vertibrae *link) {
     struct vertibrae *iterator = link; do {
-	free(iterator->unit.ascii);
+	free(iterator->unit.str);
 	free_substrate(iterator->permutation);
 
 	struct vertibrae *suspend = iterator;
@@ -164,10 +172,10 @@ struct vertibrae *setup_table(struct vertibrae *last_element, struct set_of_grou
 
     struct vertibrae *do_loop_iterator = identity_element; do {
 	do_loop_iterator->permutation = yield_subgroup(do_loop_iterator, group_parameters); // Generate subgroup in memory
-	do_loop_iterator->unit.ascii = ul_to_str(do_loop_iterator->unit.number, cell_width);
+	do_loop_iterator->unit.str = str_from_ul(do_loop_iterator->unit.number, cell_width);
 	do_loop_iterator = do_loop_iterator->next;
-    } while (do_loop_iterator != identity_element); // ### Return linked list at identity element
-    return identity_element;
+    } while (do_loop_iterator != identity_element); // << Return linked list at identity element
+    return do_loop_iterator; // <<< Returns linked list at identity element
 }
 
 struct vertibrae *build_backbone(struct vertibrae **linked_list_connection, struct set_of_group_parameters *group) {
@@ -189,38 +197,33 @@ struct vertibrae *build_backbone(struct vertibrae **linked_list_connection, stru
 int main(int argc, char **argv) {
     struct set_of_table_properties *table_properties = (struct set_of_table_properties *) malloc(sizeof(struct set_of_table_properties));
     struct set_of_group_parameters *group_properties = (struct set_of_group_parameters *) malloc(sizeof(struct set_of_group_parameters));
+    // ^^^ Pre-allocate some memory for program variables
+
     switch (argc) {
-	case 6: // When a fifth argument is supplied, output calculations to this file
-	    fs = fopen(argv[5], "w");
-	case 5:
-	    table_properties->vertical_offset = str_to_ul(argv[4]); // y coordinate
-	case 4:
-	    table_properties->horizontal_offset = str_to_ul(argv[3]); // x coordinate
-	case 3:
-	    group_properties->identity = str_to_ul(argv[2]);
-	case 2:
-	    group_properties->modulus = str_to_ul(argv[1]);
-    }
+	case 6: main_fs = fopen(argv[5], "w"); // main_fs is the main filestream
+	case 5: table_properties->vertical_offset = ul_from_str(argv[4]); // y coordinate
+	case 4: table_properties->horizontal_offset = ul_from_str(argv[3]); // x coordinate
+	case 3: group_properties->identity = ul_from_str(argv[2]);
+	case 2: group_properties->modulus = ul_from_str(argv[1]); }
+    // ^^^ Process supplied variables
 
     if (6 > argc) { // When a fifth argument was not supplied, output to stdout
-	fs = stdout; }
-
-    if (5 > argc) {
+	main_fs = stdout; }
+    if (5 > argc) { // When the y coordinate (vertical offset) was not supplied, ask for it
 	fprintf(stdout, "Vertical offset: ");
 	fscanf(stdin, "%lu", &table_properties->vertical_offset); }
-
-    if (4 > argc) {
+    if (4 > argc) { // When the x coordinate (horizontal offset) was not supplied, ask for it
 	fprintf(stdout, "Horizontal offset: ");
 	fscanf(stdin, "%lu", &table_properties->horizontal_offset); }
-
-    if (3 > argc) { // If the group identity was not supplied.
-	fprintf(stdout, "Group identity_element: "); // Kindly emphasize the issue, and;
-	fscanf(stdin, "%lu", &group_properties->identity); } // Take in the group identity.
-
-    if (2 > argc) { // If the group modulus also was not supplied.
-	fprintf(stdout, "Group modulus: "); // Kindly emphasize the issue, and;
-	fscanf(stdin, "%lu", &group_properties->modulus); // Take in the group modulus.
-    } table_properties->horizontal_offset %= group_properties->modulus;
+    if (3 > argc) { // If the group identity was not supplied, ask what it should be
+	fprintf(stdout, "Group identity_element: ");
+	fscanf(stdin, "%lu", &group_properties->identity); }
+    if (2 > argc) { // If the group modulus also was not supplied, ask what it should be
+	fprintf(stdout, "Group modulus: ");
+	fscanf(stdin, "%lu", &group_properties->modulus); }
+    // ^^^ Process lacking variables
+    
+    table_properties->horizontal_offset %= group_properties->modulus;
 
     unsigned long cell_width;
     unsigned long group_cardinality = 0;
@@ -229,37 +232,32 @@ int main(int argc, char **argv) {
 	print_table(
 	    setup_table(
 		build_backbone(
-		    (struct vertibrae **) phallus(),
+		    (struct vertibrae **) sub_ordinator(),
 		    group_properties),
 		group_properties),
 	    table_properties,
 	    &group_cardinality)
-	); fprintf(fs, "\n");
+	); 
 
-    if (group_properties->identity) { // Display cardinality of multiplicative group of integers
-	fprintf(fs, "|<\u2124/%lu\u2124, *>| = %lu", group_properties->modulus, group_cardinality);
-    } else { // Display cardinality of additive group of integers
-	fprintf(fs, "|<\u2124/%lu\u2124, +>| = %lu", group_properties->modulus, group_cardinality);
-    } fprintf(fs, "\n");
+    if (main_fs != stdout)
+    { fclose(main_fs); main_fs = stdout; }
+    else
+	fprintf(stdout, "\n");
+    // ^^^ We are done creating the table so stop writting externally
 
-    fprintf(fs, "\nQuotient groups:\n");
-    for (unsigned long i = 0; i < group_properties->modulus; i++) {
-	fprintf(fs, "%lu\u2124 + %lu = {... , ", group_properties->modulus, i);
-	for (long multiplier = -3; multiplier < 4; multiplier++) {
-	    fprintf(fs, "%li, ", i * multiplier);
-	} fprintf(fs, "... }\n"); /* ### ===> ALTERNATIVE VERSION FOR THIS LINE OF CODE:
-	} fprintf(fs, "... } = \u0305%lu\n", i);
-	IF YOU REPLACE THE LINE ABOVE THE LINE ABOVE (l275) WITH THE LINE ABOVE (l276) AND
-	COMPILE, YOU WILL GET AN IDEA OF WHAT DIRECTION I WANT TO TAKE THE DEVELOPMENT OF
-	THIS PROGRAM. BECAUSE \u0305 ONLY OVERSTRIKES OVE CHARACTER, I WILL HAVE TO WRITE
-	A LIBRARY TO DEAL WITH THIS */
-    }
+    if (group_properties->identity) { // <<< Display cardinality information on the multiplicative group of integers
+	fprintf(main_fs, "The multiplicative  group of integers modulo %lu, expressed by the notations below:\n	\u2124%lu*\nOr	<\u2124/%lu\u2124, *>\n\ncontains %lu elements. That is to say that the cardinality of the multiplicative group of integers modulo %lu is %lu:\n", group_properties->modulus, group_properties->modulus, group_properties->modulus, group_cardinality, group_properties->modulus, group_cardinality);
+	fprintf(main_fs, "==>	|\u2124%lu*| = %lu\n", group_properties->modulus, group_cardinality);
+	fprintf(main_fs, "==>	|<\u2124/%lu\u2124*| = %lu\n", group_properties->modulus, group_cardinality); }
+    
+    else if (!group_properties->identity) { // <<< Display cardinality information on the additive group of integers
+	fprintf(main_fs, "The additive group of integers modulo %lu, expressed by the notations below:\n	\u2124%lu+\nOr	<\u2124/%lu\u2124, +>\n\ncontains %lu elements. That is to say that the cardinality of the additive group of integers modulo %lu is %lu:\n", group_properties->modulus, group_properties->modulus, group_properties->modulus, group_cardinality, group_properties->modulus, group_cardinality);
+	fprintf(main_fs, "==>	|\u2124%lu+| = %lu\n", group_properties->modulus, group_cardinality);
+	fprintf(main_fs, "==>	|<\u2124/%lu\u2124+| = %lu\n", group_properties->modulus, group_cardinality); }
 
     /* ### Free stuff ### */
     free(group_properties);
     free(table_properties);
 
-    if (fs != stdout)
-	fclose(fs);
 
     return 0; }
