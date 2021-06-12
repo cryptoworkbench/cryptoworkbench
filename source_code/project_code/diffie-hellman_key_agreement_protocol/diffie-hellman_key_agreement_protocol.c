@@ -17,6 +17,7 @@
 // ^^^ MATHEMATICAL DEFINITIONS
 
 const char *folder_name = "lists/";
+const char *multiplicative_group_generator = "multiplicative_group_generator";
 const char *name = "multiplicative_group_of_integers_modulo_";
 const char *base_question = "Please pick an element from this group to use as base (generator): ";
 // ^^^ NECESSARY DATA
@@ -80,7 +81,14 @@ int main(int argc, char **argv) {
     // ^^^ Prepare path to pass on to "fopen()"
 
     FILE *input_file;
-    if (!(input_file = fopen(file_to_open, "r"))) { fprintf(stderr, "Failed to open the file \"%s\"\n\nExiting '-2'.\n", file_to_open); return -2; }
+    if (!(input_file = fopen(file_to_open, "r"))) {
+	fprintf(stderr, "No such file \"%s\".\n\nRunning \"%s\".\n", file_to_open, multiplicative_group_generator);
+	char *command = (char *) malloc(sizeof(char) * (strlen(multiplicative_group_generator) + 1 + strlen(argv[1]) + 1));
+	*copy_over(copy_over(copy_over(command, multiplicative_group_generator), " "), argv[1]) = 0;
+	system(command); free(command);
+
+	if (!(input_file = fopen(file_to_open, "r")))
+	{ fprintf(stderr, "Failed to create file using %s.\n\n\nExiting '-3'.\n", multiplicative_group_generator); return -3; } }
     else fprintf(stdout, "Successfully opened the file \"%s\".\n\n", file_to_open);
     // ^^^ Prepare filestream
 

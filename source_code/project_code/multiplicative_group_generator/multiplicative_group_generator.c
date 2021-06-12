@@ -35,7 +35,7 @@ int main(int argc, char **argv) {
 
     fprintf(stdout, "\nThese are the members of \u2124_%lu*\n", number);
 
-    char *potential_argv_1_copy = ul_to_str(number, 0); // <<< For temporary storage in string form of <group modulus> if <group modulus> was not interpreted from argv[1]
+    char *potential_argv_1_copy = str_from_ul(number, 0); // <<< For temporary storage in string form of <group modulus> if <group modulus> was not interpreted from argv[1]
     char *output_filename = (char *) malloc(sizeof(char) * (strlen(folder_name) + 1 + strlen(name_prefix) + strlen(potential_argv_1_copy) + 1)); // << + 1 for string terminating 0 byte
     *copy_over(copy_over(copy_over(copy_over(output_filename, folder_name), "/"), name_prefix), potential_argv_1_copy) = 0; free(potential_argv_1_copy);
     // *copy_over(copy_over(output_filename, name_prefix), potential_argv_1_copy) = 0; free(potential_argv_1_copy);
