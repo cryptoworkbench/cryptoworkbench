@@ -120,7 +120,7 @@ int main(int argc, char **argv) {
 	private_bob = present(group_ll, private_bob); }
     // ^^^ Determine private_bob
 
-    fprintf(stdout, "\n\n# PUBLICLY AGREED-UPON VARIABLES:\n# ~ Multiplicative group: %lu\n# ~ Base (generator): %lu\n", group_modulus, base);
+    fprintf(stdout, "\n\n# PUBLICLY AGREED-UPON VARIABLES:\n# ~ Multiplicative group: <\u2124/%lu\u2124, *>\n# ~ Base number (generator): %lu\n", group_modulus, base);
     fprintf(stdout, "#\n# SECRET VARIABLES:\n# ~ Alice's secret exponent: %lu\n# ~ Bob's secret exponent: %lu", private_alice, private_bob);
     // ^^^ Display selected variables
 
@@ -146,7 +146,7 @@ int main(int argc, char **argv) {
     fprintf(stdout, "# ~ %lu^%lu \u2261 %lu (%% %lu)", public_alice, private_bob, mutual_bob, group_modulus);
 
     if (mutual_bob == mutual_alice) {
-	fprintf(stdout, "\n#\n##### CALCULATION SUCCESSFULL ! =====>\n#####\n##### Alice and Bob mutually arrived at the shared secret '%lu' <=====\n", mutual_bob);
+	fprintf(stdout, "\n#\n##### KEY-AGREEMENT SUCCESSFULL ! =====>\n#####\n##### Alice and Bob mutually arrived at the shared secret '%lu' <=====\n", mutual_bob);
 	return 0;
     } else {
 	fprintf(stdout, "\n#\n##### Calculation unsuccessfull, unknown error occured.\n#\n#Exiting '-3'.\n");
