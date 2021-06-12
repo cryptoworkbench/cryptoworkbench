@@ -228,16 +228,9 @@ int main(int argc, char **argv) {
     unsigned long cell_width;
     unsigned long group_cardinality = 0;
 
-    free_table(
-	print_table(
-	    setup_table(
-		build_backbone(
-		    (struct vertibrae **) sub_ordinator(),
-		    group_properties),
-		group_properties),
-	    table_properties,
-	    &group_cardinality)
-	); 
+    struct vertibrae *table = setup_table(build_backbone((struct vertibrae **) sub_ordinator(), group_properties), group_properties);
+    print_table(table, table_properties, &group_cardinality);
+    free_table(table);
 
     if (main_fs != stdout)
     { fclose(main_fs); main_fs = stdout; }
@@ -245,12 +238,12 @@ int main(int argc, char **argv) {
 	fprintf(stdout, "\n");
     // ^^^ We are done creating the table so stop writting externally
 
-    if (group_properties->identity) { // <<< Display cardinality information on the multiplicative group of integers
+    if (group_properties->identity == MULTIPLICATIVE_IDENTITY) { // <<< Display cardinality information on the multiplicative group of integers
 	fprintf(main_fs, "The multiplicative  group of integers modulo %lu, expressed by the notations below:\n	\u2124%lu*\nOr	<\u2124/%lu\u2124, *>\n\ncontains %lu elements. That is to say that the cardinality of the multiplicative group of integers modulo %lu is %lu:\n", group_properties->modulus, group_properties->modulus, group_properties->modulus, group_cardinality, group_properties->modulus, group_cardinality);
 	fprintf(main_fs, "==>	|\u2124%lu*| = %lu\n", group_properties->modulus, group_cardinality);
 	fprintf(main_fs, "==>	|<\u2124/%lu\u2124*| = %lu\n", group_properties->modulus, group_cardinality); }
     
-    else if (!group_properties->identity) { // <<< Display cardinality information on the additive group of integers
+    else if (group_properties->identity == ADDITIVE_IDENTITY) { // <<< Display cardinality information on the additive group of integers
 	fprintf(main_fs, "The additive group of integers modulo %lu, expressed by the notations below:\n	\u2124%lu+\nOr	<\u2124/%lu\u2124, +>\n\ncontains %lu elements. That is to say that the cardinality of the additive group of integers modulo %lu is %lu:\n", group_properties->modulus, group_properties->modulus, group_properties->modulus, group_cardinality, group_properties->modulus, group_cardinality);
 	fprintf(main_fs, "==>	|\u2124%lu+| = %lu\n", group_properties->modulus, group_cardinality);
 	fprintf(main_fs, "==>	|<\u2124/%lu\u2124+| = %lu\n", group_properties->modulus, group_cardinality); }
