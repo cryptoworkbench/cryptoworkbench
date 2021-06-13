@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
 		fprintf(stdout, "Still in dev . . .\n");
 		return -1; }
 	case 2:
-	    sieve_upper_bound = str_to_ul(argv[1]);
+	    sieve_upper_bound = ul_from_str(argv[1]);
 	    break;
 	default:
 	    fprintf(stdout, "Program usage: %s <upper limit> [output filename]\n\n", argv[0]);

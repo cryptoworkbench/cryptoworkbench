@@ -6,4 +6,3 @@
 
 prime_table_generator:../../libraries/functional/.string.o  ../../libraries/mathematics/.maths.o .prime_table_generator.o
 	gcc ../../libraries/mathematics/.maths.o ../../libraries/functional/.string.o .prime_table_generator.o -o ../../../workbench/prime_table_generator
-	echo "APPLICATION 'prime_table_generator' is now ready in /workbench/"

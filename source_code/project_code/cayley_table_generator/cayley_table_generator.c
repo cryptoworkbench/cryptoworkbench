@@ -98,7 +98,7 @@ struct element *setup_group(struct element **linked_list_connection, struct grou
     
     // And write ASCII codes into group information
     while (iterator) {
-	iterator->ascii = ul_to_str(iterator->number, group->cell_width);
+	iterator->ascii = str_from_ul(iterator->number, group->cell_width);
 	iterator = iterator->next; }
 
     // Finalize work
@@ -204,9 +204,9 @@ int main(int argc, char **argv) { fs = stdout;
     char *output_filename = NULL; unsigned long filename_length = 0;
     switch (argc) { // Process supplied variables 
 	case 3:
-	    group->identity = str_to_ul(argv[2]);
+	    group->identity = ul_from_str(argv[2]);
 	case 2:
-	    group->modulus = str_to_ul(argv[1]);
+	    group->modulus = ul_from_str(argv[1]);
 
 	    if (3 < argc /* a.k.a. argc == 4 */) {
 
@@ -270,10 +270,10 @@ int main(int argc, char **argv) { fs = stdout;
 	printf("%s\n", argv[3]);
 
     // Initialize group
-    group->ll = setup_group((struct element **) phallus(), group);
+    group->ll = setup_group((struct element **) sub_ordinator(), group);
 
     // Initialize combination ll
-    combination_ll = combine((struct combination **) phallus(), group);
+    combination_ll = combine((struct combination **) sub_ordinator(), group);
 
     // Print first table row
     fprintf(stdout, UNDERLINE); fprintf(fs, " "); fprintf(stdout, RED);
