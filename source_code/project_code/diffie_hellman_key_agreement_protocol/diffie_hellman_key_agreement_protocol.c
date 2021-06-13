@@ -12,7 +12,6 @@
 #include "../../libraries/functional/triple_ref_pointers.h"
 // ^^^ LIBRARY INCLUSIONS
 
-#define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
 // ^^^ MATHEMATICAL DEFINITIONS
 
@@ -98,7 +97,7 @@ int main(int argc, char **argv) {
     fprintf(stdout, "Group interpreted from file \"%s\":\n", file_to_open); free(file_to_open);
     struct group_element *iter = group_ll; do {
 	unsigned long order = length(iter->value);
-	fprintf(stdout, "%lu^%lu = 1 (%% %lu)\n", iter->value, order, group_modulus);
+	fprintf(stdout, "|<%lu>| = %lu\n", iter->value, order);
 	iter = iter->next;
     } while (iter != group_ll);
     // ^^^ Display group in stdout
@@ -154,7 +153,12 @@ int main(int argc, char **argv) {
     fprintf(stdout, "# ~ %lu^%lu \u2261 %lu (%% %lu)", public_alice, private_bob, mutual_bob, group_modulus);
 
     if (mutual_bob == mutual_alice) {
-	fprintf(stdout, "\n#\n##### KEY-AGREEMENT SUCCESSFULL ! =====>\n#####\n##### Alice and Bob mutually arrived at the shared secret '%lu' <=====\n", mutual_bob);
+	fprintf(stdout, "\n#\n##### KEY-AGREEMENT SUCCESSFULL ! =====>\n#####\n##### Alice and Bob mutually arrived at the shared secret '%lu' <=====", mutual_bob);
+	fprintf(stdout, "\n###\n### Try to figure out '%lu' with the information below!\n###\n## INFORMATION KNOWN TO EVE WHO'S BEEN LISTING ON THE OPEN COMMUNICATION CHANNEL ALL ALONG:", mutual_bob);
+	fprintf(stdout, "\n## ~ Multiplicative group of integers used: <\u2124/%lu\u2124>", group_modulus);
+	fprintf(stdout, "\n## ~ Base number (generator): %lu", base);
+	fprintf(stdout, "\n## ~ %lu as %lu^x \u2261 %lu (for some element x in <\u2124/%lu\u2124, *>)", public_alice, base, public_alice, group_modulus);
+	fprintf(stdout, "\n## ~ %lu as %lu^y \u2261 %lu (for some element y in <\u2124/%lu\u2124, *>)\n", public_bob, base, public_bob, group_modulus);
 	return 0;
     } else {
 	fprintf(stdout, "\n#\n##### Calculation unsuccessfull, unknown error occured.\n#\n#Exiting '-3'.\n");
