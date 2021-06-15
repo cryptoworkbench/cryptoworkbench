@@ -17,7 +17,7 @@
 #define MULTIPLICATIVE_IDENTITY 1
 // ^^^ MATHEMATICAL DEFINITIONS
 
-const char *folder_name = "lists/";
+const char *folder_name = "modular_groups/";
 const char *required_program = "group_generator";
 const char *stderr_redirect = " 1 2> /dev/null";
 const char *name = "multiplicative_group_of_integers_modulo_";
@@ -89,7 +89,7 @@ int main(int argc, char **argv) {
 
     FILE *input_file = NULL;
     if (!(input_file = fopen(file_to_open, "r"))) {
-	fprintf(logbook_fs, LOGBOOK_FORMULA "No such file \"%s\"\n", argv[0], file_to_open);
+	fprintf(logbook_fs, LOGBOOK_FORMULA "No file named \"%s\"\n", argv[0], file_to_open);
 	char *required_command = (char *) malloc(sizeof(char) * (strlen(required_program) + 1 + strlen(argv[1]) + strlen(stderr_redirect) + 1));
 	*copy_over(copy_over(copy_over(copy_over(required_command, required_program), " "), argv[1]), stderr_redirect) = 0;
 	fprintf(logbook_fs, LOGBOOK_FORMULA "Running command: \"%s\"\n", argv[0], required_command);
@@ -170,7 +170,7 @@ int main(int argc, char **argv) {
 	fprintf(stdout, "\n## ~ \u2203 x \u2208 <\u2124/%lu\u2124, *> | %lu^x \u2261 %lu (%% %lu)", group_modulus, base, public_alice, group_modulus);
 	fprintf(stdout, "\n## ~ \u2203 y \u2208 <\u2124/%lu\u2124, *> | %lu^y \u2261 %lu (%% %lu)", group_modulus, base, public_bob, group_modulus);
 	fprintf(stdout, "\n##");
-	fprintf(stdout, "\n## NOTICE HOW EVE IS UNABLE TO FIGURE OUT '%lu' WITHOUT THE SECRET VALUES 'x' and 'y'.\n");
+	fprintf(stdout, "\n## NOTICE HOW EVE IS UNABLE TO FIGURE OUT '%lu' WITHOUT THE SECRET VALUES 'x' and 'y'.\n", mutual_bob);
 	return 0;
     } else {
 	fprintf(stderr, "\n#\n##### Calculation unsuccessfull, unknown error occured.\n#\n#Exiting '-3'.\n");

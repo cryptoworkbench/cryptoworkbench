@@ -19,7 +19,7 @@
 #define INCORRECT_SYNTAX "Incorrect syntax.\n\nProgram usage:\n%s <group modulus> <group identity>\n\n\nExiting '-1'.\n"
 char *adjective_to_use = "multiplicative"; // <<< We expect to be using this adjective
 const char *alternative_adjective = "additive";
-const char *folder = "lists/"; // That is /workbench/lists/
+const char *folder = "modular_groups/"; // That is going to become '/workbench/modular_groups/'
 const char *filename_main = "_group_of_integers_modulo_";
 const char *required_program = "group_generator";
 const char *stderr_redirect = " 2> /dev/null";
@@ -216,7 +216,7 @@ struct vertibrae *build_backbone(FILE *logbook, char *argv_zero, struct vertibra
 
 	if (!(element_database = fopen(input_filename, "r")))
 	    fprintf(logbook, LOGBOOK_FORMULA "Error: failed to create file using %s\n", argv_zero, required_program);
-    } if (element_database != NULL) fprintf(logbook, LOGBOOK_FORMULA "Successfully opened file \"%s\".\n", argv_zero, input_filename);
+    } if (element_database != NULL) fprintf(logbook, LOGBOOK_FORMULA "Successfully opened file \"%s\"\n", argv_zero, input_filename);
     // ^^^ Open this file
 
     unsigned long group_element;

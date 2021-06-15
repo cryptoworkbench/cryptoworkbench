@@ -24,7 +24,7 @@
 #define INCORRECT_SYNTAX "Incorrect syntax.\n\nProgram usage:\n%s <group modulus> <group identity>\n\n\nExiting '-1'.\n"
 char *adjective_to_use = "multiplicative"; // <<< We expect to be using this adjective
 const char *alternative_adjective = "additive";
-const char *folder = "lists/"; // That is /workbench/lists/
+const char *folder = "modular_groups/"; // That is /workbench/lists/
 const char *filename_main = "_group_of_integers_modulo_";
 // ^^^ STRINGS WE NEED
 
