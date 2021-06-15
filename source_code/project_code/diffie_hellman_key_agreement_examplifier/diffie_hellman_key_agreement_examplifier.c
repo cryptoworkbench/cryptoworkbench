@@ -18,6 +18,7 @@
 
 const char *folder_name = "lists/";
 const char *required_program = "group_generator";
+const char *stderr_redirect = " 1 2> /dev/null";
 const char *name = "multiplicative_group_of_integers_modulo_";
 const char *base_question = "Please pick an element from this group to use as base (generator): ";
 // ^^^ NECESSARY DATA
@@ -84,10 +85,10 @@ int main(int argc, char **argv) {
 
     FILE *input_file;
     if (!(input_file = fopen(file_to_open, "r"))) {
-	fprintf(stderr, "No such file \"%s\".\n\nRunning \"%s\" ", file_to_open, required_program);
-	char *required_command = (char *) malloc(sizeof(char) * (strlen(required_program) + 1 + strlen(argv[1]) + 2 + 1));
-	*copy_over(copy_over(copy_over(copy_over(required_command, required_program), " "), argv[1]), " 1") = 0;
-	fprintf(stdout, "(Running command: %s)\n", required_command);
+	fprintf(stderr, "No such file \"%s\".\n", file_to_open, required_program);
+	char *required_command = (char *) malloc(sizeof(char) * (strlen(required_program) + 1 + strlen(argv[1]) + strlen(stderr_redirect) + 1));
+	*copy_over(copy_over(copy_over(copy_over(required_command, required_program), " "), argv[1]), stderr_redirect) = 0;
+	fprintf(stdout, "Running command: \"%s\"\n", required_command);
 	system(required_command); free(required_command);
 
 	if (!(input_file = fopen(file_to_open, "r")))

@@ -29,13 +29,14 @@ const char *filename_main = "_group_of_integers_modulo_";
 // ^^^ STRINGS WE NEED
 
 struct group_parameters { unsigned long modulus; unsigned long identity_element; };
+FILE *main_fs; // <<< Program will only deal with main_fs
 
 int main(int argc, char **argv) {
-    unsigned long silent = 0; struct group_parameters *group = (struct group_parameters *) malloc(sizeof(struct group_parameters));
+    struct group_parameters *group = (struct group_parameters *) malloc(sizeof(struct group_parameters));
     // ^^^ Prepare program variables
 
     switch (argc) {
-	case 4: if (streql(argv[3], "--silent") || streql(argv[3], "-s")) silent = 1;
+	case 4: if (streql(argv[3], "--stdout")) main_fs = stdout;
 	case 3: group->identity_element = ul_from_str(argv[2]);
 	case 2: group->modulus = ul_from_str(argv[1]); break;
 	default: fprintf(stderr, INCORRECT_SYNTAX, argv[0]); return -1;
@@ -46,18 +47,21 @@ int main(int argc, char **argv) {
     if (2 > argc) { fprintf(stderr, "Group modulus not supplied, please provide group modulus: "); fscanf(stdin, "%lu", &group->modulus); }
     // ^^^ Take in not supplied variables
 
-    if (group->identity_element == ADDITIVE_IDENTITY) adjective_to_use = (char *) alternative_adjective;
-    // ^^^ Figure out adjective required for output file name
+    if (main_fs != stdout) {
+	if (group->identity_element == ADDITIVE_IDENTITY) adjective_to_use = (char *) alternative_adjective;
+	// ^^^ Figure out adjective required for output file name
 
-    char *file_to_open = (char *) malloc(sizeof(char) * (strlen(folder) + strlen(adjective_to_use) + strlen(filename_main) + strlen(argv[1]) + 1));
-    *copy_over(copy_over(copy_over(copy_over(file_to_open, folder), adjective_to_use), filename_main), argv[1]) = 0;
-    FILE *opened_file = fopen(file_to_open, "w"); if (!silent) fprintf(stdout, "Printing to file: \"%s\"\n", file_to_open); free(file_to_open);
-    // ^^^ Open file for list export of elements that belong to the group specified by 'argv[1]' and 'argv[2]'
+	char *output_filename = (char *) malloc(sizeof(char) * (strlen(folder) + strlen(adjective_to_use) + strlen(filename_main) + strlen(argv[1]) + 1));
+	*copy_over(copy_over(copy_over(copy_over(output_filename, folder), adjective_to_use), filename_main), argv[1]) = 0;
+	main_fs = fopen(output_filename, "w"); fprintf(stderr, "Printing to file: \"%s\"\n", output_filename); free(output_filename);
+	// ^^^ Open file for list export of elements that belong to the group specified by 'argv[1]' and 'argv[2]'
+    }
 
     for (unsigned long element = group->identity_element; element < group->modulus; element++)
 	if (group->identity_element == ADDITIVE_IDENTITY || GCD(group->modulus, element) == MULTIPLICATIVE_IDENTITY)
-	    fprintf(opened_file, "%lu\n", element);
+	    fprintf(main_fs, "%lu\n", element);
     // ^^^ Export list of element to external file
 
-    fclose(opened_file); return 0;
-    /* ^^^ Close filestream and return a success code of "0" */ }
+    if (main_fs != stdout) fclose(main_fs);
+    return 0;
+    /* ^^^ Close external filestream (if opened) and return a success code of "0" */ }
