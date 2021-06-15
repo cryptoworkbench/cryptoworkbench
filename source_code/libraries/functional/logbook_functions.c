@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "logbook_functions.h"
-#define LOGBOOK_NAME "laboratory_logbook"
+#define LOGBOOK_NAME "logbook"
 
 FILE *open_logbook() {
     FILE *logbook_fs = fopen(LOGBOOK_NAME, "a");

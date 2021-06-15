@@ -11,15 +11,13 @@
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
 #include "../../libraries/functional/logbook_functions.h"
+#include "../../libraries/functional/modular_groups.h"
 // ^^^ LIBRARY INCLUSIONS
 
 #define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
 // ^^^ MATHEMATICAL DEFINITIONS
 
-const char *folder_name = "modular_groups/";
-const char *required_program = "group_generator";
-const char *stderr_redirect = " 1 2> /dev/null";
 const char *name = "multiplicative_group_of_integers_modulo_";
 const char *base_question = "Please pick an element from this group to use as base (generator): ";
 // ^^^ NECESSARY DATA
@@ -80,30 +78,14 @@ int main(int argc, char **argv) {
     else { fprintf(stderr, "Wrong argument count.\n\nExiting '-1'.\n"); return -1; }
     // ^^^ Or exit upon wrong argument count.
 
-    char *file_to_open = (char *) malloc(sizeof(char) * (strlen(folder_name) + strlen(name) + strlen(argv[1]) + 1) ); // << + 1 for the string terminator
-    *copy_over(copy_over(copy_over(file_to_open, folder_name), name), argv[1]) = 0; // << Setting everyting at once, including the terminating 0 byte
-    // ^^^ Prepare path to pass on to "fopen()"
-
-    FILE *logbook_fs = open_logbook();
-    // ^^^ Open logbook functionality
-
-    FILE *input_file = NULL;
-    if (!(input_file = fopen(file_to_open, "r"))) {
-	fprintf(logbook_fs, LOGBOOK_FORMULA "No file named \"%s\"\n", argv[0], file_to_open);
-	char *required_command = (char *) malloc(sizeof(char) * (strlen(required_program) + 1 + strlen(argv[1]) + strlen(stderr_redirect) + 1));
-	*copy_over(copy_over(copy_over(copy_over(required_command, required_program), " "), argv[1]), stderr_redirect) = 0;
-	fprintf(logbook_fs, LOGBOOK_FORMULA "Running command: \"%s\"\n", argv[0], required_command);
-	system(required_command); free(required_command);
-
-	if (!(input_file = fopen(file_to_open, "r"))) {
-	    fprintf(logbook_fs, LOGBOOK_FORMULA "Error: failed to create file using %s. Exiting '-3'.\n", argv[0], required_program); return -3; } }
-    if (input_file != NULL) fprintf(logbook_fs, LOGBOOK_FORMULA "Successfully opened \"%s\"\n", argv[0], file_to_open);
-    // ^^^ Create list of element that belong to the multiplicative group externally to "/workbench/lists"
-
+    FILE *logbook = open_logbook();
+    char *open_file; FILE *input_file = open_modular_group(logbook, argv[0], group_modulus, MULTIPLICATIVE_IDENTITY, &open_file);
     struct group_element *group_ll = ll_from_file((struct group_element **) sub_ordinator(), input_file);
     // ^^^ Get group from file
 
-    fprintf(logbook_fs, LOGBOOK_FORMULA "Group interpreted from file \"%s\"\n", argv[0], file_to_open); free(file_to_open);
+    fprintf(logbook, LOGBOOK_FORMULA "Group interpreted from file \"%s\"\n", argv[0], open_file);
+    free(open_file); close_logbook(logbook);
+
     struct group_element *iter = group_ll; do {
 	unsigned long order = length(iter->value);
 	fprintf(stdout, "|<%lu>| = %lu\n", iter->value, order);
@@ -161,7 +143,6 @@ int main(int argc, char **argv) {
     unsigned long mutual_bob = mod_exponentiate(public_alice, private_bob, group_modulus);
     fprintf(stdout, "# ~ %lu^%lu \u2261 %lu (%% %lu)", public_alice, private_bob, mutual_bob, group_modulus);
 
-    close_logbook(logbook_fs);
     if (mutual_bob == mutual_alice) {
 	fprintf(stdout, "\n#\n##### KEY AGREEMENT SUCCESSFULL ! =====>\n#####\n##### Alice and Bob mutually arrived at the shared secret '%lu' <=====", mutual_bob);
 	fprintf(stdout, "\n###\n### Try to figure out '%lu' with the information below!\n###\n## INFORMATION KNOWN TO EVE WHO'S BEEN LISTING ON THE OPEN COMMUNICATION CHANNEL ALL ALONG:", mutual_bob);

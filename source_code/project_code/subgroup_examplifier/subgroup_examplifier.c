@@ -9,21 +9,14 @@
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
 #include "../../libraries/functional/logbook_functions.h"
+#include "../../libraries/functional/modular_groups.h" // Needed for open_modular_group();
 #include "../../libraries/mathematics/group_operations.h"
 // ^^^ PERSONAL LIBRARY INCLUSIONS
 
 #define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
-// ^^^ MATHEMATICAL DEFINITIONS
-
 #define INCORRECT_SYNTAX "Incorrect syntax.\n\nProgram usage:\n%s <group modulus> <group identity>\n\n\nExiting '-1'.\n"
-char *adjective_to_use = "multiplicative"; // <<< We expect to be using this adjective
-const char *alternative_adjective = "additive";
-const char *folder = "modular_groups/"; // That is going to become '/workbench/modular_groups/'
-const char *filename_main = "_group_of_integers_modulo_";
-const char *required_program = "group_generator";
-const char *stderr_redirect = " 2> /dev/null";
-// ^^^ STRINGS WE NEED
+// ^^^ (MATHEMATICAL) DEFINITIONS
 
 FILE *main_fs; // <<< ALL calls to "fprintf()" use main_fs
 
@@ -192,32 +185,8 @@ struct vertibrae *setup_table(struct vertibrae *last_element, struct group_prams
 }
 
 struct vertibrae *build_backbone(FILE *logbook, char *argv_zero, struct vertibrae **channel, struct group_prams *group) {
-    if (group->identity == ADDITIVE_IDENTITY) adjective_to_use = (char *) alternative_adjective;
-    // ^^^ Figure out adjective required to open the correct file
-
-    char *argv_one = str_from_ul(group->modulus, 0);
-    char *input_filename = (char *) malloc(sizeof(char) * (strlen(folder) + strlen(adjective_to_use) + strlen(filename_main) + strlen(argv_one) + 1));
-    *copy_over(copy_over(copy_over(copy_over(input_filename, folder), adjective_to_use), filename_main), argv_one) = 0;
-    // ^^^ Put this together with the group modulus (in string form as *argv_one) and a string terminating 0 byte
-
-    // ### Try to open this file
-    FILE *element_database = NULL;
-    if (!(element_database = fopen(input_filename, "r"))) {
-	fprintf(logbook, LOGBOOK_FORMULA "No file named \"%s\"\n", argv_zero, input_filename); // <<< Log error to logbook
-	char *required_command = (char *) malloc(sizeof(char) * (strlen(required_program) + 1 + strlen(argv_one) + 3 + strlen(stderr_redirect) + 1));
-	char *freeze = copy_over(copy_over(copy_over(copy_over(required_command, required_program), " "), argv_one), " "); free(argv_one);
-	if (group->identity == ADDITIVE_IDENTITY) *copy_over(copy_over(freeze, "0"), stderr_redirect) = 0;
-	else if (group->identity == MULTIPLICATIVE_IDENTITY) *copy_over(copy_over(freeze, "1"), stderr_redirect) = 0;
-	// ^^^ Prepare required command
-
-	fprintf(logbook, LOGBOOK_FORMULA "Running command \"%s\"\n", argv_zero, required_command);
-	system(required_command); free(required_command);
-	// ^^^ Execute required command
-
-	if (!(element_database = fopen(input_filename, "r")))
-	    fprintf(logbook, LOGBOOK_FORMULA "Error: failed to create file using %s\n", argv_zero, required_program);
-    } if (element_database != NULL) fprintf(logbook, LOGBOOK_FORMULA "Successfully opened file \"%s\"\n", argv_zero, input_filename);
-    // ^^^ Open this file
+    char *input_filename; FILE *element_database = open_modular_group(logbook, argv_zero, group->modulus, group->identity, &input_filename);
+    // ^^^ Open filestream to element database
 
     unsigned long group_element;
     while (fscanf(element_database, "%lu\n", &group_element) == 1) {

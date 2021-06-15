@@ -1,7 +1,9 @@
 #!/bin/bash 
 
 mkdir workbench/
-mkdir workbench/objects/
-cd source_code/project_code/general_subgroup_generator && make general_subgroup_generator
-cd ../../../source_code/project_code/cayley_table_generator && make cayley_table_generator
-cd ../../../source_code/project_code/prime_table_generator && make prime_table_generator
+mkdir workbench/modular_groups/
+cd source_code/project_code/group_examplifier && make group_examplifier
+cd ../subgroup_examplifier && make subgroup_examplifier
+cd ../dh_key_agreement && make dh_key_agreement
+cd ../cayley_table_generator && make cayley_table_generator
+cd ../prime_table_generator && make prime_table_generator
