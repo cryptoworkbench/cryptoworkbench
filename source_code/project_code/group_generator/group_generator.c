@@ -28,27 +28,26 @@ const char *folder = "lists/"; // That is /workbench/lists/
 const char *filename_main = "_group_of_integers_modulo_";
 // ^^^ STRINGS WE NEED
 
-struct group_parameters { unsigned long modulus; unsigned long identity_element; };
+struct group_prams { unsigned long modulus; unsigned long identity; };
+struct group_prams group; // <<< No need for malloc();
 FILE *main_fs; // <<< Program will only deal with main_fs
+// ^^^ Prepare program variables
 
 int main(int argc, char **argv) {
-    struct group_parameters *group = (struct group_parameters *) malloc(sizeof(struct group_parameters));
-    // ^^^ Prepare program variables
-
     switch (argc) {
 	case 4: if (streql(argv[3], "--stdout")) main_fs = stdout;
-	case 3: group->identity_element = ul_from_str(argv[2]);
-	case 2: group->modulus = ul_from_str(argv[1]); break;
+	case 3: group.identity = ul_from_str(argv[2]);
+	case 2: group.modulus = ul_from_str(argv[1]); break;
 	default: fprintf(stderr, INCORRECT_SYNTAX, argv[0]); return -1;
     }
     // ^^^ Take in supplied variables
 
-    if (3 > argc) { fprintf(stderr, "Group identity not supplied, please provide group ID: "); fscanf(stdin, "%lu", &group->identity_element); }
-    if (2 > argc) { fprintf(stderr, "Group modulus not supplied, please provide group modulus: "); fscanf(stdin, "%lu", &group->modulus); }
+    if (3 > argc) { fprintf(stderr, "Group identity not supplied, please provide group ID: "); fscanf(stdin, "%lu", &group.identity); }
+    if (2 > argc) { fprintf(stderr, "Group modulus not supplied, please provide group modulus: "); fscanf(stdin, "%lu", &group.modulus); }
     // ^^^ Take in not supplied variables
 
     if (main_fs != stdout) {
-	if (group->identity_element == ADDITIVE_IDENTITY) adjective_to_use = (char *) alternative_adjective;
+	if (group.identity == ADDITIVE_IDENTITY) adjective_to_use = (char *) alternative_adjective;
 	// ^^^ Figure out adjective required for output file name
 
 	char *output_filename = (char *) malloc(sizeof(char) * (strlen(folder) + strlen(adjective_to_use) + strlen(filename_main) + strlen(argv[1]) + 1));
@@ -57,8 +56,8 @@ int main(int argc, char **argv) {
 	// ^^^ Open file for list export of elements that belong to the group specified by 'argv[1]' and 'argv[2]'
     }
 
-    for (unsigned long element = group->identity_element; element < group->modulus; element++)
-	if (group->identity_element == ADDITIVE_IDENTITY || GCD(group->modulus, element) == MULTIPLICATIVE_IDENTITY)
+    for (unsigned long element = group.identity; element < group.modulus; element++)
+	if (group.identity == ADDITIVE_IDENTITY || GCD(group.modulus, element) == MULTIPLICATIVE_IDENTITY)
 	    fprintf(main_fs, "%lu\n", element);
     // ^^^ Export list of element to external file
 

@@ -1,16 +1,29 @@
+/* Program operations:
+ * Examplifies subgroups.
+ */
 #include <stdio.h>
 #include <stdlib.h>
-// ^^ STANDARD LIBRARY INCLUSIONS
+// ^^^ STANDARD LIBRARY INCLUSIONS
 
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
+#include "../../libraries/functional/logbook_functions.h"
 #include "../../libraries/mathematics/group_operations.h"
-// ^^ PERSONAL LIBRARY INCLUSIONS
+// ^^^ PERSONAL LIBRARY INCLUSIONS
 
 #define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
-// ^^ MATHEMATICAL DEFINITIONS
+// ^^^ MATHEMATICAL DEFINITIONS
+
+#define INCORRECT_SYNTAX "Incorrect syntax.\n\nProgram usage:\n%s <group modulus> <group identity>\n\n\nExiting '-1'.\n"
+char *adjective_to_use = "multiplicative"; // <<< We expect to be using this adjective
+const char *alternative_adjective = "additive";
+const char *folder = "lists/"; // That is /workbench/lists/
+const char *filename_main = "_group_of_integers_modulo_";
+const char *required_program = "group_generator";
+const char *stderr_redirect = " 2> /dev/null";
+// ^^^ STRINGS WE NEED
 
 FILE *main_fs; // <<< ALL calls to "fprintf()" use main_fs
 
@@ -35,7 +48,7 @@ struct set_of_table_properties {
     unsigned long horizontal_offset;
 };
 
-struct set_of_group_parameters {
+struct group_prams {
     unsigned long modulus;
     unsigned long identity;
 };
@@ -78,7 +91,7 @@ struct permutation_piece *permutation_insert(struct vertibrae *upstream_l, unsig
 /* Returns a linked list which is in order of the permutation of the subgroup in question,
  * Think of a chain of shackles, this chain is returned at the shackle which points to the identity element unit's struct at a struct vertibrae data type
  * */
-struct permutation_piece *yield_subgroup(struct vertibrae *upstream_l, struct set_of_group_parameters *group_parameters) {
+struct permutation_piece *yield_subgroup(struct vertibrae *upstream_l, struct group_prams *group_parameters) {
     struct permutation_piece *iterator = malloc(sizeof(struct permutation_piece)); // Create element
     iterator->unit = lookup_unit(upstream_l, group_parameters->identity); // Set the identity value
     iterator->next = iterator; // Make it circular
@@ -166,7 +179,7 @@ void free_table(struct vertibrae *link) {
     } while (iterator != link);
 }
 
-struct vertibrae *setup_table(struct vertibrae *last_element, struct set_of_group_parameters *group_parameters) {
+struct vertibrae *setup_table(struct vertibrae *last_element, struct group_prams *group_parameters) {
     unsigned long cell_width = char_in_val(last_element->unit.number);
     struct vertibrae *identity_element = last_element->next;
 
@@ -178,33 +191,67 @@ struct vertibrae *setup_table(struct vertibrae *last_element, struct set_of_grou
     return do_loop_iterator; // <<< Returns linked list at identity element
 }
 
-struct vertibrae *build_backbone(struct vertibrae **linked_list_connection, struct set_of_group_parameters *group) {
-    // ### Establish lineair linked list containing all group elements using the triple ref technique
-    for (unsigned long element = group->identity; element < group->modulus; element++)
-	if (group->identity == ADDITIVE_IDENTITY || coprime(GCD(group->modulus, element)))
-	    vertibrae_insert(linked_list_connection, element);
+struct vertibrae *build_backbone(FILE *logbook, char *argv_zero, struct vertibrae **channel, struct group_prams *group) {
+    if (group->identity == ADDITIVE_IDENTITY) adjective_to_use = (char *) alternative_adjective;
+    // ^^^ Figure out adjective required to open the correct file
 
-    // ## Take out of the end product a singly-linked list that is circular and destroy any intermediary memory used
+    char *argv_one = str_from_ul(group->modulus, 0);
+    char *input_filename = (char *) malloc(sizeof(char) * (strlen(folder) + strlen(adjective_to_use) + strlen(filename_main) + strlen(argv_one) + 1));
+    *copy_over(copy_over(copy_over(copy_over(input_filename, folder), adjective_to_use), filename_main), argv_one) = 0;
+    // ^^^ Put this together with the group modulus (in string form as *argv_one) and a string terminating 0 byte
+
+    // ### Try to open this file
+    FILE *element_database = NULL;
+    if (!(element_database = fopen(input_filename, "r"))) {
+	fprintf(logbook, LOGBOOK_FORMULA "No file named \"%s\"\n", argv_zero, input_filename); // <<< Log error to logbook
+	char *required_command = (char *) malloc(sizeof(char) * (strlen(required_program) + 1 + strlen(argv_one) + 3 + strlen(stderr_redirect) + 1));
+	char *freeze = copy_over(copy_over(copy_over(copy_over(required_command, required_program), " "), argv_one), " "); free(argv_one);
+	if (group->identity == ADDITIVE_IDENTITY) *copy_over(copy_over(freeze, "0"), stderr_redirect) = 0;
+	else if (group->identity == MULTIPLICATIVE_IDENTITY) *copy_over(copy_over(freeze, "1"), stderr_redirect) = 0;
+	// ^^^ Prepare required command
+
+	fprintf(logbook, LOGBOOK_FORMULA "Running command \"%s\"\n", argv_zero, required_command);
+	system(required_command); free(required_command);
+	// ^^^ Execute required command
+
+	if (!(element_database = fopen(input_filename, "r")))
+	    fprintf(logbook, LOGBOOK_FORMULA "Error: failed to create file using %s\n", argv_zero, required_program);
+    } if (element_database != NULL) fprintf(logbook, LOGBOOK_FORMULA "Successfully opened file \"%s\".\n", argv_zero, input_filename);
+    // ^^^ Open this file
+
+    unsigned long group_element;
+    while (fscanf(element_database, "%lu\n", &group_element) == 1) {
+	vertibrae_insert(channel, group_element); } fclose(element_database); // << And close element database connection
+    // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
+
+    if (group->identity == ADDITIVE_IDENTITY)
+	fprintf(logbook, LOGBOOK_FORMULA "Additive", argv_zero);
+    else if (group->identity == MULTIPLICATIVE_IDENTITY) {
+	fprintf(logbook, LOGBOOK_FORMULA "Multiplicative", argv_zero);
+    } fprintf(logbook, " group interpreted from file \"%s\"\n", input_filename); free(input_filename); close_logbook(logbook);
+    // ^^^ Notify user of successfully loading list into memory
+
     struct vertibrae *last_element, *first_element;
-    last_element = first_element = (struct vertibrae *) disintermediate( (void **) linked_list_connection);
+    last_element = first_element = (struct vertibrae *) disintermediate( (void **) channel);
     while (last_element->next) {
 	last_element = last_element->next;
     } last_element->next = first_element;
+    // ^^^ Take out of the end product a singly-linked list that is circular and destroy any intermediary memory used
 
     return last_element;
 }
 
 int main(int argc, char **argv) {
     struct set_of_table_properties *table_properties = (struct set_of_table_properties *) malloc(sizeof(struct set_of_table_properties));
-    struct set_of_group_parameters *group_properties = (struct set_of_group_parameters *) malloc(sizeof(struct set_of_group_parameters));
+    struct group_prams *group = (struct group_prams *) malloc(sizeof(struct group_prams));
     // ^^^ Pre-allocate some memory for program variables
 
     switch (argc) {
 	case 6: main_fs = fopen(argv[5], "w"); // main_fs is the main filestream
 	case 5: table_properties->vertical_offset = ul_from_str(argv[4]); // y coordinate
 	case 4: table_properties->horizontal_offset = ul_from_str(argv[3]); // x coordinate
-	case 3: group_properties->identity = ul_from_str(argv[2]);
-	case 2: group_properties->modulus = ul_from_str(argv[1]); }
+	case 3: group->identity = ul_from_str(argv[2]);
+	case 2: group->modulus = ul_from_str(argv[1]); }
     // ^^^ Process supplied variables
 
     if (6 > argc) { // When a fifth argument was not supplied, output to stdout
@@ -217,18 +264,18 @@ int main(int argc, char **argv) {
 	fscanf(stdin, "%lu", &table_properties->horizontal_offset); }
     if (3 > argc) { // If the group identity was not supplied, ask what it should be
 	fprintf(stdout, "Group identity_element: ");
-	fscanf(stdin, "%lu", &group_properties->identity); }
+	fscanf(stdin, "%lu", &group->identity); }
     if (2 > argc) { // If the group modulus also was not supplied, ask what it should be
 	fprintf(stdout, "Group modulus: ");
-	fscanf(stdin, "%lu", &group_properties->modulus); }
+	fscanf(stdin, "%lu", &group->modulus); }
     // ^^^ Process lacking variables
     
-    table_properties->horizontal_offset %= group_properties->modulus;
+    table_properties->horizontal_offset %= group->modulus;
 
     unsigned long cell_width;
     unsigned long group_cardinality = 0;
 
-    struct vertibrae *table = setup_table(build_backbone((struct vertibrae **) sub_ordinator(), group_properties), group_properties);
+    struct vertibrae *table = setup_table(build_backbone(open_logbook(), argv[0], (struct vertibrae **) sub_ordinator(), group), group);
     print_table(table, table_properties, &group_cardinality);
     free_table(table);
 
@@ -238,19 +285,18 @@ int main(int argc, char **argv) {
 	fprintf(stdout, "\n");
     // ^^^ We are done creating the table so stop writting externally
 
-    if (group_properties->identity == MULTIPLICATIVE_IDENTITY) { // <<< Display cardinality information on the multiplicative group of integers
-	fprintf(main_fs, "The multiplicative group of integers modulo %lu, expressed by the notations below:\n	\u2124%lu*\nOr	<\u2124/%lu\u2124, *>\n\ncontains %lu elements. That is to say that the cardinality of the multiplicative group of integers modulo %lu is %lu \u21D2\n", group_properties->modulus, group_properties->modulus, group_properties->modulus, group_cardinality, group_properties->modulus, group_cardinality);
-	fprintf(main_fs, " 	|\u2124%lu*| = %lu\n", group_properties->modulus, group_cardinality);
-	fprintf(main_fs, "Or	|<\u2124/%lu\u2124*>| = %lu\n", group_properties->modulus, group_cardinality); }
+    if (group->identity == MULTIPLICATIVE_IDENTITY) { // <<< Display cardinality information on the multiplicative group of integers
+	fprintf(main_fs, "The multiplicative group of integers modulo %lu, expressed by the notations below:\n	\u2124%lu*\nOr	<\u2124/%lu\u2124, *>\n\ncontains %lu elements. That is to say that the cardinality of the multiplicative group of integers modulo %lu is %lu \u21D2\n", group->modulus, group->modulus, group->modulus, group_cardinality, group->modulus, group_cardinality);
+	fprintf(main_fs, " 	|\u2124%lu*| = %lu\n", group->modulus, group_cardinality);
+	fprintf(main_fs, "Or	|<\u2124/%lu\u2124*>| = %lu\n", group->modulus, group_cardinality); }
     
-    else if (group_properties->identity == ADDITIVE_IDENTITY) { // <<< Display cardinality information on the additive group of integers
-	fprintf(main_fs, "The additive group of integers modulo %lu, expressed by the notations below:\n	\u2124%lu+\nOr	<\u2124/%lu\u2124, +>\n\ncontains %lu elements. That is to say that the cardinality of the additive group of integers modulo %lu is %lu \u21D2\n", group_properties->modulus, group_properties->modulus, group_properties->modulus, group_cardinality, group_properties->modulus, group_cardinality);
-	fprintf(main_fs, "   	|\u2124%lu+| = %lu\n", group_properties->modulus, group_cardinality);
-	fprintf(main_fs, "Or 	|<\u2124/%lu\u2124>+| = %lu\n", group_properties->modulus, group_cardinality); }
+    else if (group->identity == ADDITIVE_IDENTITY) { // <<< Display cardinality information on the additive group of integers
+	fprintf(main_fs, "The additive group of integers modulo %lu, expressed by the notations below:\n	\u2124%lu+\nOr	<\u2124/%lu\u2124, +>\n\ncontains %lu elements. That is to say that the cardinality of the additive group of integers modulo %lu is %lu \u21D2\n", group->modulus, group->modulus, group->modulus, group_cardinality, group->modulus, group_cardinality);
+	fprintf(main_fs, "   	|\u2124%lu+| = %lu\n", group->modulus, group_cardinality);
+	fprintf(main_fs, "Or 	|<\u2124/%lu\u2124>+| = %lu\n", group->modulus, group_cardinality); }
 
     /* ### Free stuff ### */
-    free(group_properties);
+    free(group);
     free(table_properties);
-
 
     return 0; }

@@ -1,5 +1,5 @@
-../mathematics/.maths.o: ../mathematics/maths.c ../mathematics/maths.h
+../mathematics/.maths.o: ../mathematics/maths.h ../mathematics/maths.c
 	gcc -c ../mathematics/maths.c -o ../mathematics/.maths.o
 
-.string.o: ../mathematics/.maths.o string.c string.h
+.string.o: ../mathematics/.maths.o string.h string.c
 	gcc -c string.c -o .string.o
