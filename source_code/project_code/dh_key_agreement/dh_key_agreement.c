@@ -83,7 +83,7 @@ int main(int argc, char **argv) {
     struct group_element *group_ll = ll_from_file((struct group_element **) sub_ordinator(), input_file);
     // ^^^ Get group from file
 
-    fprintf(logbook, LOGBOOK_FORMULA "Group interpreted from file \"%s\"\n", argv[0], open_file);
+    fprintf(logbook, LOGBOOK_FORMULA "Multiplicative group interpreted from file '%s'\n", argv[0], open_file);
     free(open_file); close_logbook(logbook);
 
     struct group_element *iter = group_ll; do {

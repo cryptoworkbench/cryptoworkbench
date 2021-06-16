@@ -10,7 +10,6 @@ const char *filename_main = "_group_of_integers_modulo_";
 const char *required_program = "group_examplifier";
 const char *stderr_redirect = " 2> /dev/null";
 
-// ### Cannot pass argv[1] as *argv_one, *argv_one is freed in this function. Use 'open_modular_group(argv[0], str_from_ul(group->modulus));'. >>
 FILE *open_modular_group(FILE *logbook_fs, char *argv_zero, unsigned long modulus, unsigned long identity, char **location_of_char_pointer_to_argv_one) {
     if (identity == 0) adjective_to_use = (char *) alternative_adjective;
     // ^^^ Determine adjective to use
@@ -24,7 +23,7 @@ FILE *open_modular_group(FILE *logbook_fs, char *argv_zero, unsigned long modulu
     // ^^^ Test in stdout
     FILE *modular_group_fs = NULL;
     if (!(modular_group_fs = fopen(file_to_open, "r"))) {
-	fprintf(logbook_fs, LOGBOOK_FORMULA "No file named \"%s\"\n", argv_zero, file_to_open);
+	fprintf(logbook_fs, LOGBOOK_FORMULA "No file named '%s'\n", argv_zero, file_to_open);
 	char *required_command = (char *) malloc(sizeof(char) * (strlen(required_program) + 1 + char_in_val(modulus) + strlen(stderr_redirect) + 1));
 	char *freeze = copy_over(copy_over(copy_over(copy_over(required_command, required_program), " "), modulus_string), " "); free(modulus_string);
 	if (identity == 0)
@@ -32,11 +31,11 @@ FILE *open_modular_group(FILE *logbook_fs, char *argv_zero, unsigned long modulu
 	else if (identity == 1)
 	    *copy_over(copy_over(freeze, "1"), stderr_redirect) = 0;
 
-	fprintf(logbook_fs, LOGBOOK_FORMULA "Executing in shell \"%s\"\n", argv_zero, required_command); system(required_command);
+	fprintf(logbook_fs, LOGBOOK_FORMULA "Sending to terminal '%s'\n", argv_zero, required_command); system(required_command);
 
 	if (!(modular_group_fs = fopen(file_to_open, "r")))
-	{ fprintf(logbook_fs, LOGBOOK_FORMULA "ERROR: failed to create file using \"%s\"\n", argv_zero, required_command); return NULL; } free(required_command); }
-    if (modular_group_fs != NULL) fprintf(logbook_fs, LOGBOOK_FORMULA "Successfully opened \"%s\"\n", argv_zero, file_to_open);
+	{ fprintf(logbook_fs, LOGBOOK_FORMULA "ERROR: failed to create file using '%s'\n", argv_zero, required_command); return NULL; } free(required_command); }
+    if (modular_group_fs != NULL) fprintf(logbook_fs, LOGBOOK_FORMULA "Successfully opened '%s'\n", argv_zero, file_to_open);
     // ^^^ Notify user upon successfully opening the desired file
 
     *location_of_char_pointer_to_argv_one = file_to_open;
