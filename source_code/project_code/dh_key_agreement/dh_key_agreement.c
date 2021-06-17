@@ -83,7 +83,7 @@ int main(int argc, char **argv) {
     struct group_element *group_ll = ll_from_file((struct group_element **) sub_ordinator(), input_file);
     // ^^^ Get group from file
 
-    fprintf(logbook, LOGBOOK_FORMULA "Multiplicative group interpreted from file '%s'\n", argv[0], open_file);
+    fprintf(logbook, LOGBOOK_FORMULA "Group interpreted from file \"%s\"\n", argv[0], open_file);
     free(open_file); close_logbook(logbook);
 
     struct group_element *iter = group_ll; do {
@@ -93,10 +93,8 @@ int main(int argc, char **argv) {
     } while (iter != group_ll);
     // ^^^ Display group in stdout
 
-    fprintf(stdout, "\nGroup contains %lu elements.\n\n\n", group_cardinality);
-
     unsigned long base = 0; while (!base) {
-	fprintf(stdout, "Please pick an element from this group to use as base (generator): ");
+	fprintf(stdout, "\nPlease pick an element from this group to use as a base number: ");
 	fscanf(stdin, "%lu", &base);
 	base = present(group_ll, base); }
     // ^^^ Determine base number
@@ -118,11 +116,11 @@ int main(int argc, char **argv) {
 	private_bob = present(group_ll, private_bob); }
     // ^^^ Determine private_bob
 
-    fprintf(stdout, "\n\n# PUBLICLY AGREED-UPON VARIABLES:\n# ~ Multiplicative group: <\u2124/%lu\u2124, *>\n# ~ Base number (generator): %lu\n", group_modulus, base);
-    fprintf(stdout, "#\n# SECRET VARIABLES:\n# ~ Alice's secret exponent: %lu\n# ~ Bob's secret exponent: %lu", private_alice, private_bob);
+    fprintf(stdout, "\n# PUBLICLY AGREED-UPON VARIABLES:\n# ~ Multiplicative group: <\u2124/%lu\u2124, *>\n# ~ Base number: %lu\n", group_modulus, base);
+    fprintf(stdout, "#\n# SECRET VARIABLES:\n# ~ Alice's secret exponent: %lu\n# ~ Bob's secret exponent: %lu\n", private_alice, private_bob);
     // ^^^ Display selected variables
 
-    fprintf(stdout, "\n#\n# Calculation Alice makes before communication:\n");
+    fprintf(stdout, "#\n# Calculation Alice makes before communication:\n");
     unsigned long public_alice = mod_exponentiate(base, private_alice, group_modulus);
     fprintf(stdout, "# ~ %lu^%lu \u2261 %lu (%% %lu)\n", base, private_alice, public_alice, group_modulus);
     // ^^^ Display calculation on Alice's side
@@ -151,7 +149,7 @@ int main(int argc, char **argv) {
 	fprintf(stdout, "\n## ~ \u2203 x \u2208 <\u2124/%lu\u2124, *> | %lu^x \u2261 %lu (%% %lu)", group_modulus, base, public_alice, group_modulus);
 	fprintf(stdout, "\n## ~ \u2203 y \u2208 <\u2124/%lu\u2124, *> | %lu^y \u2261 %lu (%% %lu)", group_modulus, base, public_bob, group_modulus);
 	fprintf(stdout, "\n##");
-	fprintf(stdout, "\n## NOTICE HOW EVE IS UNABLE TO FIGURE OUT '%lu' WITHOUT THE SECRET VALUES 'x' and 'y'.\n", mutual_bob);
+	fprintf(stdout, "\n## NOTICE HOW EVE IS UNABLE TO FIGURE OUT '%lu' WITHOUT THE SECRET VALUES 'x' and 'y'\n", mutual_bob);
 	return 0;
     } else {
 	fprintf(stderr, "\n#\n##### Calculation unsuccessfull, unknown error occured.\n#\n#Exiting '-3'.\n");

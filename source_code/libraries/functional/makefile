@@ -3,6 +3,3 @@
 
 .string.o: ../mathematics/.maths.o string.h string.c
 	gcc -c string.c -o .string.o
-
-.modular_groups.o: modular_groups.c
-	gcc -c modular_groups.c -o .modular_groups.o

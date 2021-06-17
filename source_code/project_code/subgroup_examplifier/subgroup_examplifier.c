@@ -197,7 +197,7 @@ struct vertibrae *build_backbone(FILE *logbook, char *argv_zero, struct vertibra
 	fprintf(logbook, LOGBOOK_FORMULA "Additive", argv_zero);
     else if (group->identity == MULTIPLICATIVE_IDENTITY) {
 	fprintf(logbook, LOGBOOK_FORMULA "Multiplicative", argv_zero);
-    } fprintf(logbook, " group interpreted from file '%s'\n", input_filename); free(input_filename); close_logbook(logbook);
+    } fprintf(logbook, " group interpreted from file \"%s\"\n", input_filename); free(input_filename); close_logbook(logbook);
     // ^^^ Notify user of successfully loading list into memory
 
     struct vertibrae *last_element, *first_element;
