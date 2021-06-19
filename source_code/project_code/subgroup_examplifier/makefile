@@ -4,8 +4,8 @@
 ../../libraries/functional/.logbook_functions.o: ../../libraries/functional/logbook_functions.h ../../libraries/functional/logbook_functions.c
 	gcc -c ../../libraries/functional/logbook_functions.c -o ../../libraries/functional/.logbook_functions.o
 
-../../libraries/functional/.modular_groups.o: ../../libraries/functional/modular_groups.h ../../libraries/functional/modular_groups.c
-	gcc -c ../../libraries/functional/modular_groups.c -o ../../libraries/functional/.modular_groups.o
+../../libraries/functional/.registry_functions.o: ../../libraries/functional/registry_functions.h ../../libraries/functional/registry_functions.c
+	gcc -c ../../libraries/functional/registry_functions.c -o ../../libraries/functional/.registry_functions.o
 
 ../../libraries/functional/.triple_ref_pointers.o: ../../libraries/functional/triple_ref_pointers.h ../../libraries/functional/triple_ref_pointers.c
 	gcc -c ../../libraries/functional/triple_ref_pointers.c -o ../../libraries/functional/.triple_ref_pointers.o
@@ -16,5 +16,5 @@
 .subgroup_examplifier.o: subgroup_examplifier.c
 	gcc -c subgroup_examplifier.c -o .subgroup_examplifier.o
 
-subgroup_examplifier: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.logbook_functions.o ../../libraries/functional/.modular_groups.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .subgroup_examplifier.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.logbook_functions.o ../../libraries/functional/.modular_groups.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .subgroup_examplifier.o -o ../../../tools/subgroup_examplifier
+subgroup_examplifier: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.logbook_functions.o ../../libraries/functional/.registry_functions.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .subgroup_examplifier.o
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.logbook_functions.o ../../libraries/functional/.registry_functions.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .subgroup_examplifier.o -o ../../../toolbox/subgroup_examplifier

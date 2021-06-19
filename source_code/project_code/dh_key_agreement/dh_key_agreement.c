@@ -11,7 +11,7 @@
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
 #include "../../libraries/functional/logbook_functions.h"
-#include "../../libraries/functional/modular_groups.h"
+#include "../../libraries/functional/registry_functions.h"
 // ^^^ LIBRARY INCLUSIONS
 
 #define ADDITIVE_IDENTITY 0
@@ -83,7 +83,6 @@ int main(int argc, char **argv) {
     struct group_element *group_ll = ll_from_file((struct group_element **) sub_ordinator(), input_file);
     // ^^^ Get group from file
 
-    fprintf(logbook, LOGBOOK_FORMULA "Group interpreted from file \"%s\"\n", argv[0], open_file);
     free(open_file); close_logbook(logbook);
 
     struct group_element *iter = group_ll; do {

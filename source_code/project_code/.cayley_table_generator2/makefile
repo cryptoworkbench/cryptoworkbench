@@ -11,5 +11,4 @@
 	gcc -c cayley_table_generator.c -o .cayley_table_generator.o
 
 cayley_table_generator: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .cayley_table_generator.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .cayley_table_generator.o -o ../../../workbench/cayley_table_generator
-	echo "APPLICATION 'cayley_table_generator' is now ready in /workbench/"
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .cayley_table_generator.o -o ../../../toolbox/cayley_table_generator

@@ -9,7 +9,7 @@
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
 #include "../../libraries/functional/logbook_functions.h"
-#include "../../libraries/functional/modular_groups.h" // Needed for open_modular_group();
+#include "../../libraries/functional/registry_functions.h" // Needed for open_modular_group();
 #include "../../libraries/mathematics/group_operations.h"
 // ^^^ PERSONAL LIBRARY INCLUSIONS
 
@@ -192,13 +192,6 @@ struct vertibrae *build_backbone(FILE *logbook, char *argv_zero, struct vertibra
     while (fscanf(element_database, "%lu\n", &group_element) == 1) {
 	vertibrae_insert(channel, group_element); } fclose(element_database); // << And close element database connection
     // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
-
-    if (group->identity == ADDITIVE_IDENTITY)
-	fprintf(logbook, LOGBOOK_FORMULA "Additive", argv_zero);
-    else if (group->identity == MULTIPLICATIVE_IDENTITY) {
-	fprintf(logbook, LOGBOOK_FORMULA "Multiplicative", argv_zero);
-    } fprintf(logbook, " group interpreted from file \"%s\"\n", input_filename); free(input_filename); close_logbook(logbook);
-    // ^^^ Notify user of successfully loading list into memory
 
     struct vertibrae *last_element, *first_element;
     last_element = first_element = (struct vertibrae *) disintermediate( (void **) channel);
