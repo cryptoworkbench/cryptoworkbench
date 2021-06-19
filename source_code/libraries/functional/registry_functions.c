@@ -34,17 +34,17 @@ FILE *open_modular_group(FILE *logbook_fs, char *argv_zero, unsigned long modulu
 
     FILE *modular_group_fs = NULL;
     if (!(modular_group_fs = fopen(file_to_open, "r"))) {
-	fprintf(logbook_fs, LOGBOOK_FORMULA "<\u2124/%lu\u2124, %s> does not seem to already have been registered (no such target file: \"%s\"),\n", argv_zero, modulus, group_operation, file_to_open);
+	fprintf(logbook_fs, LOGBOOK_FORMULA "<\u2124/%lu\u2124, %s> does not seem to already have been registered, for there is no such file; '%s' ===>\n", argv_zero, modulus, group_operation, file_to_open);
 	char *required_command = (char *) malloc(sizeof(char) * ((2 * char_in_val(modulus)) + strlen(GROUP_EXPORTER) + 6 + strlen(folder_name) + strlen(adjective) + strlen(FILENAME_BODY) + 1));
 	sprintf(required_command, "%s %lu %lu > %s%s_group_of_integers_modulo_%s", GROUP_EXPORTER, modulus, identity, folder_name, adjective, modulus_string);
 	// *copy_over(copy_over(copy_over(copy_over(copy_over(required_command, program_to_use), " "), modulus_string), " "), identity_char) = 0; free(modulus_string);
 
-	fprintf(logbook_fs, LOGBOOK_FORMULA "registering this group with %s using \"%s\" to do so\n", argv_zero, program_to_use, required_command); system(required_command);
+	fprintf(logbook_fs, LOGBOOK_FORMULA "Running '%s' externally to register <\u2124/%lu\u2124, %s>\n", argv_zero, required_command, modulus, group_operation); system(required_command);
 
 	if (!(modular_group_fs = fopen(file_to_open, "r"))) { 
 	    fprintf(logbook_fs, LOGBOOK_FORMULA "ERROR: failed to create registry file using \"%s\".\n", argv_zero, required_command);
 	    return NULL; } free(required_command); }
-    if (modular_group_fs != NULL) fprintf(logbook_fs, LOGBOOK_FORMULA "Interpreting <\u2124/%lu\u2124, %s> from \"%s\"\n", argv_zero, modulus, group_operation, file_to_open);
+    if (modular_group_fs != NULL) fprintf(logbook_fs, LOGBOOK_FORMULA "Interpreting <\u2124/%lu\u2124, %s> from '%s'\n", argv_zero, modulus, group_operation, file_to_open);
     // ^^^ Notify user upon successfully opening the desired file
 
     *location_of_char_pointer_to_argv_one = file_to_open;
