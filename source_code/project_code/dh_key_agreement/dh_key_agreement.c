@@ -145,8 +145,8 @@ int main(int argc, char **argv) {
 	fprintf(stdout, "\n###\n### Try to figure out '%lu' with the information below!\n###\n## INFORMATION KNOWN TO EVE WHO'S BEEN LISTING ON THE OPEN COMMUNICATION CHANNEL ALL ALONG:", mutual_bob);
 	fprintf(stdout, "\n## ~ Multiplicative group of integers used: <\u2124/%lu\u2124>", group_modulus);
 	fprintf(stdout, "\n## ~ Base number (generator): %lu", base);
-	fprintf(stdout, "\n## ~ \u2203 x \u2208 <\u2124/%lu\u2124, *> | %lu^x \u2261 %lu (%% %lu)", group_modulus, base, public_alice, group_modulus);
-	fprintf(stdout, "\n## ~ \u2203 y \u2208 <\u2124/%lu\u2124, *> | %lu^y \u2261 %lu (%% %lu)", group_modulus, base, public_bob, group_modulus);
+	fprintf(stdout, "\n## ~ \u2203 x \u2208 <\u2124/%lu\u2124, *> : %lu^x \u2261 %lu (%% %lu)", group_modulus, base, public_alice, group_modulus);
+	fprintf(stdout, "\n## ~ \u2203 y \u2208 <\u2124/%lu\u2124, *> : %lu^y \u2261 %lu (%% %lu)", group_modulus, base, public_bob, group_modulus);
 	fprintf(stdout, "\n##");
 	fprintf(stdout, "\n## NOTICE HOW EVE IS UNABLE TO FIGURE OUT '%lu' WITHOUT THE SECRET VALUES 'x' and 'y'\n", mutual_bob);
 	return 0;

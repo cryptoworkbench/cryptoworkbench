@@ -8,4 +8,4 @@
 	gcc -c group_examplifier.c -o .group_examplifier.o
 
 group_examplifier: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .group_examplifier.o
-	gcc ../../libraries/mathematics/.maths.o ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .group_examplifier.o -o ../../../toolbox/group_examplifier
+	gcc ../../libraries/mathematics/.maths.o ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .group_examplifier.o -o ../../../laboratory/group_examplifier

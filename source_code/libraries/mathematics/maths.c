@@ -30,15 +30,15 @@ unsigned long GCD(unsigned long a, unsigned long b) {
     while (remainder != 0) { a = b; b = remainder; remainder = a % b; } return b; }
 /* ^^^ Calculates the GCD using a procedural implementation of the euclidean algorithm ^^^ */
 
-long extended_gcd(long a, long b, long *x, long *y) {
+unsigned long extended_gcd(unsigned long a, unsigned long b, unsigned long *x, unsigned long *y) {
     if (a == 0) {
 	*x = 0;
 	*y = 1;
 	return b;
     }
 
-    long _x, _y;
-    long gcd = extended_gcd(b % a, a, &_x, &_y);
+    unsigned long _x, _y;
+    unsigned long gcd = extended_gcd(b % a, a, &_x, &_y);
 
     *x = _y - (b/a) * _x;
     *y = _x;
@@ -46,9 +46,9 @@ long extended_gcd(long a, long b, long *x, long *y) {
     return gcd;
 }
 
-long multiplicative_inverse(long a, long b) { // Yield a^-1 mod b
-    long x, y; extended_gcd(a, b, &x, &y);
-    return b + x;
+unsigned long multiplicative_inverse(unsigned long a, unsigned long mod) { // Yield a^-1 mod b
+    unsigned long x, y; extended_gcd(a, mod, &x, &y);
+    return mod + x;
 }
 
 unsigned long exponentiate(unsigned long base, unsigned long exponent) {

@@ -19,8 +19,8 @@ unsigned long GCD(unsigned long a, unsigned long b);
  * Order of inputs does not matter.
  */
 
-long extended_gcd(long a, long b, long *x, long *y);
-long multiplicative_inverse(long a, long b);
+unsigned long extended_gcd(unsigned long a, unsigned long b, unsigned long *x, unsigned long *y);
+unsigned long multiplicative_inverse(unsigned long a, unsigned long mod);
 
 /* A simple exponentiation function which raises base to exponent.
  * 

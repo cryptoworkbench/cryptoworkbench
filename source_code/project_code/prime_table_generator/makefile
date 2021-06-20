@@ -5,4 +5,4 @@
 	gcc -c prime_table_generator.c -o .prime_table_generator.o
 
 prime_table_generator:../../libraries/functional/.string.o  ../../libraries/mathematics/.maths.o .prime_table_generator.o
-	gcc ../../libraries/mathematics/.maths.o ../../libraries/functional/.string.o .prime_table_generator.o -o ../../../toolbox/prime_table_generator
+	gcc ../../libraries/mathematics/.maths.o ../../libraries/functional/.string.o .prime_table_generator.o -o ../../../laboratory/prime_table_generator

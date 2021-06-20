@@ -15,7 +15,7 @@ const char *alt_group_operation = "+";
 char *identity_char = "1";
 const char *alt_identity_char = "0";
 
-const char *folder_name = "./registry/";
+const char *folder_name = "../registry/";
 const char *filename_body = "_group_of_integers_modulo_";
 const char *program_to_use = "group_examplifier";
 
