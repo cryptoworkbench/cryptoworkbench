@@ -22,7 +22,7 @@ void ll_insert(struct ll **tracer, unsigned long factor_set) {
 
 struct ll *build_HW(struct ll **linked_list_connection, int argc, char **argv) {
     while (argc != 1) {
-	ll_insert(linked_list_connection, str_to_ul(argv[argc - 1]));
+	ll_insert(linked_list_connection, ul_from_str(argv[argc - 1]));
 	argc--; }
     // ^^ Establish lineair linked list containing all group elements using the triple ref technique
 
@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
 	return -1; }
     // ^^ Exit when insufficient arguments are supplied
 
-    struct ll *circular_ll = build_HW((struct ll **) phallus(), argc, argv);
+    struct ll *circular_ll = build_HW((struct ll **) sub_ordinator(), argc, argv);
     print_ll(circular_ll);
     line_out_factor_sets_to_intersect(circular_ll);
     fprintf(stdout, "\nGCD: %lu\n", circular_ll->factor_set);

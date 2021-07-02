@@ -13,7 +13,7 @@ int main(int argc, char **argv) {
     if (argc != 3) {
 	fprintf(stderr, wrong_argument_count);
 	return -1;
-    } unsigned long potential_prime = str_to_ul(argv[1]);
+    } unsigned long potential_prime = ul_from_str(argv[1]);
     // ^ Check argument count
 
     if (potential_prime == ADDITIVE_IDENTITY || potential_prime == MULTIPLICATIVE_IDENTITY) {

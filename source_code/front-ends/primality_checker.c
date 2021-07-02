@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
     if (argc != 3) {
 	fprintf(stderr, "Wrong number of arguments.\n");
 	return -1;
-    } unsigned long potential_prime = str_to_ul(argv[1]);
+    } unsigned long potential_prime = ul_from_str(argv[1]);
 
     int binary_mode = 0; // We start of assuming binary_mode is off
     printf("Is %s a binary prime table? (0/1): ", argv[2]);

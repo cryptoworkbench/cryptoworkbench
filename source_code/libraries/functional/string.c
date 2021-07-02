@@ -104,3 +104,25 @@ char *str_from_ul(unsigned long a, unsigned long min_out_length) { // Works!
 	remainder = a_copy; // Restore our remainder variable so that we can remainder %= BASE
     } return unsigned_long_as_string;
 }
+
+unsigned long *ul_ptr_from_str(unsigned long *UL_PTR_TO_UPDATE, char *term_argument) { // Alternative to "ul_from_str()"
+    unsigned long length_of_string = 0; do {
+	if (term_argument[length_of_string] >= ASCII_BASE && term_argument[length_of_string] < ASCII_BASE + 10) length_of_string++;
+	else return NULL;
+    } while (term_argument[length_of_string] != STRING_TERMINATING_CHARACTER);
+    // ^^^ Checks to see if the proposed char array at index is even parsable as an unsigned long
+
+    unsigned long iteration_count, string_as_integer; // Declare needed variables
+    iteration_count = string_as_integer = 0; // Initialize variables
+
+    char *current_character = (term_argument + (length_of_string - 1));
+    while (current_character != term_argument) {
+	string_as_integer += (*current_character - ASCII_BASE) * exponentiate(BASE, iteration_count);
+
+	iteration_count++; // Update the iteration count
+	current_character = (current_character - 1); // Move back one character
+    } string_as_integer += (*current_character - ASCII_BASE) * (exponentiate(BASE, length_of_string - 1));
+
+    *UL_PTR_TO_UPDATE = string_as_integer; // <<< Inserts the parsed variable into the INSERTMENT_SLOTH (see header file "string.h")
+    return UL_PTR_TO_UPDATE;
+}
