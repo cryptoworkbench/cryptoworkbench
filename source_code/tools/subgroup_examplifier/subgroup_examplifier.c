@@ -215,29 +215,43 @@ int QUIT_ON_ARGV_TWO_ERROR(char *argv_two) {
 
 int QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
     fprintf(stdout, STDOUT_ARGV_TWO_INSTRUCTION);
-    fprintf(stderr, "\nFATAL ERROR: cannot grasp group MOD: to attempt to open from registry group '<\u2124/%s\u2124>' makes no sense to me. Returning -1.\n", argv_one); return -1;
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp group MOD: to attempt to open from registry the group '<\u2124/%s\u2124>' makes no sense to me. Returning -1.\n", argv_one); return -1;
 }
 
-int HELP_AND_QUIT() {
-    fprintf(stderr, HELP_INFORMATION);
+int HELP_AND_QUIT(char *argv_zero) {
+    fprintf(stderr, HELP_INFORMATION, argv_zero);
     return 0;
 }
 
 int main(int argc, char **argv) {
-    struct group_prams *group = (struct group_prams *) malloc(sizeof(struct group_prams));
-    struct coordinates *table_coordinates = (struct coordinates *) malloc(sizeof(struct coordinates)); table_coordinates->horizontal_offset = table_coordinates->vertical_offset = 0;
-    // ^^^ Prepare program variables on heap
+    struct group_prams *group; struct coordinates *table_coordinates; // <<< Declare STRUCT pointers for program variables
+    group = (struct group_prams *) malloc(sizeof(struct group_prams)); // <<< Allocate one of the STRUCTs already
+    main_fs = stdout;
 
-    if (ul_ptr_from_str(&group->modulus, argv[1])) { // <<< Within a "switch(argc) { ... }" this would represent "case 2:"
-	if (ul_ptr_from_str(&group->identity, argv[2])) // <<< Within a "switch(argc) { ... }" this would represent "case 3:"
-	    switch (argc) { // <<< THE ONLY PECULIAR FACTS TO TAKE NOTICE OF REGARDING THIS SWITCH STATEMENT 
-		case 6: main_fs = fopen(argv[5], "w"); // << ARE THAT THE BELOW TWO LINES OF CODE CANNOT BE SWITCHED:
-                case 5: if (!(ul_ptr_from_str(&table_coordinates->vertical_offset, argv[4]))) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
-                case 4: if (!(ul_ptr_from_str(&table_coordinates->horizontal_offset, argv[3]))) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
-		default:if (6 > argc) { main_fs = stdout; break; } HELP_AND_QUIT(); } // <<< AND THAT IF YOU THINK ABOUT IT, THIS IS NOT A CONVOLUTED MANNER OF HANDLING "main_fs"
-	else return QUIT_ON_ARGV_TWO_ERROR(argv[2]); } // <<< ^^^ HANDLES ALMOST ALL POSSIBLE INPUT CASE SCENARIOS EXCEPT THE TWO SCENARIOS THAT ARE HANDLED BY THE FOLLOWING TWO LINES
-    else if (argv[1] && streql(argv[1], "--help") || streql(argv[1], "-h")) return HELP_AND_QUIT(); // <<< HANDLES WHEN THIS PROGRAM IS RAN WITH THE "--help" OPTION
-    else return QUIT_ON_ARGV_ONE_ERROR(argv[1]); // <<< HANDLES WHEN THIS PROGRAM IS RAN ENTIRELY WITHOUT ARGUMENTS
+    if (argv[1] && (streql(argv[1], "--help") || streql(argv[1], "-h")))
+    {  return HELP_AND_QUIT(argv[0]); // <<< HANDLES WHEN THIS PROGRAM IS RAN WITH THE "--help" OPTION
+    }
+
+    else if (! (ul_ptr_from_str(&group->modulus, argv[1])))
+    {  return QUIT_ON_ARGV_ONE_ERROR(argv[1]);
+    }
+
+    else if (! (ul_ptr_from_str(&group->identity, argv[2])))
+    { return QUIT_ON_ARGV_TWO_ERROR(argv[2]); }
+
+    else
+    {   table_coordinates = (struct coordinates *) malloc(sizeof(struct coordinates)); // <<< ^^^ IF WE HAVE A GROUP MODULUS AND A GROUP IDENTITY
+	table_coordinates->vertical_offset = table_coordinates->horizontal_offset = 0;
+	if (argc == 6) main_fs = fopen(argv[5], "w");
+	switch (argc) {
+	    case 6: main_fs = fopen(argv[5], "w");
+	    case 5: if (!(ul_ptr_from_str(&table_coordinates->vertical_offset, argv[4]))) { fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]); }
+	    case 4: if (!(ul_ptr_from_str(&table_coordinates->horizontal_offset, argv[3]))) { fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]); }
+	    case 3: case 2: break; // <<< For these cases have already been filtered out
+/*case>=7:*/default: HELP_AND_QUIT(argv[0]); break; }
+    }
+    // ^^^ HANDLES ALL POSSIBLE INPUT CASE SCENARIOS EXCEPT THE TWO SCENARIOS THAT ARE HANDLED BY THE FOLLOWING TWO LINES
+
 
     table_coordinates->horizontal_offset %= group->modulus;
 
