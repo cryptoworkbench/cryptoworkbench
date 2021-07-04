@@ -218,6 +218,11 @@ int QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
     fprintf(stderr, "\nFATAL ERROR: cannot grasp group MOD: to attempt to open from registry group '<\u2124/%s\u2124>' makes no sense to me. Returning -1.\n", argv_one); return -1;
 }
 
+int HELP_AND_QUIT() {
+    fprintf(stderr, HELP_INFORMATION);
+    return 0;
+}
+
 int main(int argc, char **argv) {
     struct group_prams *group = (struct group_prams *) malloc(sizeof(struct group_prams));
     struct coordinates *table_coordinates = (struct coordinates *) malloc(sizeof(struct coordinates)); table_coordinates->horizontal_offset = table_coordinates->vertical_offset = 0;
@@ -229,15 +234,16 @@ int main(int argc, char **argv) {
 /*These cannot*/case 5: if (!(ul_ptr_from_str(&table_coordinates->vertical_offset, argv[4]))) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
 /*Be switched.*/case 4: if (!(ul_ptr_from_str(&table_coordinates->horizontal_offset, argv[3]))) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
 		default:if (6 > argc) main_fs = stdout; // <<< Determine where to output table
-			else if (argc > 6) { fprintf(stderr, HELP_INFORMATION); return -7; }
+			else if (argc > 6) return HELP_AND_QUIT();
 /*If "argc == 6": ==> */else main_fs = fopen(argv[5], "w"); }
 	else return QUIT_ON_ARGV_TWO_ERROR(argv[2]); }
+    // ^^^ Handles almost all possible input case scenarios except the two scenarios the below two lines of code handle
 
-    else if (argv[1] && streql(argv[1], "--help"))
-    { fprintf(stderr, HELP_INFORMATION); return 0; }
+    else if (argv[1] && streql(argv[1], "--help")) // <<< Handles when this program is ran with the "--help" option
+	return HELP_AND_QUIT();
 
-    else
-    { return QUIT_ON_ARGV_ONE_ERROR(argv[1]); }
+    else return QUIT_ON_ARGV_ONE_ERROR(argv[1]); // <<< Handles when this program is ran without arguments
+    // ^^^ Supplementary input case scenario handling
 
     table_coordinates->horizontal_offset %= group->modulus;
 
