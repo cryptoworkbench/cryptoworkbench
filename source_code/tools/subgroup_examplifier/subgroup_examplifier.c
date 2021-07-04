@@ -230,20 +230,14 @@ int main(int argc, char **argv) {
 
     if (ul_ptr_from_str(&group->modulus, argv[1])) { // <<< Within a "switch(argc) { ... }" this would represent "case 2:"
 	if (ul_ptr_from_str(&group->identity, argv[2])) // <<< Within a "switch(argc) { ... }" this would represent "case 3:"
-	    switch (argc) {
-/*These cannot*/case 5: if (!(ul_ptr_from_str(&table_coordinates->vertical_offset, argv[4]))) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
-/*Be switched.*/case 4: if (!(ul_ptr_from_str(&table_coordinates->horizontal_offset, argv[3]))) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
-		default:if (6 > argc) main_fs = stdout; // <<< Determine where to output table
-			else if (argc > 6) return HELP_AND_QUIT();
-/*If "argc == 6": ==> */else main_fs = fopen(argv[5], "w"); }
-	else return QUIT_ON_ARGV_TWO_ERROR(argv[2]); }
-    // ^^^ Handles almost all possible input case scenarios except the two scenarios the below two lines of code handle
-
-    else if (argv[1] && streql(argv[1], "--help")) // <<< Handles when this program is ran with the "--help" option
-	return HELP_AND_QUIT();
-
-    else return QUIT_ON_ARGV_ONE_ERROR(argv[1]); // <<< Handles when this program is ran without arguments
-    // ^^^ Supplementary input case scenario handling
+	    switch (argc) { // <<< THE ONLY PECULIAR FACTS TO TAKE NOTICE OF REGARDING THIS SWITCH STATEMENT 
+		case 6: main_fs = fopen(argv[5], "w"); // << ARE THAT THE BELOW TWO LINES OF CODE CANNOT BE SWITCHED:
+                case 5: if (!(ul_ptr_from_str(&table_coordinates->vertical_offset, argv[4]))) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
+                case 4: if (!(ul_ptr_from_str(&table_coordinates->horizontal_offset, argv[3]))) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
+		default:if (6 > argc) { main_fs = stdout; break; } HELP_AND_QUIT(); } // <<< AND THAT IF YOU THINK ABOUT IT, THIS IS NOT A CONVOLUTED MANNER OF HANDLING "main_fs"
+	else return QUIT_ON_ARGV_TWO_ERROR(argv[2]); } // <<< ^^^ HANDLES ALMOST ALL POSSIBLE INPUT CASE SCENARIOS EXCEPT THE TWO SCENARIOS THAT ARE HANDLED BY THE FOLLOWING TWO LINES
+    else if (argv[1] && streql(argv[1], "--help") || streql(argv[1], "-h")) return HELP_AND_QUIT(); // <<< HANDLES WHEN THIS PROGRAM IS RAN WITH THE "--help" OPTION
+    else return QUIT_ON_ARGV_ONE_ERROR(argv[1]); // <<< HANDLES WHEN THIS PROGRAM IS RAN ENTIRELY WITHOUT ARGUMENTS
 
     table_coordinates->horizontal_offset %= group->modulus;
 
