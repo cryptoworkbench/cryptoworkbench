@@ -223,17 +223,21 @@ int main(int argc, char **argv) {
     struct coordinates *table_coordinates = (struct coordinates *) malloc(sizeof(struct coordinates)); table_coordinates->horizontal_offset = table_coordinates->vertical_offset = 0;
     // ^^^ Prepare program variables on heap
 
-    if (ul_ptr_from_str(&group->modulus, argv[1])) // <<< Within a "switch(argc) { ... }" this would represent "case 2:"
-	if (ul_ptr_from_str(&group->identity, argv[2])) { // <<< Within a "switch(argc) { ... }" this would represent "case 3:"
+    if (ul_ptr_from_str(&group->modulus, argv[1])) { // <<< Within a "switch(argc) { ... }" this would represent "case 2:"
+	if (ul_ptr_from_str(&group->identity, argv[2])) // <<< Within a "switch(argc) { ... }" this would represent "case 3:"
 	    switch (argc) {
 /*These cannot*/case 5: if (!(ul_ptr_from_str(&table_coordinates->vertical_offset, argv[4]))) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
 /*Be switched.*/case 4: if (!(ul_ptr_from_str(&table_coordinates->horizontal_offset, argv[3]))) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
-		default:if (6 > argc) main_fs = stdout;
-			else if (argc > 6) { fprintf(stderr, "Too much arguments!\n"); return -7; }
+		default:if (6 > argc) main_fs = stdout; // <<< Determine where to output table
+			else if (argc > 6) { fprintf(stderr, HELP_INFORMATION); return -7; }
 /*If "argc == 6": ==> */else main_fs = fopen(argv[5], "w"); }
-	} else return QUIT_ON_ARGV_TWO_ERROR(argv[2]);
-    else return QUIT_ON_ARGV_ONE_ERROR(argv[1]);
-    // ^^^ Process everything
+	else return QUIT_ON_ARGV_TWO_ERROR(argv[2]); }
+
+    else if (argv[1] && streql(argv[1], "--help"))
+    { fprintf(stderr, HELP_INFORMATION); return 0; }
+
+    else
+    { return QUIT_ON_ARGV_ONE_ERROR(argv[1]); }
 
     table_coordinates->horizontal_offset %= group->modulus;
 
