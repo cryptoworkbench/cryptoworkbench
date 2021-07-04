@@ -106,6 +106,9 @@ char *str_from_ul(unsigned long a, unsigned long min_out_length) { // Works!
 }
 
 unsigned long *ul_ptr_from_str(unsigned long *UL_PTR_TO_UPDATE, char *term_argument) { // Alternative to "ul_from_str()"
+    if (term_argument == NULL) return NULL;
+    // ^^^ Enables automated parsing
+
     unsigned long length_of_string = 0; do {
 	if (term_argument[length_of_string] >= ASCII_BASE && term_argument[length_of_string] < ASCII_BASE + 10) length_of_string++;
 	else return NULL;

@@ -8,5 +8,6 @@ cd ../subgroup_examplifier && make subgroup_examplifier
 cd ../DH_KAP && make DH_KAP
 cd ../cayley_table_generator && make cayley_table_generator
 cd ../prime_table_generator && make prime_table_generator
+cd ../modular_exponentiation && make modular_exponentiation
 echo "
 Setup complete, you can now \"cd ./instruments/\" to start experimenting."

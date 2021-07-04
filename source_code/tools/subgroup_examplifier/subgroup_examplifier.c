@@ -1,5 +1,8 @@
 /* Program operations:
  * Examplifies subgroups.
+ *
+ * DEVELOPERS NOTE:
+ * The construction in main()
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,9 +17,11 @@
 
 #define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
-#define VERTICAL_OFFSET_PARSE_ERROR "Failed to parse \"%s\" (the 4th argument) as vertical offset. Defaulting to not using a vertical offset.\n"
-#define HORIZONTAL_OFFSET_PARSE_ERROR "Failed to parse \"%s\" (the 3th argument) as horizontal offset. Defaulting to not using a horizontal offset.\n"
-#define INCORRECT_SYNTAX "Incorrect syntax.\n\nProgram usage:\n%s <group modulus> <group identity>\n\n\nExiting '-1'.\n"
+#define STDOUT_ARGV_ONE_INSTRUCTION "Please provide as second argument '0' for the ADDITIVE IDENTITY or '1' for the MULTIPLICATIVE IDENTITY.\n"
+#define STDOUT_ARGV_TWO_INSTRUCTION "Please provide as first argument the modulus of the group in decimal notation.\n"
+#define STDERR_HORIZONTAL_OFFSET_ERROR "Failed to parse \"%s\" (the 3th argument) as horizontal offset. Defaulting to not using a horizontal offset.\n"
+#define STDOUT_VERTICAL_OFFSET_ERROR "Failed to parse \"%s\" (the 4th argument) as vertical offset. Defaulting to not using a vertical offset.\n"
+#define HELP_INFORMATION "Program usage: %s <group MOD> <group ID> [horizontal offset] [vertical offset] [output filename]\n\nOptions in between '<' & '>' symbols are mandatory.\n\nOptions between '[' & ']' are optional.\n"
 // ^^^ (MATHEMATICAL) DEFINITIONS
 
 FILE *main_fs; // <<< ALL calls to "fprintf()" use main_fs
@@ -37,7 +42,7 @@ struct vertibrae {
     struct permutation_piece *permutation;
 };
 
-struct coordinate_pair {
+struct coordinates {
     unsigned long vertical_offset;
     unsigned long horizontal_offset;
 };
@@ -141,7 +146,7 @@ void table_effect(unsigned long cardinality, unsigned long cell_width) {
     printf("\n");
 }
 
-struct vertibrae *print_table(struct vertibrae *initial_row, struct coordinate_pair *table_coordinates, unsigned long *group_cardinality) {
+struct vertibrae *print_table(struct vertibrae *initial_row, struct coordinates *table_coordinates, unsigned long *group_cardinality) {
     for (unsigned long i = 0; i < table_coordinates->vertical_offset; initial_row = initial_row->next, i++) {}
     // ^^^ Move along the vertical axis
 
@@ -204,29 +209,32 @@ struct vertibrae *build_backbone(char *argv_zero, struct vertibrae **channel, st
     return last_element;
 }
 
-int QUIT_ON_ARGV_TWO_ERROR(char *argv_two) { fprintf(stderr, "Failed to parse \"%s\" (the second argument) as group identity.\n\nReturning -2.\n", argv_two); return -2; }
-int QUIT_ON_ARGV_ONE_ERROR(char *argv_one) { fprintf(stderr, "Failed to parse \"%s\" (the first argument) as group modulus.\n\nReturning -1.\n", argv_one); return -1; }
+int QUIT_ON_ARGV_TWO_ERROR(char *argv_two) {
+    fprintf(stdout, STDOUT_ARGV_ONE_INSTRUCTION);
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp group ID: '%s' is neither '0' nor '1'. Returning -2.\n", argv_two); return -2; }
+
+int QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
+    fprintf(stdout, STDOUT_ARGV_TWO_INSTRUCTION);
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp group MOD: to attempt to open from registry group '<\u2124/%s\u2124>' makes no sense to me. Returning -1.\n", argv_one); return -1;
+}
+
 int main(int argc, char **argv) {
-    struct coordinate_pair *table_coordinates = (struct coordinate_pair *) malloc(sizeof(struct coordinate_pair)); table_coordinates->horizontal_offset = table_coordinates->vertical_offset = 0;
     struct group_prams *group = (struct group_prams *) malloc(sizeof(struct group_prams));
+    struct coordinates *table_coordinates = (struct coordinates *) malloc(sizeof(struct coordinates)); table_coordinates->horizontal_offset = table_coordinates->vertical_offset = 0;
     // ^^^ Prepare program variables on heap
 
-    switch (argc) {
-	case 6: main_fs = fopen(argv[5], "w"); // main_fs is the main filestream (to which the table is printed)
-	case 5: if (!(ul_ptr_from_str(&table_coordinates->vertical_offset, argv[4]))) fprintf(stderr, VERTICAL_OFFSET_PARSE_ERROR, argv[4]);
-	case 4: if (!(ul_ptr_from_str(&table_coordinates->horizontal_offset, argv[3]))) fprintf(stderr, HORIZONTAL_OFFSET_PARSE_ERROR, argv[3]);
-	case 3: if (!(ul_ptr_from_str(&group->identity, argv[2]))) return QUIT_ON_ARGV_TWO_ERROR(argv[2]);
-	case 2: if (!(ul_ptr_from_str(&group->modulus, argv[1]))) return QUIT_ON_ARGV_ONE_ERROR(argv[1]); break;
-	default:
-		fprintf(stderr, INCORRECT_SYNTAX); return -1;
-    }
-    // ^^^ Process supplied variables
+    if (ul_ptr_from_str(&group->modulus, argv[1])) // <<< Within a "switch(argc) { ... }" this would represent "case 2:"
+	if (ul_ptr_from_str(&group->identity, argv[2])) { // <<< Within a "switch(argc) { ... }" this would represent "case 3:"
+	    switch (argc) {
+/*These cannot*/case 5: if (!(ul_ptr_from_str(&table_coordinates->vertical_offset, argv[4]))) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
+/*Be switched.*/case 4: if (!(ul_ptr_from_str(&table_coordinates->horizontal_offset, argv[3]))) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
+		default:if (6 > argc) main_fs = stdout;
+			else if (argc > 6) { fprintf(stderr, "Too much arguments!\n"); return -7; }
+/*If "argc == 6": ==> */else main_fs = fopen(argv[5], "w"); }
+	} else return QUIT_ON_ARGV_TWO_ERROR(argv[2]);
+    else return QUIT_ON_ARGV_ONE_ERROR(argv[1]);
+    // ^^^ Process everything
 
-    if (6 > argc) main_fs = stdout; // When a fifth argument was not supplied, output to stdout
-    if (3 > argc) return QUIT_ON_ARGV_TWO_ERROR(NULL);
-    if (2 > argc) return QUIT_ON_ARGV_ONE_ERROR(NULL);
-    // ^^^ Process lacking variables
-    
     table_coordinates->horizontal_offset %= group->modulus;
 
     unsigned long cell_width;
