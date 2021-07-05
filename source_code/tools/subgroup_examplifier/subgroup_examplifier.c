@@ -226,32 +226,20 @@ int HELP_AND_QUIT(char *argv_zero) {
 int main(int argc, char **argv) {
     struct group_prams *group; struct coordinates *table_coordinates; // <<< Declare STRUCT pointers for program variables
     group = (struct group_prams *) malloc(sizeof(struct group_prams)); // <<< Allocate one of the STRUCTs already
-    main_fs = stdout;
+    main_fs = stdout; // <<< Initializd main_fs to stdout
 
-    if (argv[1] && (streql(argv[1], "--help") || streql(argv[1], "-h")))
-    {  return HELP_AND_QUIT(argv[0]); // <<< HANDLES WHEN THIS PROGRAM IS RAN WITH THE "--help" OPTION
-    }
-
-    else if (! (ul_ptr_from_str(&group->modulus, argv[1])))
-    {  return QUIT_ON_ARGV_ONE_ERROR(argv[1]);
-    }
-
-    else if (! (ul_ptr_from_str(&group->identity, argv[2])))
-    { return QUIT_ON_ARGV_TWO_ERROR(argv[2]); }
-
-    else
-    {   table_coordinates = (struct coordinates *) malloc(sizeof(struct coordinates)); // <<< ^^^ IF WE HAVE A GROUP MODULUS AND A GROUP IDENTITY
-	table_coordinates->vertical_offset = table_coordinates->horizontal_offset = 0;
-	if (argc == 6) main_fs = fopen(argv[5], "w");
-	switch (argc) {
-	    case 6: main_fs = fopen(argv[5], "w");
-	    case 5: if (!(ul_ptr_from_str(&table_coordinates->vertical_offset, argv[4]))) { fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]); }
-	    case 4: if (!(ul_ptr_from_str(&table_coordinates->horizontal_offset, argv[3]))) { fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]); }
-	    case 3: case 2: break; // <<< For these cases have already been filtered out
-/*case>=7:*/default: HELP_AND_QUIT(argv[0]); break; }
-    }
-    // ^^^ HANDLES ALL POSSIBLE INPUT CASE SCENARIOS EXCEPT THE TWO SCENARIOS THAT ARE HANDLED BY THE FOLLOWING TWO LINES
-
+    if (argv[1] && (streql(argv[1], "--help") || streql(argv[1], "-h"))) return HELP_AND_QUIT(argv[0]); // <<< Parse "--help"/"-h" toggle if there is one
+    else if (!(ul_ptr_from_str(&group->modulus, argv[1]))) return QUIT_ON_ARGV_ONE_ERROR(argv[1]); // <<< Parse "argv[1]" as group modulus if possible
+    else if (!(ul_ptr_from_str(&group->identity, argv[2]))) return QUIT_ON_ARGV_TWO_ERROR(argv[2]); // <<< Parse "argv[2]" as group identity if possible
+    else // <<< IFF if first and second terminal arguments have successfully been parsed
+    {   table_coordinates = (struct coordinates *) malloc(sizeof(struct coordinates)); // <<< The case where "argc == 1", and
+	table_coordinates->vertical_offset = table_coordinates->horizontal_offset = 0; // <<< The case where "argc == 2" have been filtered out already, so;
+	switch (argc) { case 3: break; // <<< Filters out option "(argc == 3)" from label "default" such that "default" only handles the case where there are too many arguments
+	    case 6: main_fs = fopen(argv[5], "w"); // (and the first isn't "--help" or "-h"
+	    case 5: if (!(ul_ptr_from_str(&table_coordinates->vertical_offset, argv[4]))) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
+	    case 4: if (!(ul_ptr_from_str(&table_coordinates->horizontal_offset, argv[3]))) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]); break;
+	    default:HELP_AND_QUIT(argv[0]); } }
+    // ^^^ Parse the remaining arguments
 
     table_coordinates->horizontal_offset %= group->modulus;
 
