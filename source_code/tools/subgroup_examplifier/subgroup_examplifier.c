@@ -42,12 +42,12 @@ struct vertibrae {
     struct permutation_piece *permutation;
 };
 
-struct coordinates {
-    unsigned long vertical_offset;
-    unsigned long horizontal_offset;
+struct offset_margins {
+    unsigned long Y;
+    unsigned long X;
 };
 
-struct group_prams {
+struct group_prams { // "group_prams" is "group parameters"
     unsigned long modulus;
     unsigned long identity;
 };
@@ -111,17 +111,17 @@ struct permutation_piece *yield_subgroup(struct vertibrae *upstream_l, struct gr
     return iterator->next;
 }
 
-struct permutation_piece *move_along_horizontally(struct permutation_piece *link, unsigned long horizontal_offset) {
-    for (unsigned long i = 0; i < horizontal_offset; link = link->next, i++) {}
+struct permutation_piece *move_along_horizontally(struct permutation_piece *link, unsigned long horizontal) {
+    for (unsigned long i = 0; i < horizontal; link = link->next, i++) {}
     return link;
 }
 
-void print_row(struct permutation_piece *identifier_shackle, unsigned long horizontal_offset) {
+void print_row(struct permutation_piece *identifier_shackle, unsigned long horizontal) {
     /* ### Always display first the generator ### */
     fprintf(main_fs, "<%s> = {", identifier_shackle->next->unit->str);
 
     /* ### Move along the horizontal axis ### */
-    struct permutation_piece *first_to_print = move_along_horizontally(identifier_shackle, horizontal_offset);
+    struct permutation_piece *first_to_print = move_along_horizontally(identifier_shackle, horizontal);
 
     /* ### Start the subgroup printing do loop ### */
     struct permutation_piece *do_loop_iterator = first_to_print; do {
@@ -146,12 +146,12 @@ void table_effect(unsigned long cardinality, unsigned long cell_width) {
     printf("\n");
 }
 
-struct vertibrae *print_table(struct vertibrae *initial_row, struct coordinates *table_coordinates, unsigned long *group_cardinality) {
-    for (unsigned long i = 0; i < table_coordinates->vertical_offset; initial_row = initial_row->next, i++) {}
-    // ^^^ Move along the vertical axis
+struct vertibrae *print_table(struct vertibrae *initial_row, struct offset_margins *margins, unsigned long *group_cardinality) {
+    for (unsigned long i = 0; i < margins->Y; initial_row = initial_row->next, i++) {}
+    // ^^^ Move along the Y axis
 
     struct vertibrae *current_row = initial_row; do {
-	print_row(current_row->permutation, table_coordinates->horizontal_offset);
+	print_row(current_row->permutation, margins->X);
 	(*group_cardinality)++;
 	current_row = current_row->next;
     } while (current_row != initial_row);
@@ -223,31 +223,21 @@ int HELP_AND_QUIT(char *argv_zero) {
     return 0;
 }
 
-int main(int argc, char **argv) {
-    struct group_prams *group; struct coordinates *table_coordinates; // <<< Declare STRUCT pointers for program variables
-    group = (struct group_prams *) malloc(sizeof(struct group_prams)); // <<< Allocate one of the STRUCTs already
-    main_fs = stdout; // <<< Initializd main_fs to stdout
-
-    if (argv[1] && (streql(argv[1], "--help") || streql(argv[1], "-h"))) return HELP_AND_QUIT(argv[0]); // <<< Parse "--help"/"-h" toggle if there is one
-    else if (!(ul_ptr_from_str(&group->modulus, argv[1]))) return QUIT_ON_ARGV_ONE_ERROR(argv[1]); // <<< Parse "argv[1]" as group modulus if possible
-    else if (!(ul_ptr_from_str(&group->identity, argv[2]))) return QUIT_ON_ARGV_TWO_ERROR(argv[2]); // <<< Parse "argv[2]" as group identity if possible
-    else // <<< IFF if first and second terminal arguments have successfully been parsed
-    {   table_coordinates = (struct coordinates *) malloc(sizeof(struct coordinates)); // <<< The case where "argc == 1", and
-	table_coordinates->vertical_offset = table_coordinates->horizontal_offset = 0; // <<< The case where "argc == 2" have been filtered out already, so;
-	switch (argc) { case 3: break; // <<< Filters out option "(argc == 3)" from label "default" such that "default" only handles the case where there are too many arguments
-	    case 6: main_fs = fopen(argv[5], "w"); // (and the first isn't "--help" or "-h"
-	    case 5: if (!(ul_ptr_from_str(&table_coordinates->vertical_offset, argv[4]))) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
-	    case 4: if (!(ul_ptr_from_str(&table_coordinates->horizontal_offset, argv[3]))) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]); break;
-	    default:HELP_AND_QUIT(argv[0]); } }
-    // ^^^ Parse the remaining arguments
-
-    table_coordinates->horizontal_offset %= group->modulus;
+int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout;
+    if (argc == 2 && (streql(argv[1], "--help") || streql(argv[1], "-h"))) return HELP_AND_QUIT(argv[0]); // <<< Handles the scenario where the "--help" toggle is present
+    else group = (struct group_prams *) malloc(sizeof(struct group_prams)); // <<< Allocates memory for CAP and ID values when the "--help" toggle was not present
+    if (!(ul_ptr_from_str(&group->modulus, argv[1]))) return QUIT_ON_ARGV_ONE_ERROR(argv[1]); // <<< Parses "argv[1]" into CAP sloth if possible, quits if impossible
+    else if (!(ul_ptr_from_str(&group->identity, argv[2]))) return QUIT_ON_ARGV_TWO_ERROR(argv[2]); // <<< Parses "argv[2]" into ID sloth if possible, quits if impossible
+    struct offset_margins *margins = (struct offset_margins *) malloc(sizeof(struct offset_margins)); margins->Y = margins->X = 0; // <<< DEFAULT TO NOT USING OFFSETS
+    switch (argc) { case 6: main_fs = fopen(argv[5], "w"); case 5: if (!(ul_ptr_from_str(&margins->Y, argv[4]))) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
+		    case 4: if (!(ul_ptr_from_str(&margins->X, argv[3]))) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]); case 3: break; default: HELP_AND_QUIT(argv[0]);
+    } margins->X %= group->modulus; // ^^^ THESE TWO LINES AUTOMATICALLY HANDLE ALL OTHER POSSIBLE INPUT CASE SCENARIOS THAT ARE NOT PER SE AUTOMATICALLY HANDLED BY THE FIRST 4 LINES
 
     unsigned long cell_width;
     unsigned long group_cardinality = 0;
 
     struct vertibrae *table = setup_table(build_backbone(argv[0], (struct vertibrae **) sub_ordinator(), group), group);
-    print_table(table, table_coordinates, &group_cardinality);
+    print_table(table, margins, &group_cardinality);
     free_table(table);
 
     if (main_fs != stdout)
@@ -268,6 +258,6 @@ int main(int argc, char **argv) {
 
     /* ### Free remaining stuff ### */
     free(group);
-    free(table_coordinates);
+    free(margins);
 
     return 0; }
