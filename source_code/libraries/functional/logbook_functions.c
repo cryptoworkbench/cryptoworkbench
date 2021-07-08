@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h> // <<< Needed for malloc
 #include "string.h"
-#include "logbook_functions.h" // <<< Needed for definition of LOGBOOK_FORMULA and public variable "FILE *logbook_fs"
+#include "logbook_functions.h" // <<< Needed for definition of the definition of LOGBOOK_FORMULA
 #define GROUP_EXPORTER "group_examplifier"
 #define FILENAME_BODY "_group_of_integers_modulo"
 
@@ -22,7 +22,6 @@ const char *filename_body = "_group_of_integers_modulo_";
 const char *program_to_use = "group_examplifier";
 
 FILE *open_logbook() { return fopen(LOGBOOK_NAME, "a"); }
-// void close_logbook() { fclose(logbook_fs); }
 
 // ### Supposed to be called as "open_modular_group(open_logbook(),  . . . etc"
 FILE *open_modular_group(FILE *logbook_fs, char *program_name, unsigned long modulus, unsigned long identity, char **location_of_char_pointer_to_filename_in_allocated_memory) {
