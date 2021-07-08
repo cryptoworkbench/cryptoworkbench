@@ -16,7 +16,7 @@ struct number_pair *lookup_factorize_wrapper(unsigned long composite) {
 	fprintf(stdout, "Please provide the path to your prime table (relative to the current working directory): ");
 	fscanf(stdin, "%s", prime_table_filename);
 	if (!(prime_table_fs = fopen(prime_table_filename, "r"))) {
-	    struct number_pair lengths = { strlen(command_name), strlen(prime_table_filename) };
+	    struct number_pair lengths = { str_len(command_name), str_len(prime_table_filename) };
 	    char *command = (char *) malloc(sizeof(char) * (lengths.number_one + lengths.number_two) + 1);
 	    *copy_over(copy_over(command, (char *) command_name), (char *) prime_table_filename) = 0;
 	    system(command);

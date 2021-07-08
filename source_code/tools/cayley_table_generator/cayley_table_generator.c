@@ -213,16 +213,16 @@ int main(int argc, char **argv) { fs = stdout;
 
 	    }
 	    // Determine filename length
-	    filename_length += strlen(prepend);
+	    filename_length += str_len(prepend);
 
 	    if (group->identity)
-		filename_length += strlen(multiplicative_adjective);
+		filename_length += str_len(multiplicative_adjective);
 	    else
-		filename_length += strlen(additive_adjective);
+		filename_length += str_len(additive_adjective);
 	    
-	    filename_length += strlen(middle);
+	    filename_length += str_len(middle);
 	    filename_length += char_in_val(group->modulus);
-	    filename_length += strlen(end);
+	    filename_length += str_len(end);
 
 	    // Allocate memory
 	    output_filename = (char *) malloc(sizeof(char) * (filename_length + 1));

@@ -34,14 +34,14 @@ FILE *open_modular_group(FILE *logbook_fs, char *program_name, unsigned long mod
     // ^^^ Settle on language to appropiate
 
     char *mod_str = str_from_ul(modulus, 0);
-    char *file_to_open = (char *) malloc(sizeof(char) * (strlen(folder_name) + strlen(adjective) + strlen(filename_body) + strlen(mod_str) + 1));
+    char *file_to_open = (char *) malloc(sizeof(char) * (str_len(folder_name) + str_len(adjective) + str_len(filename_body) + str_len(mod_str) + 1));
     *copy_over(copy_over(copy_over(copy_over(file_to_open, folder_name), adjective), filename_body), mod_str) = 0;
     // ^^^ Prepare path to pass on to "fopen()"
 
     FILE *modular_group_fs = NULL;
     if (!(modular_group_fs = fopen(file_to_open, "r"))) {
 	fprintf(logbook_fs, LOGBOOK_FORMULA "<\u2124/%s\u2124, %s> does not seem to already have been registered, for there is no such file '%s' ===>\n", program_name, mod_str, group_operation, file_to_open);
-	char *required_command = (char *) malloc(sizeof(char) * ((2 * char_in_val(modulus)) + strlen(GROUP_EXPORTER) + 6 + strlen(folder_name) + strlen(adjective) + strlen(FILENAME_BODY) + 9));
+	char *required_command = (char *) malloc(sizeof(char) * ((2 * char_in_val(modulus)) + str_len(GROUP_EXPORTER) + 6 + str_len(folder_name) + str_len(adjective) + str_len(FILENAME_BODY) + 9));
 	sprintf(required_command, "%s %lu %lu > %s%s_group_of_integers_modulo_%s && sync", GROUP_EXPORTER, modulus, identity, folder_name, adjective, mod_str);
 
 	fprintf(logbook_fs, LOGBOOK_FORMULA "Running '%s' externally to register <\u2124/%s\u2124, %s>\n", program_name, required_command, mod_str, group_operation);

@@ -78,7 +78,7 @@ int main(int argc, char *argv[]) {
     if (filestream == stdout) {
 	fprintf(stdout, "Complete list of primes less than %lu:\n", *sieve_upper_bound);
     } else if (filestream == NULL) { // if the filestream is yet to be initialized, initialize a connection to an external prime table to be generated
-	temporary_prime_table_name = malloc(sizeof(char) * (strlen(temporary_name_prefix) + char_in_val(*sieve_upper_bound) + MULTIPLICATIVE_IDENTITY));
+	temporary_prime_table_name = malloc(sizeof(char) * (str_len(temporary_name_prefix) + char_in_val(*sieve_upper_bound) + MULTIPLICATIVE_IDENTITY));
 	sprintf(temporary_prime_table_name, "%s%lu", temporary_name_prefix, *sieve_upper_bound);
 	filestream = fopen(temporary_prime_table_name, "w");
     }
@@ -104,11 +104,11 @@ int main(int argc, char *argv[]) {
 
 	if (!(argc == 3 && (streql(argv[2], "-nr") || streql(argv[2], "--no-rename")))) { // Unless otherwise specified, rename this old file
 	    /* ### Prepare the new name ### */
-	    char *final_table_name = malloc(sizeof(char) * (strlen(final_name_prefix) + char_in_val(no_of_primes) + strlen(final_name_appendix) + 1));
+	    char *final_table_name = malloc(sizeof(char) * (str_len(final_name_prefix) + char_in_val(no_of_primes) + str_len(final_name_appendix) + 1));
 	    sprintf(final_table_name, "%s%lu%s", final_name_prefix, no_of_primes, final_name_appendix);
 
 	    /* ### Prepare the rename command we will use to rename the closed file ### */
-	    char *rename_command_string = malloc(sizeof(char) * (strlen(rename_command) + 1 + strlen(temporary_prime_table_name) + 1 + strlen(final_table_name) + 1));
+	    char *rename_command_string = malloc(sizeof(char) * (str_len(rename_command) + 1 + str_len(temporary_prime_table_name) + 1 + str_len(final_table_name) + 1));
 	    sprintf(rename_command_string, "%s %s %s", rename_command, temporary_prime_table_name, final_table_name);
 	    system(rename_command_string); free(rename_command_string);
 	    

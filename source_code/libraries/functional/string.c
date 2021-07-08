@@ -19,14 +19,14 @@ unsigned int streql(char *string_a, char *string_b) {
 }
 
 /* Returns an unsigned long containing the number of characters in the string pointed at by the constant char pointer 'string_pointer' */
-unsigned long strlen(const char *string_pointer) {
+unsigned long str_len(const char *string_pointer) {
     unsigned long index = 0;
     for (; string_pointer[index] != STRING_TERMINATING_CHARACTER; index++) {}
     return index;
 }
 
 /* Returns an int containing the number of characters in the string pointed at by the char pointer 'string_pointer' */
-int strlen_int(char *string_pointer) {
+int str_len_int(char *string_pointer) {
     int index = 0;
     for (; string_pointer[index] != STRING_TERMINATING_CHARACTER; index++) {}
     return index;
@@ -41,7 +41,7 @@ char *copy_over(char *recipient_adress, const char *source_adress) {
 
 unsigned long ul_from_str(char *string) {
     unsigned long iteration_count, string_as_integer, length_of_string; // Declare needed variables
-    iteration_count = string_as_integer = 0; length_of_string = strlen(string); // Initialize variables
+    iteration_count = string_as_integer = 0; length_of_string = str_len(string); // Initialize variables
 
     char *current_character = (string + (length_of_string - 1));
     while (current_character != string) {
@@ -55,7 +55,7 @@ unsigned long ul_from_str(char *string) {
 
 int string_to_int(char *string) {
     int iteration_count, string_as_integer, length_of_string; // Declare needed variables
-    iteration_count = string_as_integer = 0; length_of_string = strlen_int(string); // Initialize variables
+    iteration_count = string_as_integer = 0; length_of_string = str_len_int(string); // Initialize variables
 
     char *current_character = (string + (length_of_string - 1));
     while (current_character != string) {

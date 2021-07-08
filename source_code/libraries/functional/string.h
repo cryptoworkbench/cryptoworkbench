@@ -1,8 +1,8 @@
 /* Returns an unsigned long containing the number of characters in the string pointed at by variable 'string_pointer' of type 'constant char *' */
-unsigned long strlen(const char *string_pointer); // Just like in the standard library, works just as expected
+unsigned long str_len(const char *string_pointer); // Just like in the standard library, works just as expected
 
 /* Returns an int containing the number of characters in the string pointed at by the char pointer 'string_pointer' */
-int strlen_int(char *string_pointer); // Almost the same functionality as the above function
+int str_len_int(char *string_pointer); // Almost the same functionality as the above function
 
 unsigned int streql(char *string_a, char *string_b); // Returns 1 if string_a and string_b are equal, returns 0 if not
 char *copy_over(char *recipient_adress, const char *source_adress); // Copies over source onto recipient, terminating at the string terminating character 0 in the byte sequence pointed at by source_adress, then appends one onto the string pointed at by char *repicient_adress
