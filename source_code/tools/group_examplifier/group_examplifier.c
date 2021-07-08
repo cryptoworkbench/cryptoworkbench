@@ -3,8 +3,8 @@
  * ./argv_one <group modulus> <group identity>
  * END ABSTRACT. */
 #include <stdio.h>
-#include "../../libraries/mathematics/maths.h"
-#include "../../libraries/functional/string.h"
+#include "../../libraries/mathematics/maths.h" // <<< Needed for "GCD()"
+#include "../../libraries/functional/string.h" // <<< Needed for "ul_ptr_from_str()"
 // ^^^ LIBRARY INCLUSIONS
 
 #define ARGV_TWO_INSTRUCTION "Please provide as second argument '0' for the additive identity,\nOr '1' for the multiplicative identity.\n"
