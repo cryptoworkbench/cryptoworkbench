@@ -33,7 +33,6 @@ FILE *open_modular_group(FILE *logbook_fs, char *program_name, unsigned long CAP
 
     char *file_to_open = (char *) malloc(sizeof(char) * (3 + str_len(FOLDER_NAME) + str_len(adjective) + str_len(FILENAME_BODY) + char_in_val(CAP) + 1));
     sprintf(file_to_open, "../" FOLDER_NAME "%s" FILENAME_BODY "%lu", adjective, CAP);
-    fprintf(stderr, "Prepared path: %s\n", file_to_open);
     // ^^^ Prepare path to pass on to "fopen()"
 
     FILE *modular_group_fs = NULL;
