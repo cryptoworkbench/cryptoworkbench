@@ -190,8 +190,8 @@ struct vertibrae *setup_table(struct vertibrae *last_element, struct group_prams
     return do_loop_iterator; // <<< Returns linked list at identity element
 }
 
-struct vertibrae *build_backbone(char *argv_zero, struct vertibrae **channel, struct group_prams *group) {
-    char *input_filename; FILE *element_database = open_modular_group(open_logbook(), argv_zero, group->CAP, group->ID, &input_filename);
+struct vertibrae *build_backbone(char *program_name, struct vertibrae **channel, struct group_prams *group) {
+    char *input_filename; FILE *element_database = open_modular_group(open_logbook(), program_name, group->CAP, group->ID, &input_filename);
     // ^^^ Open filestream to element database
 
     unsigned long group_element;
@@ -219,8 +219,7 @@ int QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
 }
 
 int HELP_AND_QUIT(char *argv_zero) {
-    fprintf(stderr, HELP_INFORMATION, argv_zero);
-    return 0;
+    fprintf(stderr, HELP_INFORMATION, argv_zero); return 0;
 }
 
 int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; // <<< Preliminary pointers
