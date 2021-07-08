@@ -42,14 +42,14 @@ struct vertibrae {
     struct permutation_piece *permutation;
 };
 
-struct offset_margins {
+struct axis_disposition {
     unsigned long Y;
     unsigned long X;
 };
 
 struct group_prams { // "group_prams" is "group parameters"
-    unsigned long modulus;
-    unsigned long identity;
+    unsigned long CAP; // <<< Cap on the infiniete field of natural numbers (N)
+    unsigned long ID; // <<< The group identity
 };
 
 unsigned int coprime(unsigned long greatest_common_divisor) // Call as coprime(GCD(big, small)) ===>
@@ -92,20 +92,20 @@ struct permutation_piece *permutation_insert(struct vertibrae *upstream_l, unsig
  * */
 struct permutation_piece *yield_subgroup(struct vertibrae *upstream_l, struct group_prams *group_parameters) {
     struct permutation_piece *iterator = malloc(sizeof(struct permutation_piece)); // Create element
-    iterator->unit = lookup_unit(upstream_l, group_parameters->identity); // Set the identity value
+    iterator->unit = lookup_unit(upstream_l, group_parameters->ID); // Set the identity value
     iterator->next = iterator; // Make it circular
 
     unsigned long (*group_operation) (unsigned long, unsigned long, unsigned long) = _the_unary_operator_addition_under_modular_arithmatic;
 
-    if (group_parameters->identity)
+    if (group_parameters->ID)
 	group_operation = _the_unary_operator_multiplication_under_modular_arithmatic;
 
-    for (unsigned long generated_element = upstream_l->unit.number; generated_element != group_parameters->identity; generated_element = group_operation(generated_element, upstream_l->unit.number, group_parameters->modulus))
+    for (unsigned long generated_element = upstream_l->unit.number; generated_element != group_parameters->ID; generated_element = group_operation(generated_element, upstream_l->unit.number, group_parameters->CAP))
 	iterator = permutation_insert(upstream_l, generated_element, iterator); /* Put the current power of g into the permutation data structure */
 
     /* unsigned long generated_element = upstream_l->unit.number; do {
 	permutation_insert(source, upstream_l, generated_element);
-	generated_element = group_operation(generated_element, upstream_l->unit.number, group_parameters->modulus);
+	generated_element = group_operation(generated_element, upstream_l->unit.number, group_parameters->CAP);
     } while (generated_element != upstream_l->unit.number); */
 
     return iterator->next;
@@ -146,12 +146,12 @@ void table_effect(unsigned long cardinality, unsigned long cell_width) {
     printf("\n");
 }
 
-struct vertibrae *print_table(struct vertibrae *initial_row, struct offset_margins *margins, unsigned long *group_cardinality) {
-    for (unsigned long i = 0; i < margins->Y; initial_row = initial_row->next, i++) {}
+struct vertibrae *print_table(struct vertibrae *initial_row, struct axis_disposition *shift, unsigned long *group_cardinality) {
+    for (unsigned long i = 0; i < shift->Y; initial_row = initial_row->next, i++) {}
     // ^^^ Move along the Y axis
 
     struct vertibrae *current_row = initial_row; do {
-	print_row(current_row->permutation, margins->X);
+	print_row(current_row->permutation, shift->X);
 	(*group_cardinality)++;
 	current_row = current_row->next;
     } while (current_row != initial_row);
@@ -191,7 +191,7 @@ struct vertibrae *setup_table(struct vertibrae *last_element, struct group_prams
 }
 
 struct vertibrae *build_backbone(char *argv_zero, struct vertibrae **channel, struct group_prams *group) {
-    char *input_filename; FILE *element_database = open_modular_group(open_logbook(), argv_zero, group->modulus, group->identity, &input_filename);
+    char *input_filename; FILE *element_database = open_modular_group(open_logbook(), argv_zero, group->CAP, group->ID, &input_filename);
     // ^^^ Open filestream to element database
 
     unsigned long group_element;
@@ -223,21 +223,25 @@ int HELP_AND_QUIT(char *argv_zero) {
     return 0;
 }
 
-int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout;
-    if (argc == 2 && (streql(argv[1], "--help") || streql(argv[1], "-h"))) return HELP_AND_QUIT(argv[0]); // <<< Handles the scenario where the "--help" toggle is present
-    else group = (struct group_prams *) malloc(sizeof(struct group_prams)); // <<< Allocates memory for CAP and ID values when the "--help" toggle was not present
-    if (!(ul_ptr_from_str(&group->modulus, argv[1]))) return QUIT_ON_ARGV_ONE_ERROR(argv[1]); // <<< Parses "argv[1]" into CAP sloth if possible, quits if impossible
-    else if (!(ul_ptr_from_str(&group->identity, argv[2]))) return QUIT_ON_ARGV_TWO_ERROR(argv[2]); // <<< Parses "argv[2]" into ID sloth if possible, quits if impossible
-    struct offset_margins *margins = (struct offset_margins *) malloc(sizeof(struct offset_margins)); margins->Y = margins->X = 0; // <<< DEFAULT TO NOT USING OFFSETS
-    switch (argc) { case 6: main_fs = fopen(argv[5], "w"); case 5: if (!(ul_ptr_from_str(&margins->Y, argv[4]))) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
-		    case 4: if (!(ul_ptr_from_str(&margins->X, argv[3]))) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]); case 3: break; default: HELP_AND_QUIT(argv[0]);
-    } margins->X %= group->modulus; // ^^^ THESE TWO LINES AUTOMATICALLY HANDLE ALL OTHER POSSIBLE INPUT CASE SCENARIOS THAT ARE NOT PER SE AUTOMATICALLY HANDLED BY THE FIRST 4 LINES
+int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; // <<< Preliminary pointers
+    if (argc == 2 && (streql(argv[1], "--help") || streql(argv[1], "-h"))) return HELP_AND_QUIT(argv[0]); else group = (struct group_prams *) malloc(sizeof(struct group_prams));
+    // ^^^ Allocate memory for CAP and ID values if necessary
 
-    unsigned long cell_width;
-    unsigned long group_cardinality = 0;
+    if (!(ul_ptr_from_str(&group->CAP, argv[1]))) return QUIT_ON_ARGV_ONE_ERROR(argv[1]); // <<< Automatically parses "argv[1]" into CAP sloth if possible, quits if impossible
+    // ^^^ IFF we can parse the group CAP
 
+    else if (!(ul_ptr_from_str(&group->ID, argv[2]))) return QUIT_ON_ARGV_TWO_ERROR(argv[2]); // <<< Automatically parses "argv[2]" into ID sloth if possible, quits if impossible
+    // ^^^ AND we can parse the group ID
+
+    struct axis_disposition *shift = (struct axis_disposition *) malloc(sizeof(struct axis_disposition)); shift->Y = shift->X = 0; // <<< DEFAULT TO NOT USING OFFSETS
+    switch (argc) { case 6: main_fs = fopen(argv[5], "w"); case 5: if (!(ul_ptr_from_str(&shift->Y, argv[4]))) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
+		    case 4: if (!(ul_ptr_from_str(&shift->X, argv[3]))) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]); case 3: break; default: return HELP_AND_QUIT(argv[0]);
+    } shift->X %= group->CAP; // ^^^ THESE TWO LINES AUTOMATICALLY HANDLE ALL OTHER POSSIBLE INPUT CASE SCENARIOS THAT ARE NOT PER SE AUTOMATICALLY HANDLED BY THE FIRST 4 LINES
+    // ^^^ 
+
+    unsigned long cell_width; unsigned long group_cardinality = 0;
     struct vertibrae *table = setup_table(build_backbone(argv[0], (struct vertibrae **) sub_ordinator(), group), group);
-    print_table(table, margins, &group_cardinality);
+    print_table(table, shift, &group_cardinality);
     free_table(table);
 
     if (main_fs != stdout)
@@ -246,18 +250,18 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout;
 	fprintf(stdout, "\n");
     // ^^^ We are done creating the table so stop writting externally
 
-    if (group->identity == MULTIPLICATIVE_IDENTITY) { // <<< Display cardinality information on the multiplicative group of integers
-	fprintf(main_fs, "The multiplicative group of integers modulo %lu, expressed by the notations below:\n	\u2124%lu*\nOr	<\u2124/%lu\u2124, *>\n\ncontains %lu elements. That is to say that the cardinality of the multiplicative group of integers modulo %lu is %lu \u21D2\n", group->modulus, group->modulus, group->modulus, group_cardinality, group->modulus, group_cardinality);
-	fprintf(main_fs, " 	|\u2124%lu*| = %lu\n", group->modulus, group_cardinality);
-	fprintf(main_fs, "Or	|<\u2124/%lu\u2124*>| = %lu\n", group->modulus, group_cardinality); }
+    if (group->ID == MULTIPLICATIVE_IDENTITY) { // <<< Display cardinality information on the multiplicative group of integers
+	fprintf(main_fs, "The multiplicative group of integers modulo %lu, expressed by the notations below:\n	\u2124%lu*\nOr	<\u2124/%lu\u2124, *>\n\ncontains %lu elements. That is to say that the cardinality of the multiplicative group of integers modulo %lu is %lu \u21D2\n", group->CAP, group->CAP, group->CAP, group_cardinality, group->CAP, group_cardinality);
+	fprintf(main_fs, " 	|\u2124%lu*| = %lu\n", group->CAP, group_cardinality);
+	fprintf(main_fs, "Or	|<\u2124/%lu\u2124*>| = %lu\n", group->CAP, group_cardinality); }
     
-    else if (group->identity == ADDITIVE_IDENTITY) { // <<< Display cardinality information on the additive group of integers
-	fprintf(main_fs, "The additive group of integers modulo %lu, expressed by the notations below:\n	\u2124%lu+\nOr	<\u2124/%lu\u2124, +>\n\ncontains %lu elements. That is to say that the cardinality of the additive group of integers modulo %lu is %lu \u21D2\n", group->modulus, group->modulus, group->modulus, group_cardinality, group->modulus, group_cardinality);
-	fprintf(main_fs, "   	|\u2124%lu+| = %lu\n", group->modulus, group_cardinality);
-	fprintf(main_fs, "Or 	|<\u2124/%lu\u2124>+| = %lu\n", group->modulus, group_cardinality); }
+    else if (group->ID == ADDITIVE_IDENTITY) { // <<< Display cardinality information on the additive group of integers
+	fprintf(main_fs, "The additive group of integers modulo %lu, expressed by the notations below:\n	\u2124%lu+\nOr	<\u2124/%lu\u2124, +>\n\ncontains %lu elements. That is to say that the cardinality of the additive group of integers modulo %lu is %lu \u21D2\n", group->CAP, group->CAP, group->CAP, group_cardinality, group->CAP, group_cardinality);
+	fprintf(main_fs, "   	|\u2124%lu+| = %lu\n", group->CAP, group_cardinality);
+	fprintf(main_fs, "Or 	|<\u2124/%lu\u2124>+| = %lu\n", group->CAP, group_cardinality); }
 
     /* ### Free remaining stuff ### */
     free(group);
-    free(margins);
+    free(shift);
 
     return 0; }
