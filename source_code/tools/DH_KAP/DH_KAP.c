@@ -29,7 +29,7 @@
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
-#include "../../libraries/functional/logbook_functions.h" // <<< Declares "FILE *logbook_fs"
+#include "../../libraries/functional/logbook_functions.h"
 // ^^ LIBRARY INCLUSIONS
 
 #define ADDITIVE_IDENTITY 0
@@ -99,8 +99,8 @@ int main(int argc, char **argv) {
     else { fprintf(stderr, "Wrong argument count.\n\nExiting '-1'.\n"); return -1; }
     // ^^^ Or exit upon wrong argument count.
 
-    char *opened_file; FILE *input_file = open_modular_group(open_logbook(), argv[0], group_modulus, MULTIPLICATIVE_IDENTITY, &opened_file);
-    struct group_element *group_ll = ll_from_file(input_file, (struct group_element **) sub_ordinator()); fclose(input_file);
+    FILE *input_file = open_modular_group(argv[0], group_modulus, MULTIPLICATIVE_IDENTITY);
+    struct group_element *group_ll = ll_from_file(input_file, (struct group_element **) sub_ordinator());
     // ^^^ Get group from file
 
     struct group_element *iter = group_ll; do {
