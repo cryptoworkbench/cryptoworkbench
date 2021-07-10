@@ -24,7 +24,6 @@
 #define HELP_INFORMATION "Program usage: %s <group MOD> <group ID> [horizontal offset] [vertical offset] [output filename]\n\nOptions in between '<' & '>' symbols are mandatory.\n\nOptions between '[' & ']' are optional.\n"
 // ^^^ (MATHEMATICAL) DEFINITIONS
 
-FILE *logbook_fs;
 FILE *main_fs; // <<< ALL calls to "fprintf()" use main_fs
 
 struct unit {
@@ -192,13 +191,18 @@ struct vertibrae *setup_table(struct vertibrae *last_element, struct group_prams
 }
 
 struct vertibrae *build_backbone(char *program_name, struct vertibrae **channel, struct group_prams *group) {
-    FILE *element_database = open_modular_group(program_name, group->CAP, group->ID);
+    char *filename; FILE *element_database = open_modular_group_UNRESTRICTED(program_name, group->CAP, group->ID, &filename, fopen(LOGBOOK_NAME, "a"));
     // ^^^ Open filestream to element database
 
     unsigned long group_element;
-    while (fscanf(element_database, "%lu\n", &group_element) == 1) {
-	vertibrae_insert(channel, group_element); } fclose(element_database); // << And close element database connection
+    while (fscanf(element_database, "%lu\n", &group_element) == 1) vertibrae_insert(channel, group_element); // << And close element database connection
     // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
+
+    FILE *logbook_fs = fopen(LOGBOOK_NAME, "a"); // <<< Open logbook connection again to make use of the "filename" char pointer
+    fprintf(logbook_fs, LOGBOOK_FORMULA "Successfully interpreted group <\u2124/%lu\u2124, *> from file '%s'\n", program_name, group->CAP, filename);
+    fclose(element_database);
+    fprintf(logbook_fs, LOGBOOK_FORMULA "Closed filestream to '%s'\n", program_name, filename); fclose(logbook_fs); free(filename);
+    // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
     struct vertibrae *last_element, *first_element;
     last_element = first_element = (struct vertibrae *) disintermediate( (void **) channel);
@@ -223,7 +227,7 @@ int HELP_AND_QUIT(char *argv_zero) {
     fprintf(stderr, HELP_INFORMATION, argv_zero); return 0;
 }
 
-int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; logbook_fs = NULL; // <<< Preliminary pointers
+int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; // <<< Preliminary pointers
     if (argc == 2 && (streql(argv[1], "--help") || streql(argv[1], "-h"))) return HELP_AND_QUIT(argv[0]); else group = (struct group_prams *) malloc(sizeof(struct group_prams));
     // ^^^ Allocate memory for CAP and ID values if necessary
 
@@ -263,6 +267,4 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; l
     /* ### Gotta exit cleanly ### */
     free(group);
     free(shift);
-    fclose(logbook_fs); // <<< At "DH_KAP.c" I cannot close this filestream as late
-
     return 0; }
