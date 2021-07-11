@@ -9,8 +9,11 @@
  *
  * Worded differently, "open_modular_group()" 
  */
-#define LOGBOOK_NAME "../lab_logbook" // <<< This will be the logbook filename
-#define LOGBOOK_FORMULA "%s: "// <<< This will be the name prepend
+#define LOGBOOK_PATH "../lab_logbook" // <<< This will be the logbook filename
+#define LOGBOOK_FORMULA "%s: "// <<< This will be the name of the program printing to the logbook prepended to the line the program appends (to this logbook)
 
-FILE *open_modular_group_UNRESTRICTED(char *program_name, unsigned long CAP, unsigned long ID, char **location_of_char_pointer_to_filename_in_allocated_memory, FILE *logbook_fs);
-FILE *open_modular_group(FILE *throw_away_logbook_fs, char *program_name, unsigned long CAP, unsigned long ID);
+int LOGBOOK_APPEND(char *program_name, char *TO_BE_APPENDED_logbook_line);
+FILE *open_modular_group(char *program_name, unsigned long CAP, unsigned long ID, char **path_to_file_INSERTMENT_SLOTH);
+// ^^^ ABSTRACT OF THE ABOVE:
+// ### Logs to logbook in the name of the calling application
+// ### Uses "CAP" and "ID" ULs in order to derive 

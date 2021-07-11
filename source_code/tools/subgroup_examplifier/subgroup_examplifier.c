@@ -191,17 +191,17 @@ struct vertibrae *setup_table(struct vertibrae *last_element, struct group_prams
 }
 
 struct vertibrae *build_backbone(char *program_name, struct vertibrae **channel, struct group_prams *group) {
-    char *filename; FILE *element_database = open_modular_group_UNRESTRICTED(program_name, group->CAP, group->ID, &filename, NULL);
+    char *filename; FILE *element_database = open_modular_group(program_name, group->CAP, group->ID, &filename);
     // ^^^ Open filestream to element database
 
     unsigned long group_element;
     while (fscanf(element_database, "%lu\n", &group_element) == 1) vertibrae_insert(channel, group_element); // << And close element database connection
     // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
 
-    FILE *logbook_fs = fopen(LOGBOOK_NAME, "a"); // <<< Open logbook connection again to make use of the "filename" char pointer
-    fprintf(logbook_fs, LOGBOOK_FORMULA "Successfully interpreted <\u2124/%lu\u2124, *> from '%s'\n", program_name, group->CAP, filename);
+    char *LINE = (char *) malloc(sizeof(char) * 200);
+    sprintf(LINE, "Successfully interpreted <\u2124/%lu\u2124, *> from '%s'\n", group->CAP, filename); LOGBOOK_APPEND(program_name, LINE);
     fclose(element_database);
-    fprintf(logbook_fs, LOGBOOK_FORMULA "Closed reading filestream to '%s'\n", program_name, filename); fclose(logbook_fs); free(filename);
+    sprintf(LINE, "Closed reading filestream from '%s'\n", filename); free(filename); LOGBOOK_APPEND(program_name, LINE); free(LINE);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
     struct vertibrae *last_element, *first_element;

@@ -55,13 +55,10 @@ void insert(struct group_element **channel, unsigned long group_element) {
 }
 
 struct group_element *ll_from_file(FILE *input_file, struct group_element **channel) {
-    // fprintf(stderr, "Entering ll_from_file()\n");
-    unsigned long group_element; // fscanf(input_file, "%lu\n", &group_element); printf("1st: %lu\n", group_element);
+    unsigned long group_element;
     while (fscanf(input_file, "%lu\n", &group_element) == 1) 
 	insert(channel, group_element);
-    
     // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
-    printf("after while\n");
 
     struct group_element *last_element, *first_element;
     last_element = first_element = (struct group_element *) disintermediate( (void **) channel);
@@ -99,13 +96,13 @@ int main(int argc, char **argv) {
     else { fprintf(stderr, "Wrong argument count.\n\nExiting '-1'.\n"); return -1; }
     // ^^^ Or exit upon wrong argument count.
 
-    char *filename; FILE *input_file = open_modular_group_UNRESTRICTED(argv[0], group_modulus, MULTIPLICATIVE_IDENTITY, &filename, NULL);
+    char *filename; FILE *input_file = open_modular_group(argv[0], group_modulus, MULTIPLICATIVE_IDENTITY, &filename);
     struct group_element *group_ll = ll_from_file(input_file, (struct group_element **) sub_ordinator());
     // ^^ Get group from file
 
-    FILE *logbook_fs = fopen(LOGBOOK_NAME, "a");
-    fprintf(logbook_fs, LOGBOOK_FORMULA "Successfully interpreted <\u2124/%lu\u2124, *> from '%s'\n", argv[0], group_modulus, filename); fclose(input_file);
-    fprintf(logbook_fs, LOGBOOK_FORMULA "Closed reading filestream to '%s'\n", argv[0], filename); fclose(logbook_fs); free(filename);
+    char *LINE = (char *) malloc(sizeof(char) * 200);
+    sprintf(LINE, "Successfully interpreted <\u2124/%lu\u2124, *> from '%s'\n", group_modulus, filename); LOGBOOK_APPEND(argv[0], LINE);
+    sprintf(LINE, "Closed reading filestream from '%s'\n", filename); free(filename); LOGBOOK_APPEND(argv[0], LINE); free(LINE);
     // ^^^ Notify logbook we got group from file
 
     struct group_element *iter = group_ll; do {
