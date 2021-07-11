@@ -12,8 +12,7 @@
 #define LOGBOOK_PATH "../lab_logbook" // <<< This will be the logbook filename
 #define LOGBOOK_FORMULA "%s: "// <<< This will be the name of the program printing to the logbook prepended to the line the program appends (to this logbook)
 
+char *LOGBOOK_FS_CHARACTER_BUFFER(unsigned int SIZE);
+FILE *open_logbook(); // <<< Not supposed to be called directly so might as well comment it out
 int LOGBOOK_APPEND(char *program_name, char *TO_BE_APPENDED_logbook_line);
 FILE *open_modular_group(char *program_name, unsigned long CAP, unsigned long ID, char **path_to_file_INSERTMENT_SLOTH);
-// ^^^ ABSTRACT OF THE ABOVE:
-// ### Logs to logbook in the name of the calling application
-// ### Uses "CAP" and "ID" ULs in order to derive 
