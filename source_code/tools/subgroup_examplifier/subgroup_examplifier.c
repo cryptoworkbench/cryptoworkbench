@@ -201,7 +201,7 @@ struct vertibrae *build_backbone(char *program_name, struct vertibrae **channel,
     char *LINE = (char *) malloc(sizeof(char) * 200);
     sprintf(LINE, "Interpreted <\u2124/%lu\u2124, *> successfully from '%s' !\n", group->CAP, filename); LOGBOOK_APPEND(program_name, LINE);
     fclose(element_database);
-    sprintf(LINE, "Closed reading filestream from '%s'\n", filename); free(filename); LOGBOOK_APPEND(program_name, LINE); free(LINE);
+    sprintf(LINE, "Closed the filestream coming from '%s'\n", filename); free(filename); LOGBOOK_APPEND(program_name, LINE); free(LINE);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
     struct vertibrae *last_element, *first_element;

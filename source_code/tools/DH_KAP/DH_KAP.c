@@ -102,7 +102,7 @@ int main(int argc, char **argv) {
 
     char *LINE = (char *) malloc(sizeof(char) * 200);
     sprintf(LINE, "Interpreted <\u2124/%lu\u2124, *> successfully from '%s' !\n", group_modulus, filename); LOGBOOK_APPEND(argv[0], LINE);
-    sprintf(LINE, "Closed reading filestream from '%s'\n", filename); free(filename); LOGBOOK_APPEND(argv[0], LINE); free(LINE);
+    sprintf(LINE, "Closed the filestream coming from '%s'\n", filename); free(filename); LOGBOOK_APPEND(argv[0], LINE); free(LINE);
     // ^^^ Notify logbook we got group from file
 
     struct group_element *iter = group_ll; do {

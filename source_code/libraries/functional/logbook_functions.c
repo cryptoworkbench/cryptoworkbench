@@ -49,11 +49,12 @@ FILE *open_modular_group(char *program_name, unsigned long CAP, unsigned long ID
     // ### BEGIN PROGRAM OPERATION ===>
     FILE *modular_group_fs = NULL;
     if (!(modular_group_fs = fopen(PATH_TO_FILE, "r"))) {
-	sprintf(LINE, "<\u2124/%lu\u2124, %s> does not seem to be in the registry since I failed to open a reading filestream to '%s'\n", CAP, operation_symbol, PATH_TO_FILE); LOGBOOK_APPEND(program_name, LINE);
+	sprintf(LINE, "Failed to secure a filestream sourced from '%s'\n", PATH_TO_FILE); LOGBOOK_APPEND(program_name, LINE);
+	sprintf(LINE, "<\u2124/%lu\u2124, %s> does not seem to be registered\n", CAP, operation_symbol, PATH_TO_FILE); LOGBOOK_APPEND(program_name, LINE);
 	char *required_command = (char *) malloc(sizeof(char) * (str_len(GROUP_EXPORTER) + 1 + char_in_val(CAP) + 1 + char_in_val(ID) + 3 + str_len(PATH_TO_FILE) + 8));
 	sprintf(required_command, "%s %lu %lu > %s && sync", GROUP_EXPORTER, CAP, ID, PATH_TO_FILE, FOLDER_NAME);
 
-	sprintf(LINE, "I'm gonna try to register <\u2124/%lu\u2124, %s> by executing \"%s\"\n", CAP, operation_symbol, required_command); LOGBOOK_APPEND(program_name, LINE);
+	sprintf(LINE, "I will try to register <\u2124/%lu\u2124, %s> executing \"%s\"\n", CAP, operation_symbol, required_command); LOGBOOK_APPEND(program_name, LINE);
 	system(required_command); // <<< Sends operation to system, while ^^^ sends a notification of the operation to the logbook
 	sprintf(LINE, "Executed \"%s\"\n", required_command); LOGBOOK_APPEND(program_name, LINE);
 
@@ -61,7 +62,7 @@ FILE *open_modular_group(char *program_name, unsigned long CAP, unsigned long ID
 	    sprintf(LINE, "ERROR: failed to create registry file using \"%s\".\n", required_command); LOGBOOK_APPEND(program_name, LINE);
 	    return NULL; }
 	free(required_command);
-    } if (modular_group_fs != NULL) sprintf(LINE, "Successfully opened a reading filestream to '%s'\n", PATH_TO_FILE, CAP, operation_symbol); LOGBOOK_APPEND(program_name, LINE);
+    } if (modular_group_fs != NULL) sprintf(LINE, "Successfully secured a filestream sourced from '%s'\n", PATH_TO_FILE, CAP, operation_symbol); LOGBOOK_APPEND(program_name, LINE);
     free(LINE); *path_to_file_INSERTMENT_SLOTH = PATH_TO_FILE; 
     return modular_group_fs; }
 // ^^^ Function to open modular groups 
