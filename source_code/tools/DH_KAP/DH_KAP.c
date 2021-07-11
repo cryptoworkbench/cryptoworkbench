@@ -101,7 +101,7 @@ int main(int argc, char **argv) {
     // ^^ Get group from file
 
     char *LINE = (char *) malloc(sizeof(char) * 200);
-    sprintf(LINE, "Interpreted <\u2124/%lu\u2124, *> successfully from '%s' !\n", group_modulus, filename); LOGBOOK_APPEND(argv[0], LINE);
+    sprintf(LINE, "Sourced <\u2124/%lu\u2124, *> successfully from filestream\n", group_modulus, filename); LOGBOOK_APPEND(argv[0], LINE);
     sprintf(LINE, "Closed the filestream coming from '%s'\n", filename); free(filename); LOGBOOK_APPEND(argv[0], LINE); free(LINE);
     // ^^^ Notify logbook we got group from file
 
