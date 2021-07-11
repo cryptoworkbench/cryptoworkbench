@@ -191,7 +191,7 @@ struct vertibrae *setup_table(struct vertibrae *last_element, struct group_prams
 }
 
 struct vertibrae *build_backbone(char *program_name, struct vertibrae **channel, struct group_prams *group) {
-    char *filename; FILE *element_database = open_modular_group_UNRESTRICTED(program_name, group->CAP, group->ID, &filename, fopen(LOGBOOK_NAME, "a"));
+    char *filename; FILE *element_database = open_modular_group_UNRESTRICTED(program_name, group->CAP, group->ID, &filename, NULL);
     // ^^^ Open filestream to element database
 
     unsigned long group_element;
