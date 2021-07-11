@@ -199,9 +199,9 @@ struct vertibrae *build_backbone(char *program_name, struct vertibrae **channel,
     // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
 
     FILE *logbook_fs = fopen(LOGBOOK_NAME, "a"); // <<< Open logbook connection again to make use of the "filename" char pointer
-    fprintf(logbook_fs, LOGBOOK_FORMULA "Successfully interpreted group <\u2124/%lu\u2124, *> from file '%s'\n", program_name, group->CAP, filename);
+    fprintf(logbook_fs, LOGBOOK_FORMULA "Successfully interpreted <\u2124/%lu\u2124, *> from '%s'\n", program_name, group->CAP, filename);
     fclose(element_database);
-    fprintf(logbook_fs, LOGBOOK_FORMULA "Closed filestream to '%s'\n", program_name, filename); fclose(logbook_fs); free(filename);
+    fprintf(logbook_fs, LOGBOOK_FORMULA "Closed reading filestream to '%s'\n", program_name, filename); fclose(logbook_fs); free(filename);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
     struct vertibrae *last_element, *first_element;

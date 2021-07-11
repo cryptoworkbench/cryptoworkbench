@@ -104,9 +104,9 @@ int main(int argc, char **argv) {
     // ^^ Get group from file
 
     FILE *logbook_fs = fopen(LOGBOOK_NAME, "a");
-    fprintf(logbook_fs, LOGBOOK_FORMULA "Successfully interpreted group <\u2124/%lu\u2124, *> from file '%s'\n", argv[0], group_modulus, filename); fclose(input_file);
-    fprintf(logbook_fs, LOGBOOK_FORMULA "Closed filestream to '%s'\n", argv[0], filename); fclose(logbook_fs); free(filename);
-    // ^^^ Notify logbook we got group from fkle
+    fprintf(logbook_fs, LOGBOOK_FORMULA "Successfully interpreted <\u2124/%lu\u2124, *> from '%s'\n", argv[0], group_modulus, filename); fclose(input_file);
+    fprintf(logbook_fs, LOGBOOK_FORMULA "Closed reading filestream to '%s'\n", argv[0], filename); fclose(logbook_fs); free(filename);
+    // ^^^ Notify logbook we got group from file
 
     struct group_element *iter = group_ll; do {
 	unsigned long order = length(iter->value);
