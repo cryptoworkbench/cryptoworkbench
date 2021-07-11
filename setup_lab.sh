@@ -10,4 +10,6 @@ cd ../cayley_table_generator && make cayley_table_generator
 cd ../prime_table_generator && make prime_table_generator
 cd ../modular_exponentiation && make modular_exponentiation
 echo "
-Setup complete, you can now \"cd crypto_lab/tools/\" to start experimenting."
+Setup complete, you can now \"cd crypto_lab/tools/\" to start experimenting.
+
+\"rm -Rf crypto_lab/ && ./setup_lab.sh\" from ~ to rebuild crypto_lab/ from scratch."
