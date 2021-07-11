@@ -57,9 +57,9 @@ FILE *open_modular_group(char *program_name, unsigned long CAP, unsigned long ID
 	char *required_command = (char *) malloc(sizeof(char) * (str_len(GROUP_EXPORTER) + 1 + char_in_val(CAP) + 1 + char_in_val(ID) + 3 + str_len(PATH_TO_FILE) + 8));
 	sprintf(required_command, "%s %lu %lu > %s && sync", GROUP_EXPORTER, CAP, ID, PATH_TO_FILE, FOLDER_NAME);
 
-	sprintf(BUFFER, "I will manually try to register <\u2124/%lu\u2124, %s> by sending \"%s\" to the operating system.\n", CAP, operation_symbol, required_command); FLUSH_TO_FS(program_name, BUFFER);
+	sprintf(BUFFER, "Sending the command \"%s\" to the operating system in an effort to manually register <\u2124/%lu\u2124, %s>\n", required_command, CAP, operation_symbol); FLUSH_TO_FS(program_name, BUFFER);
 	system(required_command); // <<< Sends operation to system, while ^^^ sends a notification of the operation to the logbook
-	sprintf(BUFFER, "\"%s\" has been send to the operating system which presumably executed it correctly.\n", required_command); FLUSH_TO_FS(program_name, BUFFER);
+	sprintf(BUFFER, "\"%s\" has been send to the operating system which presumably executed it correctly\n", required_command); FLUSH_TO_FS(program_name, BUFFER);
 
 	if (!(modular_group_fs = fopen(PATH_TO_FILE, "r"))) { 
 	    sprintf(BUFFER, "ERROR: failed to create registry file using \"%s\".\n", required_command); FLUSH_TO_FS(program_name, BUFFER);
