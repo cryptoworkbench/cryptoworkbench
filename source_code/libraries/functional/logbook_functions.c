@@ -30,7 +30,7 @@ FILE *open_modular_group_UNRESTRICTED(char *program_name, unsigned long CAP, uns
 
     FILE *modular_group_fs = NULL;
     if (!(modular_group_fs = fopen(file_to_open, "r"))) {
-	fprintf(logbook_fs, LOGBOOK_FORMULA "Failed to open a reading filestream to '%s' \u21D2 <\u2124/%lu\u2124, %s> does not seem to be registered\n", program_name, file_to_open, CAP, group_operation);
+	fprintf(logbook_fs, LOGBOOK_FORMULA "<\u2124/%lu\u2124, %s> does not seem to be registered because I failed to open a reading filestream to '%s'\n", program_name, CAP, group_operation, file_to_open);
 	// fprintf(logbook_fs, LOGBOOK_FORMULA "\n", program_name, CAP, group_operation, file_to_open);
 	char *required_command = (char *) malloc(sizeof(char) * (str_len(GROUP_EXPORTER) + 1 + char_in_val(CAP) + 1 + char_in_val(ID) + 3 + str_len(file_to_open) + 8));
 	sprintf(required_command, "%s %lu %lu > %s && sync", GROUP_EXPORTER, CAP, ID, file_to_open, FOLDER_NAME);
