@@ -21,7 +21,7 @@
 #define STDOUT_ARGV_TWO_INSTRUCTION "Please provide as first argument the modulus of the group in decimal notation.\n"
 #define STDERR_HORIZONTAL_OFFSET_ERROR "Failed to parse \"%s\" (the 3th argument) as horizontal offset. Defaulting to not using a horizontal offset.\n"
 #define STDOUT_VERTICAL_OFFSET_ERROR "Failed to parse \"%s\" (the 4th argument) as vertical offset. Defaulting to not using a vertical offset.\n"
-#define HELP_INFORMATION "Program usage: %s <group MOD> <group ID> [horizontal offset] [vertical offset] [output filename]\n\nOptions in between '<' & '>' symbols are mandatory.\n\nOptions between '[' & ']' are optional.\n"
+#define HELP_INFORMATION "Program usage: %s <CAP> <ID> [horizontal offset] [vertical offset] [output filename]\n\n<MANDATORY ARGUMENTS> are denoted like this. The program won't run without these.\n\n[optional arguments] are denoted like this. They are not very necessary.\n"
 // ^^^ (MATHEMATICAL) DEFINITIONS
 
 FILE *main_fs; // <<< ALL calls to "fprintf()" use main_fs
@@ -42,7 +42,7 @@ struct vertibrae {
     struct permutation_piece *permutation;
 };
 
-struct axis_disposition {
+struct axis_dispositions {
     unsigned long Y;
     unsigned long X;
 };
@@ -141,12 +141,12 @@ void table_effect(unsigned long cardinality, unsigned long cell_width) {
     printf("\n");
 }
 
-struct vertibrae *print_table(struct vertibrae *initial_row, struct axis_disposition *shift, unsigned long *group_cardinality) {
-    for (unsigned long i = 0; i < shift->Y; initial_row = initial_row->next, i++) {}
+struct vertibrae *print_table(struct vertibrae *initial_row, struct axis_dispositions *shifts, unsigned long *group_cardinality) {
+    for (unsigned long i = 0; i < shifts->Y; initial_row = initial_row->next, i++) {}
     // ^^^ Move along the Y axis
 
     struct vertibrae *current_row = initial_row; do {
-	print_row(current_row->permutation, shift->X);
+	print_row(current_row->permutation, shifts->X);
 	(*group_cardinality)++;
 	current_row = current_row->next;
     } while (current_row != initial_row);
@@ -223,7 +223,7 @@ int HELP_AND_QUIT(char *argv_zero) {
 }
 
 int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; // <<< Preliminary pointers
-    if (argc == 2 && (streql(argv[1], "--help") || streql(argv[1], "-h"))) return HELP_AND_QUIT(argv[0]); else group = (struct group_prams *) malloc(sizeof(struct group_prams));
+    if (1 < argc && (streql(argv[1], "--help") || streql(argv[1], "-h")) || 6 < argc) return HELP_AND_QUIT(argv[0]); else group = (struct group_prams *) malloc(sizeof(struct group_prams));
     // ^^^ Allocate memory for CAP and ID values if necessary
 
     if (!(ul_ptr_from_str(&group->CAP, argv[1]))) return QUIT_ON_ARGV_ONE_ERROR(argv[1]); // <<< Automatically parses "argv[1]" into CAP sloth if possible, quits if impossible
@@ -232,15 +232,18 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
     else if (!(ul_ptr_from_str(&group->ID, argv[2]))) return QUIT_ON_ARGV_TWO_ERROR(argv[2]); // <<< Automatically parses "argv[2]" into ID sloth if possible, quits if impossible
     // ^^^ AND we can parse the group ID
 
-    struct axis_disposition *shift = (struct axis_disposition *) malloc(sizeof(struct axis_disposition)); shift->Y = shift->X = 0; // <<< DEFAULT TO NOT USING OFFSETS
-    switch (argc) { case 6: main_fs = fopen(argv[5], "w"); case 5: if (!(ul_ptr_from_str(&shift->Y, argv[4]))) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
-		    case 4: if (!(ul_ptr_from_str(&shift->X, argv[3]))) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]); case 3: break; default: return HELP_AND_QUIT(argv[0]);
-    } shift->X %= group->CAP; // ^^^ THESE TWO LINES AUTOMATICALLY HANDLE ALL OTHER POSSIBLE INPUT CASE SCENARIOS THAT ARE NOT PER SE AUTOMATICALLY HANDLED BY THE FIRST 4 LINES
-    // ^^^ 
+    struct axis_dispositions *shifts = (struct axis_dispositions *) malloc(sizeof(struct axis_dispositions)); shifts->Y = shifts->X = 0;
+    // ^^^ Default to not using offsets
+
+    if (argc != 3) { switch (argc) { case 6: main_fs = fopen(argv[5], "w");
+	    case 5: if (!(ul_ptr_from_str(&shifts->Y, argv[4]))) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
+	    case 4: if (!(ul_ptr_from_str(&shifts->X, argv[3]))) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
+	    default: shifts->X %= group->CAP; } }
+    // ^^^ Process potential optional arguments and the case where argc >= 7
 
     unsigned long cell_width; unsigned long group_cardinality = 0;
     struct vertibrae *table = setup_table(build_backbone(argv[0], (struct vertibrae **) sub_ordinator(), *group), group);
-    print_table(table, shift, &group_cardinality);
+    print_table(table, shifts, &group_cardinality);
     free_table(table);
 
     if (main_fs != stdout)
@@ -261,5 +264,5 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
 
     /* ### Gotta exit cleanly ### */
     free(group);
-    free(shift);
+    free(shifts);
     return 0; }
