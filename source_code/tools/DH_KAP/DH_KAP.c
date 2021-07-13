@@ -96,7 +96,7 @@ int main(int argc, char **argv) {
     else { fprintf(stderr, "Wrong argument count.\n\nExiting '-1'.\n"); return -1; }
     // ^^^ Or exit upon wrong argument count.
 
-    char *filename; FILE *input_file = open_group_as((struct group_prams) {group_modulus, MULTIPLICATIVE_IDENTITY}, argv[0], &filename);
+    char *filename; FILE *input_file = open_modular_GROUP_in_the_NAME_of((struct group_prams) {group_modulus, MULTIPLICATIVE_IDENTITY}, argv[0], &filename);
     struct group_element *group_ll = ll_from_file(input_file, (struct group_element **) sub_ordinator());
     // ^^ Get group from file
 
