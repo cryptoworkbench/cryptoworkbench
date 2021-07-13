@@ -186,7 +186,7 @@ struct vertibrae *setup_table(struct vertibrae *last_element, struct group_prams
 }
 
 struct vertibrae *build_backbone(char *program_name, struct vertibrae **channel, struct group_prams group) {
-    char *filename; FILE *element_database = open_modular_group(program_name, group, &filename);
+    char *filename; FILE *element_database = open_group_as(group, program_name, &filename);
     // ^^^ Open filestream to element database
 
     unsigned long group_element;
@@ -223,7 +223,7 @@ int HELP_AND_QUIT(char *argv_zero) {
 }
 
 int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; // <<< Preliminary pointers
-    if (1 < argc && (streql(argv[1], "--help") || streql(argv[1], "-h")) || 6 < argc) return HELP_AND_QUIT(argv[0]); else group = (struct group_prams *) malloc(sizeof(struct group_prams));
+    if (6 < argc || argc > 1 && (streql(argv[1], "--help") || streql(argv[1], "-h"))) return HELP_AND_QUIT(argv[0]); else group = (struct group_prams *) malloc(sizeof(struct group_prams));
     // ^^^ Allocate memory for CAP and ID values if necessary
 
     if (!(ul_ptr_from_str(&group->CAP, argv[1]))) return QUIT_ON_ARGV_ONE_ERROR(argv[1]); else if (!(ul_ptr_from_str(&group->ID, argv[2]))) return QUIT_ON_ARGV_TWO_ERROR(argv[2]);

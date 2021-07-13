@@ -46,7 +46,7 @@ int FLUSH_TO_FS(char *program_name, char *TO_BE_APPENDED_logbook_line) {
 // ^^^ Sends a single line of logging to the logbook file, prints error to stderr and returns -10 upon failure.
 
 // ### Supposed to be called as "open_modular_group(open_logbook(),  . . . etc", beware that the char pointer "program_name" is freed in this function
-FILE *open_modular_group(char *program_name, struct group_prams group, char **path_to_file_INSERTMENT_SLOTH) {
+FILE *open_group_as(struct group_prams group, char *program_name, char **path_to_file_INSERTMENT_SLOTH) {
     if (group.ID == 0) { adjective = (char *) alt_adjective; operation_symbol = (char *) alt_operation_symbol; }
     // ^^^ Settle on language to appropiate
 
