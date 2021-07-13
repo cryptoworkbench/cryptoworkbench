@@ -42,7 +42,7 @@ struct vertibrae {
     struct permutation_piece *permutation;
 };
 
-struct axis_dispositions {
+struct offset_values {
     unsigned long Y;
     unsigned long X;
 };
@@ -141,7 +141,7 @@ void table_effect(unsigned long cardinality, unsigned long cell_width) {
     printf("\n");
 }
 
-struct vertibrae *print_table(struct vertibrae *initial_row, struct axis_dispositions *shifts, unsigned long *group_cardinality) {
+struct vertibrae *print_table(struct vertibrae *initial_row, struct offset_values *shifts, unsigned long *group_cardinality) {
     for (unsigned long i = 0; i < shifts->Y; initial_row = initial_row->next, i++) {}
     // ^^^ Move along the Y axis
 
@@ -226,20 +226,15 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
     if (1 < argc && (streql(argv[1], "--help") || streql(argv[1], "-h")) || 6 < argc) return HELP_AND_QUIT(argv[0]); else group = (struct group_prams *) malloc(sizeof(struct group_prams));
     // ^^^ Allocate memory for CAP and ID values if necessary
 
-    if (!(ul_ptr_from_str(&group->CAP, argv[1]))) return QUIT_ON_ARGV_ONE_ERROR(argv[1]); // <<< Automatically parses "argv[1]" into CAP sloth if possible, quits if impossible
-    // ^^^ IFF we can parse the group CAP
+    if (!(ul_ptr_from_str(&group->CAP, argv[1]))) return QUIT_ON_ARGV_ONE_ERROR(argv[1]); else if (!(ul_ptr_from_str(&group->ID, argv[2]))) return QUIT_ON_ARGV_TWO_ERROR(argv[2]);
+    // ^^^ HANDLE the parsing of MANDATORY ARGUMENTS
 
-    else if (!(ul_ptr_from_str(&group->ID, argv[2]))) return QUIT_ON_ARGV_TWO_ERROR(argv[2]); // <<< Automatically parses "argv[2]" into ID sloth if possible, quits if impossible
-    // ^^^ AND we can parse the group ID
-
-    struct axis_dispositions *shifts = (struct axis_dispositions *) malloc(sizeof(struct axis_dispositions)); shifts->Y = shifts->X = 0;
-    // ^^^ Default to not using offsets
-
+    struct offset_values *shifts = (struct offset_values *) malloc(sizeof(struct offset_values)); shifts->Y = shifts->X = 0;
     if (argc != 3) { switch (argc) { case 6: main_fs = fopen(argv[5], "w");
 	    case 5: if (!(ul_ptr_from_str(&shifts->Y, argv[4]))) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
 	    case 4: if (!(ul_ptr_from_str(&shifts->X, argv[3]))) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
-	    default: shifts->X %= group->CAP; } }
-    // ^^^ Process potential optional arguments and the case where argc >= 7
+	    default: if (!(group->ID)) { shifts->X %= group->CAP; shifts->Y %= group->CAP; } } } // <<< Do you remember Joseph-Louis Lagrange? (see "MATH_HINT_ONE")
+    // ^^^ HANDLE the parsing of POTENTIAL ARGUMENTS (vertical and horizontal offset values default to 0 since theire respective arguments are "[optional]")
 
     unsigned long cell_width; unsigned long group_cardinality = 0;
     struct vertibrae *table = setup_table(build_backbone(argv[0], (struct vertibrae **) sub_ordinator(), *group), group);
@@ -265,4 +260,9 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
     /* ### Gotta exit cleanly ### */
     free(group);
     free(shifts);
-    return 0; }
+    return 0;
+}
+/* MATH HINTS (!):
+ * "MATH_HINT_ONE":
+ * 	For any finite group G, the order (number of elements) of every subgroup of G divides the order of G.
+ */

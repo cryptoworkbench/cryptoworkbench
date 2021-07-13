@@ -10,4 +10,8 @@ cd ../cayley_table_generator && make cayley_table_generator
 cd ../prime_table_generator && make prime_table_generator
 cd ../modular_exponentiation && make modular_exponentiation
 echo "
+
+Run from $(cd ../../../ && pwd) the following if you wish to start over:
+\"rm -fR crytpo_lab/ && ./setup_cryptolab.sh\"
+
 Setup complete, you can now \"cd crypto_lab/tools/\" to start experimenting."
