@@ -11,7 +11,7 @@
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
-#include "../../libraries/functional/logbook_functions.h"
+#include "../../libraries/functional/logbook_functions.h" // << Needed for the definition of "struct group_prams"
 #include "../../libraries/mathematics/group_operations.h"
 // ^^^ PERSONAL LIBRARY INCLUSIONS
 
@@ -45,11 +45,6 @@ struct vertibrae {
 struct axis_disposition {
     unsigned long Y;
     unsigned long X;
-};
-
-struct group_prams { // "group_prams" is "group parameters"
-    unsigned long CAP; // <<< Cap on the infiniete field of natural numbers (N)
-    unsigned long ID; // <<< The group identity
 };
 
 unsigned int coprime(unsigned long greatest_common_divisor) // Call as coprime(GCD(big, small)) ===>
@@ -190,8 +185,8 @@ struct vertibrae *setup_table(struct vertibrae *last_element, struct group_prams
     return do_loop_iterator; // <<< Returns linked list at identity element
 }
 
-struct vertibrae *build_backbone(char *program_name, struct vertibrae **channel, struct group_prams *group) {
-    char *filename; FILE *element_database = open_modular_group(program_name, group->CAP, group->ID, &filename);
+struct vertibrae *build_backbone(char *program_name, struct vertibrae **channel, struct group_prams group) {
+    char *filename; FILE *element_database = open_modular_group(program_name, group, &filename);
     // ^^^ Open filestream to element database
 
     unsigned long group_element;
@@ -199,7 +194,7 @@ struct vertibrae *build_backbone(char *program_name, struct vertibrae **channel,
     // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
 
     char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Sourced <\u2124/%lu\u2124, *> successfully from the filestream\n", group->CAP); FLUSH_TO_FS(program_name, BUFFER); // <<< This have to differentiate between "*" and "+"
+    sprintf(BUFFER, "Sourced <\u2124/%lu\u2124, *> successfully from the filestream\n", group.CAP); FLUSH_TO_FS(program_name, BUFFER); // <<< This have to differentiate between "*" and "+"
     fclose(element_database);
     sprintf(BUFFER, "Closed the filestream sourced by '%s'\n", filename); free(filename); FLUSH_TO_FS(program_name, BUFFER); free(BUFFER);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
@@ -244,7 +239,7 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
     // ^^^ 
 
     unsigned long cell_width; unsigned long group_cardinality = 0;
-    struct vertibrae *table = setup_table(build_backbone(argv[0], (struct vertibrae **) sub_ordinator(), group), group);
+    struct vertibrae *table = setup_table(build_backbone(argv[0], (struct vertibrae **) sub_ordinator(), *group), group);
     print_table(table, shift, &group_cardinality);
     free_table(table);
 
