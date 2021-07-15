@@ -46,5 +46,7 @@ int main(int argc, char **argv) {
 	    fprintf(stdout, "%lu\n", element);
     // ^^^ fprintf() the list of elements to stdout (which can be redirected by the shell using '>')
 
+    if (3 < argc) {
+    }
     return 0;
 }

@@ -226,8 +226,17 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
     if (6 < argc || argc > 1 && (streql(argv[1], "--help") || streql(argv[1], "-h"))) return HELP_AND_QUIT(argv[0]); else group = (struct group_prams *) malloc(sizeof(struct group_prams));
     // ^^^ Allocate memory for CAP and ID values if necessary
 
-    if (!(ul_ptr_from_str(&group->CAP, argv[1]))) return QUIT_ON_ARGV_ONE_ERROR(argv[1]); else if (!(ul_ptr_from_str(&group->ID, argv[2]))) return QUIT_ON_ARGV_TWO_ERROR(argv[2]);
+    if (2 > argc || !(ul_ptr_from_str(&group->CAP, argv[1]))) return QUIT_ON_ARGV_ONE_ERROR(argv[1]);
+
+    else if (3 > argc || !(ul_ptr_from_str(&group->CAP, argv[2]))) return QUIT_ON_ARGV_TWO_ERROR(argv[2]);
+
+    /*
+    if (!(ul_ptr_from_str(&group->CAP, argv[1]))) return QUIT_ON_ARGV_ONE_ERROR(argv[1]); else if (!(ul_ptr_from_str(&group->ID, argv[2]))) return QUIT_ON_ARGV_TWO_ERROR(argv[2]); */
     // ^^^ HANDLE the parsing of MANDATORY ARGUMENTS
+
+    /* This is another nice config */
+    if (2 > argc || ul_ptr_from_str(&group->CAP, argv[1])) {}
+    // ^^ If there is no first argument or it is not parsable
 
     struct offset_values *shifts = (struct offset_values *) malloc(sizeof(struct offset_values)); shifts->Y = shifts->X = 0;
     if (argc != 3) { switch (argc) { case 6: main_fs = fopen(argv[5], "w");
