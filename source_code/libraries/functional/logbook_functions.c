@@ -13,7 +13,7 @@
 #include "string.h"
 #include "logbook_functions.h" // <<< Needed for definition of the definition of LOGBOOK_FORMULA
 #define FOLDER_NAME "registry/"
-#define GROUP_EXPORTER "group_examplifier"
+#define GROUP_EXPORTER "./group_examplifier"
 #define FILENAME_BODY "_group_of_integers_mod_"
 
 char *adjective = "multiplicative"; // <<< We expect to be using this adjective
@@ -21,9 +21,6 @@ const char *alt_adjective = "additive";
 
 char *operation_symbol = "*"; // <<< I expect to most handle multiplicative groups
 const char *alt_operation_symbol = "+";
-
-const char *folder_name = "../registry/";
-const char *program_to_use = "./group_examplifier";
 
 char *BUFFER_OF_SIZE(unsigned int SIZE) {
     char *return_value = (char *) malloc(sizeof(char) * SIZE);
