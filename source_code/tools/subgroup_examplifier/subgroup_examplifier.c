@@ -215,7 +215,7 @@ int QUIT_ON_ARGV_TWO_ERROR(char *argv_two) {
 
 int QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
     fprintf(stdout, STDOUT_ARGV_TWO_INSTRUCTION);
-    fprintf(stderr, "\nFATAL ERROR: cannot grasp group MOD: to attempt to open from registry the group '<\u2124/%s\u2124>' makes no sense to me. Returning -1.\n", argv_one); return -1;
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP: to attempt to open from registry the group '<\u2124/%s\u2124>' makes no sense to me. Returning -1.\n", argv_one); return -1;
 }
 
 int HELP_AND_QUIT(char *argv_zero) {
@@ -227,23 +227,15 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
     // ^^^ Allocate memory for CAP and ID values if necessary
 
     if (2 > argc || !(ul_ptr_from_str(&group->CAP, argv[1]))) return QUIT_ON_ARGV_ONE_ERROR(argv[1]);
-
-    else if (3 > argc || !(ul_ptr_from_str(&group->CAP, argv[2]))) return QUIT_ON_ARGV_TWO_ERROR(argv[2]);
-
-    /*
-    if (!(ul_ptr_from_str(&group->CAP, argv[1]))) return QUIT_ON_ARGV_ONE_ERROR(argv[1]); else if (!(ul_ptr_from_str(&group->ID, argv[2]))) return QUIT_ON_ARGV_TWO_ERROR(argv[2]); */
-    // ^^^ HANDLE the parsing of MANDATORY ARGUMENTS
-
-    /* This is another nice config */
-    if (2 > argc || ul_ptr_from_str(&group->CAP, argv[1])) {}
-    // ^^ If there is no first argument or it is not parsable
+    else if (3 > argc || !(ul_ptr_from_str(&group->ID, argv[2]))) return QUIT_ON_ARGV_TWO_ERROR(argv[2]);
+    // ^^^ Collect CAP and ID values from mandatory arguments, quit with appropiate error message upon failure
 
     struct offset_values *shifts = (struct offset_values *) malloc(sizeof(struct offset_values)); shifts->Y = shifts->X = 0;
     if (argc != 3) { switch (argc) { case 6: main_fs = fopen(argv[5], "w");
 	    case 5: if (!(ul_ptr_from_str(&shifts->Y, argv[4]))) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
 	    case 4: if (!(ul_ptr_from_str(&shifts->X, argv[3]))) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
 	    default: if (!(group->ID)) { shifts->X %= group->CAP; shifts->Y %= group->CAP; } } } // <<< Do you remember Joseph-Louis Lagrange? (see "MATH_HINT_ONE")
-    // ^^^ HANDLE the parsing of POTENTIAL ARGUMENTS (vertical and horizontal offset values default to 0 since theire respective arguments are "[optional]")
+    // ^^^ HANDLE the parsing of POTENTIAL ARGUMENTS (vertical and horizontal offset values default to 0 since their respective arguments are "[optional]")
 
     unsigned long cell_width; unsigned long group_cardinality = 0;
     struct vertibrae *table = setup_table(build_backbone(argv[0], (struct vertibrae **) sub_ordinator(), *group), group);

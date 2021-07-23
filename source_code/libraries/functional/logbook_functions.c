@@ -13,7 +13,7 @@
 #include "string.h"
 #include "logbook_functions.h" // <<< Needed for definition of the definition of LOGBOOK_FORMULA
 #define FOLDER_NAME "registry/"
-#define GROUP_EXPORTER "./group_examplifier"
+#define GROUP_EXPORTER "group_examplifier"
 #define FILENAME_BODY "_group_of_integers_mod_"
 
 char *adjective = "multiplicative"; // <<< We expect to be using this adjective
@@ -46,7 +46,7 @@ int FLUSH_TO_FS(char *NAME, char *TO_BE_APPENDED_logbook_line) {
 // ^^^ Sends a single line of logging to the logbook file, prints error to stderr and returns -10 upon failure.
 
 // ### Supposed to be called as "open_modular_group(open_logbook(),  . . . etc", beware that the char pointer "NAME" is freed in this function
-FILE *open_modular_GROUP_in_the_NAME_of(struct group_prams GROUP, char *NAME, char **path_to_file_INSERTMENT_SLOTH) {
+FILE *open_modular_GROUP_in_the_NAME_of(struct group_prams GROUP, char *prog_NAME, char **path_to_file_INSERTMENT_SLOTH) {
     if (GROUP.ID == 0) { adjective = (char *) alt_adjective; operation_symbol = (char *) alt_operation_symbol; }
     // ^^^ Settle on language to appropiate
 
@@ -60,19 +60,29 @@ FILE *open_modular_GROUP_in_the_NAME_of(struct group_prams GROUP, char *NAME, ch
     // ### BEGIN PROGRAM OPERATION ===>
     FILE *modular_group_fs = NULL;
     if (!(modular_group_fs = fopen(PATH_TO_FILE, "r"))) {
-	sprintf(BUFFER, "Failed to secure a filestream sourced by '%s' \u21D2 the group denoted <\u2124/%lu\u2124, %s> does not seem to already have been registered\n", PATH_TO_FILE, GROUP.CAP, operation_symbol); FLUSH_TO_FS(NAME, BUFFER);
-	char *required_command = (char *) malloc(sizeof(char) * (str_len(GROUP_EXPORTER) + 1 + char_in_val(GROUP.CAP) + 1 + char_in_val(GROUP.ID) + 3 + str_len(PATH_TO_FILE) + 8));
-	sprintf(required_command, "%s %lu %lu > %s && sync", GROUP_EXPORTER, GROUP.CAP, GROUP.ID, PATH_TO_FILE, FOLDER_NAME);
+	sprintf(BUFFER, "Failed to secure a filestream sourced by '%s' \u21D2 the group denoted <\u2124/%lu\u2124, %s> does not seem to already have been registered\n", PATH_TO_FILE, GROUP.CAP, operation_symbol); FLUSH_TO_FS(prog_NAME, BUFFER);
+	sprintf(BUFFER, "Sending a command to the operating system in an effort to manually register <\u2124/%lu\u2124, %s>\n", GROUP.CAP, operation_symbol); FLUSH_TO_FS(prog_NAME, BUFFER);
+	/* OLD BUT IN USE: */
+	char *required_command = (char *) malloc(sizeof(char) * (str_len(GROUP_EXPORTER) + 1 + char_in_val(GROUP.CAP) + 1 + char_in_val(GROUP.ID) + 1 + str_len(PATH_TO_FILE) + 9));
+	sprintf(required_command, "%s %lu %lu %s && sync", GROUP_EXPORTER, GROUP.CAP, GROUP.ID, PATH_TO_FILE);
+	sprintf(BUFFER, "Sending %s\n", required_command); FLUSH_TO_FS(prog_NAME, BUFFER);
 
-	sprintf(BUFFER, "Sending '%s' to the operating system in an effort to manually register <\u2124/%lu\u2124, %s>\n", required_command, GROUP.CAP, operation_symbol); FLUSH_TO_FS(NAME, BUFFER);
-	system(required_command); // <<< Sends operation to system, while ^^^ sends a notification of the operation to the logbook
-	sprintf(BUFFER, "The command '%s' has been send to the operating system which presumably executed it correctly\n", required_command); FLUSH_TO_FS(NAME, BUFFER);
+	/* NEW IDEA:
+	char **str_arr = (char **) malloc(sizeof(char *) * 5);
+	str_arr[0] = GROUP_EXPORTER;
+	str_arr[1] = str_from_ul(GROUP.CAP, 0);
+	str_arr[2] = str_from_ul(GROUP.ID, 0);
+	str_arr[3] = PATH_TO_FILE;
+	str_arr[4] = 0;
+	execvp(str_arr[0], str_arr);
+	*/
+
+	sprintf(BUFFER, "The command has been send to the operating system which presumably executed it correctly\n"); FLUSH_TO_FS(prog_NAME, BUFFER);
 
 	if (!(modular_group_fs = fopen(PATH_TO_FILE, "r"))) { 
-	    sprintf(BUFFER, "ERROR: failed to create registry file using \"%s\".\n", required_command); FLUSH_TO_FS(NAME, BUFFER);
+	    sprintf(BUFFER, "ERROR: failed to create registry file using the external command.\n"); FLUSH_TO_FS(prog_NAME, BUFFER);
 	    return NULL; }
-	free(required_command);
-    } if (modular_group_fs != NULL) sprintf(BUFFER, "Successfully secured a filestream sourced by '%s'\n", PATH_TO_FILE, GROUP.CAP, operation_symbol); FLUSH_TO_FS(NAME, BUFFER);
+    } if (modular_group_fs != NULL) sprintf(BUFFER, "Successfully secured a filestream sourced by '%s'\n", PATH_TO_FILE, GROUP.CAP, operation_symbol); FLUSH_TO_FS(prog_NAME, BUFFER);
     free(BUFFER); *path_to_file_INSERTMENT_SLOTH = PATH_TO_FILE; 
     return modular_group_fs; }
 // ^^^ Function to open modular groups 
