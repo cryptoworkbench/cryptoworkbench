@@ -172,6 +172,23 @@ void free_table(struct vertibrae *link) {
     } while (iterator != link);
 }
 
+void print_generators(struct vertibrae *identity_element, unsigned long group_cardinality) {
+    struct vertibrae *current_element = identity_element->next; do {
+	if (current_element->permutation_length == group_cardinality) fprintf(stdout, "%s\n", current_element->unit.str);
+	current_element = current_element->next;
+    } while (current_element != identity_element);
+}
+
+/* ### put generator count ### */
+void put_generator_count(struct vertibrae *identity_element, unsigned long group_cardinality) {
+    unsigned long generator_count = 0;
+    struct vertibrae *current_element = identity_element->next; do {
+	if (current_element->permutation_length == group_cardinality) generator_count++;
+	current_element = current_element->next;
+    } while (current_element != identity_element);
+    identity_element->permutation_length = generator_count;
+}
+
 struct vertibrae *setup_table(struct vertibrae *last_element, struct group_prams *group_parameters) {
     unsigned long cell_width = char_in_val(last_element->unit.number);
     struct vertibrae *identity_element = last_element->next;
@@ -185,17 +202,17 @@ struct vertibrae *setup_table(struct vertibrae *last_element, struct group_prams
     return do_loop_iterator; // <<< Returns linked list at identity element
 }
 
-struct vertibrae *build_backbone(char *prog_NAME, struct vertibrae **channel, struct group_prams group, unsigned long *group_cardinality) {
-    char *filename; FILE *element_database = open_modular_GROUP_in_the_NAME_of(group, prog_NAME, &filename);
+struct vertibrae *build_backbone(char *prog_NAME, struct vertibrae **channel,unsigned long *group_cardinality, struct group_prams *group) {
+    char *filename; FILE *element_database = open_modular_GROUP_in_the_NAME_of(*group, prog_NAME, &filename);
     // ^^^ Open filestream to element database
 
     unsigned long group_element;
     while (fscanf(element_database, "%lu\n", &group_element) == 1) { vertibrae_insert(channel, group_element); (*group_cardinality)++; }
     // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
 
-    char *operation_symbol = OPERATION_SYMBOL(group.ID);
+    char *operation_symbol = OPERATION_SYMBOL(group->ID);
     char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Sourced <\u2124/%lu\u2124, %s> successfully from the filestream\n", group.CAP, operation_symbol); FLUSH_TO_FS(prog_NAME, BUFFER); fclose(element_database);
+    sprintf(BUFFER, "Sourced <\u2124/%lu\u2124, %s> successfully from the filestream\n", group->CAP, operation_symbol); FLUSH_TO_FS(prog_NAME, BUFFER); fclose(element_database);
     sprintf(BUFFER, "Closed the filestream sourced by '%s'\n", filename); free(filename); FLUSH_TO_FS(prog_NAME, BUFFER); free(BUFFER);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
@@ -239,9 +256,8 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
     // ^^^ HANDLE the parsing of POTENTIAL ARGUMENTS (vertical and horizontal offset values default to 0 since their respective arguments are "[optional]")
 
     unsigned long cell_width; unsigned long group_cardinality = 0;
-    struct vertibrae *table = setup_table(build_backbone(argv[0], (struct vertibrae **) sub_ordinator(), *group, &group_cardinality), group);
+    struct vertibrae *table = setup_table(build_backbone(argv[0], (struct vertibrae **) sub_ordinator(), &group_cardinality, group), group);
     print_table(table, shifts);
-    free_table(table);
 
     if (main_fs != stdout)
     { fclose(main_fs); main_fs = stdout; }
@@ -259,7 +275,15 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
 	fprintf(main_fs, "   	|\u2124%lu+| = %lu\n", group->CAP, group_cardinality);
 	fprintf(main_fs, "Or 	|<\u2124/%lu\u2124>+| = %lu\n", group->CAP, group_cardinality); }
 
+    put_generator_count(table, group_cardinality);
+    if (table->permutation_length > 0) {
+	fprintf(stdout, "\nThe group <\u2124/%lu\u2124, *> contains %lu generators:\n", group->CAP, table->permutation_length);
+	print_generators(table, group_cardinality);
+    } else
+	fprintf(stdout, "\nThis group does not have any generators.\n");
+
     /* ### Gotta exit cleanly ### */
+    free_table(table);
     free(group);
     free(shifts);
     return 0;
