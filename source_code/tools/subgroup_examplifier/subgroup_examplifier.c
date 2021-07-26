@@ -26,19 +26,19 @@
 
 FILE *main_fs; // <<< ALL calls to "fprintf()" use main_fs
 
-struct unit {
+struct content {
     unsigned long number;
     char *str;
 };
 
 struct permutation_piece {
     struct permutation_piece *next;
-    struct unit *unit;
+    struct content *unit;
 };
 
 struct vertibrae {
     struct vertibrae *next;
-    struct unit unit;
+    struct content unit;
     struct permutation_piece *permutation;
     unsigned long permutation_length;
 };
@@ -51,7 +51,7 @@ struct offset_values {
 unsigned int coprime(unsigned long greatest_common_divisor) // Call as coprime(GCD(big, small)) ===>
   { return (greatest_common_divisor == 1) ? 1 : 0; } // <=== If the Greatest Common Divisor of the unsigned long variables 'big' and 'small' in GCD(big, small) = 1, big & small are coprime
 
-struct unit *lookup_unit(struct vertibrae *upstream_link, unsigned long number) {
+struct content *lookup_content(struct vertibrae *upstream_link, unsigned long number) {
     struct vertibrae *iterator = upstream_link;
     do {
 	if (iterator->unit.number == number)
@@ -75,7 +75,7 @@ void vertibrae_insert(struct vertibrae **tracer, unsigned long new_ulong) {
 
 struct permutation_piece *permutation_insert(struct vertibrae *upstream_l, unsigned long unit_identifier, struct permutation_piece *previous_permutation_piece) {
     struct permutation_piece *next_permutation_piece = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Fix existence of new permutation_piece
-    next_permutation_piece->unit = lookup_unit(upstream_l, unit_identifier); // Fix first sloth
+    next_permutation_piece->unit = lookup_content(upstream_l, unit_identifier); // Fix first sloth
 
     // ###== Insert new linked list element ===>
     next_permutation_piece->next = previous_permutation_piece->next;
@@ -88,7 +88,7 @@ struct permutation_piece *permutation_insert(struct vertibrae *upstream_l, unsig
  * */
 struct permutation_piece *yield_subgroup(struct vertibrae *upstream_l, struct group_prams *group_parameters) {
     struct permutation_piece *iterator = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Create element
-    iterator->unit = lookup_unit(upstream_l, group_parameters->ID); // Set the identity value
+    iterator->unit = lookup_content(upstream_l, group_parameters->ID); // Set the identity value
     iterator->next = iterator; // Make it circular
 
     unsigned long (*group_operation) (unsigned long, unsigned long, unsigned long) = _the_unary_operator_addition_under_modular_arithmatic;
