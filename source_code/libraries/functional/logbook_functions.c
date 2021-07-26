@@ -39,8 +39,16 @@ int FLUSH_TO_FS(char *NAME, char *TO_BE_APPENDED_logbook_line) {
     else {
 	fprintf(stderr, "%s WILL ABORT NOW because it failed to append to the logbook the following line:\n", NAME);
 	fprintf(stderr, "\"%s\"\n\n", TO_BE_APPENDED_logbook_line);
-	fprintf(stderr, "EXITING '-10'\n"); return -10; } }
+	fprintf(stderr, "EXITING '-10'\n"); return -10; }
+}
 // ^^^ Sends a single line of logging to the logbook file, prints error to stderr and returns -10 upon failure.
+
+char *OPERATION_SYMBOL(unsigned long ID) {
+    if (ID)
+	return operation_symbol;
+    else
+	return alt_operation_symbol;
+}
 
 // ### Supposed to be called as "open_modular_group(open_logbook(),  . . . etc", beware that the char pointer "NAME" is freed in this function
 FILE *open_modular_GROUP_in_the_NAME_of(struct group_prams GROUP, char *prog_NAME, char **path_to_file_INSERTMENT_SLOTH) {
@@ -59,22 +67,10 @@ FILE *open_modular_GROUP_in_the_NAME_of(struct group_prams GROUP, char *prog_NAM
     if (!(modular_group_fs = fopen(PATH_TO_FILE, "r"))) {
 	sprintf(BUFFER, "Failed to secure a filestream sourced by '%s' \u21D2 the group denoted <\u2124/%lu\u2124, %s> does not seem to already have been registered\n", PATH_TO_FILE, GROUP.CAP, operation_symbol); FLUSH_TO_FS(prog_NAME, BUFFER);
 	sprintf(BUFFER, "Sending a command to the operating system in an effort to manually register <\u2124/%lu\u2124, %s>\n", GROUP.CAP, operation_symbol); FLUSH_TO_FS(prog_NAME, BUFFER);
-	/* OLD BUT IN USE: */
 	char *required_command = (char *) malloc(sizeof(char) * (str_len(GROUP_EXPORTER) + 1 + char_in_val(GROUP.CAP) + 1 + char_in_val(GROUP.ID) + 1 + str_len(PATH_TO_FILE) + 9));
 	sprintf(required_command, "%s %lu %lu %s && sync", GROUP_EXPORTER, GROUP.CAP, GROUP.ID, PATH_TO_FILE);
 	sprintf(BUFFER, "Sending '%s'\n", required_command); FLUSH_TO_FS(prog_NAME, BUFFER);
 	system(required_command);
-
-	/* NEW IDEA:
-	char **str_arr = (char **) malloc(sizeof(char *) * 5);
-	str_arr[0] = GROUP_EXPORTER;
-	str_arr[1] = str_from_ul(GROUP.CAP, 0);
-	str_arr[2] = str_from_ul(GROUP.ID, 0);
-	str_arr[3] = PATH_TO_FILE;
-	str_arr[4] = 0;
-	execvp(str_arr[0], str_arr);
-	*/
-
 	sprintf(BUFFER, "The command has been send to the operating system which presumably executed it correctly\n"); FLUSH_TO_FS(prog_NAME, BUFFER);
 
 	if (!(modular_group_fs = fopen(PATH_TO_FILE, "r"))) { 

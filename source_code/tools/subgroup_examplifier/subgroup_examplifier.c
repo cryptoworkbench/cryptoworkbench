@@ -193,8 +193,9 @@ struct vertibrae *build_backbone(char *program_name, struct vertibrae **channel,
     while (fscanf(element_database, "%lu\n", &group_element) == 1) vertibrae_insert(channel, group_element);
     // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
 
+    char *operation_symbol = OPERATION_SYMBOL(group.ID);
     char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Sourced <\u2124/%lu\u2124, *> successfully from the filestream\n", group.CAP); FLUSH_TO_FS(program_name, BUFFER); // <<< This have to differentiate between "*" and "+"
+    sprintf(BUFFER, "Sourced <\u2124/%lu\u2124, %s> successfully from the filestream\n", group.CAP, operation_symbol); FLUSH_TO_FS(program_name, BUFFER);
     fclose(element_database);
     sprintf(BUFFER, "Closed the filestream sourced by '%s'\n", filename); free(filename); FLUSH_TO_FS(program_name, BUFFER); free(BUFFER);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
