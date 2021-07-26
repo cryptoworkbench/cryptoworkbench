@@ -40,6 +40,7 @@ struct vertibrae {
     struct vertibrae *next;
     struct unit unit;
     struct permutation_piece *permutation;
+    unsigned long permutation_length;
 };
 
 struct offset_values {
@@ -73,7 +74,7 @@ void vertibrae_insert(struct vertibrae **tracer, unsigned long new_ulong) {
 }
 
 struct permutation_piece *permutation_insert(struct vertibrae *upstream_l, unsigned long unit_identifier, struct permutation_piece *previous_permutation_piece) {
-    struct permutation_piece *next_permutation_piece = malloc(sizeof(struct permutation_piece)); // Fix existence of new pointer_list element
+    struct permutation_piece *next_permutation_piece = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Fix existence of new permutation_piece
     next_permutation_piece->unit = lookup_unit(upstream_l, unit_identifier); // Fix first sloth
 
     // ###== Insert new linked list element ===>
@@ -95,14 +96,13 @@ struct permutation_piece *yield_subgroup(struct vertibrae *upstream_l, struct gr
     if (group_parameters->ID)
 	group_operation = _the_unary_operator_multiplication_under_modular_arithmatic;
 
-    for (unsigned long generated_element = upstream_l->unit.number; generated_element != group_parameters->ID; generated_element = group_operation(generated_element, upstream_l->unit.number, group_parameters->CAP))
+    unsigned long subgroup_cardinality = 1; // <<< For we already have the identity element (see code above)
+    for (unsigned long generated_element = upstream_l->unit.number; generated_element != group_parameters->ID; generated_element = group_operation(generated_element, upstream_l->unit.number, group_parameters->CAP)) {
 	iterator = permutation_insert(upstream_l, generated_element, iterator); /* Put the current power of g into the permutation data structure */
+	subgroup_cardinality++;
+    }
 
-    /* unsigned long generated_element = upstream_l->unit.number; do {
-	permutation_insert(source, upstream_l, generated_element);
-	generated_element = group_operation(generated_element, upstream_l->unit.number, group_parameters->CAP);
-    } while (generated_element != upstream_l->unit.number); */
-
+    upstream_l->permutation_length = subgroup_cardinality;
     return iterator->next;
 }
 
@@ -141,13 +141,12 @@ void table_effect(unsigned long cardinality, unsigned long cell_width) {
     printf("\n");
 }
 
-struct vertibrae *print_table(struct vertibrae *initial_row, struct offset_values *shifts, unsigned long *group_cardinality) {
+struct vertibrae *print_table(struct vertibrae *initial_row, struct offset_values *shifts) {
     for (unsigned long i = 0; i < shifts->Y; initial_row = initial_row->next, i++) {}
     // ^^^ Move along the Y axis
 
     struct vertibrae *current_row = initial_row; do {
 	print_row(current_row->permutation, shifts->X);
-	(*group_cardinality)++;
 	current_row = current_row->next;
     } while (current_row != initial_row);
     return initial_row;
@@ -177,6 +176,7 @@ struct vertibrae *setup_table(struct vertibrae *last_element, struct group_prams
     unsigned long cell_width = char_in_val(last_element->unit.number);
     struct vertibrae *identity_element = last_element->next;
 
+    unsigned long subgroup_size;
     struct vertibrae *do_loop_iterator = identity_element; do {
 	do_loop_iterator->permutation = yield_subgroup(do_loop_iterator, group_parameters); // Generate subgroup in memory
 	do_loop_iterator->unit.str = str_from_ul(do_loop_iterator->unit.number, cell_width);
@@ -185,19 +185,18 @@ struct vertibrae *setup_table(struct vertibrae *last_element, struct group_prams
     return do_loop_iterator; // <<< Returns linked list at identity element
 }
 
-struct vertibrae *build_backbone(char *program_name, struct vertibrae **channel, struct group_prams group) {
-    char *filename; FILE *element_database = open_modular_GROUP_in_the_NAME_of(group, program_name, &filename);
+struct vertibrae *build_backbone(char *prog_NAME, struct vertibrae **channel, struct group_prams group, unsigned long *group_cardinality) {
+    char *filename; FILE *element_database = open_modular_GROUP_in_the_NAME_of(group, prog_NAME, &filename);
     // ^^^ Open filestream to element database
 
     unsigned long group_element;
-    while (fscanf(element_database, "%lu\n", &group_element) == 1) vertibrae_insert(channel, group_element);
+    while (fscanf(element_database, "%lu\n", &group_element) == 1) { vertibrae_insert(channel, group_element); (*group_cardinality)++; }
     // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
 
     char *operation_symbol = OPERATION_SYMBOL(group.ID);
     char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Sourced <\u2124/%lu\u2124, %s> successfully from the filestream\n", group.CAP, operation_symbol); FLUSH_TO_FS(program_name, BUFFER);
-    fclose(element_database);
-    sprintf(BUFFER, "Closed the filestream sourced by '%s'\n", filename); free(filename); FLUSH_TO_FS(program_name, BUFFER); free(BUFFER);
+    sprintf(BUFFER, "Sourced <\u2124/%lu\u2124, %s> successfully from the filestream\n", group.CAP, operation_symbol); FLUSH_TO_FS(prog_NAME, BUFFER); fclose(element_database);
+    sprintf(BUFFER, "Closed the filestream sourced by '%s'\n", filename); free(filename); FLUSH_TO_FS(prog_NAME, BUFFER); free(BUFFER);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
     struct vertibrae *last_element, *first_element;
@@ -235,12 +234,13 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
     if (argc != 3) { switch (argc) { case 6: main_fs = fopen(argv[5], "w");
 	    case 5: if (!(ul_ptr_from_str(&shifts->Y, argv[4]))) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
 	    case 4: if (!(ul_ptr_from_str(&shifts->X, argv[3]))) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
-	    default: if (!(group->ID)) { shifts->X %= group->CAP; shifts->Y %= group->CAP; } } } // <<< Do you remember Joseph-Louis Lagrange? (see "MATH_HINT_ONE")
+	    default: if (!(group->ID)) { shifts->X %= group->CAP; shifts->Y %= group->CAP; } }
+    } // <<< Do you remember Joseph-Louis Lagrange? (see "MATH_HINT_ONE")
     // ^^^ HANDLE the parsing of POTENTIAL ARGUMENTS (vertical and horizontal offset values default to 0 since their respective arguments are "[optional]")
 
     unsigned long cell_width; unsigned long group_cardinality = 0;
-    struct vertibrae *table = setup_table(build_backbone(argv[0], (struct vertibrae **) sub_ordinator(), *group), group);
-    print_table(table, shifts, &group_cardinality);
+    struct vertibrae *table = setup_table(build_backbone(argv[0], (struct vertibrae **) sub_ordinator(), *group, &group_cardinality), group);
+    print_table(table, shifts);
     free_table(table);
 
     if (main_fs != stdout)

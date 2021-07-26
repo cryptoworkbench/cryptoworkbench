@@ -47,7 +47,7 @@ char *OPERATION_SYMBOL(unsigned long ID) {
     if (ID)
 	return operation_symbol;
     else
-	return alt_operation_symbol;
+	return (char *) alt_operation_symbol;
 }
 
 // ### Supposed to be called as "open_modular_group(open_logbook(),  . . . etc", beware that the char pointer "NAME" is freed in this function
