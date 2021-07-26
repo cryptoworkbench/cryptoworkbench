@@ -96,8 +96,10 @@ int main(int argc, char **argv) {
     else { fprintf(stderr, "Wrong argument count.\n\nExiting '-1'.\n"); return -1; }
     // ^^^ Or exit upon wrong argument count.
 
-    struct group_prams GROUP = {group_modulus, MULTIPLICATIVE_IDENTITY};
-    char *filename; FILE *input_file = open_modular_GROUP_in_the_NAME_of(&GROUP, argv[0], &filename);
+    struct group_prams *GROUP = (struct group_prams *) malloc(sizeof(struct group_prams));
+    GROUP->ID = MULTIPLICATIVE_IDENTITY;
+    GROUP->CAP = group_modulus;
+    char *filename; FILE *input_file = open_modular_GROUP_in_the_NAME_of(GROUP, argv[0], &filename); free(GROUP);
     struct group_element *group_ll = ll_from_file(input_file, (struct group_element **) sub_ordinator());
     // ^^ Get group from file
 
