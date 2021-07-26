@@ -24,8 +24,8 @@ const char *alt_operation_symbol = "+";
 
 char *BUFFER_OF_SIZE(unsigned int SIZE) {
     char *return_value = (char *) malloc(sizeof(char) * SIZE);
-    return return_value;
-} // ^^^ Returns an output buffer for logbook_fs
+    return return_value; }
+// ^^^ Returns an output buffer for logbook_fs
 
 FILE *open_logbook()  {
     FILE *return_value = fopen(LOGBOOK_PATH, "a");
