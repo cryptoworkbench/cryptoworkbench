@@ -13,7 +13,7 @@
 #include "string.h"
 #include "logbook_functions.h" // <<< Needed for definition of the definition of LOGBOOK_FORMULA
 #define FOLDER_NAME "registry/"
-#define GROUP_EXPORTER "./group_examplifier"
+#define GROUP_EXPORTER "group_examplifier"
 #define FILENAME_BODY "_group_of_integers_mod_"
 
 char *adjective = "multiplicative"; // <<< We expect to be using this adjective
@@ -62,7 +62,8 @@ FILE *open_modular_GROUP_in_the_NAME_of(struct group_prams GROUP, char *prog_NAM
 	/* OLD BUT IN USE: */
 	char *required_command = (char *) malloc(sizeof(char) * (str_len(GROUP_EXPORTER) + 1 + char_in_val(GROUP.CAP) + 1 + char_in_val(GROUP.ID) + 1 + str_len(PATH_TO_FILE) + 9));
 	sprintf(required_command, "%s %lu %lu %s && sync", GROUP_EXPORTER, GROUP.CAP, GROUP.ID, PATH_TO_FILE);
-	sprintf(BUFFER, "Sending %s\n", required_command); FLUSH_TO_FS(prog_NAME, BUFFER);
+	sprintf(BUFFER, "Sending '%s'\n", required_command); FLUSH_TO_FS(prog_NAME, BUFFER);
+	system(required_command);
 
 	/* NEW IDEA:
 	char **str_arr = (char **) malloc(sizeof(char *) * 5);

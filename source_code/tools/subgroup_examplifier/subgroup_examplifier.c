@@ -86,7 +86,7 @@ struct permutation_piece *permutation_insert(struct vertibrae *upstream_l, unsig
  * Think of a chain of shackles, this chain is returned at the shackle which points to the identity element unit's struct at a struct vertibrae data type
  * */
 struct permutation_piece *yield_subgroup(struct vertibrae *upstream_l, struct group_prams *group_parameters) {
-    struct permutation_piece *iterator = malloc(sizeof(struct permutation_piece)); // Create element
+    struct permutation_piece *iterator = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Create element
     iterator->unit = lookup_unit(upstream_l, group_parameters->ID); // Set the identity value
     iterator->next = iterator; // Make it circular
 
@@ -190,7 +190,7 @@ struct vertibrae *build_backbone(char *program_name, struct vertibrae **channel,
     // ^^^ Open filestream to element database
 
     unsigned long group_element;
-    while (fscanf(element_database, "%lu\n", &group_element) == 1) vertibrae_insert(channel, group_element); // << And close element database connection
+    while (fscanf(element_database, "%lu\n", &group_element) == 1) vertibrae_insert(channel, group_element);
     // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
 
     char *BUFFER = BUFFER_OF_SIZE(200);
