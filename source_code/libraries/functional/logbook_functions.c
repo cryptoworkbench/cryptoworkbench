@@ -57,9 +57,8 @@ char *ADJECTIVE_TO_USE(unsigned long ID) {
 	return (char *) alt_adjective;
 }
 
-// ### Supposed to be called as "open_modular_group(open_logbook(),  . . . etc", beware that the char pointer "NAME" is freed in this function
 FILE *open_modular_GROUP_in_the_NAME_of(struct group_prams GROUP, char *prog_NAME, char **path_to_file_INSERTMENT_SLOTH) {
-    if (GROUP.ID == 0) { adjective = (char *) alt_adjective; operation_symbol = (char *) alt_operation_symbol; }
+    char *adjective = ADJECTIVE_TO_USE(GROUP.ID);
     // ^^^ Settle on language to appropiate
 
     char *PATH_TO_FILE = (char *) malloc(sizeof(char) * (3 + str_len(FOLDER_NAME) + str_len(adjective) + str_len(FILENAME_BODY) + char_in_val(GROUP.CAP) + 1));
@@ -73,12 +72,10 @@ FILE *open_modular_GROUP_in_the_NAME_of(struct group_prams GROUP, char *prog_NAM
     FILE *modular_group_fs = NULL;
     if (!(modular_group_fs = fopen(PATH_TO_FILE, "r"))) {
 	sprintf(BUFFER, "Failed to secure a filestream sourced by '%s' \u21D2 the group denoted <\u2124/%lu\u2124, %s> does not seem to already have been registered\n", PATH_TO_FILE, GROUP.CAP, operation_symbol); FLUSH_TO_FS(prog_NAME, BUFFER);
-	sprintf(BUFFER, "Sending a command to the operating system in an effort to manually register <\u2124/%lu\u2124, %s>\n", GROUP.CAP, operation_symbol); FLUSH_TO_FS(prog_NAME, BUFFER);
 	char *required_command = (char *) malloc(sizeof(char) * (str_len(GROUP_EXPORTER) + 1 + char_in_val(GROUP.CAP) + 1 + char_in_val(GROUP.ID) + 1 + str_len(PATH_TO_FILE) + 9));
 	sprintf(required_command, "%s %lu %lu %s && sync", GROUP_EXPORTER, GROUP.CAP, GROUP.ID, PATH_TO_FILE);
-	sprintf(BUFFER, "Sending '%s'\n", required_command); FLUSH_TO_FS(prog_NAME, BUFFER);
+	sprintf(BUFFER, "Sending '%s' to the operating system in an effort to manually register <\u2124/%lu\u2124, %s>\n", required_command, GROUP.CAP, operation_symbol); FLUSH_TO_FS(prog_NAME, BUFFER);
 	system(required_command);
-	sprintf(BUFFER, "The command has been send to the operating system which presumably executed it correctly\n"); FLUSH_TO_FS(prog_NAME, BUFFER);
 
 	if (!(modular_group_fs = fopen(PATH_TO_FILE, "r"))) { 
 	    sprintf(BUFFER, "ERROR: failed to create registry file using the external command.\n"); FLUSH_TO_FS(prog_NAME, BUFFER);
