@@ -18,6 +18,7 @@ struct group_prams { // "group_prams" stands for "group parameters"
     unsigned long ID; // <<< The group identity
 };
 
+char *ADJECTIVE_TO_USE(unsigned long ID);
 char *OPERATION_SYMBOL(unsigned long ID);
 char *BUFFER_OF_SIZE(unsigned int SIZE);
 FILE *open_logbook(); // <<< Not supposed to be called directly so might as well comment it out

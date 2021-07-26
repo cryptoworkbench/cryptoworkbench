@@ -50,6 +50,13 @@ char *OPERATION_SYMBOL(unsigned long ID) {
 	return (char *) alt_operation_symbol;
 }
 
+char *ADJECTIVE_TO_USE(unsigned long ID) {
+    if (ID)
+	return adjective;
+    else
+	return (char *) alt_adjective;
+}
+
 // ### Supposed to be called as "open_modular_group(open_logbook(),  . . . etc", beware that the char pointer "NAME" is freed in this function
 FILE *open_modular_GROUP_in_the_NAME_of(struct group_prams GROUP, char *prog_NAME, char **path_to_file_INSERTMENT_SLOTH) {
     if (GROUP.ID == 0) { adjective = (char *) alt_adjective; operation_symbol = (char *) alt_operation_symbol; }

@@ -51,14 +51,14 @@ struct offset_values {
 unsigned int coprime(unsigned long greatest_common_divisor) // Call as coprime(GCD(big, small)) ===>
   { return (greatest_common_divisor == 1) ? 1 : 0; } // <=== If the Greatest Common Divisor of the unsigned long variables 'big' and 'small' in GCD(big, small) = 1, big & small are coprime
 
-struct content *lookup_content(struct vertibrae *upstream_link, unsigned long number) {
-    struct vertibrae *iterator = upstream_link;
+struct content *content_lookup(struct vertibrae *UPSTREAM, unsigned long number) {
+    struct vertibrae *iterator = UPSTREAM;
     do {
 	if (iterator->unit.number == number)
 	    return &iterator->unit;
 	else
 	    iterator = iterator->next;
-    } while (iterator != upstream_link);
+    } while (iterator != UPSTREAM);
 }
 
 void vertibrae_insert(struct vertibrae **tracer, unsigned long new_ulong) {
@@ -75,7 +75,7 @@ void vertibrae_insert(struct vertibrae **tracer, unsigned long new_ulong) {
 
 struct permutation_piece *permutation_insert(struct vertibrae *upstream_l, unsigned long unit_identifier, struct permutation_piece *previous_permutation_piece) {
     struct permutation_piece *next_permutation_piece = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Fix existence of new permutation_piece
-    next_permutation_piece->unit = lookup_content(upstream_l, unit_identifier); // Fix first sloth
+    next_permutation_piece->unit = content_lookup(upstream_l, unit_identifier); // Fix first sloth
 
     // ###== Insert new linked list element ===>
     next_permutation_piece->next = previous_permutation_piece->next;
@@ -88,7 +88,7 @@ struct permutation_piece *permutation_insert(struct vertibrae *upstream_l, unsig
  * */
 struct permutation_piece *yield_subgroup(struct vertibrae *upstream_l, struct group_prams *group_parameters) {
     struct permutation_piece *iterator = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Create element
-    iterator->unit = lookup_content(upstream_l, group_parameters->ID); // Set the identity value
+    iterator->unit = content_lookup(upstream_l, group_parameters->ID); // Set the identity value
     iterator->next = iterator; // Make it circular
 
     unsigned long (*group_operation) (unsigned long, unsigned long, unsigned long) = _the_unary_operator_addition_under_modular_arithmatic;
@@ -265,15 +265,14 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
 	fprintf(stdout, "\n");
     // ^^^ We are done creating the table so stop writting externally
 
-    if (group->ID == MULTIPLICATIVE_IDENTITY) { // <<< Display cardinality information on the multiplicative group of integers
-	fprintf(main_fs, "The multiplicative group of integers modulo %lu, expressed by the notations below:\n	\u2124%lu*\nOr	<\u2124/%lu\u2124, *>\n\ncontains %lu elements. That is to say that the cardinality of the multiplicative group of integers modulo %lu is %lu \u21D2\n", group->CAP, group->CAP, group->CAP, group_cardinality, group->CAP, group_cardinality);
-	fprintf(main_fs, " 	|\u2124%lu*| = %lu\n", group->CAP, group_cardinality);
-	fprintf(main_fs, "Or	|<\u2124/%lu\u2124*>| = %lu\n", group->CAP, group_cardinality); }
-    
-    else if (group->ID == ADDITIVE_IDENTITY) { // <<< Display cardinality information on the additive group of integers
-	fprintf(main_fs, "The additive group of integers modulo %lu, expressed by the notations below:\n	\u2124%lu+\nOr	<\u2124/%lu\u2124, +>\n\ncontains %lu elements. That is to say that the cardinality of the additive group of integers modulo %lu is %lu \u21D2\n", group->CAP, group->CAP, group->CAP, group_cardinality, group->CAP, group_cardinality);
-	fprintf(main_fs, "   	|\u2124%lu+| = %lu\n", group->CAP, group_cardinality);
-	fprintf(main_fs, "Or 	|<\u2124/%lu\u2124>+| = %lu\n", group->CAP, group_cardinality); }
+    char *adjective = ADJECTIVE_TO_USE(group->ID);
+    char *symbol = OPERATION_SYMBOL(group->ID);
+
+    fprintf(main_fs, "The %s group of integers modulo %lu, expressed by the notations below:\n	\u2124%lu%s\nOr	<\u2124/%lu\u2124, %s>\n\ncontains %lu elements. That is to say that the cardinality of the %s group of integers modulo %lu is %lu \u21D2\n", adjective, group->CAP, group->CAP, symbol, group->CAP, symbol, group_cardinality, adjective, group->CAP, group_cardinality);
+
+    fprintf(main_fs, " 	|\u2124%lu%s| = %lu\n", group->CAP, symbol, group_cardinality);
+    fprintf(main_fs, "Or	|<\u2124/%lu\u2124, %s>| = %lu\n", group->CAP, symbol, group_cardinality);
+    // ^^^ Print cardinality information about this group
 
     put_generator_count(table, group_cardinality);
     if (table->permutation_length > 0) {
@@ -281,6 +280,7 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
 	print_generators(table, group_cardinality);
     } else
 	fprintf(stdout, "\nThis group does not have any generators.\n");
+    // ^^^ Print generator information about this group
 
     /* ### Gotta exit cleanly ### */
     free_table(table);
