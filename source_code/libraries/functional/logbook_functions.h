@@ -21,6 +21,5 @@ struct group_prams { // "group_prams" stands for "group parameters"
 char *ADJECTIVE_TO_USE(unsigned long ID);
 char *OPERATION_SYMBOL(unsigned long ID);
 char *BUFFER_OF_SIZE(unsigned int SIZE);
-FILE *open_logbook(); // <<< Not supposed to be called directly so might as well comment it out
 int FLUSH_TO_FS(char *program_name, char *TO_BE_APPENDED_logbook_line);
-FILE *open_modular_GROUP_in_the_NAME_of(struct group_prams group, char *program_name, char **path_to_file_INSERTMENT_SLOTH);
+FILE *open_modular_GROUP_in_the_NAME_of(struct group_prams *group, char *program_name, char **path_to_file_INSERTMENT_SLOTH);
