@@ -275,7 +275,7 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
 
     put_generator_count(table, group_cardinality);
     if (table->permutation_length > 0) {
-	fprintf(stdout, "\nThe group <\u2124/%lu\u2124, *> contains %lu generators:\n", group->CAP, table->permutation_length);
+	fprintf(stdout, "\nThe group denoted <\u2124/%lu\u2124, *> or \u2124%lu%s contains %lu generators:\n", group->CAP, group->CAP, symbol, table->permutation_length);
 	print_generators(table, group_cardinality);
     } else
 	fprintf(stdout, "\nThis group does not have any generators.\n");
