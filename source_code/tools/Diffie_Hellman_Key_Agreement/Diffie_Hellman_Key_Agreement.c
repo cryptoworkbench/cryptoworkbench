@@ -104,8 +104,8 @@ int main(int argc, char **argv) {
     // ^^ Get group from file
 
     char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Sourced <\u2124/%lu\u2124, *> successfully from filestream\n", group_modulus, filename); FLUSH_TO_FS(argv[0], BUFFER);
-    sprintf(BUFFER, "Closed the filestream sourced by '%s'\n", filename); free(filename); FLUSH_TO_FS(argv[0], BUFFER); free(BUFFER);
+    sprintf(BUFFER, "Sourced <\u2124/%lu\u2124, *> successfully from filestream", group_modulus, filename); FLUSH_TO_FS(argv[0], BUFFER);
+    sprintf(BUFFER, "Closed the filestream sourced by '%s'", filename); free(filename); FLUSH_TO_FS(argv[0], BUFFER); free(BUFFER);
     // ^^^ Notify logbook we got group from file
 
     struct group_element *iter = group_ll; do {

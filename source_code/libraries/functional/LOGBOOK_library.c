@@ -41,14 +41,14 @@ char *BUFFER_OF_SIZE(unsigned int SIZE) {
     return return_value; }
 // ^^^ Returns an output buffer for logbook_fs
 
-void FLUSH_TO_FS(char *NAME, char *TO_BE_APPENDED_logbook_line) {
-    FILE *logbook_fs; if (logbook_fs = fopen(LOGBOOK_PATH, "a")) { fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", NAME, TO_BE_APPENDED_logbook_line); fclose(logbook_fs); }
+void FLUSH_TO_FS(char *prog_NAME, char *TO_BE_APPENDED_logbook_line) {
+    FILE *logbook_fs; if (logbook_fs = fopen(LOGBOOK_PATH, "a")) { fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", prog_NAME, TO_BE_APPENDED_logbook_line); fclose(logbook_fs); }
     // ^^^ Upon successfull opening of logbook_fs, append the line TO BE APPENDED to the logbook text file
 
     else {
-	fprintf(stderr, "%s will abort now because it failed to append to the logbook the following line:\n", NAME);
+	fprintf(stderr, "%s will abort now because it failed to append to the logbook the following line:\n", prog_NAME);
 	fprintf(stderr, "\"%s\"\n\n", TO_BE_APPENDED_logbook_line);
-	fprintf(stderr, "Now I am going to exit with error code '-10' \u2261 246 (mod 2^8). You can probably check by means of executing 'echo $?'.\n"); exit(-10); }
+	fprintf(stderr, "Now I am going to exit with error code '-10' \u2261 246 (mod 2^8). Presumably you can check with 'echo $?'.\n"); exit(-10); }
 }
 // ^^^ Sends a single line of logging to the logbook file, prints error to stderr and returns -10 upon failure.
 
@@ -74,8 +74,9 @@ FILE *open_modular_GROUP_in_the_NAME_of(struct group_prams *GROUP, char *prog_NA
 	system(required_command);
 
 	if (!(modular_group_fs = fopen(PATH_TO_FILE, "r"))) { 
-	    sprintf(BUFFER, "ERROR: failed to create registry file using the external command"); FLUSH_TO_FS(prog_NAME, BUFFER);
+	    sprintf(BUFFER, "ERROR: failed to create the required registry file using '%s'", required_command); FLUSH_TO_FS(prog_NAME, BUFFER); free(required_command);
 	    return NULL; }
+	free(required_command);
     } if (modular_group_fs != NULL) sprintf(BUFFER, "Successfully secured a filestream sourced by '%s'", PATH_TO_FILE); FLUSH_TO_FS(prog_NAME, BUFFER);
     free(BUFFER); *path_to_file_INSERTMENT_SLOTH = PATH_TO_FILE; 
     return modular_group_fs; }

@@ -212,8 +212,8 @@ struct vertibrae *build_backbone(char *prog_NAME, struct vertibrae **channel,uns
 
     char *operation_symbol = OPERATION_SYMBOL(group->ID);
     char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Sourced <\u2124/%lu\u2124, %s> successfully from the filestream\n", group->CAP, operation_symbol); FLUSH_TO_FS(prog_NAME, BUFFER); fclose(element_database);
-    sprintf(BUFFER, "Closed the filestream sourced by '%s'\n", filename); free(filename); FLUSH_TO_FS(prog_NAME, BUFFER); free(BUFFER);
+    sprintf(BUFFER, "Sourced <\u2124/%lu\u2124, %s> successfully from the filestream", group->CAP, operation_symbol); FLUSH_TO_FS(prog_NAME, BUFFER); fclose(element_database);
+    sprintf(BUFFER, "Closed the filestream sourced by '%s'", filename); free(filename); FLUSH_TO_FS(prog_NAME, BUFFER); free(BUFFER);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
     struct vertibrae *last_element, *first_element;

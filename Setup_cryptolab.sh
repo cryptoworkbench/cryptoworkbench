@@ -3,19 +3,24 @@
 mkdir crypto_lab/
 mkdir crypto_lab/tools
 mkdir crypto_lab/registry
-cd source_code/tools/group_examplifier && make group_examplifier && echo "SUCCESSFULLY MADE APPLICATION \"group_examplifier\"
+
+cd source_code/tools/group_examplifier && make group_examplifier && echo "### SUCCESSFULLY BUILD THE TOOL \"group_examplifier\".
 "
-cd ../subgroup_examplifier && make subgroup_examplifier && echo "SUCCESSFULLY MADE APPLICATION \"subgroup_examplifier\"
+cd ../subgroup_examplifier && make subgroup_examplifier && echo "### SUCCESSFULLY BUILD THE TOOL \"subgroup_examplifier\".
 "
-cd ../Diffie_Hellman_Key_Agreement && make Diffie_Hellman_Key_Agreement && echo "SUCCESSFULLY MADE APPLICATION \"Diffie_Hellman_Key_Agreement\"
+cd ../Diffie_Hellman_Key_Agreement && make Diffie_Hellman_Key_Agreement && echo "### SUCCESSFULLY BUILD THE TOOL \"Diffie_Hellman_Key_Agreement\".
 "
-cd ../cayley_table_generator && make cayley_table_generator && echo "SUCCESSFULLY MADE APPLICATION \"cayley_table_generator\"
+cd ../cayley_table_generator && make cayley_table_generator && echo "### SUCCESSFULLY BUILD THE TOOL \"cayley_table_generator\".
 "
-cd ../prime_table_generator && make prime_table_generator && echo "SUCCESSFULLY MADE APPLICATION \"prime_table_generator\"
+cd ../prime_table_generator && make prime_table_generator && echo "### SUCCESSFULLY BUILD THE TOOL \"prime_table_generator\".
 "
-cd ../modular_exponentiation && make modular_exponentiation && echo "SUCCESSFULLY MADE APPLICATION \"modular_exponentiation\"
+cd ../modular_exponentiation && make modular_exponentiation && echo "### SUCCESSFULLY BUILD THE TOOL \"modular_exponentiation\".
 "
-cd ../EMPTY_LABORATORY_LOGBOOK && make EMPTY_LABORATORY_LOGBOOK && echo "SUCCESSFULLY MADE APPLICATION \"EMPTY_LABORATORY_LOGBOOK\""
+cd ../CLEAR_LABORATORY_LOGBOOK && make CLEAR_LABORATORY_LOGBOOK && echo "### SUCCESSFULLY BUILD THE TOOL \"CLEAR_LABORATORY_LOGBOOK\".
+"
+cd ../CLEAR_REGISTRY && make CLEAR_REGISTRY && echo "### SUCCESSFULLY BUILD THE TOOL \"CLEAR_REGISTRY\".
+
+"
 echo "Run from $(cd ../../../ && pwd) the following if you wish to start over:
 \"rm -fR crytpo_lab/ && ./Setup_cryptolab.sh\"
 
