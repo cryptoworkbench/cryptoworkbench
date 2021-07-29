@@ -172,8 +172,8 @@ int main(int argc, char **argv) {
 	fprintf(stdout, "\n## ~ \u2203 y \u2208 <\u2124/%lu\u2124, *> : %lu^y \u2261 %lu (%% %lu)", group_modulus, base, public_bob, group_modulus);
 	fprintf(stdout, "\n##");
 	fprintf(stdout, "\n## NOTICE HOW EVE IS UNABLE TO FIGURE OUT '%lu' WITHOUT THE SECRET VALUES 'x' and 'y'\n", mutual_bob);
-	return 0;
+	exit(0);;
     } else {
 	fprintf(stderr, "\n#\n##### Calculation unsuccessfull, unknown error occured.\n#\n#Exiting '-3'.\n");
-	return -3;
+	exit(-3);
     } }

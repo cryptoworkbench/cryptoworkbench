@@ -108,5 +108,5 @@ int main(int argc, char **argv) { fprintf(stdout, "Domain parameters:\n");
 	field_combination(new, working_array + index, new);
 	printf("Result: (%lu, %lu)\n", new->x, new->y);
     }
-    return 0;
+    exit(0);
 }

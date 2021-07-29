@@ -123,5 +123,5 @@ int main(int argc, char *argv[]) {
 	free(current_name);
     } fprintf(stdout, ".\n");
 
-    /* Exit cleanly */
-    return 0; }
+    /* Exit cleanly (0) */
+    exit(0); }

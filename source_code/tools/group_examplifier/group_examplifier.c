@@ -59,4 +59,4 @@ int main(int argc, char **argv) { FILE *main_fs = stdout;
     if (main_fs != stdout) fclose(main_fs); // <^^ fprintf() the list of elements to main_fs and close this filestream.
 
     if (4 < argc) execvp(*(argv + 4), (argv + 4)); // <<< Pass on command string which begins at argv[4]
-    return 0; }
+    exit(0); }

@@ -307,5 +307,5 @@ int main(int argc, char **argv) { fs = stdout;
     } fprintf(stdout, RESET "\n");
     
     fprintf(stdout, "\nThis group contains %lu elements and the cell width is %lu characters.\n", group->order, group->cell_width + 2);
-    return 0;
+    exit(0);
 }

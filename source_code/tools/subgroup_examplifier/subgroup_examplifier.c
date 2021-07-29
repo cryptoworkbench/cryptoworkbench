@@ -228,15 +228,15 @@ struct vertibrae *build_backbone(char *prog_NAME, struct vertibrae **channel,uns
 
 int QUIT_ON_ARGV_TWO_ERROR(char *argv_two) {
     fprintf(stdout, STDOUT_ARGV_ONE_INSTRUCTION);
-    fprintf(stderr, "\nFATAL ERROR: cannot grasp group ID: '%s' is neither '0' nor '1'. Returning -2.\n", argv_two); return -2; }
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp group ID: '%s' is neither '0' nor '1'. Returning -2.\n", argv_two); exit(-2); }
 
 int QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
     fprintf(stdout, STDOUT_ARGV_TWO_INSTRUCTION);
-    fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP: to attempt to open from registry the group '<\u2124/%s\u2124>' makes no sense to me. Returning -1.\n", argv_one); return -1;
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP: to attempt to open from registry the group '<\u2124/%s\u2124>' makes no sense to me. Returning -1.\n", argv_one); exit(-1);
 }
 
 int HELP_AND_QUIT(char *argv_zero) {
-    fprintf(stderr, HELP_INFORMATION, argv_zero); return 0;
+    fprintf(stderr, HELP_INFORMATION, argv_zero); exit(0);
 }
 
 int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; // <<< Preliminary pointers
@@ -285,7 +285,7 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
     free_table(table);
     free(group);
     free(shifts);
-    return 0;
+    exit(0);
 }
 /* MATH HINTS (!):
  * "MATH_HINT_ONE":

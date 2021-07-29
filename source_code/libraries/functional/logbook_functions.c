@@ -49,7 +49,7 @@ int FLUSH_TO_FS(char *NAME, char *TO_BE_APPENDED_logbook_line) {
     else {
 	fprintf(stderr, "%s WILL ABORT NOW because it failed to append to the logbook the following line:\n", NAME);
 	fprintf(stderr, "\"%s\"\n\n", TO_BE_APPENDED_logbook_line);
-	fprintf(stderr, "EXITING '-10'\n"); return -10; }
+	fprintf(stderr, "EXITING '-10'\n"); exit(-10); }
 }
 // ^^^ Sends a single line of logging to the logbook file, prints error to stderr and returns -10 upon failure.
 

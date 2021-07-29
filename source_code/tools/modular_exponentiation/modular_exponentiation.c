@@ -20,5 +20,5 @@ int main(int argc, char **argv) {
     else fprintf(stdout, "%lu\n", base);
 
     fprintf(stdout, "\n%lu^%lu %% %lu = %lu\n", base, exponent, modulus, mod_exponentiate(base, exponent, modulus));
-    return 0;
+    exit(0);
 }
