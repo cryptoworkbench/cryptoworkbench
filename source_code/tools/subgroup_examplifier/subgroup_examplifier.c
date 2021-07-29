@@ -267,15 +267,15 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
 
     char *adjective = ADJECTIVE_TO_USE(group->ID);
     char *symbol = OPERATION_SYMBOL(group->ID);
-    fprintf(main_fs, "The %s group of integers modulo %lu, expressed by the notations below:\n	\u2124%lu%s\nOr	<\u2124/%lu\u2124, %s>\n\ncontains %lu elements. That is to say that the cardinality of the %s group of integers modulo %lu is %lu \u21D2\n", adjective, group->CAP, group->CAP, symbol, group->CAP, symbol, group_cardinality, adjective, group->CAP, group_cardinality);
+    fprintf(main_fs, "The %s group of integers modulo %lu, expressed by the notations below:\n	<\u2124/%lu\u2124, %s>\nOr	\u2124%lu%s\n\ncontains %lu elements. That is to say that the cardinality of the %s group of integers modulo %lu is %lu \u21D2\n", adjective, group->CAP, group->CAP, symbol, group->CAP, symbol, group_cardinality, adjective, group->CAP, group_cardinality);
 
-    fprintf(main_fs, " 	|\u2124%lu%s| = %lu\n", group->CAP, symbol, group_cardinality);
-    fprintf(main_fs, "Or	|<\u2124/%lu\u2124, %s>| = %lu\n", group->CAP, symbol, group_cardinality);
+    fprintf(main_fs, "	|<\u2124/%lu\u2124, %s>| = %lu\n", group->CAP, symbol, group_cardinality);
+    fprintf(main_fs, "Or 	|\u2124%lu%s| = %lu\n", group->CAP, symbol, group_cardinality);
     // ^^^ Print cardinality information about this group
 
     put_generator_count(table, group_cardinality);
     if (table->permutation_length > 0) {
-	fprintf(stdout, "\nThe group denoted <\u2124/%lu\u2124, *> or \u2124%lu%s contains %lu generators:\n", group->CAP, group->CAP, symbol, table->permutation_length);
+	fprintf(stdout, "\nThe group denoted \"<\u2124/%lu\u2124, %s>\" or alternatively \"\u2124%lu%s\" contains only the following %lu generators:\n", group->CAP, symbol, group->CAP, symbol, table->permutation_length);
 	print_generators(table, group_cardinality);
     } else
 	fprintf(stdout, "\nThis group does not have any generators.\n");
