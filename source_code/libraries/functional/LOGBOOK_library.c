@@ -48,7 +48,7 @@ void FLUSH_TO_FS(char *NAME, char *TO_BE_APPENDED_logbook_line) {
     else {
 	fprintf(stderr, "%s will abort now because it failed to append to the logbook the following line:\n", NAME);
 	fprintf(stderr, "\"%s\"\n\n", TO_BE_APPENDED_logbook_line);
-	fprintf(stderr, "Now I am going to exit with error code '-10' \u2261 246 (mod 2^8).\n"); exit(-10); }
+	fprintf(stderr, "Now I am going to exit with error code '-10' \u2261 246 (mod 2^8). You can probably check by means of executing 'echo $?'.\n"); exit(-10); }
 }
 // ^^^ Sends a single line of logging to the logbook file, prints error to stderr and returns -10 upon failure.
 
