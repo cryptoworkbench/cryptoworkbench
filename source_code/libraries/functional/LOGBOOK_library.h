@@ -10,7 +10,7 @@
  * Worded differently, "open_modular_group()" 
  */
 #include <unistd.h>
-#define LOGBOOK_PATH "../laboratory_logbook" // <<< This will be the logbook filename
+#define LOGBOOK_PATH "../LABORATORY_LOGBOOK" // <<< This will be the logbook filename
 #define LOGBOOK_FORMULA "%s: "// <<< This will be the name of the program printing to the logbook prepended to the line the program appends (to this logbook)
 
 struct group_prams { // "group_prams" stands for "group parameters"

@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <stdlib.h> // <<< Needed for malloc
 #include "string.h"
-#include "logbook_functions.h" // <<< Needed for definition of the definition of LOGBOOK_FORMULA
+#include "LOGBOOK_library.h" // <<< Needed for definition of the definition of LOGBOOK_FORMULA
 #define FOLDER_NAME "registry/"
 #define GROUP_EXPORTER "group_examplifier"
 #define FILENAME_BODY "_group_of_integers_mod_"

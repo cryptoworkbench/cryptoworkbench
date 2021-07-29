@@ -29,7 +29,7 @@
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
-#include "../../libraries/functional/logbook_functions.h"
+#include "../../libraries/functional/LOGBOOK_library.h"
 // ^^ LIBRARY INCLUSIONS
 
 #define ADDITIVE_IDENTITY 0

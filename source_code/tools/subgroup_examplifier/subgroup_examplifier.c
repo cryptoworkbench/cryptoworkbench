@@ -11,7 +11,7 @@
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
-#include "../../libraries/functional/logbook_functions.h" // << Needed for the definition of "struct group_prams"
+#include "../../libraries/functional/LOGBOOK_library.h" // << Needed for the definition of "struct group_prams"
 #include "../../libraries/mathematics/group_operations.h"
 // ^^^ PERSONAL LIBRARY INCLUSIONS
 
