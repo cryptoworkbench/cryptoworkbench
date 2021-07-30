@@ -28,16 +28,19 @@ void main(int argc, char **argv) {
     // ^^^ Identify to my user the values that I have identifier to myself
 
     char *SYMBOL = combination_SYMBOL_for_(SP);
-    function unCAPPED_field_combi = get_applicable_field_combination(SP);
-    CAPPED_field_combination CAPPED_field_combi = get_applicable_CAPPED_field_combination(SP);
+    field_combination field_combi = get_field_combination_from_SP_(SP);
+    CAPPED_field_combination RESTRICTED_field_combi = get_CAPPED_field_combination_from_SP_(SP);
     // ^^^ Neccessary preperation before we can use library
 
-    printf("A %s B \u2261 %lu %s %lu \u2261 %lu \u2261 %lu (%% %lu)\n", SYMBOL, a, SYMBOL, b, unCAPPED_field_combi(a, b), CAPPED_field_combi(a, b, group->CAP), group->CAP);
-    // ^^^ We use "unCAPPED_field_combi" function pointers for normal arithmetic combinations (but not yet higher than second-degree combinations (== multiplications))
-    // ^^^ And we use "CAPPED_field_combi" function pointers for modular arithmetic combinations (also limited to second-degree combinations, inspect code).
+    printf("A %s B \u2261 %lu %s %lu \u2261 %lu \u2261 %lu (%% %lu)\n", SYMBOL, a, SYMBOL, b, field_combi(a, b), RESTRICTED_field_combi(a, b, group->CAP), group->CAP);
+    // ^^^ We use "field_combi" function pointers for normal arithmetic combinations (but not yet higher than second-degree combinations (== multiplications))
+    // ^^^ And we use "RESTRICTED_field_combi" function pointers for modular arithmetic combinations (also limited to second-degree combinations, inspect code).
 
-    printf("A %s B \u2261 %lu %s %lu \u2261 %lu \u2261 %lu (%% %lu)\n", SYMBOL, a, SYMBOL, b, unCAPPED_field_combi(a, b), RESTRICT(unCAPPED_field_combi, a, b, group->CAP), group->CAP);
+    printf("A %s B \u2261 %lu %s %lu \u2261 %lu \u2261 %lu (%% %lu)\n", SYMBOL, a, SYMBOL, b, field_combi(a, b), (field_combi(a, b) % group->CAP), group->CAP);
     // ^^^ We can even do this
+
+    printf("A %s B \u2261 %lu %s %lu \u2261 %lu \u2261 %lu (%% %lu)\n", SYMBOL, a, SYMBOL, b, field_combi(a, b), RESTRICT(field_combi, a, b, group->CAP), group->CAP);
+    // ^^^ And even this
 
     exit(0);
 }
