@@ -1,5 +1,4 @@
 #!/bin/bash 
-
 mkdir crypto_lab/
 mkdir crypto_lab/tools
 mkdir crypto_lab/registry
@@ -21,6 +20,8 @@ cd ../CLEAR_LABORATORY_LOGBOOK && make CLEAR_LABORATORY_LOGBOOK && echo "### The
 cd ../CLEAR_REGISTRY && make CLEAR_REGISTRY && echo "### The following instrument has been assemblied/linked: CLEAR_REGISTRY"
 
 echo "
-##### Halting the assembly line ... ... ...
-########################################################################################################
-##### Setup complete 'cd crypto_lab/tools/' TO ENTER YOUR VERY OWN VIRTUAL MATHEMATICS LABORATORY. #####"
+########### The assembly line halted !
+########### The setup completed ! (presumably)
+#####################################################################################################
+####### 'ls crypto_lab/tools/' to see what instruments fall from the assembly line.           #######
+####### 'cd crypto_lab/tools/' to enter your very own VIRTUAL MATHEMATICS fucking LABORATORY. #######"
