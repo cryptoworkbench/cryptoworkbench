@@ -91,7 +91,7 @@ struct permutation_piece *yield_subgroup(struct vertibrae *upstream_l, struct gr
     iterator->unit = content_lookup(upstream_l, group_parameters->ID); // Set the identity value
     iterator->next = iterator; // Make it circular
 
-    CAPPED_function group_operation = get_applicable_CAPPED_function_for_(group_parameters->ID);
+    CAPPED_field_combination group_operation = get_CAPPED_field_combination_from_SP_(group_parameters->ID);
 
     unsigned long subgroup_cardinality = 1; // <<< For we already have the identity element (see code above)
     for (unsigned long generated_element = upstream_l->unit.number; generated_element != group_parameters->ID; generated_element = group_operation(generated_element, upstream_l->unit.number, group_parameters->CAP)) {

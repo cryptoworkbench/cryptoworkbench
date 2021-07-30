@@ -13,7 +13,7 @@
 #include "../../libraries/mathematics/group_operations.h"
 
 // ##### Equivalent to "group_prams" ###==>
-typedef struct _group_identifier { CAPPED_function UNARY; unsigned long CAP; } GROUP_IDENTIFIER;
+typedef struct _group_identifier { CAPPED_field_combination UNARY; unsigned long CAP; } GROUP_IDENTIFIER;
 
 void main(int argc, char **argv) {
     unsigned long a; if (2 > argc || !(ul_ptr_from_str(&a, argv[1]))) { fprintf(stderr, "Failed to interpret '%s' as A.\n\nExiting '-1'.\n", argv[1]); exit(-1); }
@@ -28,8 +28,8 @@ void main(int argc, char **argv) {
     // ^^^ Identify to my user the values that I have identifier to myself
 
     char *SYMBOL = combination_SYMBOL_for_(SP);
-    function unCAPPED_field_combi = get_applicable_function_for_(SP);
-    CAPPED_function CAPPED_field_combi = get_applicable_CAPPED_function_for_(SP);
+    function unCAPPED_field_combi = get_applicable_field_combination(SP);
+    CAPPED_field_combination CAPPED_field_combi = get_applicable_CAPPED_field_combination(SP);
     // ^^^ Neccessary preperation before we can use library
 
     printf("A %s B \u2261 %lu %s %lu \u2261 %lu \u2261 %lu (%% %lu)\n", SYMBOL, a, SYMBOL, b, unCAPPED_field_combi(a, b), CAPPED_field_combi(a, b, group->CAP), group->CAP);

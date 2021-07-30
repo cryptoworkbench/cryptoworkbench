@@ -13,14 +13,14 @@ unsigned long CAPPED_ordinated(unsigned long a, unsigned long b, unsigned long C
 // ^^^ ~ Multiplication in infinite fields (regular multiplication without MODding the result)
 // ^^^ ~ Multiplication in finite fields (multiplication with MODding the result)
 
-function get_applicable_function_for_(unsigned long SP) {
+field_combination get_field_combination_from_SP_(unsigned long SP) {
     if (SP == ADDITIVE_IDENTITY) return &ordinator;
     else if (SP == MULTIPLICATIVE_IDENTITY) return &ordinated;
 }
 
-CAPPED_function get_applicable_CAPPED_function_for_(unsigned long SP) {
+CAPPED_field_combination get_CAPPED_field_combination_from_SP_(unsigned long SP) {
     if (SP == ADDITIVE_IDENTITY) return &CAPPED_ordinator;
     else if (SP == MULTIPLICATIVE_IDENTITY) return &CAPPED_ordinated;
 }
 
-unsigned long RESTRICT(function base_UNARY, unsigned long a, unsigned long b, unsigned long CAP) { return base_UNARY(a, b) % CAP; }
+unsigned long RESTRICT(field_combination base_UNARY, unsigned long a, unsigned long b, unsigned long CAP) { return base_UNARY(a, b) % CAP; }

@@ -139,7 +139,7 @@ void spawn_association(struct combination **tracer, struct element *unary_head, 
 
 struct combination *combine(struct combination **source, struct group_meta *group) { 
     // First we determine the group operation
-    group_operation = get_applicable_CAPPED_function_for_(group->identity);
+    group_operation = get_CAPPED_field_combination_from_SP_(group->identity);
 
     // Prepare variables for function
     struct element *unary_head = group->ll;
