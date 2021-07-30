@@ -91,10 +91,7 @@ struct permutation_piece *yield_subgroup(struct vertibrae *upstream_l, struct gr
     iterator->unit = content_lookup(upstream_l, group_parameters->ID); // Set the identity value
     iterator->next = iterator; // Make it circular
 
-    unsigned long (*group_operation) (unsigned long, unsigned long, unsigned long) = _the_unary_operator_addition_under_modular_arithmatic;
-
-    if (group_parameters->ID)
-	group_operation = _the_unary_operator_multiplication_under_modular_arithmatic;
+    group_operation_POINTER group_operation = group_operation_FROM_(group_parameters->ID);
 
     unsigned long subgroup_cardinality = 1; // <<< For we already have the identity element (see code above)
     for (unsigned long generated_element = upstream_l->unit.number; generated_element != group_parameters->ID; generated_element = group_operation(generated_element, upstream_l->unit.number, group_parameters->CAP)) {
