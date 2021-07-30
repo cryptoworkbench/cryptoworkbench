@@ -12,35 +12,51 @@
 #include "../../libraries/functional/LOGBOOK_library.h"
 // #include "../../libraries/mathematics/group_operations.h"
 
-unsigned long UNCAPPED_combination(unsigned long a, unsigned long B) { return a + B; } // <<< The primary operation of all of arithmetic is addition
-unsigned long UNCAPPED_combination_REPEATED(unsigned long a, unsigned long B) { return a * B; }
-typedef unsigned long (*UNCAPPED_functions) (unsigned long, unsigned long);
-UNCAPPED_functions get_applicable_UNCAPPED_function_for(unsigned long SP) { if (SP == 0) return &UNCAPPED_combination; else if (SP == 1) return &UNCAPPED_combination_REPEATED; }
-// ^^^ Everything we need for normal (unCAPPED) arithmetics
+unsigned long ordinator(unsigned long a, unsigned long b) { return a + b; }
+unsigned long CAPPED_ordinator(unsigned long a, unsigned long b, unsigned long CAP) { return ordinator(a, b) % CAP; }
+// ^^^ Define the ordinating addition operations for 'regular' (not CAPPED) and 'modular' (CAPPED) arithmetic respectively
 
-unsigned long CAPPED_combination(unsigned long a, unsigned long B, unsigned long CAP) { return UNCAPPED_combination(a, B) % CAP; }
-unsigned long CAPPED_combination_REPEATED(unsigned long a, unsigned long B, unsigned long CAP) { return UNCAPPED_combination_REPEATED(a, B) % CAP; }
-typedef unsigned long (*CAPPED_functions) (unsigned long, unsigned long, unsigned long);
-CAPPED_functions get_applicable_CAPPED_function_for(unsigned long SP) { if (SP == 0) return &CAPPED_combination; else if (SP == 1) return &CAPPED_combination_REPEATED; }
-// ^^^ Everything we need for modular (CAPPED) arithmetics
+unsigned long ordinated(unsigned long a, unsigned long b) { return a * b; }
+unsigned long CAPPED_ordinated(unsigned long a, unsigned long b, unsigned long CAP) { return ordinated(a, b) % CAP; }
+// ^^^ Define the ordinated multiplication operations for 'regular' (not CAPPED) and 'modular' (CAPPED) arithmetic, also respectively
 
-typedef struct _group_identifier { CAPPED_functions UNARY; unsigned long CAP; } GROUP_IDENTIFIER;
-// ^^^ Equivalent to "group_prams"
+typedef unsigned long (*function) (unsigned long, unsigned long);
+function get_applicable_function_for_(unsigned long SP) { if (SP == 0) return &ordinator; else if (SP == 1) return &ordinated; }
+// ^^^ Define a function that will get you the right ordinator (== addition operation)
 
-unsigned long FINITE_(UNCAPPED_functions base_UNARY, unsigned long a, unsigned long B, unsigned long CAP) { return base_UNARY(a, B) % CAP; }
+typedef unsigned long (*CAPPED_function) (unsigned long, unsigned long, unsigned long);
+CAPPED_function get_applicable_CAPPED_function_for_(unsigned long SP) { if (SP == 0) return &CAPPED_ordinator; else if (SP == 1) return &CAPPED_ordinated; }
+// ^^^ Define a function that will get you the right ordinated (== multiplication operation)
+
+unsigned long RESTRICT(function base_UNARY, unsigned long a, unsigned long b, unsigned long CAP) { return base_UNARY(a, b) % CAP; }
 // ^^^ This is my general GROUP_operation unary function
+
+// ##### Equivalent to "group_prams" ###==>
+typedef struct _group_identifier { CAPPED_function UNARY; unsigned long CAP; } GROUP_IDENTIFIER;
 
 void main(int argc, char **argv) {
     unsigned long a; if (2 > argc || !(ul_ptr_from_str(&a, argv[1]))) { fprintf(stderr, "Failed to interpret '%s' as A.\n\nExiting '-1'.\n", argv[1]); exit(-1); }
-    unsigned long B; if (3 > argc || !(ul_ptr_from_str(&B, argv[2]))) { fprintf(stderr, "Failed to interpret '%s' as B.\n\nExiting '-2'.\n", argv[2]); exit(-2); }
+    unsigned long b; if (3 > argc || !(ul_ptr_from_str(&b, argv[2]))) { fprintf(stderr, "Failed to interpret '%s' as b.\n\nExiting '-2'.\n", argv[2]); exit(-2); }
     GROUP_IDENTIFIER *group = (struct _group_identifier *) malloc(sizeof(GROUP_IDENTIFIER)); 
     if (4 > argc || !(ul_ptr_from_str(&group->CAP, argv[3]))) { fprintf(stderr, "Failed to interpret '%s' as the limit to the infinite field N.\n\nExiting '-3'.\n", argv[3]); exit(-3); }
     unsigned long SP; if (5 > argc || !(ul_ptr_from_str(&SP, argv[4]))) { fprintf(stderr, "Failed to interpret '%s' as symetry point.\n\nExiting '-4'.\n", argv[4]); exit(-4); }
-    // ^^^ Process input
+    // ^^^ Identify to my self the values that I should work with
 
-    UNCAPPED_functions FIELD_COMBINATION = get_applicable_UNCAPPED_function_for(SP); // <<< Sets the standard unary from arithmetic
+    fprintf(stdout, "A: %lu\n", a);
+    fprintf(stdout, "B: %lu\n\n", b);
+    // ^^^ Identify to my user the values that I have identifier to myself
+
     char *SYMBOL = combination_SYMBOL_for_(SP);
-    fprintf(stdout, "A: %lu\nB: %lu\n\n", a, B);
-    fprintf(stdout, "A %s B \u2261 %lu %s %lu \u2261 %lu \u2261 %lu (%% %lu)\n", SYMBOL, a, SYMBOL, B, FIELD_COMBINATION(a, B), FINITE_(FIELD_COMBINATION, a, B, group->CAP), group->CAP);
+    function unCAPPED_field_combi = get_applicable_function_for_(SP);
+    CAPPED_function CAPPED_field_combi = get_applicable_CAPPED_function_for_(SP);
+    // ^^^ Neccessary preperation before we can use library
+
+    printf("A %s B \u2261 %lu %s %lu \u2261 %lu \u2261 %lu (%% %lu)\n", SYMBOL, a, SYMBOL, b, unCAPPED_field_combi(a, b), CAPPED_field_combi(a, b, group->CAP), group->CAP);
+    // ^^^ We use "unCAPPED_field_combi" function pointers for normal arithmetic combinations (but not yet higher than second-degree combinations (== multiplications))
+    // ^^^ And we use "CAPPED_field_combi" function pointers for modular arithmetic combinations (also limited to second-degree combinations, inspect code).
+
+    printf("A %s B \u2261 %lu %s %lu \u2261 %lu \u2261 %lu (%% %lu)\n", SYMBOL, a, SYMBOL, b, unCAPPED_field_combi(a, b), RESTRICT(unCAPPED_field_combi, a, b, group->CAP), group->CAP);
+    // ^^^ We can even do this
+
     exit(0);
 }
