@@ -1,14 +1,11 @@
 #include "group_operations.h"
+// ^^^ Required because here I need the definitions of "ADDITIVE_IDENTITY" and "MULTIPLICTIVE_IDENTITY"
 
-unsigned long _the_unary_operator_addition_under_modular_arithmatic(unsigned long generated_element, unsigned long generating_element, unsigned long group_modulus)
-{ return (generated_element + generating_element) % group_modulus; }
-// ^^ Function for the group operation of addition mod a specified CAP value
+unsigned long _MODULAR_addition(unsigned long A, unsigned long B, unsigned long CAP) { return (A + B) % CAP; }
+unsigned long _MODULAR_multiplication(unsigned long A, unsigned long B, unsigned long CAP) { return (A * B) % CAP; }
+// ^^^ Functions for the first two modular operations of arithmetica
 
-unsigned long _the_unary_operator_multiplication_under_modular_arithmatic(unsigned long generated_element, unsigned long generating_element, unsigned long group_modulus)
-{ return (generated_element * generating_element) % group_modulus; }
-// ^^ Function for the group operation of multiplication mod a specified CAP value
-
-group_operation_POINTER group_operation_FROM_(unsigned long group_ID)
-{   if (group_ID == ADDITIVE_IDENTITY) return &_the_unary_operator_addition_under_modular_arithmatic;
-    else if (group_ID == MULTIPLICATIVE_IDENTITY) return &_the_unary_operator_multiplication_under_modular_arithmatic; }
-// ^^ This function returns the right function pointer to one of the above group operation functions (based on the group ID)
+MODULAR_operation_PTR MODULAR_operation_BASED_ON_(unsigned long ID)
+{   if (ID == ADDITIVE_IDENTITY) return &_MODULAR_addition;
+    else if (ID == MULTIPLICATIVE_IDENTITY) return &_MODULAR_multiplication; }
+// ^^ This function returns the right function pointer to one of the two above functions from modular arithmetic
