@@ -1,3 +1,12 @@
+#include <stdlib.h>
+#include "../mathematics/maths.h"
+// ^^^ Necessary library inclusions that are needed in "string.c"
+
+#define STRING_TERMINATING_CHARACTER 0
+#define BASE 10
+#define ASCII_BASE 48
+// ^^^ Necessary definitions that are needed in "string.c"
+
 /* Returns an unsigned long containing the number of characters in the string pointed at by variable 'string_pointer' of type 'constant char *' */
 unsigned long str_len(const char *string_pointer); // Just like in the standard library, works just as expected
 

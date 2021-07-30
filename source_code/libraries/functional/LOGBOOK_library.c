@@ -8,9 +8,6 @@
  *
  * Unfortunately "FLUSH_TO_LOGBOOK()" does pass through the appropiate return value to "main()".
  */
-#include <stdio.h>
-#include <stdlib.h> // <<< Needed for malloc
-#include "string.h"
 #include "LOGBOOK_library.h" // <<< Needed for definition of the definition of LOGBOOK_FORMULA
 #define FOLDER_NAME "registry/"
 #define GROUP_EXPORTER "group_examplifier"

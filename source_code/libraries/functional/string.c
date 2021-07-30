@@ -1,12 +1,7 @@
 /* This library contains all of the string functions.
  *
  * See the header file for function descriptions. */
-#include <stdlib.h>
 #include "string.h"
-#include "../mathematics/maths.h"
-#define STRING_TERMINATING_CHARACTER 0
-#define BASE 10
-#define ASCII_BASE 48
 
 /* Returns 1 if string_a and string_b are equal, if not; returns 0 */
 unsigned int streql(char *string_a, char *string_b) {

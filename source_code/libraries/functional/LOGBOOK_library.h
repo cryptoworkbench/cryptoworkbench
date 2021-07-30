@@ -9,7 +9,9 @@
  *
  * Worded differently, "open_modular_group()" 
  */
-#include <unistd.h>
+#include <stdio.h> // <<<< Needed for "fprintf()"
+#include <stdlib.h> // <<< Needed for "malloc()"
+#include "string.h" // <<< Needed for "str_len()" and "char_in_val()"
 #define LOGBOOK_PATH "../LABORATORY_LOGBOOK" // <<< This will be the logbook filename
 #define LOGBOOK_FORMULA "%s: "// <<< This will be the name of the program printing to the logbook prepended to the line the program appends (to this logbook)
 
