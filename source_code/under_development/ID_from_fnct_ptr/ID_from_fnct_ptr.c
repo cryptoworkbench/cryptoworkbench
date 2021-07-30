@@ -10,26 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../libraries/functional/LOGBOOK_library.h"
-// #include "../../libraries/mathematics/group_operations.h"
-
-unsigned long ordinator(unsigned long a, unsigned long b) { return a + b; }
-unsigned long CAPPED_ordinator(unsigned long a, unsigned long b, unsigned long CAP) { return ordinator(a, b) % CAP; }
-// ^^^ Define the ordinating addition operations for 'regular' (not CAPPED) and 'modular' (CAPPED) arithmetic respectively
-
-unsigned long ordinated(unsigned long a, unsigned long b) { return a * b; }
-unsigned long CAPPED_ordinated(unsigned long a, unsigned long b, unsigned long CAP) { return ordinated(a, b) % CAP; }
-// ^^^ Define the ordinated multiplication operations for 'regular' (not CAPPED) and 'modular' (CAPPED) arithmetic, also respectively
-
-typedef unsigned long (*function) (unsigned long, unsigned long);
-function get_applicable_function_for_(unsigned long SP) { if (SP == 0) return &ordinator; else if (SP == 1) return &ordinated; }
-// ^^^ Define a function that will get you the right ordinator (== addition operation)
-
-typedef unsigned long (*CAPPED_function) (unsigned long, unsigned long, unsigned long);
-CAPPED_function get_applicable_CAPPED_function_for_(unsigned long SP) { if (SP == 0) return &CAPPED_ordinator; else if (SP == 1) return &CAPPED_ordinated; }
-// ^^^ Define a function that will get you the right ordinated (== multiplication operation)
-
-unsigned long RESTRICT(function base_UNARY, unsigned long a, unsigned long b, unsigned long CAP) { return base_UNARY(a, b) % CAP; }
-// ^^^ This is my general GROUP_operation unary function
+#include "../../libraries/mathematics/group_operations.h"
 
 // ##### Equivalent to "group_prams" ###==>
 typedef struct _group_identifier { CAPPED_function UNARY; unsigned long CAP; } GROUP_IDENTIFIER;
