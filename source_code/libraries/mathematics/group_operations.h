@@ -10,13 +10,12 @@ unsigned long ordinated(unsigned long a, unsigned long b);
 unsigned long CAPPED_ordinated(unsigned long a, unsigned long b, unsigned long CAP);
 // ^^^ Define the ordinated multiplication operations for 'regular' (not CAPPED) and 'modular' (CAPPED) arithmetic, also respectively
 
-typedef unsigned long (*field_combination) (unsigned long, unsigned long);
-typedef unsigned long (*CAPPED_field_combination) (unsigned long, unsigned long, unsigned long);
+typedef unsigned long (*INFINITE_field_combination) (unsigned long, unsigned long);
+typedef unsigned long (*FINITE_field_combination) (unsigned long, unsigned long, unsigned long);
 // ^^^ Define the neccessary function pointer types in order to define the following two functions
 
-field_combination get_field_combination_from_SP_(unsigned long SP);
-CAPPED_field_combination get_CAPPED_field_combination_from_SP_(unsigned long SP);
+INFINITE_field_combination get_INFINITE_field_combination_from_SP_(unsigned long SP);
+FINITE_field_combination get_FINITE_field_combination_from_SP_(unsigned long SP);
 // ^^^ Define two functions to get the right (in)finite field operation (addition or multiplication {right == regarding finite or infinite fields})
 
-unsigned long RESTRICT(field_combination base_UNARY, unsigned long a, unsigned long b, unsigned long CAP);
-// ^^^ And this is the magic, see under_development/
+unsigned long N_field_combine(unsigned long N_quotient, unsigned long A, unsigned long B, unsigned long Symetry_Point);

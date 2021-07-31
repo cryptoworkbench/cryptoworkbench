@@ -73,9 +73,9 @@ void vertibrae_insert(struct vertibrae **tracer, unsigned long new_ulong) {
     *tracer = new_vertibrae; // <===-- And place the location of new_vertibrae into the next field of the previous insertion --==###
 }
 
-struct permutation_piece *permutation_insert(struct vertibrae *upstream_l, unsigned long unit_identifier, struct permutation_piece *previous_permutation_piece) {
+struct permutation_piece *permutation_insert(struct vertibrae *UPSTREAM, unsigned long unit_identifier, struct permutation_piece *previous_permutation_piece) {
     struct permutation_piece *next_permutation_piece = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Fix existence of new permutation_piece
-    next_permutation_piece->unit = content_lookup(upstream_l, unit_identifier); // Fix first sloth
+    next_permutation_piece->unit = content_lookup(UPSTREAM, unit_identifier); // Fix first sloth
 
     // ###== Insert new linked list element ===>
     next_permutation_piece->next = previous_permutation_piece->next;
@@ -86,20 +86,18 @@ struct permutation_piece *permutation_insert(struct vertibrae *upstream_l, unsig
 /* Returns a linked list which is in order of the permutation of the subgroup in question,
  * Think of a chain of shackles, this chain is returned at the shackle which points to the identity element unit's struct at a struct vertibrae data type
  * */
-struct permutation_piece *yield_subgroup(struct vertibrae *upstream_l, struct group_prams *group_parameters) {
+struct permutation_piece *yield_subgroup(struct vertibrae *UPSTREAM, struct group_prams *group) {
     struct permutation_piece *iterator = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Create element
-    iterator->unit = content_lookup(upstream_l, group_parameters->ID); // Set the identity value
+    iterator->unit = content_lookup(UPSTREAM, group->ID); // Set the identity value
     iterator->next = iterator; // Make it circular
 
-    CAPPED_field_combination group_operation = get_CAPPED_field_combination_from_SP_(group_parameters->ID);
-
     unsigned long subgroup_cardinality = 1; // <<< For we already have the identity element (see code above)
-    for (unsigned long generated_element = upstream_l->unit.number; generated_element != group_parameters->ID; generated_element = group_operation(generated_element, upstream_l->unit.number, group_parameters->CAP)) {
-	iterator = permutation_insert(upstream_l, generated_element, iterator); /* Put the current power of g into the permutation data structure */
+    for (unsigned long generated_element = UPSTREAM->unit.number; generated_element != group->ID; generated_element = N_field_combine(group->CAP, generated_element, UPSTREAM->unit.number, group->ID)) {
+	iterator = permutation_insert(UPSTREAM, generated_element, iterator); /* Put the current power of g into the permutation data structure */
 	subgroup_cardinality++;
     }
 
-    upstream_l->permutation_length = subgroup_cardinality;
+    UPSTREAM->permutation_length = subgroup_cardinality;
     return iterator->next;
 }
 
@@ -186,13 +184,13 @@ void put_generator_count(struct vertibrae *identity_element, unsigned long group
     identity_element->permutation_length = generator_count;
 }
 
-struct vertibrae *setup_table(struct vertibrae *last_element, struct group_prams *group_parameters) {
+struct vertibrae *setup_table(struct vertibrae *last_element, struct group_prams *group) {
     unsigned long cell_width = char_in_val(last_element->unit.number);
     struct vertibrae *identity_element = last_element->next;
 
     unsigned long subgroup_size;
     struct vertibrae *do_loop_iterator = identity_element; do {
-	do_loop_iterator->permutation = yield_subgroup(do_loop_iterator, group_parameters); // Generate subgroup in memory
+	do_loop_iterator->permutation = yield_subgroup(do_loop_iterator, group); // Generate subgroup in memory
 	do_loop_iterator->unit.str = str_from_ul(do_loop_iterator->unit.number, cell_width);
 	do_loop_iterator = do_loop_iterator->next;
     } while (do_loop_iterator != identity_element); // << Return linked list at identity element

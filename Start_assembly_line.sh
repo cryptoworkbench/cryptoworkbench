@@ -2,8 +2,7 @@
 mkdir crypto_lab/
 mkdir crypto_lab/tools
 mkdir crypto_lab/registry
-echo "########### THE ASSAMBLY LINE STARTED ! #######===>"
-
+clear && echo "########### THE ASSAMBLY LINE STARTED ! #######===>"
 cd source_code/tools/group_examplifier && make group_examplifier && echo "#######==> The following instrument has been assemblied/linked: group_examplifier
 "
 cd ../subgroup_examplifier && make subgroup_examplifier && echo "#######==> The following instrument has been assemblied/linked: subgroup_examplifier
