@@ -41,8 +41,7 @@ const char *additive_adjective = "additive";
 const char *middle = "_group_of_integers_under_modulo_";
 const char *end = "_arithmatic";
 
-// Set global variable for this shit
-unsigned long (*group_operation) (unsigned long, unsigned long, unsigned long);
+// unsigned long (*group_operation) (unsigned long, unsigned long, unsigned long); OLD #0
 
 struct group_meta {
     unsigned long modulus;
@@ -83,26 +82,20 @@ void spawn_element(struct element **tracer, unsigned long new_ulong) {
 }
 
 struct element *setup_group(struct element **linked_list_connection, struct group_meta *group) {
-    // ### Establish lineair linked list containing all group elements using the triple ref technique
     for (unsigned long element = group->identity; element < group->modulus; element++)
-	if (group->identity == ADDITIVE_IDENTITY || coprime(GCD(group->modulus, element))) {
-	    spawn_element(linked_list_connection, element);
-	    group->order++; }
+	if (group->identity == ADDITIVE_IDENTITY || coprime(GCD(group->modulus, element))) { spawn_element(linked_list_connection, element); group->order++; }
+    // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
 
-    // ## Take out of the end product a singly-linked list and destroy any intermediary memory used
-    struct element *iterator, *identity;
-    iterator = identity = (struct element *) disintermediate( (void **) linked_list_connection);
-    while (iterator->next) {
-	iterator = iterator->next;
-    } group->cell_width = char_in_val(iterator->number);
-    iterator = identity; // RESET
+    struct element *iterator, *identity; iterator = identity = (struct element *) disintermediate( (void **) linked_list_connection);
+    while (iterator->next) { iterator = iterator->next; } group->cell_width = char_in_val(iterator->number);
+    // ^^^ Take out of the end product a singly-linked list and destroy any intermediary memory used
+
+    iterator = identity;
+    // ^^^ RESET
     
-    // And write ASCII codes into group information
-    while (iterator) {
-	iterator->ascii = str_from_ul(iterator->number, group->cell_width);
-	iterator = iterator->next; }
+    while (iterator) { iterator->ascii = str_from_ul(iterator->number, group->cell_width); iterator = iterator->next; }
+    // ^^^ And write ASCII codes into group information
 
-    // Finalize work
     return identity;
 }
 
@@ -138,9 +131,6 @@ void spawn_association(struct combination **tracer, struct element *unary_head, 
 }
 
 struct combination *combine(struct combination **source, struct group_meta *group) { 
-    // First we determine the group operation
-    group_operation = get_FINITE_field_combination_from_SP_(group->identity);
-
     // Prepare variables for function
     struct element *unary_head = group->ll;
 
@@ -148,21 +138,10 @@ struct combination *combine(struct combination **source, struct group_meta *grou
     for (unsigned long round_no = ADDITIVE_IDENTITY; round_no < group->order; round_no++, unary_head = unary_head->next) {
 	struct element *unary_tail = unary_head; // Start combining
 	do {// Lookup the adress of the element that results from performing the group operation using the selected unary_head and unary_tail
-	    struct element *outcome = lookup(
-		    group_operation( // <-- Performs the group operation and sends the outcome along with the linked list connection to the lookup function
-			unary_head->number,
-			unary_tail->number,
-			group->modulus),
-		    group
-		    );
+	    struct element *outcome = lookup(N_field_combine(group->modulus, unary_head->number, unary_tail->number, group->identity), group);
 
 	    // Spawn the new association into memory
-	    spawn_association(
-		    source,
-		    unary_head,
-		    unary_tail,
-		    outcome
-		    );
+	    spawn_association(source, unary_head, unary_tail, outcome);
 
 	    // Move along the vertical axis (y)
 	    unary_tail = unary_tail->next;
@@ -193,9 +172,8 @@ struct element *lookup_el(struct group_meta *group, unsigned long number) {
 }
 
 int main(int argc, char **argv) { fs = stdout;
-    if (4 < argc) { // <-- Check argument count
-	fprintf(stderr, "%s%s%s", Error_one, argv[0], Error_two);
-	return -1; }
+    if (4 < argc) { fprintf(stderr, "%s%s%s", Error_one, argv[0], Error_two); exit(-1); }
+    // ^^^ Exit upon "-1" wrong argument count
 
     // Start program
     struct group_meta *group = (struct group_meta *) malloc(sizeof(struct group_meta));
