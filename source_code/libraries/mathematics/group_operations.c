@@ -13,24 +13,17 @@ unsigned long CAPPED_ordinated(unsigned long a, unsigned long b, unsigned long C
 // ^^^ ~ Multiplication in infinite fields (regular multiplication without MODding the result)
 // ^^^ ~ Multiplication in finite fields (multiplication with MODding the result)
 
-INFINITE_field_combination get_INFINITE_field_combination_from_SP_(unsigned long SP) {
+INFINITE_field_combination get_INFINITE_field_combination_from_inflection_point_(unsigned long SP) {
     if (SP == ADDITIVE_IDENTITY) return &ordinator;
     else if (SP == MULTIPLICATIVE_IDENTITY) return &ordinated;
 }
 
-FINITE_field_combination get_FINITE_field_combination_from_SP_(unsigned long SP) {
+FINITE_field_combination get_FINITE_field_combination_from_inflection_point_(unsigned long SP) {
     if (SP == ADDITIVE_IDENTITY) return &CAPPED_ordinator;
     else if (SP == MULTIPLICATIVE_IDENTITY) return &CAPPED_ordinated;
 }
 
-unsigned long N_field_combine(unsigned long N_quotient, unsigned long A, unsigned long B, unsigned long Symetry_Point) {
-    if (N_quotient == ADDITIVE_IDENTITY) { INFINITE_field_combination Unary = get_INFINITE_field_combination_from_SP_(Symetry_Point); return Unary(A, B); }
-    else if (N_quotient == MULTIPLICATIVE_IDENTITY) return ADDITIVE_IDENTITY;
-    else { FINITE_field_combination Unary = get_FINITE_field_combination_from_SP_(Symetry_Point); return Unary(A, B, N_quotient); }
-} // ##### N_quotent signifies how into how many sections (quotient groups) the field N is divided into:
-// | ### Supply a positive value to put a CAP to the infinite field
-// | 
-// | ### The statement "do not divide it" must necessarily be a literally equivalent of saying "divide it by zero" ===
-// | ### # ==> To say "divide by zero" is to say "do not divide at all"
-// |
-// | ### For all number elements in the infinite field N it is true that mod 1 its 0
+unsigned long N_field_combine(unsigned long N_quotient, unsigned long A, unsigned long B, unsigned long ID) {
+    if (ID) return (N_quotient == ADDITIVE_IDENTITY) ? ordinated(A, B) : CAPPED_ordinated(A, B, N_quotient);
+    return (N_quotient == ADDITIVE_IDENTITY) ? ordinator(A, B) : CAPPED_ordinator(A, B, N_quotient);
+}
