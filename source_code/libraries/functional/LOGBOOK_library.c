@@ -9,29 +9,13 @@
  * Unfortunately "flush_to_LOGBOOK()" does pass through the appropiate return value to "main()".
  */
 #include "LOGBOOK_library.h" // <<< Needed for definition of the definition of LOGBOOK_FORMULA
+#define FORK_ERROR "Failed to split up myself into two daughter processes so that I could dedicate one part of my being to securing the group"
 #define FOLDER_NAME "registry/"
 #define GROUP_EXPORTER "group_examplifier"
 #define FILENAME_BODY "_group_of_integers_mod_"
 
-char *multiplication_symbol = "*"; // <<< I expect to most handle multiplicative groups
-char *addition_symbol = "+";
-
-char *combination_SYMBOL_for_(unsigned long ID) {
-    if (ID)
-	return multiplication_symbol;
-    else
-	return addition_symbol;
-}
-
-char *multiplication = "multiplicative";
-char *addition = "additive";
-
-char *ADJECTIVE_TO_USE(unsigned long ID) {
-    if (ID)
-	return multiplication;
-    else
-	return addition;
-}
+char *combination_SYMBOL_for_(unsigned long ID) { return (ID == 1) ? "*" : "+"; }
+char *ADJECTIVE_TO_USE(unsigned long ID) { return (ID == 1) ? "multiplicative" : "additive"; }
 
 char *BUFFER_OF_SIZE(unsigned int SIZE) {
     char *return_value = (char *) malloc(sizeof(char) * SIZE);
@@ -49,7 +33,11 @@ void flush_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line) {
 }
 // ^^^ Sends a single line of logging to the logbook file, prints error to stderr and returns -10 upon failure.
 
-FILE *open_modular_GROUP_in_the_NAME_of(struct group_prams *GROUP, char *prog_NAME, char **path_to_file_INSERTMENT_SLOTH) {
+FILE *open_modular_GROUP_in_the_NAME_of(struct group_prams *GROUP, char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH) {
+    return open_modular_GROUP_in_the_NAME_of_INNER(GROUP, prog_NAME, path_to_filename_INSERTMENT_SLOTH, combination_SYMBOL_for_(GROUP->ID), BUFFER_OF_SIZE(200));
+}
+
+FILE *open_modular_GROUP_in_the_NAME_of_INNER(struct group_prams *GROUP, char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH, char *SYMBOL, char *BUFFER) {
     char *adjective = ADJECTIVE_TO_USE(GROUP->ID);
     // ^^^ Settle on language to appropiate
 
@@ -57,24 +45,36 @@ FILE *open_modular_GROUP_in_the_NAME_of(struct group_prams *GROUP, char *prog_NA
     sprintf(PATH_TO_FILE, "../" FOLDER_NAME "%s" FILENAME_BODY "%lu", adjective, GROUP->CAP);
     // ^^^ Prepare path to pass on to "fopen()"
 
-    char *BUFFER = BUFFER_OF_SIZE(200);
-    // ^^^ Artificially create a 200 byte buffer within program scape and avoid using the filestream buffers
-
     // ### BEGIN PROGRAM OPERATION ===>
     FILE *modular_group_fs = NULL;
     if (!(modular_group_fs = fopen(PATH_TO_FILE, "r"))) {
-	char *symbol = combination_SYMBOL_for_(GROUP->ID);
-	sprintf(BUFFER, "Failed to secure a filestream sourced by '%s' \u21D2 the group denoted <\u2124/%lu\u2124, %s> does not seem to already have been registered", PATH_TO_FILE, GROUP->CAP, symbol); flush_to_LOGBOOK(prog_NAME, BUFFER);
-	char *required_command = (char *) malloc(sizeof(char) * (str_len(GROUP_EXPORTER) + 1 + char_in_val(GROUP->CAP) + 1 + char_in_val(GROUP->ID) + 1 + str_len(PATH_TO_FILE) + 9));
-	sprintf(required_command, "%s %lu %lu %s && sync", GROUP_EXPORTER, GROUP->CAP, GROUP->ID, PATH_TO_FILE);
-	sprintf(BUFFER, "Sending '%s' to the operating system in an effort to manually register <\u2124/%lu\u2124, %s>", required_command, GROUP->CAP, symbol); flush_to_LOGBOOK(prog_NAME, BUFFER);
-	system(required_command);
+	sprintf(BUFFER, "Failed to secure a filestream sourced by '%s' \u21D2 the group denoted <\u2124/%lu\u2124, %s> does not seem to already have been registered", PATH_TO_FILE, GROUP->CAP, SYMBOL); flush_to_LOGBOOK(prog_NAME, BUFFER);
+	pid_t pid = fork(); if (pid == -1) { sprintf(BUFFER, FORK_ERROR); flush_to_LOGBOOK(prog_NAME, BUFFER); exit(-10); }
+	char *group_CAP = (char *) malloc(sizeof(char)); group_CAP = str_from_ul(GROUP->CAP, 0);
+	char *group_ID = (char *) malloc(sizeof(char)); group_ID = str_from_ul(GROUP->ID, 0);
+	char *arguments[] = {GROUP_EXPORTER, group_CAP, group_ID, PATH_TO_FILE, 0};
+	if (!pid) execvp(arguments[0], arguments);
+	int exit_status;
+	waitpid(pid, &exit_status, 0);
 
+	char *required_command = (char *) malloc(sizeof(char) * (str_len(GROUP_EXPORTER) + 1 + str_len(group_CAP) + 1 + str_len(group_ID) + 1 + str_len(PATH_TO_FILE) + 9));
+	sprintf(required_command, "%s %s %s %s", GROUP_EXPORTER, group_CAP, group_ID, PATH_TO_FILE);
+	sprintf(BUFFER, "Sending '%s' to the operating system in an effort to manually register <\u2124/%lu\u2124, %s>", required_command, GROUP->CAP, SYMBOL); flush_to_LOGBOOK(prog_NAME, BUFFER);
 	if (!(modular_group_fs = fopen(PATH_TO_FILE, "r"))) { 
 	    sprintf(BUFFER, "ERROR: failed to create the required registry file using '%s'", required_command); flush_to_LOGBOOK(prog_NAME, BUFFER); free(required_command);
-	    return NULL; }
-	free(required_command);
+	    exit(0);
+	} free(required_command);
     } if (modular_group_fs != NULL) sprintf(BUFFER, "Successfully secured a filestream sourced by '%s'", PATH_TO_FILE); flush_to_LOGBOOK(prog_NAME, BUFFER);
-    free(BUFFER); *path_to_file_INSERTMENT_SLOTH = PATH_TO_FILE; 
-    return modular_group_fs; }
-// ^^^ Function to open modular groups 
+    *path_to_filename_INSERTMENT_SLOTH = PATH_TO_FILE; 
+    return modular_group_fs;
+}
+
+/* ### OLD:
+FILE *WRAPPER(struct group_prams *GROUP, char *prog_NAME, char **filename) {
+    char *combination_SYMBOL = combination_SYMBOL_for_(GROUP->ID);
+    char *BUFFER = BUFFER_OF_SIZE(200);
+    FILE *element_database = open_modular_GROUP_in_the_NAME_of_INNER(GROUP, prog_NAME, filename, combination_SYMBOL, BUFFER);
+    sprintf(BUFFER, "Sourced <\u2124/%lu\u2124, %s> successfully from the filestream", GROUP->CAP, combination_SYMBOL); flush_to_LOGBOOK(prog_NAME, BUFFER); fclose(element_database);
+    sprintf(BUFFER, "Closed the filestream sourced by '%s'", filename); free(filename); flush_to_LOGBOOK(prog_NAME, BUFFER); free(BUFFER);
+    return element_database;
+} */
