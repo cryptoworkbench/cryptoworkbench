@@ -36,21 +36,21 @@ struct group_prams { unsigned long ID; unsigned long CAP; };
 struct group_prams group;
 // ^^^ PROGRAM VARIABLES
 
-int QUIT_ON_ARGV_TWO_ERROR(char *argv_two) {
+void QUIT_ON_ARGV_TWO_ERROR(char *argv_two) {
     fprintf(stderr, ARGV_TWO_INSTRUCTION);
     fprintf(stderr, "\nFATAL ERROR: cannot grasp group ID: '%s' is neither '0' nor '1'. Returning -2.\n", argv_two);
-    return -2;
+    exit(-2);
 } // << ^^ Works in conjunction with the definition of ARGV_TWO_INSTRUCTION
 
-int QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
+void QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
     fprintf(stderr, ARGV_ONE_INSTRUCTION);
     fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP: to attempt to open from registry the group '<\u2124/%s\u2124>' makes no sense to me. Returning -1.\n", argv_one);
-    return -1;
+    exit(-1);
 } // << ^^ Works in conjunction with the definition of ARGV_ONE_INSTRUCTION
 
-int main(int argc, char **argv) { FILE *main_fs = stdout;
-    if (2 > argc || !(ul_ptr_from_str(&group.CAP, argv[1]))) return QUIT_ON_ARGV_ONE_ERROR(argv[1]);
-    if (3 > argc || !(ul_ptr_from_str(&group.ID, argv[2]))) return QUIT_ON_ARGV_TWO_ERROR(argv[2]);
+void main(int argc, char **argv) { FILE *main_fs = stdout;
+    if (2 > argc || !(ul_ptr_from_str(&group.CAP, argv[1]))) QUIT_ON_ARGV_ONE_ERROR(argv[1]);
+    if (3 > argc || !(ul_ptr_from_str(&group.ID, argv[2]))) QUIT_ON_ARGV_TWO_ERROR(argv[2]);
     if (3 < argc) main_fs = fopen(argv[3], "w");
     // ^^^ Parse the first three arguments, argv[1] and argv[2] are mandatory, argv[3] is not
     
@@ -59,4 +59,4 @@ int main(int argc, char **argv) { FILE *main_fs = stdout;
     if (main_fs != stdout) fclose(main_fs); // <^^ fprintf() the list of elements to main_fs and close this filestream.
 
     if (4 < argc) execvp(*(argv + 4), (argv + 4)); // <<< Pass on command string which begins at argv[4]
-    exit(0); }
+}
