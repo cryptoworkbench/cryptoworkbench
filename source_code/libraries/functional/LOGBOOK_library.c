@@ -58,8 +58,9 @@ FILE *open_modular_GROUP_in_the_NAME_of_INNER(struct group_prams *GROUP, char *p
 	waitpid(pid, &exit_status, 0);
 
 	char *required_command = (char *) malloc(sizeof(char) * (str_len(GROUP_EXPORTER) + 1 + str_len(group_CAP) + 1 + str_len(group_ID) + 1 + str_len(PATH_TO_FILE) + 9));
-	sprintf(required_command, "%s %s %s %s", GROUP_EXPORTER, group_CAP, group_ID, PATH_TO_FILE);
+	sprintf(required_command, "%s %s %s %s", GROUP_EXPORTER, group_CAP, group_ID, PATH_TO_FILE); free(group_CAP); free(group_ID);
 	sprintf(BUFFER, "Sending '%s' to the operating system in an effort to manually register <\u2124/%lu\u2124, %s>", required_command, GROUP->CAP, SYMBOL); flush_to_LOGBOOK(prog_NAME, BUFFER);
+
 	if (!(modular_group_fs = fopen(PATH_TO_FILE, "r"))) { 
 	    sprintf(BUFFER, "ERROR: failed to create the required registry file using '%s'", required_command); flush_to_LOGBOOK(prog_NAME, BUFFER); free(required_command);
 	    exit(0);

@@ -58,5 +58,6 @@ void main(int argc, char **argv) { FILE *main_fs = stdout;
 	if (group.ID == ADDITIVE_IDENTITY || GCD(group.CAP, element) == MULTIPLICATIVE_IDENTITY) fprintf(main_fs, "%lu\n", element);
     if (main_fs != stdout) fclose(main_fs); // <^^ fprintf() the list of elements to main_fs and close this filestream.
 
-    if (4 < argc) execvp(*(argv + 4), (argv + 4)); // <<< Pass on command string which begins at argv[4]
+    if (5 > argc) exit(0);
+    else execvp(*(argv + 4), (argv + 4)); // <<< Pass on command string which begins at argv[4]
 }

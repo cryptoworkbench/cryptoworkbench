@@ -23,5 +23,5 @@ echo "
 ########### THE ASSEMBLY LINE HALTED !
 ########### The setup completed ! (presumably)
 #####################################################################################################
-####### 'ls crypto_lab/tools/' to see what instruments fall from the assembly line.           #######
+####### 'ls crypto_lab/tools/' to see what instruments fell from the assembly line.           #######
 ####### 'cd crypto_lab/tools/' to enter your very own VIRTUAL MATHEMATICS fucking LABORATORY. #######"
