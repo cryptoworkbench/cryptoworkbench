@@ -221,25 +221,25 @@ struct vertibrae *build_backbone(char *prog_NAME, struct vertibrae **channel,uns
     return last_element;
 }
 
-int QUIT_ON_ARGV_TWO_ERROR(char *argv_two) {
+void QUIT_ON_ARGV_TWO_ERROR(char *argv_two) {
     fprintf(stdout, STDOUT_ARGV_ONE_INSTRUCTION);
-    fprintf(stderr, "\nFATAL ERROR: cannot grasp group ID: '%s' is neither '0' nor '1'. Returning -2.\n", argv_two); exit(-2); }
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp group ID: '%s' is neither '0' nor '1'. Returning '-2'.\n", argv_two);
+    exit(-2);
+}
 
-int QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
+void QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
     fprintf(stdout, STDOUT_ARGV_TWO_INSTRUCTION);
-    fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP: to attempt to open from registry the group '<\u2124/%s\u2124>' makes no sense to me. Returning -1.\n", argv_one); exit(-1);
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP: to attempt to open from registry the group '<\u2124/%s\u2124>' makes no sense to me. Returning '-1'.\n", argv_one);
+    exit(-1);
 }
 
-int HELP_AND_QUIT(char *argv_zero) {
-    fprintf(stderr, HELP_INFORMATION, argv_zero); exit(0);
-}
-
+void HELP_AND_QUIT(char *argv_zero) { fprintf(stderr, HELP_INFORMATION, argv_zero); exit(0); }
 int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; // <<< Preliminary pointers
-    if (6 < argc || argc > 1 && (streql(argv[1], "--help") || streql(argv[1], "-h"))) return HELP_AND_QUIT(argv[0]); else group = (struct group_prams *) malloc(sizeof(struct group_prams));
+    if (6 < argc || argc > 1 && (streql(argv[1], "--help") || streql(argv[1], "-h"))) HELP_AND_QUIT(argv[0]); else group = (struct group_prams *) malloc(sizeof(struct group_prams));
     // ^^^ Allocate memory for CAP and ID values if necessary
 
-    if (2 > argc || !(ul_ptr_from_str(&group->CAP, argv[1]))) return QUIT_ON_ARGV_ONE_ERROR(argv[1]);
-    else if (3 > argc || !(ul_ptr_from_str(&group->ID, argv[2]))) return QUIT_ON_ARGV_TWO_ERROR(argv[2]);
+    if (2 > argc || !(ul_ptr_from_str(&group->CAP, argv[1]))) QUIT_ON_ARGV_ONE_ERROR(argv[1]);
+    else if (3 > argc || !(ul_ptr_from_str(&group->ID, argv[2]))) QUIT_ON_ARGV_TWO_ERROR(argv[2]);
     // ^^^ Collect CAP and ID values from mandatory arguments, quit with appropiate error message upon failure
 
     struct offset_values *shifts = (struct offset_values *) malloc(sizeof(struct offset_values)); shifts->Y = shifts->X = 0;

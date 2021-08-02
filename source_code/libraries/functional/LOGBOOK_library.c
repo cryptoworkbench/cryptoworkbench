@@ -48,25 +48,37 @@ FILE *open_modular_GROUP_in_the_NAME_of_INNER(struct group_prams *GROUP, char *p
     // ### BEGIN PROGRAM OPERATION ===>
     FILE *modular_group_fs = NULL;
     if (!(modular_group_fs = fopen(PATH_TO_FILE, "r"))) {
-	sprintf(BUFFER, "Failed to secure a filestream sourced by '%s' \u21D2 the group denoted <\u2124/%lu\u2124, %s> does not seem to already have been registered", PATH_TO_FILE, GROUP->CAP, SYMBOL); flush_to_LOGBOOK(prog_NAME, BUFFER);
-	pid_t pid = fork(); if (pid == -1) { sprintf(BUFFER, FORK_ERROR); flush_to_LOGBOOK(prog_NAME, BUFFER); exit(-10); }
 	char *group_CAP = (char *) malloc(sizeof(char)); group_CAP = str_from_ul(GROUP->CAP, 0);
 	char *group_ID = (char *) malloc(sizeof(char)); group_ID = str_from_ul(GROUP->ID, 0);
-	char *arguments[] = {GROUP_EXPORTER, group_CAP, group_ID, PATH_TO_FILE, 0};
-	if (!pid) execvp(arguments[0], arguments);
-	int exit_status;
-	waitpid(pid, &exit_status, 0);
+	// ^^ Prepare some string equivalents
+
+	sprintf(BUFFER, "Failed to secure a filestream sourced by '%s' \u21D2 the group denoted <\u2124/%s\u2124, %s> does not seem to already have been registered", PATH_TO_FILE, group_CAP, SYMBOL); flush_to_LOGBOOK(prog_NAME, BUFFER);
+	// ^^ Notify of failure
 
 	char *required_command = (char *) malloc(sizeof(char) * (str_len(GROUP_EXPORTER) + 1 + str_len(group_CAP) + 1 + str_len(group_ID) + 1 + str_len(PATH_TO_FILE) + 9));
-	sprintf(required_command, "%s %s %s %s", GROUP_EXPORTER, group_CAP, group_ID, PATH_TO_FILE); free(group_CAP); free(group_ID);
-	sprintf(BUFFER, "Sending '%s' to the operating system in an effort to manually register <\u2124/%lu\u2124, %s>", required_command, GROUP->CAP, SYMBOL); flush_to_LOGBOOK(prog_NAME, BUFFER);
+	sprintf(required_command, "%s %s %s %s", GROUP_EXPORTER, group_CAP, group_ID, PATH_TO_FILE);
+	sprintf(BUFFER, "Sending '%s' to the operating system in an effort to manually register <\u2124/%s\u2124, %s>", required_command, group_CAP, SYMBOL);
+	flush_to_LOGBOOK(prog_NAME, BUFFER);
+	// ^^ Prepare string equivalent of the command sent
+
+	pid_t pid = fork(); if (pid == -1) { sprintf(BUFFER, FORK_ERROR); flush_to_LOGBOOK(prog_NAME, BUFFER); exit(-10); }
+	// ^^ Create a child process
+
+	char *arguments[] = {GROUP_EXPORTER, group_CAP, group_ID, PATH_TO_FILE, 0};
+	if (!pid) execvp(arguments[0], arguments);
+	int exit_STATUS; waitpid(pid, &exit_STATUS, 0); free(group_ID);
+	// ^^ Send the command to the operating system
+
+	if (!exit_STATUS) {
+	    sprintf(BUFFER, "%s returned an exit status of '%i': the %s group <\u2124/%s\u2124, %s> should have been registered now", GROUP_EXPORTER, exit_STATUS, adjective, group_CAP, SYMBOL);
+	    flush_to_LOGBOOK(prog_NAME, BUFFER); } free(group_CAP); 
 
 	if (!(modular_group_fs = fopen(PATH_TO_FILE, "r"))) { 
 	    sprintf(BUFFER, "ERROR: failed to create the required registry file using '%s'", required_command); flush_to_LOGBOOK(prog_NAME, BUFFER); free(required_command);
 	    exit(0);
 	} free(required_command);
     } if (modular_group_fs != NULL) sprintf(BUFFER, "Successfully secured a filestream sourced by '%s'", PATH_TO_FILE); flush_to_LOGBOOK(prog_NAME, BUFFER);
-    *path_to_filename_INSERTMENT_SLOTH = PATH_TO_FILE; 
+    free(BUFFER); *path_to_filename_INSERTMENT_SLOTH = PATH_TO_FILE; 
     return modular_group_fs;
 }
 

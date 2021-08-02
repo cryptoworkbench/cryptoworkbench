@@ -24,6 +24,7 @@
 #include <unistd.h>
 #include "../../libraries/mathematics/maths.h" // <<< Needed for "GCD()"
 #include "../../libraries/functional/string.h" // <<< Needed for "ul_ptr_from_str()"
+#include "../../libraries/functional/LOGBOOK_library.h" // <<< Needed for "ul_ptr_from_str()"
 // ^^^ LIBRARY INCLUSIONS
 
 #define ARGV_TWO_INSTRUCTION "Please provide as second argument '0' for the additive identity,\nOr '1' for the multiplicative identity.\n"
@@ -32,7 +33,7 @@
 #define ADDITIVE_IDENTITY 0
 // ^^^ DEFINITIONS
 
-struct group_prams { unsigned long ID; unsigned long CAP; };
+// struct group_prams { unsigned long ID; unsigned long CAP; };
 struct group_prams group;
 // ^^^ PROGRAM VARIABLES
 
