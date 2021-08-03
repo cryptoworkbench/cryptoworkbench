@@ -62,12 +62,16 @@ FILE *open_modular_GROUP_in_the_NAME_of_INNER(struct group_prams *GROUP, char *p
 
     // ### Begin program operation ===>
     FILE *modular_group_fs = NULL; if (!(modular_group_fs = fopen(path_to_FILE, "r"))) { // << If the file does not exist
-	sprintf(BUFFER, "ERROR: no such file 'registry/%s' \u21D2 <\u2124/%s\u2124, %s> does not seem to have been exported before", name_of_FILE, group_CAP, SYMBOL); flush_to_LOGBOOK(prog_NAME, BUFFER);
-	sprintf(BUFFER, "Exporting <\u2124/%s\u2124, %s> using the external tool '"GROUP_EXPORTER"'", group_CAP, SYMBOL); flush_to_LOGBOOK(prog_NAME, BUFFER);
-	// ^^ Complain and notify that we are going to use group_examplifier
+	sprintf(BUFFER, "ERROR: no such file 'REGISTRY/%s' \u21D2 <\u2124/%s\u2124, %s> does not seem to have been exported before", name_of_FILE, group_CAP, SYMBOL);
+	flush_to_LOGBOOK(prog_NAME, BUFFER);
+	// ^^ Complain
 
-	sprintf(BUFFER, "%s: " GROUP_EXPORTER, prog_NAME); // << Use BUFFER in order to send along a special "argv[0]" to "group_examplifier"
-	char *GROUP_EXPORTER_arguments[] = {BUFFER, group_CAP, group_ID, 0};
+	sprintf(BUFFER, "Exporting <\u2124/%s\u2124, %s> using the external tool '"GROUP_EXPORTER"'", group_CAP, SYMBOL);
+	flush_to_LOGBOOK(prog_NAME, BUFFER);
+	// ^^ Notify we are going to use group_examplifier
+
+	sprintf(BUFFER, GROUP_EXPORTER " ran by %s", prog_NAME); // << Use BUFFER in order to send along a special "argv[0]" to "group_examplifier"
+	char *GROUP_EXPORTER_argv[] = {BUFFER, group_CAP, group_ID, 0};
 	// ^^ Prepare a special "argv[0]" for "group_examplifier"
 
 	pid_t pid = fork(); if (pid == -1) { sprintf(BUFFER, FORK_ERROR); flush_to_LOGBOOK(prog_NAME, BUFFER); exit(-10); }
@@ -76,20 +80,21 @@ FILE *open_modular_GROUP_in_the_NAME_of_INNER(struct group_prams *GROUP, char *p
 	if (!pid) { // << If we managed to fork
 	    FILE *NEEDED_FILE = fopen(path_to_FILE, "w"); // <<< Create the file which did not yet exist
 	    if (dup2(fileno(NEEDED_FILE), 1) == -1) { fprintf(stderr, FILE_DESCRIPTOR_ERROR); exit(-10); } // <<< Error when the filestream would not duplicate
-	    execvp(GROUP_EXPORTER, GROUP_EXPORTER_arguments); // <<< If all is well and fine, have the child process running "group_examplifier" to export the group
+	    execvp(GROUP_EXPORTER, GROUP_EXPORTER_argv); // <<< If all is well and fine, have the child process running "group_examplifier" to export the group
 	}
 
 	int EXTERNAL_SUCCESS;
 	waitpid(pid, &EXTERNAL_SUCCESS, 0); free(group_ID);
 	// ^^ Wait for the child process to finish
 
-	if (!EXTERNAL_SUCCESS) {
-	    sprintf(BUFFER, "%s returned an exit status of '%i' \u21D2 <\u2124/%s\u2124, %s> should be registered now", GROUP_EXPORTER, EXTERNAL_SUCCESS, group_CAP, SYMBOL);
+	if (!EXTERNAL_SUCCESS || !(modular_group_fs = fopen(path_to_FILE, "r"))) {
+	    sprintf(BUFFER, "FATAL ERROR: failed to create the required registry file using '"GROUP_EXPORTER"'");
 	    flush_to_LOGBOOK(prog_NAME, BUFFER);
-	} free(group_CAP); 
-
-	if (!EXTERNAL_SUCCESS || !(modular_group_fs = fopen(path_to_FILE, "r")))
-	{ sprintf(BUFFER, "FATAL ERROR: failed to create the required registry file using '%s'", GROUP_EXPORTER); flush_to_LOGBOOK(prog_NAME, BUFFER); exit(0); }
+	    exit(0); }
+	else {
+	    sprintf(BUFFER, GROUP_EXPORTER " returned an exit status of '%i' \u21D2 <\u2124/%s\u2124, %s> should be registered now", EXTERNAL_SUCCESS, group_CAP, SYMBOL);
+	    free(group_CAP); 
+	    flush_to_LOGBOOK(prog_NAME, BUFFER); }
     } if (modular_group_fs != NULL) sprintf(BUFFER, "Successfully secured a filestream sourced by '%s'", path_to_FILE); flush_to_LOGBOOK(prog_NAME, BUFFER);
     *path_to_filename_INSERTMENT_SLOTH = path_to_FILE; 
     return modular_group_fs;

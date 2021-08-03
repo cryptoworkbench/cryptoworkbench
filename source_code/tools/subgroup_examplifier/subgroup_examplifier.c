@@ -229,7 +229,7 @@ void QUIT_ON_ARGV_TWO_ERROR(char *argv_two) {
 
 void QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
     fprintf(stdout, STDOUT_ARGV_TWO_INSTRUCTION);
-    fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP: to attempt to open from registry the group '<\u2124/%s\u2124>' makes no sense to me. Returning '-1'.\n", argv_one);
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP: to attempt to open from REGISTRY/ the group '<\u2124/%s\u2124>' makes no sense to me. Returning '-1'.\n", argv_one);
     exit(-1);
 }
 

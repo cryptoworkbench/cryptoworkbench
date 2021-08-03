@@ -15,9 +15,9 @@ cd ../prime_table_generator && make prime_table_generator && echo "#######===> T
 "
 cd ../modular_exponentiation && make modular_exponentiation && echo "#######===> The following instrument has been assemblied/linked: modular_exponentiation
 "
-cd ../LOGBOOK_ERASE && make LOGBOOK_ERASE && echo "#######===> The following instrument has been assemblied/linked: LOGBOOK_ERASE
+cd ../LOGBOOK_erase && make LOGBOOK_erase && echo "#######===> The following instrument has been assemblied/linked: LOGBOOK_erase
 "
-cd ../REGISTRY_ERASE && make REGISTRY_ERASE && echo "#######===> The following instrument has been assemblied/linked: REGISTRY_ERASE"
+cd ../REGISTRY_erase && make REGISTRY_erase && echo "#######===> The following instrument has been assemblied/linked: REGISTRY_erase"
 
 echo "
 ########### THE ASSEMBLY LINE HALTED !
