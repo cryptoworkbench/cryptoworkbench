@@ -37,28 +37,28 @@
 struct group_prams group;
 // ^^^ PROGRAM VARIABLES
 
-void QUIT_ON_ARGV_TWO_ERROR(char *argv_two) {
-    fprintf(stderr, ARGV_TWO_INSTRUCTION);
-    fprintf(stderr, "\nFATAL ERROR: cannot grasp group ID: '%s' is neither '0' nor '1'. Returning -2.\n", argv_two);
+void QUIT_ON_ARGV_TWO_ERROR(char *argv_two) { fprintf(stderr, ARGV_TWO_INSTRUCTION);
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp group ID: '%s' is neither '0' nor '1'. Returning '-2'.\n", argv_two);
     exit(-2);
 } // << ^^ Works in conjunction with the definition of ARGV_TWO_INSTRUCTION
 
-void QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
-    fprintf(stderr, ARGV_ONE_INSTRUCTION);
-    fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP: to attempt to open from registry the group '<\u2124/%s\u2124>' makes no sense to me. Returning -1.\n", argv_one);
+void QUIT_ON_ARGV_ONE_ERROR(char *argv_one) { fprintf(stderr, ARGV_ONE_INSTRUCTION);
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP: to attempt to open from registry the group '<\u2124/%s\u2124>' makes no sense to me. Returning '-1'.\n", argv_one);
     exit(-1);
 } // << ^^ Works in conjunction with the definition of ARGV_ONE_INSTRUCTION
 
-void main(int argc, char **argv) { FILE *main_fs = stdout;
-    if (2 > argc || !(ul_ptr_from_str(&group.CAP, argv[1]))) QUIT_ON_ARGV_ONE_ERROR(argv[1]);
-    if (3 > argc || !(ul_ptr_from_str(&group.ID, argv[2]))) QUIT_ON_ARGV_TWO_ERROR(argv[2]);
-    if (3 < argc) main_fs = fopen(argv[3], "w");
-    // ^^^ Parse the first three arguments, argv[1] and argv[2] are mandatory, argv[3] is not
-    
-    for (unsigned long element = group.ID; element < group.CAP; element++)
-	if (group.ID == ADDITIVE_IDENTITY || GCD(group.CAP, element) == MULTIPLICATIVE_IDENTITY) fprintf(main_fs, "%lu\n", element);
-    if (main_fs != stdout) fclose(main_fs); // <^^ fprintf() the list of elements to main_fs and close this filestream.
+int main(int argc, char **argv) {
+    if (2 > argc || !(ul_ptr_from_str(&group.CAP, argv[1]))) QUIT_ON_ARGV_ONE_ERROR(argv[1]); if (3 > argc || !(ul_ptr_from_str(&group.ID, argv[2]))) QUIT_ON_ARGV_TWO_ERROR(argv[2]);
+    // ^^ Parse the infinite field CAP and group ID
 
-    if (5 > argc) exit(0);
-    else execvp(*(argv + 4), (argv + 4)); // <<< Pass on command string which begins at argv[4]
+    char *BUFFER = BUFFER_OF_SIZE(200); sprintf(BUFFER, "Exporting the group with ID '%lu' and CAP '%lu'", group.ID, group.CAP);
+    flush_to_LOGBOOK(argv[0], BUFFER); free(BUFFER);
+    // ^^ Notify in the LOGBOOK about my operations
+
+    for (unsigned long element = group.ID; element < group.CAP; element++)
+	if (group.ID == ADDITIVE_IDENTITY || GCD(group.CAP, element) == MULTIPLICATIVE_IDENTITY) fprintf(stdout, "%lu\n", element);
+    // ^^ Export the group
+
+    if (4 > argc) return 1; else execvp(*(argv + 3), (argv + 3));
+    // ^^ Pass on the command string which begins at argv[3], or quit if appropiate
 }

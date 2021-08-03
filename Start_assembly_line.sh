@@ -1,9 +1,9 @@
 #!/bin/bash 
 mkdir crypto_lab/
 mkdir crypto_lab/tools
-mkdir crypto_lab/registry
+mkdir crypto_lab/REGISTRY
 clear && echo "########### THE ASSAMBLY LINE STARTED ! #######=====>"
-cd source_code/tools/group_examplifier && make group_examplifier && echo "#######===> The following instrument has been assemblied/linked: group_examplifier
+cd source_code/tools/group_exporter && make group_exporter && echo "#######===> The following instrument has been assemblied/linked: group_exporter
 "
 cd ../subgroup_examplifier && make subgroup_examplifier && echo "#######===> The following instrument has been assemblied/linked: subgroup_examplifier
 "
@@ -15,9 +15,9 @@ cd ../prime_table_generator && make prime_table_generator && echo "#######===> T
 "
 cd ../modular_exponentiation && make modular_exponentiation && echo "#######===> The following instrument has been assemblied/linked: modular_exponentiation
 "
-cd ../CLEAR_LABORATORY_LOGBOOK && make CLEAR_LABORATORY_LOGBOOK && echo "#######===> The following instrument has been assemblied/linked: CLEAR_LABORATORY_LOGBOOK
+cd ../LOGBOOK_ERASE && make LOGBOOK_ERASE && echo "#######===> The following instrument has been assemblied/linked: LOGBOOK_ERASE
 "
-cd ../CLEAR_REGISTRY && make CLEAR_REGISTRY && echo "#######===> The following instrument has been assemblied/linked: CLEAR_REGISTRY"
+cd ../REGISTRY_ERASE && make REGISTRY_ERASE && echo "#######===> The following instrument has been assemblied/linked: REGISTRY_ERASE"
 
 echo "
 ########### THE ASSEMBLY LINE HALTED !
