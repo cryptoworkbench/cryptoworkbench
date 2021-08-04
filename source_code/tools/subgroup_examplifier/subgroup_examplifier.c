@@ -197,8 +197,8 @@ struct vertibrae *setup_table(struct vertibrae *last_element, struct group_prams
     return do_loop_iterator; // <<< Returns linked list at identity element
 }
 
-struct vertibrae *build_backbone(char *prog_NAME, struct vertibrae **channel,unsigned long *group_cardinality, struct group_prams *group) {
-    char *filename; FILE *element_database = open_group_as_(group, prog_NAME, &filename);
+struct vertibrae *build_backbone(char *prog_NAME, struct vertibrae **channel, unsigned long *group_cardinality, struct group_prams *group) {
+    char *filename; FILE *element_database = open_group_as_(prog_NAME, &filename, group);
     // ^^^ Open filestream to element database
 
     unsigned long group_element;
@@ -207,7 +207,7 @@ struct vertibrae *build_backbone(char *prog_NAME, struct vertibrae **channel,uns
 
     char *symbol = symbol_to_use(group->ID);
     char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Sourced <\u2124/%lu\u2124, %s> successfully from the filestream", group->CAP, symbol); flush_to_LOGBOOK(prog_NAME, BUFFER); fclose(element_database);
+    sprintf(BUFFER, "Sourced <\u2115/%lu\u2115, %s> successfully from said filestream", group->CAP, symbol); flush_to_LOGBOOK(prog_NAME, BUFFER); fclose(element_database);
     sprintf(BUFFER, "Closed the filestream sourced by '%s'", filename); free(filename); flush_to_LOGBOOK(prog_NAME, BUFFER); free(BUFFER);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
@@ -229,7 +229,7 @@ void QUIT_ON_ARGV_TWO_ERROR(char *argv_two) {
 
 void QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
     fprintf(stdout, STDOUT_ARGV_TWO_INSTRUCTION);
-    fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP: to attempt to open from REGISTRY/ the group '<\u2124/%s\u2124>' makes no sense to me. Returning '-1'.\n", argv_one);
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP: to attempt to open from REGISTRY/ the group '<\u2115/%s\u2115>' makes no sense to me. Returning '-1'.\n", argv_one);
     exit(-1);
 }
 
@@ -262,18 +262,18 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
 
     char *adjective = adjective_to_use(group->ID);
     char *symbol = symbol_to_use(group->ID);
-    fprintf(main_fs, "The %s group of integers modulo %lu, expressed by the notations below:\n	<\u2124/%lu\u2124, %s>\nOr	\u2124%lu%s\n\ncontains %lu elements. That is to say that the cardinality of the %s group of integers modulo %lu is %lu \u21D2\n", adjective, group->CAP, group->CAP, symbol, group->CAP, symbol, group_cardinality, adjective, group->CAP, group_cardinality);
+    fprintf(main_fs, "The %s group of integers modulo %lu, expressed by the notations below:\n	<\u2115/%lu\u2115, %s>\nOr	\u2115%lu%s\n\ncontains %lu elements. That is to say that the cardinality of the %s group of integers modulo %lu is %lu \u21D2\n", adjective, group->CAP, group->CAP, symbol, group->CAP, symbol, group_cardinality, adjective, group->CAP, group_cardinality);
 
-    fprintf(main_fs, "	|<\u2124/%lu\u2124, %s>| = %lu\n", group->CAP, symbol, group_cardinality);
-    fprintf(main_fs, "Or 	|\u2124%lu%s| = %lu\n", group->CAP, symbol, group_cardinality);
+    fprintf(main_fs, "	|<\u2115/%lu\u2115, %s>| = %lu\n", group->CAP, symbol, group_cardinality);
+    fprintf(main_fs, "Or 	|\u2115%lu%s| = %lu\n", group->CAP, symbol, group_cardinality);
     // ^^^ Print cardinality information about this group
 
     put_generator_count(table, group_cardinality);
     if (table->permutation_length > 0) {
-	fprintf(stdout, "\nThe group denoted \"<\u2124/%lu\u2124, %s>\" or alternatively \"\u2124%lu%s\" contains only the following %lu generators:\n", group->CAP, symbol, group->CAP, symbol, table->permutation_length);
+	fprintf(stdout, "\nThis group does contains %lu generators:\n", table->permutation_length);
 	print_generators(table, group_cardinality);
     } else
-	fprintf(stdout, "\nThis group does not have any generators.\n");
+	fprintf(stdout, "\nThis group does not contain any generators.\n");
     // ^^^ Print generator information about this group
 
     /* ### Gotta exit cleanly ### */

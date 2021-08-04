@@ -20,7 +20,7 @@ cd ../LOGBOOK_erase && make LOGBOOK_erase && echo "#######===> The following ins
 cd ../REGISTRY_erase && make REGISTRY_erase && echo "#######===> The following instrument has been assemblied/linked: REGISTRY_erase"
 
 echo "
-########### THE ASSEMBLY LINE HALTED !
+########### ASSEMBLY LINE HALTED !
 ########### The setup completed ! (presumably)
 #####################################################################################################
 ####### 'ls crypto_lab/tools/' to see what instruments fell from the assembly line.           #######

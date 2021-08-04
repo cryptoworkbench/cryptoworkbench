@@ -40,7 +40,7 @@ void flush_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line) {
     }
 }
 
-FILE *open_group_as_(char *prog_NAME, struct group_prams *group, char **path_to_filename_INSERTMENT_SLOTH) {
+FILE *open_group_as_(char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH, struct group_prams *group) {
     char *group_CAP = str_from_ul(group->CAP, 0);
     char *group_ID = str_from_ul(group->ID, 0);
     char *adjective = adjective_to_use(group->ID);
@@ -58,8 +58,8 @@ FILE *open_group_as_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SL
     sprintf(name_of_FILE, "%s%s%s", adjective, FILENAME_BODY, group_CAP);
     // ^^ Prepare the filename
 
-    char *path_to_FILE = (char *) malloc(sizeof(char) * (str_len(FOLDER_NAME) + str_len(name_of_FILE) + 1));
-    sprintf(path_to_FILE, FOLDER_NAME "%s", name_of_FILE);
+    char *path_to_FILE = (char *) malloc(sizeof(char) * (str_len(REGISTRY_PATH) + str_len(name_of_FILE) + 1));
+    sprintf(path_to_FILE, REGISTRY_PATH "%s", name_of_FILE);
     // ^^ Prepare the path
 
     // ### Begin program operation ===>

@@ -99,12 +99,12 @@ int main(int argc, char **argv) {
     struct group_prams *GROUP = (struct group_prams *) malloc(sizeof(struct group_prams));
     GROUP->ID = MULTIPLICATIVE_IDENTITY;
     GROUP->CAP = group_modulus;
-    char *filename; FILE *input_file = open_group_as_(argv[0], GROUP, &filename); free(GROUP);
+    char *filename; FILE *input_file = open_group_as_(argv[0], &filename, GROUP); free(GROUP);
     struct group_element *group_ll = ll_from_file(input_file, (struct group_element **) sub_ordinator());
     // ^^ Get group from file
 
     char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Sourced <\u2124/%lu\u2124, *> successfully from filestream", group_modulus, filename); flush_to_LOGBOOK(argv[0], BUFFER);
+    sprintf(BUFFER, "Sourced <\u2115/%lu\u2115, *> successfully from said filestream", group_modulus, filename); flush_to_LOGBOOK(argv[0], BUFFER);
     sprintf(BUFFER, "Closed the filestream sourced by '%s'", filename); free(filename); flush_to_LOGBOOK(argv[0], BUFFER); free(BUFFER);
     // ^^^ Notify logbook we got group from file
 
