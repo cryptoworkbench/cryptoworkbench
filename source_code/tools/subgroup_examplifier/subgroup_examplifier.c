@@ -198,16 +198,16 @@ struct vertibrae *setup_table(struct vertibrae *last_element, struct group_prams
 }
 
 struct vertibrae *build_backbone(char *prog_NAME, struct vertibrae **channel,unsigned long *group_cardinality, struct group_prams *group) {
-    char *filename; FILE *element_database = open_modular_GROUP_in_the_NAME_of(group, prog_NAME, &filename);
+    char *filename; FILE *element_database = open_group_as_(group, prog_NAME, &filename);
     // ^^^ Open filestream to element database
 
     unsigned long group_element;
     while (fscanf(element_database, "%lu\n", &group_element) == 1) { vertibrae_insert(channel, group_element); (*group_cardinality)++; }
     // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
 
-    char *operation_symbol = operation_symbol_to_use(group->ID);
+    char *symbol = symbol_to_use(group->ID);
     char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Sourced <\u2124/%lu\u2124, %s> successfully from the filestream", group->CAP, operation_symbol); flush_to_LOGBOOK(prog_NAME, BUFFER); fclose(element_database);
+    sprintf(BUFFER, "Sourced <\u2124/%lu\u2124, %s> successfully from the filestream", group->CAP, symbol); flush_to_LOGBOOK(prog_NAME, BUFFER); fclose(element_database);
     sprintf(BUFFER, "Closed the filestream sourced by '%s'", filename); free(filename); flush_to_LOGBOOK(prog_NAME, BUFFER); free(BUFFER);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
@@ -261,7 +261,7 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
     // ^^^ We are done creating the table so stop writting externally
 
     char *adjective = adjective_to_use(group->ID);
-    char *symbol = operation_symbol_to_use(group->ID);
+    char *symbol = symbol_to_use(group->ID);
     fprintf(main_fs, "The %s group of integers modulo %lu, expressed by the notations below:\n	<\u2124/%lu\u2124, %s>\nOr	\u2124%lu%s\n\ncontains %lu elements. That is to say that the cardinality of the %s group of integers modulo %lu is %lu \u21D2\n", adjective, group->CAP, group->CAP, symbol, group->CAP, symbol, group_cardinality, adjective, group->CAP, group_cardinality);
 
     fprintf(main_fs, "	|<\u2124/%lu\u2124, %s>| = %lu\n", group->CAP, symbol, group_cardinality);

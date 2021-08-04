@@ -14,7 +14,7 @@
 #define GROUP_EXPORTER "group_exporter"
 #define FILENAME_BODY "_group_of_integers_mod_"
 
-char *operation_symbol_to_use(unsigned long ID) {
+char *symbol_to_use(unsigned long ID) {
     return (ID == 1) ? "*" : "+";
 }
 
@@ -40,29 +40,31 @@ void flush_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line) {
     }
 }
 
-FILE *open_modular_GROUP_in_the_NAME_of(struct group_prams *group, char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH) {
+FILE *open_group_as_(char *prog_NAME, struct group_prams *group, char **path_to_filename_INSERTMENT_SLOTH) {
+    char *group_CAP = str_from_ul(group->CAP, 0);
+    char *group_ID = str_from_ul(group->ID, 0);
+    char *adjective = adjective_to_use(group->ID);
+    char *symbol = symbol_to_use(group->ID);
     char *BUFFER = BUFFER_OF_SIZE(200);
-    return open_modular_GROUP_in_the_NAME_of_INNER(group, prog_NAME, path_to_filename_INSERTMENT_SLOTH, BUFFER);
+    // ^^ Prepare the char pointers "open_group_as_INNER()" needs
+
+    FILE *group_connection = open_group_as_INNER(prog_NAME, path_to_filename_INSERTMENT_SLOTH, group_CAP, group_ID, adjective, symbol, BUFFER);
     free(BUFFER);
+    return group_connection;
 }
 
-FILE *open_modular_GROUP_in_the_NAME_of_INNER(struct group_prams *group, char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH, char *BUFFER) {
-    char *group_CAP = (char *) malloc(sizeof(char)); group_CAP = str_from_ul(group->CAP, 0);
-    char *group_ID = (char *) malloc(sizeof(char)); group_ID = str_from_ul(group->ID, 0);
-    // ^^ Prepare some string equivalents
-
-    char *adjective = adjective_to_use(group->ID); char *symbol = operation_symbol_to_use(group->ID);
+FILE *open_group_as_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP, char *group_ID, char *adjective, char *symbol, char *BUFFER) {
     char *name_of_FILE = (char *) malloc(sizeof(char) * (str_len(adjective) + str_len(FILENAME_BODY) + str_len(group_CAP) + 1));
     sprintf(name_of_FILE, "%s%s%s", adjective, FILENAME_BODY, group_CAP);
     // ^^ Prepare the filename
 
-    char *path_to_FILE = (char *) malloc(sizeof(char) * (3 + str_len(FOLDER_NAME) + str_len(name_of_FILE) + 1));
-    sprintf(path_to_FILE, "../" FOLDER_NAME "%s", name_of_FILE);
+    char *path_to_FILE = (char *) malloc(sizeof(char) * (str_len(FOLDER_NAME) + str_len(name_of_FILE) + 1));
+    sprintf(path_to_FILE, FOLDER_NAME "%s", name_of_FILE);
     // ^^ Prepare the path
 
     // ### Begin program operation ===>
     FILE *modular_group_fs = NULL; if (!(modular_group_fs = fopen(path_to_FILE, "r"))) { // << If the file does not exist
-	sprintf(BUFFER, "ERROR: no such file 'REGISTRY/%s' \u21D2 <\u2124/%s\u2124, %s> does not seem to have been exported before", name_of_FILE, group_CAP, symbol);
+	sprintf(BUFFER, "ERROR: no such file '%s' \u21D2 <\u2124/%s\u2124, %s> does not seem to have been exported before", path_to_FILE, group_CAP, symbol);
 	flush_to_LOGBOOK(prog_NAME, BUFFER);
 	// ^^ Complain
 
