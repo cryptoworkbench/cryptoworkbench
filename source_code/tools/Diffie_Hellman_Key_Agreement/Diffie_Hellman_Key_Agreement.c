@@ -176,4 +176,5 @@ int main(int argc, char **argv) {
     } else {
 	fprintf(stderr, "\n#\n##### Calculation unsuccessfull, unknown error occured.\n#\n#Exiting '-3'.\n");
 	exit(-3);
-    } }
+    }
+}

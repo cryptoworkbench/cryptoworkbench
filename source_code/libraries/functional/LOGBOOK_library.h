@@ -23,11 +23,11 @@ struct group_prams { // "group_prams" stands for "group parameters"
     unsigned long ID; // <<< The group identity
 };
 
-char *ADJECTIVE_TO_USE(unsigned long ID);
-char *combination_SYMBOL_for_(unsigned long ID);
+char *adjective_to_use(unsigned long ID);
+char *operation_symbol_to_use(unsigned long ID);
 char *BUFFER_OF_SIZE(unsigned int SIZE);
 void flush_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line);
 
-FILE *open_modular_GROUP_in_the_NAME_of_INNER(struct group_prams *GROUP, char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH, char *SYMBOL, char *BUFFER);
-FILE *open_modular_GROUP_in_the_NAME_of(struct group_prams *GROUP, char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH);
+FILE *open_modular_GROUP_in_the_NAME_of_INNER(struct group_prams *group, char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH, char *BUFFER);
+FILE *open_modular_GROUP_in_the_NAME_of(struct group_prams *group, char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH);
 // ^^^ Basically, the last one is the function this library is all about

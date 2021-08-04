@@ -14,11 +14,11 @@
 #define GROUP_EXPORTER "group_exporter"
 #define FILENAME_BODY "_group_of_integers_mod_"
 
-char *combination_SYMBOL_for_(unsigned long ID) {
+char *operation_symbol_to_use(unsigned long ID) {
     return (ID == 1) ? "*" : "+";
 }
 
-char *ADJECTIVE_TO_USE(unsigned long ID) {
+char *adjective_to_use(unsigned long ID) {
     return (ID == 1) ? "multiplicative" : "additive";
 }
 
@@ -40,18 +40,18 @@ void flush_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line) {
     }
 }
 
-FILE *open_modular_GROUP_in_the_NAME_of(struct group_prams *GROUP, char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH) {
+FILE *open_modular_GROUP_in_the_NAME_of(struct group_prams *group, char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH) {
     char *BUFFER = BUFFER_OF_SIZE(200);
-    return open_modular_GROUP_in_the_NAME_of_INNER(GROUP, prog_NAME, path_to_filename_INSERTMENT_SLOTH, combination_SYMBOL_for_(GROUP->ID), BUFFER);
+    return open_modular_GROUP_in_the_NAME_of_INNER(group, prog_NAME, path_to_filename_INSERTMENT_SLOTH, BUFFER);
     free(BUFFER);
 }
 
-FILE *open_modular_GROUP_in_the_NAME_of_INNER(struct group_prams *GROUP, char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH, char *SYMBOL, char *BUFFER) {
-    char *group_CAP = (char *) malloc(sizeof(char)); group_CAP = str_from_ul(GROUP->CAP, 0);
-    char *group_ID = (char *) malloc(sizeof(char)); group_ID = str_from_ul(GROUP->ID, 0);
+FILE *open_modular_GROUP_in_the_NAME_of_INNER(struct group_prams *group, char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH, char *BUFFER) {
+    char *group_CAP = (char *) malloc(sizeof(char)); group_CAP = str_from_ul(group->CAP, 0);
+    char *group_ID = (char *) malloc(sizeof(char)); group_ID = str_from_ul(group->ID, 0);
     // ^^ Prepare some string equivalents
 
-    char *adjective = ADJECTIVE_TO_USE(GROUP->ID);
+    char *adjective = adjective_to_use(group->ID); char *symbol = operation_symbol_to_use(group->ID);
     char *name_of_FILE = (char *) malloc(sizeof(char) * (str_len(adjective) + str_len(FILENAME_BODY) + str_len(group_CAP) + 1));
     sprintf(name_of_FILE, "%s%s%s", adjective, FILENAME_BODY, group_CAP);
     // ^^ Prepare the filename
@@ -62,15 +62,15 @@ FILE *open_modular_GROUP_in_the_NAME_of_INNER(struct group_prams *GROUP, char *p
 
     // ### Begin program operation ===>
     FILE *modular_group_fs = NULL; if (!(modular_group_fs = fopen(path_to_FILE, "r"))) { // << If the file does not exist
-	sprintf(BUFFER, "ERROR: no such file 'REGISTRY/%s' \u21D2 <\u2124/%s\u2124, %s> does not seem to have been exported before", name_of_FILE, group_CAP, SYMBOL);
+	sprintf(BUFFER, "ERROR: no such file 'REGISTRY/%s' \u21D2 <\u2124/%s\u2124, %s> does not seem to have been exported before", name_of_FILE, group_CAP, symbol);
 	flush_to_LOGBOOK(prog_NAME, BUFFER);
 	// ^^ Complain
 
-	sprintf(BUFFER, "Exporting <\u2124/%s\u2124, %s> using the external tool '"GROUP_EXPORTER"'", group_CAP, SYMBOL);
+	sprintf(BUFFER, "Exporting <\u2124/%s\u2124, %s> using the external tool '"GROUP_EXPORTER"'", group_CAP, symbol);
 	flush_to_LOGBOOK(prog_NAME, BUFFER);
 	// ^^ Notify we are going to use group_examplifier
 
-	sprintf(BUFFER, GROUP_EXPORTER " ran by %s", prog_NAME); // << Use BUFFER in order to send along a special "argv[0]" to "group_examplifier"
+	sprintf(BUFFER, "%s running " GROUP_EXPORTER, prog_NAME); // << Use BUFFER in order to send along a special "argv[0]" to "group_examplifier"
 	char *GROUP_EXPORTER_argv[] = {BUFFER, group_CAP, group_ID, 0};
 	// ^^ Prepare a special "argv[0]" for "group_examplifier"
 
@@ -92,7 +92,7 @@ FILE *open_modular_GROUP_in_the_NAME_of_INNER(struct group_prams *GROUP, char *p
 	    flush_to_LOGBOOK(prog_NAME, BUFFER);
 	    exit(0); }
 	else {
-	    sprintf(BUFFER, GROUP_EXPORTER " returned an exit status of '%i' \u21D2 <\u2124/%s\u2124, %s> should be registered now", EXTERNAL_SUCCESS, group_CAP, SYMBOL);
+	    sprintf(BUFFER, GROUP_EXPORTER " returned an exit status of '%i' \u21D2 <\u2124/%s\u2124, %s> should be registered now", EXTERNAL_SUCCESS, group_CAP, symbol);
 	    free(group_CAP); 
 	    flush_to_LOGBOOK(prog_NAME, BUFFER); }
     } if (modular_group_fs != NULL) sprintf(BUFFER, "Successfully secured a filestream sourced by '%s'", path_to_FILE); flush_to_LOGBOOK(prog_NAME, BUFFER);
