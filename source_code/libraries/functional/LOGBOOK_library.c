@@ -15,11 +15,11 @@
 #define FILENAME_BODY "_group_of_integers_mod_"
 
 char *symbol_to_use(unsigned long ID) {
-    return (ID == 1) ? "*" : "+";
+    return (ID == 0) ? "+" : "*";
 }
 
 char *adjective_to_use(unsigned long ID) {
-    return (ID == 1) ? "multiplicative" : "additive";
+    return (ID == 0) ? "additive" : "multiplicative";
 }
 
 char *BUFFER_OF_SIZE(unsigned int SIZE) {
@@ -40,17 +40,16 @@ void flush_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line) {
     }
 }
 
-FILE *open_group_as_(char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH, struct group_prams *group) {
-    char *group_CAP = str_from_ul(group->CAP, 0);
+FILE *open_group_as_(char *prog_NAME, struct group_prams *group, char **path_to_filename_INSERTMENT_SLOTH, char **group_CAP_INSERTMENT_SLOTH) {
+    *group_CAP_INSERTMENT_SLOTH = str_from_ul(group->CAP, 0);
     char *group_ID = str_from_ul(group->ID, 0);
     char *adjective = adjective_to_use(group->ID);
     char *symbol = symbol_to_use(group->ID);
     char *BUFFER = BUFFER_OF_SIZE(200);
     // ^^ Prepare the char pointers "open_group_as_INNER()" needs
 
-    FILE *group_connection = open_group_as_INNER(prog_NAME, path_to_filename_INSERTMENT_SLOTH, group_CAP, group_ID, adjective, symbol, BUFFER);
-    free(BUFFER);
-    return group_connection;
+    FILE *opened_group = open_group_as_INNER(prog_NAME, path_to_filename_INSERTMENT_SLOTH, *group_CAP_INSERTMENT_SLOTH, group_ID, adjective, symbol, BUFFER);
+    return opened_group;
 }
 
 FILE *open_group_as_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP, char *group_ID, char *adjective, char *symbol, char *BUFFER) {
@@ -76,29 +75,33 @@ FILE *open_group_as_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SL
 	char *GROUP_EXPORTER_argv[] = {BUFFER, group_CAP, group_ID, 0};
 	// ^^ Prepare a special "argv[0]" for "group_examplifier"
 
-	pid_t pid = fork(); if (pid == -1) { sprintf(BUFFER, FORK_ERROR); flush_to_LOGBOOK(prog_NAME, BUFFER); exit(-10); }
+	pid_t group_exporter = fork(); if (group_exporter == -1) { sprintf(BUFFER, FORK_ERROR); flush_to_LOGBOOK(prog_NAME, BUFFER); exit(-10); }
 	// ^^ Fork
 
-	if (!pid) { // << If we managed to fork
+	if (!group_exporter) { // << If we managed to fork
 	    FILE *NEEDED_FILE = fopen(path_to_FILE, "w"); // <<< Create the file which did not yet exist
 	    if (dup2(fileno(NEEDED_FILE), 1) == -1) { fprintf(stderr, FILE_DESCRIPTOR_ERROR); exit(-10); } // <<< Error when the filestream would not duplicate
-	    execvp(GROUP_EXPORTER, GROUP_EXPORTER_argv); // <<< If all is well and fine, have the child process running "group_examplifier" to export the group
+	    execvp(GROUP_EXPORTER, GROUP_EXPORTER_argv); // <<< If all is well and fine, have the child process be "group_exporter" in order to export the group
 	}
 
 	int GROUP_EXPORTER_exit_status_RAW;
-	waitpid(pid, &GROUP_EXPORTER_exit_status_RAW, 0); free(group_ID);
+	waitpid(group_exporter, &GROUP_EXPORTER_exit_status_RAW, 0); free(group_ID);
 	// ^^ Wait for the child process to finish
 
 	int GROUP_EXPORTER_exit_status = WEXITSTATUS(GROUP_EXPORTER_exit_status_RAW);
 	if (GROUP_EXPORTER_exit_status && (modular_group_fs = fopen(path_to_FILE, "r"))) {
 	    sprintf(BUFFER, GROUP_EXPORTER " returned an exit status of '%i' \u21D2 <\u2124/%s\u2124, %s> should be registered now", GROUP_EXPORTER_exit_status, group_CAP, symbol);
-	    free(group_CAP); 
 	    flush_to_LOGBOOK(prog_NAME, BUFFER); }
 	else {
 	    sprintf(BUFFER, "FATAL ERROR: failed to create the required registry file using '"GROUP_EXPORTER"'");
 	    flush_to_LOGBOOK(prog_NAME, BUFFER);
 	    exit(0); }
     } if (modular_group_fs != NULL) sprintf(BUFFER, "Successfully secured a filestream sourced by '%s'", path_to_FILE); flush_to_LOGBOOK(prog_NAME, BUFFER);
-    *path_to_filename_INSERTMENT_SLOTH = path_to_FILE; 
+    free(BUFFER); *path_to_filename_INSERTMENT_SLOTH = path_to_FILE; 
     return modular_group_fs;
+}
+
+void close_group(char *prog_NAME, char *group_CAP, char *symbol_to_use, char *path_to_filename, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
+    sprintf(BUFFER, "Successfully sourced <\u2115/%s\u2115, %s> from '%s'", group_CAP, symbol_to_use, path_to_filename); flush_to_LOGBOOK(prog_NAME, BUFFER); fclose(opened_group);
+    sprintf(BUFFER, "Closed the filestream sourced by '%s'", path_to_filename); free(path_to_filename); flush_to_LOGBOOK(prog_NAME, BUFFER); free(BUFFER);
 }

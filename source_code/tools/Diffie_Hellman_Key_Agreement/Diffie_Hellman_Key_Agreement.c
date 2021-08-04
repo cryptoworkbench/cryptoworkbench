@@ -96,16 +96,14 @@ int main(int argc, char **argv) {
     else { fprintf(stderr, "Wrong argument count.\n\nExiting '-1'.\n"); return -1; }
     // ^^^ Or exit upon wrong argument count.
 
-    struct group_prams *GROUP = (struct group_prams *) malloc(sizeof(struct group_prams));
-    GROUP->ID = MULTIPLICATIVE_IDENTITY;
-    GROUP->CAP = group_modulus;
-    char *filename; FILE *input_file = open_group_as_(argv[0], &filename, GROUP); free(GROUP);
-    struct group_element *group_ll = ll_from_file(input_file, (struct group_element **) sub_ordinator());
+    struct group_prams *group = (struct group_prams *) malloc(sizeof(struct group_prams));
+    group->ID = MULTIPLICATIVE_IDENTITY;
+    group->CAP = group_modulus;
+    char *path_to_filename; char *group_CAP; FILE *ELEMENT_database = open_group_as_(argv[0], group, &path_to_filename, &group_CAP); free(group);
+    struct group_element *group_ll = ll_from_file(ELEMENT_database, (struct group_element **) sub_ordinator());
     // ^^ Get group from file
 
-    char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Sourced <\u2115/%lu\u2115, *> successfully from said filestream", group_modulus, filename); flush_to_LOGBOOK(argv[0], BUFFER);
-    sprintf(BUFFER, "Closed the filestream sourced by '%s'", filename); free(filename); flush_to_LOGBOOK(argv[0], BUFFER); free(BUFFER);
+    close_group(argv[0], group_CAP, symbol_to_use(group->ID), path_to_filename, ELEMENT_database);
     // ^^^ Notify logbook we got group from file
 
     struct group_element *iter = group_ll; do {

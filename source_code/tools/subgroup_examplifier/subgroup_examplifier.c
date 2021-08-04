@@ -198,17 +198,16 @@ struct vertibrae *setup_table(struct vertibrae *last_element, struct group_prams
 }
 
 struct vertibrae *build_backbone(char *prog_NAME, struct vertibrae **channel, unsigned long *group_cardinality, struct group_prams *group) {
-    char *filename; FILE *element_database = open_group_as_(prog_NAME, &filename, group);
+    char *path_to_filename; char *group_CAP; FILE *ELEMENT_database = open_group_as_(prog_NAME, group, &path_to_filename, &group_CAP);
     // ^^^ Open filestream to element database
 
-    unsigned long group_element;
-    while (fscanf(element_database, "%lu\n", &group_element) == 1) { vertibrae_insert(channel, group_element); (*group_cardinality)++; }
+    unsigned long group_ELEMENT;
+    while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { vertibrae_insert(channel, group_ELEMENT); (*group_cardinality)++; }
     // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
 
-    char *symbol = symbol_to_use(group->ID);
-    char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Sourced <\u2115/%lu\u2115, %s> successfully from said filestream", group->CAP, symbol); flush_to_LOGBOOK(prog_NAME, BUFFER); fclose(element_database);
-    sprintf(BUFFER, "Closed the filestream sourced by '%s'", filename); free(filename); flush_to_LOGBOOK(prog_NAME, BUFFER); free(BUFFER);
+    close_group(prog_NAME, group_CAP, symbol_to_use(group->ID), path_to_filename, ELEMENT_database);
+    // sprintf(BUFFER, "Sourced <\u2115/%lu\u2115, %s> successfully from said filestream", group->CAP, symbol); flush_to_LOGBOOK(prog_NAME, BUFFER); fclose(ELEMENT_database);
+    // sprintf(BUFFER, "Closed the filestream sourced by '%s'", path_to_filename); free(path_to_filename); flush_to_LOGBOOK(prog_NAME, BUFFER); free(BUFFER);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
     struct vertibrae *last_element, *first_element;
@@ -272,8 +271,7 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
     if (table->permutation_length > 0) {
 	fprintf(stdout, "\nThis group does contains %lu generators:\n", table->permutation_length);
 	print_generators(table, group_cardinality);
-    } else
-	fprintf(stdout, "\nThis group does not contain any generators.\n");
+    } else fprintf(stdout, "\nThis group does not contain any generators.\n");
     // ^^^ Print generator information about this group
 
     /* ### Gotta exit cleanly ### */
