@@ -2,7 +2,7 @@
 mkdir crypto_lab/
 mkdir crypto_lab/tools
 mkdir crypto_lab/REGISTRY
-clear && echo "########### THE ASSAMBLY LINE STARTED ! #######=====>"
+clear && echo "########### ASSEMBLY LINE ROLLING ! #######=====>"
 cd source_code/tools/group_exporter && make group_exporter && echo "#######===> The following instrument has been assemblied/linked: group_exporter
 "
 cd ../subgroup_examplifier && make subgroup_examplifier && echo "#######===> The following instrument has been assemblied/linked: subgroup_examplifier
@@ -15,12 +15,13 @@ cd ../prime_table_generator && make prime_table_generator && echo "#######===> T
 "
 cd ../modular_exponentiation && make modular_exponentiation && echo "#######===> The following instrument has been assemblied/linked: modular_exponentiation
 "
+cd ../REGISTRY_erase && make REGISTRY_erase && echo "#######===> The following instrument has been assemblied/linked: REGISTRY_erase
+"
+cd ../READ_laboratory_LOGBOOK && make READ_laboratory_LOGBOOK && echo "#######===> The following instrument has been assemblied/linked: READ_laboratory_LOGBOOK
+"
 cd ../LOGBOOK_erase && make LOGBOOK_erase && echo "#######===> The following instrument has been assemblied/linked: LOGBOOK_erase
 "
-cd ../REGISTRY_erase && make REGISTRY_erase && echo "#######===> The following instrument has been assemblied/linked: REGISTRY_erase"
-
-echo "
-########### ASSEMBLY LINE HALTED !
+echo "########### ASSEMBLY LINE HALTED !
 ########### The setup completed ! (presumably)
 #####################################################################################################
 ####### 'ls crypto_lab/tools/' to see what instruments fell from the assembly line.           #######

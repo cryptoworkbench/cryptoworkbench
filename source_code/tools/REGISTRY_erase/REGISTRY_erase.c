@@ -2,5 +2,5 @@
 #include <stdlib.h>
 
 int main(char **argv) {
-    system("rm ../registry/*");
+    system("rm ../REGISTRY/*");
     return 0; }
