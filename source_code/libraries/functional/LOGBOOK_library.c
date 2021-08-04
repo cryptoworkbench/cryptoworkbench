@@ -66,7 +66,7 @@ FILE *open_modular_GROUP_in_the_NAME_of_INNER(struct group_prams *group, char *p
 	flush_to_LOGBOOK(prog_NAME, BUFFER);
 	// ^^ Complain
 
-	sprintf(BUFFER, "Exporting <\u2124/%s\u2124, %s> using the external tool '"GROUP_EXPORTER"'", group_CAP, symbol);
+	sprintf(BUFFER, "Using the external tool '"GROUP_EXPORTER"' to export <\u2124/%s\u2124, %s>", group_CAP, symbol);
 	flush_to_LOGBOOK(prog_NAME, BUFFER);
 	// ^^ Notify we are going to use group_examplifier
 
@@ -83,18 +83,19 @@ FILE *open_modular_GROUP_in_the_NAME_of_INNER(struct group_prams *group, char *p
 	    execvp(GROUP_EXPORTER, GROUP_EXPORTER_argv); // <<< If all is well and fine, have the child process running "group_examplifier" to export the group
 	}
 
-	int EXTERNAL_SUCCESS;
-	waitpid(pid, &EXTERNAL_SUCCESS, 0); free(group_ID);
+	int GROUP_EXPORTER_exit_status_RAW;
+	waitpid(pid, &GROUP_EXPORTER_exit_status_RAW, 0); free(group_ID);
 	// ^^ Wait for the child process to finish
 
-	if (!EXTERNAL_SUCCESS || !(modular_group_fs = fopen(path_to_FILE, "r"))) {
+	int GROUP_EXPORTER_exit_status = WEXITSTATUS(GROUP_EXPORTER_exit_status_RAW);
+	if (GROUP_EXPORTER_exit_status && (modular_group_fs = fopen(path_to_FILE, "r"))) {
+	    sprintf(BUFFER, GROUP_EXPORTER " returned an exit status of '%i' \u21D2 <\u2124/%s\u2124, %s> should be registered now", GROUP_EXPORTER_exit_status, group_CAP, symbol);
+	    free(group_CAP); 
+	    flush_to_LOGBOOK(prog_NAME, BUFFER); }
+	else {
 	    sprintf(BUFFER, "FATAL ERROR: failed to create the required registry file using '"GROUP_EXPORTER"'");
 	    flush_to_LOGBOOK(prog_NAME, BUFFER);
 	    exit(0); }
-	else {
-	    sprintf(BUFFER, GROUP_EXPORTER " returned an exit status of '%i' \u21D2 <\u2124/%s\u2124, %s> should be registered now", EXTERNAL_SUCCESS, group_CAP, symbol);
-	    free(group_CAP); 
-	    flush_to_LOGBOOK(prog_NAME, BUFFER); }
     } if (modular_group_fs != NULL) sprintf(BUFFER, "Successfully secured a filestream sourced by '%s'", path_to_FILE); flush_to_LOGBOOK(prog_NAME, BUFFER);
     *path_to_filename_INSERTMENT_SLOTH = path_to_FILE; 
     return modular_group_fs;
