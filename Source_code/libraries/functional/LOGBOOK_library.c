@@ -40,19 +40,28 @@ void flush_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line) {
     }
 }
 
+void append(char *TO_BE_APPENDED_logbook_line) { fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", argv_ZERO, TO_BE_APPENDED_logbook_line); fflush(logbook_fs); }
+// ^^ No need for buffers any longer
+
 FILE *open_group(char *prog_NAME, struct group_prams *group, char **path_to_filename_INSERTMENT_SLOTH, char **group_CAP_INSERTMENT_SLOTH) {
+    argv_ZERO = prog_NAME;
+    // ^^ Set the gobal variable "argv_ZERO" based on what was passed on to this function as "argv[0]"
+
+    if ( !(logbook_fs = fopen(LOGBOOK_PATH, "a"))) { fprintf(stderr, "Failed to open logbook!\n"); exit(-10); }
+    // ^^ Exit when the logbook won't open
+
     *group_CAP_INSERTMENT_SLOTH = str_from_ul(group->CAP, 0);
     char *group_ID = str_from_ul(group->ID, 0);
     char *adjective = adjective_to_use(group->ID);
     char *symbol = symbol_to_use(group->ID);
-    char *BUFFER = BUFFER_OF_SIZE(200);
+    char *LINE = BUFFER_OF_SIZE(200);
     // ^^ Prepare the char pointers "open_group_as_INNER()" needs
 
-    FILE *opened_group = open_group_INNER(prog_NAME, path_to_filename_INSERTMENT_SLOTH, *group_CAP_INSERTMENT_SLOTH, group_ID, adjective, symbol, BUFFER);
+    FILE *opened_group = open_group_INNER(prog_NAME, path_to_filename_INSERTMENT_SLOTH, *group_CAP_INSERTMENT_SLOTH, group_ID, adjective, symbol, LINE);
     return opened_group;
 }
 
-FILE *open_group_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP, char *group_ID, char *adjective, char *symbol, char *BUFFER) {
+FILE *open_group_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP, char *group_ID, char *adjective, char *symbol, char *LINE) {
     char *name_of_FILE = (char *) malloc(sizeof(char) * (str_len(adjective) + str_len(FILENAME_BODY) + str_len(group_CAP) + 1));
     sprintf(name_of_FILE, "%s%s%s", adjective, FILENAME_BODY, group_CAP);
     // ^^ Prepare the filename
@@ -63,19 +72,17 @@ FILE *open_group_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH
 
     // ### Begin program operation ===>
     FILE *modular_group_fs = NULL; if (!(modular_group_fs = fopen(path_to_FILE, "r"))) { // << If the file does not exist
-	sprintf(BUFFER, "No such file '%s' \u21D2 <\u2124/%s\u2124, %s> does not seem to have been exported before", path_to_FILE, group_CAP, symbol);
-	flush_to_LOGBOOK(prog_NAME, BUFFER);
+	sprintf(LINE, "No such file '%s' \u21D2 <\u2124/%s\u2124, %s> does not seem to have been exported before", path_to_FILE, group_CAP, symbol); append(LINE);
 	// ^^ Complain
 
-	sprintf(BUFFER, "I will export <\u2124/%s\u2124, %s> using '" GROUP_EXPORTER "'", group_CAP, symbol);
-	flush_to_LOGBOOK(prog_NAME, BUFFER);
+	sprintf(LINE, "I will export <\u2124/%s\u2124, %s> using '" GROUP_EXPORTER "'", group_CAP, symbol); append(LINE);
 	// ^^ Notify we are going to use group_examplifier
 
-	sprintf(BUFFER, "%s using " GROUP_EXPORTER, prog_NAME); // << Use BUFFER in order to send along a special "argv[0]" to "group_examplifier"
-	char *GROUP_EXPORTER_argv[] = {BUFFER, group_CAP, group_ID, 0};
+	sprintf(LINE, "%s using " GROUP_EXPORTER, prog_NAME); // << Use LINE in order to send along a special "argv[0]" to "group_examplifier"
+	char *GROUP_EXPORTER_argv[] = {LINE, group_CAP, group_ID, 0};
 	// ^^ Prepare a special "argv[0]" for "group_examplifier"
 
-	pid_t group_exporter = fork(); if (group_exporter == -1) { sprintf(BUFFER, FORK_ERROR); flush_to_LOGBOOK(prog_NAME, BUFFER); exit(-10); }
+	pid_t group_exporter = fork(); if (group_exporter == -1) { sprintf(LINE, FORK_ERROR); append(LINE); exit(-10); }
 	// ^^ Fork
 
 	if (!group_exporter) { // << If we managed to fork
@@ -90,18 +97,17 @@ FILE *open_group_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH
 
 	int GROUP_EXPORTER_exit_status = WEXITSTATUS(GROUP_EXPORTER_exit_status_RAW);
 	if (GROUP_EXPORTER_exit_status && (modular_group_fs = fopen(path_to_FILE, "r"))) {
-	    sprintf(BUFFER, GROUP_EXPORTER " returned an exit status of '%i' \u21D2 <\u2124/%s\u2124, %s> should be registered now", GROUP_EXPORTER_exit_status, group_CAP, symbol);
-	    flush_to_LOGBOOK(prog_NAME, BUFFER); }
+	    sprintf(LINE, GROUP_EXPORTER " returned an exit status of '%i' \u21D2 <\u2124/%s\u2124, %s> should be registered now", GROUP_EXPORTER_exit_status, group_CAP, symbol);
+	    append(LINE); }
 	else {
-	    sprintf(BUFFER, "FATAL ERROR: failed to create the required registry file using '"GROUP_EXPORTER"'");
-	    flush_to_LOGBOOK(prog_NAME, BUFFER);
+	    sprintf(LINE, "FATAL ERROR: failed to create the required registry file using '"GROUP_EXPORTER"'"); append(LINE);
 	    exit(0); }
-    } if (modular_group_fs != NULL) sprintf(BUFFER, "Found '%s'", path_to_FILE); flush_to_LOGBOOK(prog_NAME, BUFFER);
-    free(BUFFER); *path_to_filename_INSERTMENT_SLOTH = path_to_FILE; 
+    } if (modular_group_fs != NULL) sprintf(LINE, "Found '%s'", path_to_FILE); append(LINE);
+    free(LINE); *path_to_filename_INSERTMENT_SLOTH = path_to_FILE; 
     return modular_group_fs;
 }
 
 void close_group(char *prog_NAME, char *group_CAP, char *symbol_to_use, char *path_to_filename, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Sourced <\u2115/%s\u2115, %s> from '%s'", group_CAP, symbol_to_use, path_to_filename); flush_to_LOGBOOK(prog_NAME, BUFFER); fclose(opened_group);
-    sprintf(BUFFER, "Closed '%s'", path_to_filename); free(path_to_filename); flush_to_LOGBOOK(prog_NAME, BUFFER); free(BUFFER);
+    sprintf(BUFFER, "Sourced <\u2115/%s\u2115, %s> from '%s'", group_CAP, symbol_to_use, path_to_filename); append(BUFFER); fclose(opened_group);
+    sprintf(BUFFER, "Closed '%s'", path_to_filename); free(path_to_filename); append(BUFFER); free(BUFFER);
 }
