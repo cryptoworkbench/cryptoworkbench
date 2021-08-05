@@ -40,7 +40,7 @@ void flush_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line) {
     }
 }
 
-FILE *open_group_as_(char *prog_NAME, struct group_prams *group, char **path_to_filename_INSERTMENT_SLOTH, char **group_CAP_INSERTMENT_SLOTH) {
+FILE *open_group(char *prog_NAME, struct group_prams *group, char **path_to_filename_INSERTMENT_SLOTH, char **group_CAP_INSERTMENT_SLOTH) {
     *group_CAP_INSERTMENT_SLOTH = str_from_ul(group->CAP, 0);
     char *group_ID = str_from_ul(group->ID, 0);
     char *adjective = adjective_to_use(group->ID);
@@ -48,11 +48,11 @@ FILE *open_group_as_(char *prog_NAME, struct group_prams *group, char **path_to_
     char *BUFFER = BUFFER_OF_SIZE(200);
     // ^^ Prepare the char pointers "open_group_as_INNER()" needs
 
-    FILE *opened_group = open_group_as_INNER(prog_NAME, path_to_filename_INSERTMENT_SLOTH, *group_CAP_INSERTMENT_SLOTH, group_ID, adjective, symbol, BUFFER);
+    FILE *opened_group = open_group_INNER(prog_NAME, path_to_filename_INSERTMENT_SLOTH, *group_CAP_INSERTMENT_SLOTH, group_ID, adjective, symbol, BUFFER);
     return opened_group;
 }
 
-FILE *open_group_as_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP, char *group_ID, char *adjective, char *symbol, char *BUFFER) {
+FILE *open_group_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP, char *group_ID, char *adjective, char *symbol, char *BUFFER) {
     char *name_of_FILE = (char *) malloc(sizeof(char) * (str_len(adjective) + str_len(FILENAME_BODY) + str_len(group_CAP) + 1));
     sprintf(name_of_FILE, "%s%s%s", adjective, FILENAME_BODY, group_CAP);
     // ^^ Prepare the filename

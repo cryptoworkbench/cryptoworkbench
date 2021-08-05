@@ -3,7 +3,7 @@ mkdir crypto_lab/
 mkdir crypto_lab/tools
 mkdir crypto_lab/REGISTRY
 clear && echo "########### ASSEMBLY LINE ROLLING ! #######=====>"
-cd source_code/tools/group_exporter && make group_exporter && echo "#######===> The following instrument has been assemblied/linked: group_exporter
+cd Source_code/tools/group_exporter && make group_exporter && echo "#######===> The following instrument has been assemblied/linked: group_exporter
 "
 cd ../subgroup_examplifier && make subgroup_examplifier && echo "#######===> The following instrument has been assemblied/linked: subgroup_examplifier
 "

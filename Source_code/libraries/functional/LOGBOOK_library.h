@@ -28,8 +28,8 @@ char *symbol_to_use(unsigned long ID);
 char *BUFFER_OF_SIZE(unsigned int SIZE);
 void flush_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line);
 
-FILE *open_group_as_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP, char *group_ID, char *adjective, char *symbol, char *BUFFER);
-FILE *open_group_as_(char *prog_NAME, struct group_prams *group, char **path_to_filename_INSERTMENT_SLOTH, char **group_CAP_INSERTMENT_SLOTH);
+FILE *open_group_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP, char *group_ID, char *adjective, char *symbol, char *BUFFER);
+FILE *open_group(char *prog_NAME, struct group_prams *group, char **path_to_filename_INSERTMENT_SLOTH, char **group_CAP_INSERTMENT_SLOTH);
 // ^^^ Basically, the last one is the function this library is all about
 
 void close_group(char *prog_NAME, char *group_CAP, char *symbol_to_use, char *path_to_filename, FILE *opened_group);

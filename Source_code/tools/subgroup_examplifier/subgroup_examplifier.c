@@ -198,7 +198,7 @@ struct vertibrae *setup_table(struct vertibrae *last_element, struct group_prams
 }
 
 struct vertibrae *build_backbone(char *prog_NAME, struct vertibrae **channel, unsigned long *group_cardinality, struct group_prams *group) {
-    char *path_to_filename; char *group_CAP; FILE *ELEMENT_database = open_group_as_(prog_NAME, group, &path_to_filename, &group_CAP);
+    char *path_to_filename; char *group_CAP; FILE *ELEMENT_database = open_group(prog_NAME, group, &path_to_filename, &group_CAP);
     // ^^^ Open filestream to element database
 
     unsigned long group_ELEMENT;

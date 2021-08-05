@@ -99,7 +99,7 @@ int main(int argc, char **argv) {
     struct group_prams *group = (struct group_prams *) malloc(sizeof(struct group_prams));
     group->ID = MULTIPLICATIVE_IDENTITY;
     group->CAP = group_modulus;
-    char *path_to_filename; char *group_CAP; FILE *ELEMENT_database = open_group_as_(argv[0], group, &path_to_filename, &group_CAP); free(group);
+    char *path_to_filename; char *group_CAP; FILE *ELEMENT_database = open_group(argv[0], group, &path_to_filename, &group_CAP); free(group);
     struct group_element *group_ll = ll_from_file(ELEMENT_database, (struct group_element **) sub_ordinator());
     // ^^ Get group from file
 
