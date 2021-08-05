@@ -63,15 +63,15 @@ FILE *open_group_as_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SL
 
     // ### Begin program operation ===>
     FILE *modular_group_fs = NULL; if (!(modular_group_fs = fopen(path_to_FILE, "r"))) { // << If the file does not exist
-	sprintf(BUFFER, "ERROR: no such file '%s' \u21D2 <\u2124/%s\u2124, %s> does not seem to have been exported before", path_to_FILE, group_CAP, symbol);
+	sprintf(BUFFER, "No such file '%s' \u21D2 <\u2124/%s\u2124, %s> does not seem to have been exported before", path_to_FILE, group_CAP, symbol);
 	flush_to_LOGBOOK(prog_NAME, BUFFER);
 	// ^^ Complain
 
-	sprintf(BUFFER, "Using the external tool '"GROUP_EXPORTER"' to export <\u2124/%s\u2124, %s>", group_CAP, symbol);
+	sprintf(BUFFER, "I will export <\u2124/%s\u2124, %s> using '" GROUP_EXPORTER "'", group_CAP, symbol);
 	flush_to_LOGBOOK(prog_NAME, BUFFER);
 	// ^^ Notify we are going to use group_examplifier
 
-	sprintf(BUFFER, "%s running " GROUP_EXPORTER, prog_NAME); // << Use BUFFER in order to send along a special "argv[0]" to "group_examplifier"
+	sprintf(BUFFER, "%s using " GROUP_EXPORTER, prog_NAME); // << Use BUFFER in order to send along a special "argv[0]" to "group_examplifier"
 	char *GROUP_EXPORTER_argv[] = {BUFFER, group_CAP, group_ID, 0};
 	// ^^ Prepare a special "argv[0]" for "group_examplifier"
 
@@ -96,12 +96,12 @@ FILE *open_group_as_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SL
 	    sprintf(BUFFER, "FATAL ERROR: failed to create the required registry file using '"GROUP_EXPORTER"'");
 	    flush_to_LOGBOOK(prog_NAME, BUFFER);
 	    exit(0); }
-    } if (modular_group_fs != NULL) sprintf(BUFFER, "Successfully secured a filestream sourced by '%s'", path_to_FILE); flush_to_LOGBOOK(prog_NAME, BUFFER);
+    } if (modular_group_fs != NULL) sprintf(BUFFER, "Found '%s'", path_to_FILE); flush_to_LOGBOOK(prog_NAME, BUFFER);
     free(BUFFER); *path_to_filename_INSERTMENT_SLOTH = path_to_FILE; 
     return modular_group_fs;
 }
 
 void close_group(char *prog_NAME, char *group_CAP, char *symbol_to_use, char *path_to_filename, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Successfully sourced <\u2115/%s\u2115, %s> from '%s'", group_CAP, symbol_to_use, path_to_filename); flush_to_LOGBOOK(prog_NAME, BUFFER); fclose(opened_group);
-    sprintf(BUFFER, "Closed the filestream sourced by '%s'", path_to_filename); free(path_to_filename); flush_to_LOGBOOK(prog_NAME, BUFFER); free(BUFFER);
+    sprintf(BUFFER, "Sourced <\u2115/%s\u2115, %s> from '%s'", group_CAP, symbol_to_use, path_to_filename); flush_to_LOGBOOK(prog_NAME, BUFFER); fclose(opened_group);
+    sprintf(BUFFER, "Closed '%s'", path_to_filename); free(path_to_filename); flush_to_LOGBOOK(prog_NAME, BUFFER); free(BUFFER);
 }

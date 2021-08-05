@@ -17,7 +17,7 @@ cd ../modular_exponentiation && make modular_exponentiation && echo "#######===>
 "
 cd ../REGISTRY_erase && make REGISTRY_erase && echo "#######===> The following instrument has been assemblied/linked: REGISTRY_erase
 "
-cd ../READ_laboratory_LOGBOOK && make READ_laboratory_LOGBOOK && echo "#######===> The following instrument has been assemblied/linked: READ_laboratory_LOGBOOK
+cd ../VIEW_laboratory_LOGBOOK && make VIEW_laboratory_LOGBOOK && echo "#######===> The following instrument has been assemblied/linked: VIEW_laboratory_LOGBOOK
 "
 cd ../LOGBOOK_erase && make LOGBOOK_erase && echo "#######===> The following instrument has been assemblied/linked: LOGBOOK_erase
 "

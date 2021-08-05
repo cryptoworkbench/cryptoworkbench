@@ -51,13 +51,13 @@ int main(int argc, char **argv) {
     if (2 > argc || !(ul_ptr_from_str(&group.CAP, argv[1]))) QUIT_ON_ARGV_ONE_ERROR(argv[1]); if (3 > argc || !(ul_ptr_from_str(&group.ID, argv[2]))) QUIT_ON_ARGV_TWO_ERROR(argv[2]);
     // ^^ Parse the infinite field CAP and group ID
 
-    char *BUFFER = BUFFER_OF_SIZE(400); sprintf(BUFFER, "Exporting <\u2124/%lu\u2124, %s>", group.CAP, symbol_to_use(group.ID));
-    flush_to_LOGBOOK(argv[0], BUFFER); free(BUFFER);
-    // ^^ Notify in the LOGBOOK about my operations
-
     for (unsigned long element = group.ID; element < group.CAP; element++)
 	if (group.ID == ADDITIVE_IDENTITY || GCD(group.CAP, element) == MULTIPLICATIVE_IDENTITY) fprintf(stdout, "%lu\n", element);
     // ^^ Export the group
+
+    char *BUFFER = BUFFER_OF_SIZE(400); sprintf(BUFFER, "Exported <\u2124/%lu\u2124, %s>", group.CAP, symbol_to_use(group.ID));
+    flush_to_LOGBOOK(argv[0], BUFFER); free(BUFFER);
+    // ^^ Notify in the LOGBOOK about my operations
 
     if (4 > argc) return 1; else execvp(*(argv + 3), (argv + 3));
     // ^^ Pass on the command string which begins at argv[3], or quit if appropiate

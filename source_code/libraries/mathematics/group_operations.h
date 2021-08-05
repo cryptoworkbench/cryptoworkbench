@@ -2,13 +2,13 @@
 #define MULTIPLICATIVE_IDENTITY 1
 // ^^ These two definitions are required by the function description of "MODULAR_operation_BASED_ON_()" in "group_operations.c"
 
-unsigned long ordinator(unsigned long a, unsigned long b);
-unsigned long CAPPED_ordinator(unsigned long a, unsigned long b, unsigned long CAP);
-// ^^^ Define the ordinating addition operations for 'regular' (not CAPPED) and 'modular' (CAPPED) arithmetic respectively
+unsigned long addition(unsigned long a, unsigned long b);
+unsigned long FINITE_addition(unsigned long a, unsigned long b, unsigned long CAP);
+// ^^^ Define the ordinating addition operations for 'regular' (not FINITE) and 'modular' (FINITE) arithmetic respectively
 
-unsigned long ordinated(unsigned long a, unsigned long b);
-unsigned long CAPPED_ordinated(unsigned long a, unsigned long b, unsigned long CAP);
-// ^^^ Define the ordinated multiplication operations for 'regular' (not CAPPED) and 'modular' (CAPPED) arithmetic, also respectively
+unsigned long multiplication(unsigned long a, unsigned long b);
+unsigned long FINITE_multiplication(unsigned long a, unsigned long b, unsigned long CAP);
+// ^^^ Define the multiplication multiplication operations for 'regular' (not FINITE) and 'modular' (FINITE) arithmetic, also respectively
 
 typedef unsigned long (*INFINITE_field_combination) (unsigned long, unsigned long);
 typedef unsigned long (*FINITE_field_combination) (unsigned long, unsigned long, unsigned long);
