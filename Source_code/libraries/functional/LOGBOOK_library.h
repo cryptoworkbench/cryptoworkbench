@@ -33,7 +33,7 @@ char *BUFFER_OF_SIZE(unsigned int SIZE);
 void flush_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line);
 void append(char *TO_BE_APPENDED_logbook_line);
 
-FILE *open_group_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP, char *group_ID, char *adjective, char *symbol, char *LINE);
+FILE *open_group_INNER(char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP, char *group_ID, char *adjective, char *symbol, char *LINE); // << Not supposed to be called directly
 FILE *open_group(char *prog_NAME, struct group_prams *group, char **path_to_filename_INSERTMENT_SLOTH, char **group_CAP_INSERTMENT_SLOTH);
 // ^^^ Basically, the last one is the function this library is all about
 

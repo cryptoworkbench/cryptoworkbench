@@ -261,10 +261,8 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
 
     char *adjective = adjective_to_use(group->ID);
     char *symbol = symbol_to_use(group->ID);
-    fprintf(main_fs, "The %s group of integers modulo %lu, expressed by the notations below:\n	<\u2115/%lu\u2115, %s>\nOr	\u2115%lu%s\n\ncontains %lu elements. That is to say that the cardinality of the %s group of integers modulo %lu is %lu \u21D2\n", adjective, group->CAP, group->CAP, symbol, group->CAP, symbol, group_cardinality, adjective, group->CAP, group_cardinality);
-
-    fprintf(main_fs, "	|<\u2115/%lu\u2115, %s>| = %lu\n", group->CAP, symbol, group_cardinality);
-    fprintf(main_fs, "Or 	|\u2115%lu%s| = %lu\n", group->CAP, symbol, group_cardinality);
+    fprintf(main_fs, "The %s group of integers modulo %lu (denoted '\u2115%lu%s') contains %lu elements, in standard mathematical notation:\n", adjective, group->CAP, group->CAP, symbol);
+    fprintf(main_fs, "	|\u2115%lu%s| = %lu\n", group->CAP, symbol, group_cardinality);
     // ^^^ Print cardinality information about this group
 
     put_generator_count(table, group_cardinality);

@@ -56,11 +56,12 @@ FILE *open_group(char *prog_NAME, struct group_prams *group, char **path_to_file
     char *symbol = symbol_to_use(group->ID);
     // ^^ Prepare the char pointers "open_group_as_INNER()" needs
 
-    FILE *opened_group = open_group_INNER(prog_NAME, path_to_filename_INSERTMENT_SLOTH, *group_CAP_INSERTMENT_SLOTH, group_ID, adjective, symbol, BUFFER_OF_SIZE(200));
+    FILE *opened_group = open_group_INNER(path_to_filename_INSERTMENT_SLOTH, *group_CAP_INSERTMENT_SLOTH, group_ID, adjective, symbol, BUFFER_OF_SIZE(200));
+    fclose(logbook_fs);
     return opened_group;
 }
 
-FILE *open_group_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP, char *group_ID, char *adjective, char *symbol, char *LINE) {
+FILE *open_group_INNER(char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP, char *group_ID, char *adjective, char *symbol, char *LINE) {
     char *name_of_FILE = (char *) malloc(sizeof(char) * (str_len(adjective) + str_len(FILENAME_BODY) + str_len(group_CAP) + 1));
     sprintf(name_of_FILE, "%s%s%s", adjective, FILENAME_BODY, group_CAP);
     // ^^ Prepare the filename
@@ -74,7 +75,7 @@ FILE *open_group_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH
 	sprintf(LINE, "Could not find '%s' \u21D2 \u2115%s%s does not seem to have been exported before", path_to_FILE, group_CAP, symbol); append(LINE);
 	// ^^ Explain that the needed file does not exist 
 
-	sprintf(LINE, "%s using " GROUP_EXPORTER, prog_NAME); // << Use LINE in order to send along a special "argv[0]" to "group_exporter"
+	sprintf(LINE, "%s using " GROUP_EXPORTER, argv_ZERO); // << Use LINE in order to send along a special "argv[0]" to "group_exporter"
 	char *GROUP_EXPORTER_argv[] = {LINE, group_CAP, group_ID, 0};
 	// ^^ Prepare the char pointer array "group_exporter" will receive as "char *argv[]" (a.k.a. "char **argv")
 
@@ -88,11 +89,11 @@ FILE *open_group_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH
 	    execvp(GROUP_EXPORTER, GROUP_EXPORTER_argv); }
 	// ^^ Execute "group_exporter" with it's "STDOUT" directed to the write end of the pipe (namely "fd[1]")
 
-	FILE *GROUP_EXPORTER_STDOUT = fdopen(fd[0], "r"); dup2(fd[0], fileno(GROUP_EXPORTER_STDOUT)); close(fd[1]);
+	FILE *group_exporter_STDOUT = fdopen(fd[0], "r"); dup2(fd[0], fileno(group_exporter_STDOUT)); close(fd[1]);
 	// ^^ Fix a new file descriptor
 
 	FILE *NEEDED_FILE = fopen(path_to_FILE, "w"); // << Create a filestream for the file we are about to create
-	unsigned long element; while (fscanf(GROUP_EXPORTER_STDOUT, "%lu\n", &element) == 1) fprintf(NEEDED_FILE, "%lu\n", element); fclose(NEEDED_FILE);
+	unsigned long element; while (fscanf(group_exporter_STDOUT, "%lu\n", &element) == 1) fprintf(NEEDED_FILE, "%lu\n", element); fclose(NEEDED_FILE);
 	// ^^ Extract elements from "group_exporter" output and "fprintf()" them into an empty file with the appropiate name
 
 	int GROUP_EXPORTER_exit_status_RAW;
