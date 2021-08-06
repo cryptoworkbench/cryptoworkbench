@@ -54,10 +54,9 @@ FILE *open_group(char *prog_NAME, struct group_prams *group, char **path_to_file
     char *group_ID = str_from_ul(group->ID, 0);
     char *adjective = adjective_to_use(group->ID);
     char *symbol = symbol_to_use(group->ID);
-    char *LINE = BUFFER_OF_SIZE(200);
     // ^^ Prepare the char pointers "open_group_as_INNER()" needs
 
-    FILE *opened_group = open_group_INNER(prog_NAME, path_to_filename_INSERTMENT_SLOTH, *group_CAP_INSERTMENT_SLOTH, group_ID, adjective, symbol, LINE);
+    FILE *opened_group = open_group_INNER(prog_NAME, path_to_filename_INSERTMENT_SLOTH, *group_CAP_INSERTMENT_SLOTH, group_ID, adjective, symbol, BUFFER_OF_SIZE(200));
     return opened_group;
 }
 
@@ -71,40 +70,48 @@ FILE *open_group_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH
     // ^^ Prepare the path
 
     // ### Begin program operation ===>
-    FILE *modular_group_fs = NULL; if (!(modular_group_fs = fopen(path_to_FILE, "r"))) { // << If the file does not exist
+    FILE *group_fs = NULL; if (!(group_fs = fopen(path_to_FILE, "r"))) { // << If the file does not exist
 	sprintf(LINE, "No such file '%s' \u21D2 <\u2124/%s\u2124, %s> does not seem to have been exported before", path_to_FILE, group_CAP, symbol); append(LINE);
-	// ^^ Complain
+	// ^^ Explain that the needed file does not exist 
 
 	sprintf(LINE, "I will export <\u2124/%s\u2124, %s> using '" GROUP_EXPORTER "'", group_CAP, symbol); append(LINE);
 	// ^^ Notify we are going to use group_examplifier
 
-	sprintf(LINE, "%s using " GROUP_EXPORTER, prog_NAME); // << Use LINE in order to send along a special "argv[0]" to "group_examplifier"
+	sprintf(LINE, "%s using " GROUP_EXPORTER, prog_NAME); // << Use LINE in order to send along a special "argv[0]" to "group_exporter"
 	char *GROUP_EXPORTER_argv[] = {LINE, group_CAP, group_ID, 0};
-	// ^^ Prepare a special "argv[0]" for "group_examplifier"
+	// ^^ Prepare the char pointer array "group_exporter" will receive as "char *argv[]" (a.k.a. "char **argv")
 
-	pid_t group_exporter = fork(); if (group_exporter == -1) { sprintf(LINE, FORK_ERROR); append(LINE); exit(-10); }
+	int fd[2]; if (pipe(fd) == -1) { fprintf(stderr, "Failed to open pipe.\n"); exit(-1); }
+	// ^^ Open pipe
+
+	pid_t group_exporter_PID = fork(); if (group_exporter_PID == -1) { sprintf(LINE, FORK_ERROR); append(LINE); exit(-10); }
 	// ^^ Fork
 
-	if (!group_exporter) { // << If we managed to fork
-	    FILE *NEEDED_FILE = fopen(path_to_FILE, "w"); // <<< Create the file which did not yet exist
-	    if (dup2(fileno(NEEDED_FILE), 1) == -1) { fprintf(stderr, FILE_DESCRIPTOR_ERROR); exit(-10); } // <<< Error when the filestream would not duplicate
-	    execvp(GROUP_EXPORTER, GROUP_EXPORTER_argv); // <<< If all is well and fine, have the child process be "group_exporter" in order to export the group
-	}
+	if (!group_exporter_PID) { dup2(fd[1], 1); close(fd[0]);
+	    execvp(GROUP_EXPORTER, GROUP_EXPORTER_argv); }
+	// ^^ Execute "group_exporter" with it's "STDOUT" directed to the write end of the pipe (namely "fd[1]")
+
+	FILE *GROUP_EXPORTER_STDOUT = fdopen(fd[0], "r"); dup2(fd[0], fileno(GROUP_EXPORTER_STDOUT)); close(fd[1]);
+	// ^^ Fix a new file descriptor
+
+	FILE *NEEDED_FILE = fopen(path_to_FILE, "w"); // << Create a filestream for the file we are about to create
+	unsigned long element; while (fscanf(GROUP_EXPORTER_STDOUT, "%lu\n", &element) == 1) fprintf(NEEDED_FILE, "%lu\n", element); fclose(NEEDED_FILE);
+	// ^^ Extract elements from "group_exporter" output and "fprintf()" them into an empty file with the appropiate name
 
 	int GROUP_EXPORTER_exit_status_RAW;
-	waitpid(group_exporter, &GROUP_EXPORTER_exit_status_RAW, 0); free(group_ID);
+	waitpid(group_exporter_PID, &GROUP_EXPORTER_exit_status_RAW, 0); free(group_ID);
 	// ^^ Wait for the child process to finish
 
 	int GROUP_EXPORTER_exit_status = WEXITSTATUS(GROUP_EXPORTER_exit_status_RAW);
-	if (GROUP_EXPORTER_exit_status && (modular_group_fs = fopen(path_to_FILE, "r"))) {
+	if (GROUP_EXPORTER_exit_status && (group_fs = fopen(path_to_FILE, "r"))) {
 	    sprintf(LINE, GROUP_EXPORTER " returned an exit status of '%i' \u21D2 <\u2124/%s\u2124, %s> should be registered now", GROUP_EXPORTER_exit_status, group_CAP, symbol);
 	    append(LINE); }
 	else {
-	    sprintf(LINE, "FATAL ERROR: failed to create the required registry file using '"GROUP_EXPORTER"'"); append(LINE);
-	    exit(0); }
-    } if (modular_group_fs != NULL) sprintf(LINE, "Found '%s'", path_to_FILE); append(LINE);
+	    sprintf(LINE, "FATAL ERROR: failed to create the required registry file using '"GROUP_EXPORTER"'");
+	    append(LINE); exit(0); }
+    } if (group_fs != NULL) sprintf(LINE, "Found '%s'", path_to_FILE); append(LINE);
     free(LINE); *path_to_filename_INSERTMENT_SLOTH = path_to_FILE; 
-    return modular_group_fs;
+    return group_fs;
 }
 
 void close_group(char *prog_NAME, char *group_CAP, char *symbol_to_use, char *path_to_filename, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
