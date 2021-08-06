@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
     // ^^ Export the group
 
     printf("\nExported %lu elements.\n", count);
-    char *BUFFER = BUFFER_OF_SIZE(400); sprintf(BUFFER, "Exported <\u2124/%lu\u2124, %s>", group.CAP, symbol_to_use(group.ID));
+    char *BUFFER = BUFFER_OF_SIZE(50); sprintf(BUFFER, "Exported \u2115%lu%s", group.CAP, symbol_to_use(group.ID));
     flush_to_LOGBOOK(argv[0], BUFFER); free(BUFFER);
     // ^^ Notify in the LOGBOOK about my operations
 

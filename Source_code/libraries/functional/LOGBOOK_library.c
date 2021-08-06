@@ -71,11 +71,8 @@ FILE *open_group_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH
 
     // ### Begin program operation ===>
     FILE *group_fs = NULL; if (!(group_fs = fopen(path_to_FILE, "r"))) { // << If the file does not exist
-	sprintf(LINE, "No such file '%s' \u21D2 <\u2124/%s\u2124, %s> does not seem to have been exported before", path_to_FILE, group_CAP, symbol); append(LINE);
+	sprintf(LINE, "Could not find '%s' \u21D2 \u2115%s%s does not seem to have been exported before", path_to_FILE, group_CAP, symbol); append(LINE);
 	// ^^ Explain that the needed file does not exist 
-
-	sprintf(LINE, "I will export <\u2124/%s\u2124, %s> using '" GROUP_EXPORTER "'", group_CAP, symbol); append(LINE);
-	// ^^ Notify we are going to use group_examplifier
 
 	sprintf(LINE, "%s using " GROUP_EXPORTER, prog_NAME); // << Use LINE in order to send along a special "argv[0]" to "group_exporter"
 	char *GROUP_EXPORTER_argv[] = {LINE, group_CAP, group_ID, 0};
@@ -104,7 +101,7 @@ FILE *open_group_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH
 
 	int GROUP_EXPORTER_exit_status = WEXITSTATUS(GROUP_EXPORTER_exit_status_RAW);
 	if (GROUP_EXPORTER_exit_status && (group_fs = fopen(path_to_FILE, "r"))) {
-	    sprintf(LINE, GROUP_EXPORTER " returned an exit status of '%i' \u21D2 <\u2124/%s\u2124, %s> should be registered now", GROUP_EXPORTER_exit_status, group_CAP, symbol);
+	    sprintf(LINE, GROUP_EXPORTER " returned an exit status of '%i' \u21D2 \u2115%s%s should be registered now", GROUP_EXPORTER_exit_status, group_CAP, symbol);
 	    append(LINE); }
 	else {
 	    sprintf(LINE, "FATAL ERROR: failed to create the required registry file using '"GROUP_EXPORTER"'");
@@ -115,6 +112,6 @@ FILE *open_group_INNER(char *prog_NAME, char **path_to_filename_INSERTMENT_SLOTH
 }
 
 void close_group(char *prog_NAME, char *group_CAP, char *symbol_to_use, char *path_to_filename, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Sourced <\u2115/%s\u2115, %s> from '%s'", group_CAP, symbol_to_use, path_to_filename); append(BUFFER); fclose(opened_group);
+    sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", group_CAP, symbol_to_use, path_to_filename); append(BUFFER); fclose(opened_group);
     sprintf(BUFFER, "Closed '%s'", path_to_filename); free(path_to_filename); append(BUFFER); free(BUFFER);
 }
