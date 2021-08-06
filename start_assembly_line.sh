@@ -5,7 +5,7 @@ mkdir crypto_lab/REGISTRY
 clear && echo "########### ASSEMBLY LINE ROLLING ! #######=====>"
 cd Source_code/instruments/group_exporter && make group_exporter && echo "#######===> The following instrument has been assemblied/linked: group_exporter
 "
-cd ../subgroup_examplifier && make subgroup_examplifier && echo "#######===> The following instrument has been assemblied/linked: subgroup_examplifier
+cd ../group_examplifier && make group_examplifier && echo "#######===> The following instrument has been assemblied/linked: group_examplifier
 "
 cd ../Diffie_Hellman_Key_Agreement && make Diffie_Hellman_Key_Agreement && echo "#######===> The following instrument has been assemblied/linked: Diffie_Hellman_Key_Agreement
 "
