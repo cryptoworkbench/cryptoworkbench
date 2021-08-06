@@ -11,7 +11,7 @@
 #include "LOGBOOK_library.h" // <<< Needed for definition of the definition of LOGBOOK_FORMULA
 #define FORK_ERROR "Failed to split up myself into two daughter processes so that I could dedicate one part of my being to securing the group"
 #define FILE_DESCRIPTOR_ERROR "Failed to rewrite the file descriptor of child process"
-#define GROUP_EXPORTER "group_exporter"
+#define ELEMENT_EXPORTER "element_exporter"
 #define FILENAME_BODY "_group_of_integers_mod_"
 
 char *symbol_to_use(unsigned long ID) {
@@ -75,8 +75,8 @@ FILE *open_group_INNER(char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP
 	sprintf(LINE, "Could not find '%s' \u21D2 \u2115%s%s does not seem to have been exported before", path_to_FILE, group_CAP, symbol); append(LINE);
 	// ^^ Explain that the needed file does not exist 
 
-	sprintf(LINE, "%s using " GROUP_EXPORTER, argv_ZERO); // << Use LINE in order to send along a special "argv[0]" to "group_exporter"
-	char *GROUP_EXPORTER_argv[] = {LINE, group_CAP, group_ID, 0};
+	sprintf(LINE, "%s using " ELEMENT_EXPORTER, argv_ZERO); // << Use LINE in order to send along a special "argv[0]" to "group_exporter"
+	char *ELEMENT_EXPORTER_argv[] = {LINE, group_CAP, group_ID, 0};
 	// ^^ Prepare the char pointer array "group_exporter" will receive as "char *argv[]" (a.k.a. "char **argv")
 
 	int fd[2]; if (pipe(fd) == -1) { fprintf(stderr, "Failed to open pipe.\n"); exit(-1); }
@@ -86,7 +86,7 @@ FILE *open_group_INNER(char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP
 	// ^^ Fork
 
 	if (!group_exporter_PID) { dup2(fd[1], 1); close(fd[0]);
-	    execvp(GROUP_EXPORTER, GROUP_EXPORTER_argv); }
+	    execvp(ELEMENT_EXPORTER, ELEMENT_EXPORTER_argv); }
 	// ^^ Execute "group_exporter" with it's "STDOUT" directed to the write end of the pipe (namely "fd[1]")
 
 	FILE *group_exporter_STDOUT = fdopen(fd[0], "r"); dup2(fd[0], fileno(group_exporter_STDOUT)); close(fd[1]);
@@ -96,16 +96,16 @@ FILE *open_group_INNER(char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP
 	unsigned long element; while (fscanf(group_exporter_STDOUT, "%lu\n", &element) == 1) fprintf(NEEDED_FILE, "%lu\n", element); fclose(NEEDED_FILE);
 	// ^^ Extract elements from "group_exporter" output and "fprintf()" them into an empty file with the appropiate name
 
-	int GROUP_EXPORTER_exit_status_RAW;
-	waitpid(group_exporter_PID, &GROUP_EXPORTER_exit_status_RAW, 0); free(group_ID);
+	int ELEMENT_EXPORTER_exit_status_RAW;
+	waitpid(group_exporter_PID, &ELEMENT_EXPORTER_exit_status_RAW, 0); free(group_ID);
 	// ^^ Wait for the child process to finish
 
-	int GROUP_EXPORTER_exit_status = WEXITSTATUS(GROUP_EXPORTER_exit_status_RAW);
-	if (GROUP_EXPORTER_exit_status && (group_fs = fopen(path_to_FILE, "r"))) {
-	    sprintf(LINE, GROUP_EXPORTER " returned an exit status of '%i' \u21D2 \u2115%s%s should be registered now", GROUP_EXPORTER_exit_status, group_CAP, symbol);
+	int ELEMENT_EXPORTER_exit_status = WEXITSTATUS(ELEMENT_EXPORTER_exit_status_RAW);
+	if (ELEMENT_EXPORTER_exit_status && (group_fs = fopen(path_to_FILE, "r"))) {
+	    sprintf(LINE, ELEMENT_EXPORTER " returned an exit status of '%i' \u21D2 \u2115%s%s should be registered now", ELEMENT_EXPORTER_exit_status, group_CAP, symbol);
 	    append(LINE); }
 	else {
-	    sprintf(LINE, "FATAL ERROR: failed to create the required registry file using '"GROUP_EXPORTER"'");
+	    sprintf(LINE, "FATAL ERROR: failed to create the required registry file using '"ELEMENT_EXPORTER"'");
 	    append(LINE); exit(0); }
     } if (group_fs != NULL) sprintf(LINE, "Found '%s'", path_to_FILE); append(LINE);
     free(LINE); *path_to_filename_INSERTMENT_SLOTH = path_to_FILE; 

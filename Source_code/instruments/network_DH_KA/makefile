@@ -14,17 +14,17 @@
 	gcc -c chain.c -o .chain.o
 
 chain: ../../libraries/mathematics/.maths.o ../../libraries/functional/.string.o ../../libraries/functional/.logbook_functions.o ../../libraries/functional/.triple_ref_pointers.o .shared_information.o .chain.o
-	gcc ../../libraries/mathematics/.maths.o ../../libraries/functional/.string.o ../../libraries/functional/.logbook_functions.o ../../libraries/functional/.triple_ref_pointers.o .shared_information.o .chain.o -o ../../../crypto_lab/tools/chain
+	gcc ../../libraries/mathematics/.maths.o ../../libraries/functional/.string.o ../../libraries/functional/.logbook_functions.o ../../libraries/functional/.triple_ref_pointers.o .shared_information.o .chain.o -o ../../../crypto_lab/instruments/chain
 
 
 .endpoint_alice.o: endpoint_alice.c
 	gcc -c endpoint_alice.c -o .endpoint_alice.o
 
 endpoint_alice: ../../libraries/mathematics/.maths.o ../../libraries/functional/.string.o ../../libraries/functional/.logbook_functions.o ../../libraries/functional/.triple_ref_pointers.o .shared_information.o .endpoint_alice.o
-	gcc ../../libraries/mathematics/.maths.o ../../libraries/functional/.string.o ../../libraries/functional/.logbook_functions.o ../../libraries/functional/.triple_ref_pointers.o .shared_information.o .endpoint_alice.o -o ../../../crypto_lab/tools/.endpoint_alice
+	gcc ../../libraries/mathematics/.maths.o ../../libraries/functional/.string.o ../../libraries/functional/.logbook_functions.o ../../libraries/functional/.triple_ref_pointers.o .shared_information.o .endpoint_alice.o -o ../../../crypto_lab/instruments/.endpoint_alice
 
 .endpoint_bob.o: endpoint_bob.c
 	gcc -c endpoint_bob.c -o .endpoint_bob.o
 
 endpoint_bob: ../../libraries/mathematics/.maths.o ../../libraries/functional/.string.o ../../libraries/functional/.logbook_functions.o ../../libraries/functional/.triple_ref_pointers.o .shared_information.o .endpoint_bob.o
-	gcc ../../libraries/mathematics/.maths.o ../../libraries/functional/.string.o ../../libraries/functional/.logbook_functions.o ../../libraries/functional/.triple_ref_pointers.o .shared_information.o .endpoint_bob.o -o ../../../crypto_lab/tools/.endpoint_bob
+	gcc ../../libraries/mathematics/.maths.o ../../libraries/functional/.string.o ../../libraries/functional/.logbook_functions.o ../../libraries/functional/.triple_ref_pointers.o .shared_information.o .endpoint_bob.o -o ../../../crypto_lab/instruments/.endpoint_bob

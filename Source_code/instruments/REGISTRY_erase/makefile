@@ -11,4 +11,4 @@
 	gcc -c REGISTRY_erase.c -o .REGISTRY_erase.o
 
 REGISTRY_erase: .REGISTRY_erase.o ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o
-	gcc .REGISTRY_erase.o ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o -o ../../../crypto_lab/tools/REGISTRY_erase
+	gcc .REGISTRY_erase.o ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o -o ../../../crypto_lab/instruments/REGISTRY_erase
