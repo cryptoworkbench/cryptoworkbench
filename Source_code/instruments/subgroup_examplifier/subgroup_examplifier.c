@@ -169,7 +169,7 @@ void free_table(struct vertibrae *link) {
 
 void print_generators(struct vertibrae *identity_element, unsigned long group_cardinality) {
     struct vertibrae *current_element = identity_element->next; do {
-	if (current_element->permutation_length == group_cardinality) fprintf(stdout, "%s\n", current_element->unit.str);
+	if (current_element->permutation_length == group_cardinality) fprintf(stdout, "\n%s", current_element->unit.str);
 	current_element = current_element->next;
     } while (current_element != identity_element);
 }
@@ -261,15 +261,13 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
 
     char *adjective = adjective_to_use(group->ID);
     char *symbol = symbol_to_use(group->ID);
-    fprintf(main_fs, "The %s group of integers modulo %lu (denoted '\u2115%lu%s') contains %lu elements, in standard mathematical notation:\n", adjective, group->CAP, group->CAP, symbol);
-    fprintf(main_fs, "	|\u2115%lu%s| = %lu\n", group->CAP, symbol, group_cardinality);
+    fprintf(main_fs, "The %s group of integers modulo %lu, which is denoted '\u2115%lu%s', contains %lu elements, in standard mathematical notation:\n", adjective, group->CAP, group->CAP, symbol, group_cardinality);
+    fprintf(main_fs, "|\u2115%lu%s| = %lu\n", group->CAP, symbol, group_cardinality);
     // ^^^ Print cardinality information about this group
 
-    put_generator_count(table, group_cardinality);
-    if (table->permutation_length > 0) {
-	fprintf(stdout, "\nThis group does contains %lu generators:\n", table->permutation_length);
-	print_generators(table, group_cardinality);
-    } else fprintf(stdout, "\nThis group does not contain any generators.\n");
+    put_generator_count(table, group_cardinality); fprintf(stdout, "\nThis group contains %lu generators", table->permutation_length);
+    if (0 < table->permutation_length) { fprintf(stdout, ":"); print_generators(table, group_cardinality); }
+    else fprintf(stdout, "."); fprintf(stdout, "\n");
     // ^^^ Print generator information about this group
 
     /* ### Gotta exit cleanly ### */
