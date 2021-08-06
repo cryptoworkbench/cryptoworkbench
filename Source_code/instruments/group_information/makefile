@@ -13,8 +13,8 @@
 ../../libraries/mathematics/.group_operations.o: ../../libraries/mathematics/group_operations.h ../../libraries/mathematics/group_operations.c
 	gcc -c ../../libraries/mathematics/group_operations.c -o ../../libraries/mathematics/.group_operations.o
 
-.group_examplifier.o: group_examplifier.c
-	gcc -c group_examplifier.c -o .group_examplifier.o
+.group_information.o: group_information.c
+	gcc -c group_information.c -o .group_information.o
 
-group_examplifier: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .group_examplifier.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .group_examplifier.o -o ../../../crypto_lab/tools/group_examplifier
+group_information: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .group_information.o
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .group_information.o -o ../../../crypto_lab/tools/group_information

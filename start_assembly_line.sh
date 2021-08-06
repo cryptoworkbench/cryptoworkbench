@@ -1,11 +1,12 @@
 #!/bin/bash 
+
 mkdir crypto_lab/
 mkdir crypto_lab/instruments
 mkdir crypto_lab/REGISTRY
 clear && echo "########### ASSEMBLY LINE ROLLING ! #######=====>"
 cd Source_code/instruments/group_exporter && make group_exporter && echo "#######===> The following instrument has been assemblied/linked: group_exporter
 "
-cd ../group_examplifier && make group_examplifier && echo "#######===> The following instrument has been assemblied/linked: group_examplifier
+cd ../group_information && make group_information && echo "#######===> The following instrument has been assemblied/linked: group_information
 "
 cd ../Diffie_Hellman_Key_Agreement && make Diffie_Hellman_Key_Agreement && echo "#######===> The following instrument has been assemblied/linked: Diffie_Hellman_Key_Agreement
 "
@@ -23,6 +24,6 @@ cd ../LOGBOOK_erase && make LOGBOOK_erase && echo "#######===> The following ins
 "
 echo "########### ASSEMBLY LINE HALTED !
 ########### The setup completed ! (presumably)
-#####################################################################################################
-####### 'ls crypto_lab/tools/' to see what instruments fell from the assembly line.           #######
-####### 'cd crypto_lab/tools/' to enter your very own VIRTUAL MATHEMATICS fucking LABORATORY. #######"
+#############################################################################################
+####### 'ls crypto_lab/tools/' to see what instruments fell from the assembly line.   #######
+####### 'cd crypto_lab/tools/' to enter your very own VIRTUAL MATHEMATICS LABORATORY. #######"
