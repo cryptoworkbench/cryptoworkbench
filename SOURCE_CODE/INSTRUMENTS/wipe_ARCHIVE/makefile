@@ -7,8 +7,8 @@
 ../../libraries/functional/.LOGBOOK_library.o: ../../libraries/functional/LOGBOOK_library.h ../../libraries/functional/LOGBOOK_library.c
 	gcc -c ../../libraries/functional/LOGBOOK_library.c -o ../../libraries/functional/.LOGBOOK_library.o
 
-.REGISTRY_erase.o: REGISTRY_erase.c
-	gcc -c REGISTRY_erase.c -o .REGISTRY_erase.o
+.wipe_ARCHIVE.o: wipe_ARCHIVE.c
+	gcc -c wipe_ARCHIVE.c -o .wipe_ARCHIVE.o
 
-REGISTRY_erase: .REGISTRY_erase.o ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o
-	gcc .REGISTRY_erase.o ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o -o ../../../WORKBENCH/INSTRUMENTS/REGISTRY_erase
+wipe_ARCHIVE: .wipe_ARCHIVE.o ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o
+	gcc .wipe_ARCHIVE.o ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o -o ../../../WORKBENCH/INSTRUMENTS/wipe_ARCHIVE

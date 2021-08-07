@@ -66,13 +66,13 @@ FILE *open_group_INNER(char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP
     sprintf(name_of_FILE, "%s%s%s", adjective, FILENAME_BODY, group_CAP);
     // ^^ Prepare the filename
 
-    char *path_to_FILE = (char *) malloc(sizeof(char) * (str_len(REGISTRY_PATH) + str_len(name_of_FILE) + 1));
-    sprintf(path_to_FILE, REGISTRY_PATH "%s", name_of_FILE);
+    char *path_to_FILE = (char *) malloc(sizeof(char) * (str_len(PATH_TO_ARCHIVE) + str_len(name_of_FILE) + 1));
+    sprintf(path_to_FILE, PATH_TO_ARCHIVE "%s", name_of_FILE);
     // ^^ Prepare the path
 
     // ### Begin program operation ===>
     FILE *group_fs = NULL; if (!(group_fs = fopen(path_to_FILE, "r"))) { // << If the file does not exist
-	sprintf(LINE, "Could not find '%s' \u21D2 \u2115%s%s does not seem to have been exported before", path_to_FILE, group_CAP, symbol); append(LINE);
+	sprintf(LINE, "Could not find '%s' \u21D2 \u2115%s%s does not seem to have been archived before", path_to_FILE, group_CAP, symbol); append(LINE);
 	// ^^ Explain that the needed file does not exist 
 
 	sprintf(LINE, "%s using " ELEMENT_EXPORTER, argv_ZERO); // << Use LINE in order to send along a special "argv[0]" to "group_exporter"

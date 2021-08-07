@@ -16,7 +16,7 @@
 #include "string.h" // <<< Needed for "str_len()"
 #define LOGBOOK_PATH "../laboratory_LOGBOOK" // <<< This will be the logbook filename
 #define LOGBOOK_FORMULA "%s: "// <<< This will be the name of the program printing to the logbook prepended to the line the program appends (to this logbook)
-#define REGISTRY_PATH "../REGISTRY/"
+#define PATH_TO_ARCHIVE "../ARCHIVE/"
 
 struct group_prams { // "group_prams" stands for "group parameters"
     unsigned long CAP; // <<< Cap on the infiniete field of natural numbers (N), also called the field's modulus

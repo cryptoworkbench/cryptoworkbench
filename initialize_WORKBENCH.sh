@@ -16,7 +16,7 @@ cd ../prime_table_generator && make prime_table_generator && echo "#######===> T
 "
 cd ../modular_exponentiation && make modular_exponentiation && echo "#######===> The following instrument has been assemblied/linked: modular_exponentiation
 "
-cd ../REGISTRY_erase && make REGISTRY_erase && echo "#######===> The following instrument has been assemblied/linked: REGISTRY_erase
+cd ../wipe_ARCHIVE && make wipe_ARCHIVE && echo "#######===> The following instrument has been assemblied/linked: wipe_ARCHIVE
 "
 cd ../VIEW_laboratory_LOGBOOK && make VIEW_laboratory_LOGBOOK && echo "#######===> The following instrument has been assemblied/linked: VIEW_laboratory_LOGBOOK
 "
