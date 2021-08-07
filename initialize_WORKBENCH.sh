@@ -1,7 +1,6 @@
 #!/bin/bash 
 
 mkdir WORKBENCH/
-mkdir WORKBENCH/INSTRUMENTS
 mkdir WORKBENCH/ARCHIVE
 clear && echo "########### ASSEMBLY LINE ROLLING ! #######=====>"
 cd SOURCE_CODE/INSTRUMENTS/element_exporter && make element_exporter && echo "#######===> The following instrument has been assemblied/linked: element_exporter
@@ -24,6 +23,5 @@ cd ../Erase_LOGBOOK && make Erase_LOGBOOK && echo "#######===> The following ins
 "
 echo "########### ASSEMBLY LINE HALTED !
 ########### The setup completed ! (presumably)
-################################################################################################
-####### 'ls WORKBENCH/INSTRUMENTS/' to see what instruments fell from the assembly line. #######
-####### 'cd WORKBENCH/INSTRUMENTS/' to enter your VIRTUAL MATHEMATICS LABORATORY.        #######"
+#############################################################################
+####### 'cd WORKBENCH/' to enter your VIRTUAL MATHEMATICS LABORATORY. #######"

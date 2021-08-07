@@ -1,6 +1,5 @@
-#include <stdlib.h>
+#include <unistd.h>
 
-int main(int argc, char **argv) {
-    system("less ../LOGBOOK");
-    return 0;
+void main() {
+    execlp("less", "less", ".LOGBOOK", 0);
 }

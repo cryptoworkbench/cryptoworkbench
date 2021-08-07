@@ -65,8 +65,8 @@ FILE *open_group_INNER(char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP
     sprintf(name_of_FILE, "%s%s%s", adjective, FILENAME_BODY, group_CAP);
     // ^^ Prepare the filename
 
-    char *path_to_FILE = (char *) malloc(sizeof(char) * (str_len(PATH_TO_ARCHIVE) + str_len(name_of_FILE) + 1));
-    sprintf(path_to_FILE, PATH_TO_ARCHIVE "%s", name_of_FILE);
+    char *path_to_FILE = (char *) malloc(sizeof(char) * (str_len(ARCHIVE_FOLDER) + str_len(name_of_FILE) + 1));
+    sprintf(path_to_FILE, ARCHIVE_FOLDER "%s", name_of_FILE);
     // ^^ Prepare the path
 
     // ### Begin program operation ===>
