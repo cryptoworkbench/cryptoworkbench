@@ -7,8 +7,8 @@
 ../../libraries/functional/.LOGBOOK_library.o: ../../libraries/functional/LOGBOOK_library.h ../../libraries/functional/LOGBOOK_library.c
 	gcc -c ../../libraries/functional/LOGBOOK_library.c -o ../../libraries/functional/.LOGBOOK_library.o
 
-.wipe_ARCHIVE.o: wipe_ARCHIVE.c
-	gcc -c wipe_ARCHIVE.c -o .wipe_ARCHIVE.o
+.Wipe_ARCHIVE.o: Wipe_ARCHIVE.c
+	gcc -c Wipe_ARCHIVE.c -o .Wipe_ARCHIVE.o
 
-wipe_ARCHIVE: .wipe_ARCHIVE.o ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o
-	gcc .wipe_ARCHIVE.o ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o -o ../../../WORKBENCH/INSTRUMENTS/wipe_ARCHIVE
+Wipe_ARCHIVE: .Wipe_ARCHIVE.o ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o
+	gcc .Wipe_ARCHIVE.o ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o -o ../../../WORKBENCH/INSTRUMENTS/Wipe_ARCHIVE

@@ -14,7 +14,7 @@
 #include <unistd.h> // <<< Needed for "execvp()"
 #include <sys/wait.h> // <<< Needed for "waitpid()"
 #include "string.h" // <<< Needed for "str_len()"
-#define LOGBOOK_PATH "../laboratory_LOGBOOK" // <<< This will be the logbook filename
+#define LOGBOOK_PATH "../LOGBOOK" // <<< This will be the logbook filename
 #define LOGBOOK_FORMULA "%s: "// <<< This will be the name of the program printing to the logbook prepended to the line the program appends (to this logbook)
 #define PATH_TO_ARCHIVE "../ARCHIVE/"
 
@@ -38,4 +38,3 @@ FILE *open_group(char *prog_NAME, struct group_prams *group, char **path_to_file
 // ^^^ Basically, the last one is the function this library is all about
 
 void close_group(char *prog_NAME, char *group_CAP, char *symbol_to_use, char *path_to_filename, FILE *opened_group);
-// char *path_to_filename; char *group_CAP; FILE *ELEMENT_database = open_group_as_(prog_NAME, group, &path_to_filename, &group_CAP);

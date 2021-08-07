@@ -8,11 +8,11 @@
  *
  * Unfortunately "flush_to_LOGBOOK()" does pass through the appropiate return value to "main()".
  */
-#include "LOGBOOK_library.h" // <<< Needed for definition of the definition of LOGBOOK_FORMULA
-#define FORK_ERROR "Failed to split up myself into two daughter processes so that I could dedicate one part of my being to securing the group"
-#define FILE_DESCRIPTOR_ERROR "Failed to rewrite the file descriptor of child process"
+#include "LOGBOOK_library.h" // <<< Needed for the definition of LOGBOOK_FORMULA
+#define FORK_ERROR "Failed to split up myself into two daughter processes so that I could dedicate one part of my being to securing the group."
+#define FILE_DESCRIPTOR_ERROR "Failed to rewrite the file descriptor of child process."
 #define ELEMENT_EXPORTER "element_exporter"
-#define FILENAME_BODY "_group_of_integers_mod_"
+#define FILENAME_BODY "_group_of_integers_modulus_"
 
 char *symbol_to_use(unsigned long ID) {
     return (ID == 0) ? "+" : "*";
@@ -57,7 +57,6 @@ FILE *open_group(char *prog_NAME, struct group_prams *group, char **path_to_file
     // ^^ Prepare the char pointers "open_group_as_INNER()" needs
 
     FILE *opened_group = open_group_INNER(path_to_filename_INSERTMENT_SLOTH, *group_CAP_INSERTMENT_SLOTH, group_ID, adjective, symbol, BUFFER_OF_SIZE(200));
-    fclose(logbook_fs);
     return opened_group;
 }
 
@@ -114,5 +113,5 @@ FILE *open_group_INNER(char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP
 
 void close_group(char *prog_NAME, char *group_CAP, char *symbol_to_use, char *path_to_filename, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
     sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", group_CAP, symbol_to_use, path_to_filename); append(BUFFER); fclose(opened_group);
-    sprintf(BUFFER, "Closed '%s'", path_to_filename); free(path_to_filename); append(BUFFER); free(BUFFER);
+    sprintf(BUFFER, "Closed '%s'", path_to_filename); free(path_to_filename); append(BUFFER); free(BUFFER); fclose(logbook_fs);
 }

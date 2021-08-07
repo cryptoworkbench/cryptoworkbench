@@ -16,11 +16,11 @@ cd ../prime_table_generator && make prime_table_generator && echo "#######===> T
 "
 cd ../modular_exponentiation && make modular_exponentiation && echo "#######===> The following instrument has been assemblied/linked: modular_exponentiation
 "
-cd ../wipe_ARCHIVE && make wipe_ARCHIVE && echo "#######===> The following instrument has been assemblied/linked: wipe_ARCHIVE
+cd ../Wipe_ARCHIVE && make Wipe_ARCHIVE && echo "#######===> The following instrument has been assemblied/linked: Wipe_ARCHIVE
 "
-cd ../VIEW_laboratory_LOGBOOK && make VIEW_laboratory_LOGBOOK && echo "#######===> The following instrument has been assemblied/linked: VIEW_laboratory_LOGBOOK
+cd ../View_LOGBOOK && make View_LOGBOOK && echo "#######===> The following instrument has been assemblied/linked: View_LOGBOOK
 "
-cd ../LOGBOOK_erase && make LOGBOOK_erase && echo "#######===> The following instrument has been assemblied/linked: LOGBOOK_erase
+cd ../Erase_LOGBOOK && make Erase_LOGBOOK && echo "#######===> The following instrument has been assemblied/linked: Erase_LOGBOOK
 "
 echo "########### ASSEMBLY LINE HALTED !
 ########### The setup completed ! (presumably)
