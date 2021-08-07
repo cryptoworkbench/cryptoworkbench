@@ -11,4 +11,4 @@
 	gcc -c cayley_table_generator.c -o .cayley_table_generator.o
 
 cayley_table_generator: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .cayley_table_generator.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .cayley_table_generator.o -o ../../../crypto_lab/instruments/cayley_table_generator
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .cayley_table_generator.o -o ../../../WORKBENCH/INSTRUMENTS/cayley_table_generator

@@ -1,11 +1,9 @@
 # Get rid of Linux files
 .directory
 
-# This way I do not have to write all my makefiles such that all the intermediary object files generated within /libraries are automatically deleted
+# This way I do not have to write all my makefiles such that all the intermediary object files are automatically deleted
 *.o
 
 # Save a local collection of project to do's
-/todos
-/personal_notes/
-# /source_code/under_development
-/crypto_lab/
+/source_code/under_development
+/WORKBENCH/

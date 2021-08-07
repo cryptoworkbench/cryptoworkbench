@@ -1,10 +1,10 @@
 #!/bin/bash 
 
-mkdir crypto_lab/
-mkdir crypto_lab/instruments
-mkdir crypto_lab/REGISTRY
+mkdir WORKBENCH/
+mkdir WORKBENCH/INSTRUMENTS
+mkdir WORKBENCH/ARCHIVE
 clear && echo "########### ASSEMBLY LINE ROLLING ! #######=====>"
-cd Source_code/instruments/element_exporter && make element_exporter && echo "#######===> The following instrument has been assemblied/linked: element_exporter
+cd SOURCE_CODE/INSTRUMENTS/element_exporter && make element_exporter && echo "#######===> The following instrument has been assemblied/linked: element_exporter
 "
 cd ../subgroup_examplifier && make subgroup_examplifier && echo "#######===> The following instrument has been assemblied/linked: subgroup_examplifier
 "
@@ -24,6 +24,6 @@ cd ../LOGBOOK_erase && make LOGBOOK_erase && echo "#######===> The following ins
 "
 echo "########### ASSEMBLY LINE HALTED !
 ########### The setup completed ! (presumably)
-#############################################################################################
-####### 'ls crypto_lab/instruments/' to see what instruments fell from the assembly line.   #######
-####### 'cd crypto_lab/instruments/' to enter your very own VIRTUAL MATHEMATICS LABORATORY. #######"
+################################################################################################
+####### 'ls WORKBENCH/INSTRUMENTS/' to see what instruments fell from the assembly line. #######
+####### 'cd WORKBENCH/INSTRUMENTS/' to enter your VIRTUAL MATHEMATICS LABORATORY.        #######"

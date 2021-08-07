@@ -8,4 +8,4 @@
 	gcc -c modular_exponentiation.c -o .modular_exponentiation.o
 
 modular_exponentiation: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .modular_exponentiation.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .modular_exponentiation.o -o ../../../crypto_lab/instruments/modular_exponentiation
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .modular_exponentiation.o -o ../../../WORKBENCH/INSTRUMENTS/modular_exponentiation
