@@ -28,7 +28,7 @@ char *BUFFER_OF_SIZE(unsigned int SIZE) {
 }
 
 void flush_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line) {
-    FILE *logbook_fs; if (logbook_fs = fopen(LOGBOOK_PATH, "a")) {
+    FILE *logbook_fs; if ((logbook_fs = fopen(LOGBOOK_PATH, "a") )) {
 	fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", prog_NAME, TO_BE_APPENDED_logbook_line); fclose(logbook_fs);
     }
 

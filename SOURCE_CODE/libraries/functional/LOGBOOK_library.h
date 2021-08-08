@@ -23,8 +23,8 @@ struct group_prams { // "group_prams" stands for "group parameters"
     unsigned long ID; // <<< The group identity
 };
 
-FILE *logbook_fs;
-char *argv_ZERO;
+static FILE *logbook_fs;
+static char *argv_ZERO;
 // ^^^ Declare global file stream pointer for the logbook
 
 char *adjective_to_use(unsigned long ID);
