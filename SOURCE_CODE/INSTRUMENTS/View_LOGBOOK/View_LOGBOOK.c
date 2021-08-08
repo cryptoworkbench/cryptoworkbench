@@ -1,5 +1,5 @@
 #include <unistd.h>
 
-void main() {
-    execlp("less", "less", ".LOGBOOK", 0);
+int main() {
+    execlp("less", "less", ".LOGBOOK", NULL);
 }
