@@ -13,8 +13,8 @@
 ../../libraries/mathematics/.group_operations.o: ../../libraries/mathematics/group_operations.h ../../libraries/mathematics/group_operations.c
 	gcc -c ../../libraries/mathematics/group_operations.c -o ../../libraries/mathematics/.group_operations.o
 
-.element_table_exporter.o: element_table_exporter.c
-	gcc -c element_table_exporter.c -o .element_table_exporter.o
+.group_element_table_exporter.o: group_element_table_exporter.c
+	gcc -c group_element_table_exporter.c -o .group_element_table_exporter.o
 
-element_table_exporter: ../../libraries/functional/.string.o ../../libraries/functional/.LOGBOOK_library.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .element_table_exporter.o
-	gcc ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .element_table_exporter.o -o ../../../WORKBENCH/element_table_exporter
+group_element_table_exporter: ../../libraries/functional/.string.o ../../libraries/functional/.LOGBOOK_library.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .group_element_table_exporter.o
+	gcc ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .group_element_table_exporter.o -o ../../../WORKBENCH/group_element_table_exporter

@@ -11,7 +11,7 @@
 #include "LOGBOOK_library.h" // <<< Needed for the definition of LOGBOOK_FORMULA
 #define FORK_ERROR "Failed to split up myself into two daughter processes so that I could dedicate one part of my being to securing the group."
 #define FILE_DESCRIPTOR_ERROR "Failed to rewrite the file descriptor of child process."
-#define ELEMENT_EXPORTER "element_table_exporter"
+#define ELEMENT_EXPORTER "group_element_table_exporter"
 #define FILENAME_BODY "_group_of_integers_modulus_"
 
 char *symbol_to_use(unsigned long ID) {
