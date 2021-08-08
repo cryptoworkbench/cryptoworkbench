@@ -2,6 +2,6 @@
 #include <stdlib.h>
 
 int main() {
-    system("rm ../ARCHIVE/*");
+    system("rm ARCHIVE/*");
     return 0;
 }
