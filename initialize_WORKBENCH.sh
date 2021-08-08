@@ -11,8 +11,8 @@ cd ../Diffie_Hellman_Key_Agreement && make Diffie_Hellman_Key_Agreement && echo 
 "
 cd ../cayley_table_generator && make cayley_table_generator && echo "#######===> The following instrument has been assemblied/linked: cayley_table_generator
 "
-cd ../prime_table_generator && make prime_table_generator && echo "#######===> The following instrument has been assemblied/linked: prime_table_generator
-"
+# cd ../prime_table_generator && make prime_table_generator && echo "#######===> The following instrument has been assemblied/linked: prime_table_generator
+#"
 cd ../modular_exponentiation && make modular_exponentiation && echo "#######===> The following instrument has been assemblied/linked: modular_exponentiation
 "
 cd ../Wipe_ARCHIVE && make Wipe_ARCHIVE && echo "#######===> The following instrument has been assemblied/linked: Wipe_ARCHIVE

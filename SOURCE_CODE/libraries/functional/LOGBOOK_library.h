@@ -25,16 +25,17 @@ struct group_prams { // "group_prams" stands for "group parameters"
 
 static FILE *logbook_fs;
 static char *argv_ZERO;
-// ^^^ Declare global file stream pointer for the logbook
+// ^^^ Declare global file stream pointer for logbook_fs
 
 char *adjective_to_use(unsigned long ID);
 char *symbol_to_use(unsigned long ID);
 char *BUFFER_OF_SIZE(unsigned int SIZE);
-void flush_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line);
-void append(char *TO_BE_APPENDED_logbook_line);
+void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line);
 
 FILE *open_group_INNER(char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP, char *group_ID, char *adjective, char *symbol, char *LINE); // << Not supposed to be called directly
 FILE *open_group(char *prog_NAME, struct group_prams *group, char **path_to_filename_INSERTMENT_SLOTH, char **group_CAP_INSERTMENT_SLOTH);
 // ^^^ Basically, the last one is the function this library is all about
 
 void close_group(char *prog_NAME, char *group_CAP, char *symbol_to_use, char *path_to_filename, FILE *opened_group);
+
+void flush_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line);

@@ -14,34 +14,15 @@
 #define ELEMENT_EXPORTER "modular_group_element_table_generator"
 #define FILENAME_BODY "_group_of_integers_modulus_"
 
-char *symbol_to_use(unsigned long ID) {
-    return (ID == 0) ? "+" : "*";
-}
-
-char *adjective_to_use(unsigned long ID) {
-    return (ID == 0) ? "additive" : "multiplicative";
-}
+char *symbol_to_use(unsigned long ID) { return (ID == 0) ? "+" : "*"; }
+char *adjective_to_use(unsigned long ID) { return (ID == 0) ? "additive" : "multiplicative"; }
 
 char *BUFFER_OF_SIZE(unsigned int SIZE) {
     char *return_value = (char *) malloc(sizeof(char) * SIZE);
     return return_value;
 }
 
-void flush_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line) {
-    FILE *logbook_fs; if ((logbook_fs = fopen(LOGBOOK_PATH, "a") )) {
-	fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", prog_NAME, TO_BE_APPENDED_logbook_line); fclose(logbook_fs);
-    }
-
-    else {
-	fprintf(stderr, "%s will abort now because it failed to append to the logbook the following line:\n", prog_NAME);
-	fprintf(stderr, "\"%s\"\n\n", TO_BE_APPENDED_logbook_line);
-	fprintf(stderr, "Now I am going to exit with error code '-10' \u2261 246 (mod 2^8). Presumably you can check with 'echo $?'.\n");
-	exit(-10);
-    }
-}
-
-void append(char *TO_BE_APPENDED_logbook_line) { fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", argv_ZERO, TO_BE_APPENDED_logbook_line); fflush(logbook_fs); }
-// ^^ No need for buffers any longer
+void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line) { fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", argv_ZERO, TO_BE_APPENDED_logbook_line); fflush(logbook_fs); }
 
 FILE *open_group(char *prog_NAME, struct group_prams *group, char **path_to_filename_INSERTMENT_SLOTH, char **group_CAP_INSERTMENT_SLOTH) {
     argv_ZERO = prog_NAME;
@@ -71,7 +52,7 @@ FILE *open_group_INNER(char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP
 
     // ### Begin program operation ===>
     FILE *group_fs = NULL; if (!(group_fs = fopen(path_to_FILE, "r"))) { // << If the file does not exist
-	sprintf(LINE, "Could not find '%s' \u21D2 \u2115%s%s does not seem to have been archived before", path_to_FILE, group_CAP, symbol); append(LINE);
+	sprintf(LINE, "Could not find '%s' \u21D2 \u2115%s%s does not seem to have been archived before", path_to_FILE, group_CAP, symbol); append_to_LOGBOOK(LINE);
 	// ^^ Explain that the needed file does not exist 
 
 	sprintf(LINE, "%s using " ELEMENT_EXPORTER, argv_ZERO); // << Use LINE in order to send along a special "argv[0]" to "group_exporter"
@@ -81,7 +62,7 @@ FILE *open_group_INNER(char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP
 	int fd[2]; if (pipe(fd) == -1) { fprintf(stderr, "Failed to open pipe.\n"); exit(-1); }
 	// ^^ Open pipe
 
-	pid_t group_exporter_PID = fork(); if (group_exporter_PID == -1) { sprintf(LINE, FORK_ERROR); append(LINE); exit(-10); }
+	pid_t group_exporter_PID = fork(); if (group_exporter_PID == -1) { sprintf(LINE, FORK_ERROR); append_to_LOGBOOK(LINE); exit(-10); }
 	// ^^ Fork
 
 	if (!group_exporter_PID) { dup2(fd[1], 1); close(fd[0]);
@@ -102,16 +83,30 @@ FILE *open_group_INNER(char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP
 	int ELEMENT_EXPORTER_exit_status = WEXITSTATUS(ELEMENT_EXPORTER_exit_status_RAW);
 	if (ELEMENT_EXPORTER_exit_status && (group_fs = fopen(path_to_FILE, "r"))) {
 	    sprintf(LINE, ELEMENT_EXPORTER " returned an exit status of '%i' \u21D2 \u2115%s%s should be registered now", ELEMENT_EXPORTER_exit_status, group_CAP, symbol);
-	    append(LINE); }
+	    append_to_LOGBOOK(LINE); }
 	else {
 	    sprintf(LINE, "FATAL ERROR: failed to create the required registry file using '"ELEMENT_EXPORTER"'");
-	    append(LINE); exit(0); }
-    } if (group_fs != NULL) sprintf(LINE, "Found '%s'", path_to_FILE); append(LINE);
+	    append_to_LOGBOOK(LINE); exit(0); }
+    } if (group_fs != NULL) sprintf(LINE, "Found '%s'", path_to_FILE); append_to_LOGBOOK(LINE);
     free(LINE); *path_to_filename_INSERTMENT_SLOTH = path_to_FILE; 
     return group_fs;
 }
 
 void close_group(char *prog_NAME, char *group_CAP, char *symbol_to_use, char *path_to_filename, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", group_CAP, symbol_to_use, path_to_filename); append(BUFFER); fclose(opened_group);
-    sprintf(BUFFER, "Closed '%s'", path_to_filename); free(path_to_filename); append(BUFFER); free(BUFFER); fclose(logbook_fs);
+    sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", group_CAP, symbol_to_use, path_to_filename); append_to_LOGBOOK(BUFFER); fclose(opened_group);
+    sprintf(BUFFER, "Closed '%s'", path_to_filename); free(path_to_filename); append_to_LOGBOOK(BUFFER); free(BUFFER); fclose(logbook_fs);
 }
+
+void flush_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line) {
+    FILE *logbook_fs; if ((logbook_fs = fopen(LOGBOOK_PATH, "a") )) {
+	fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", prog_NAME, TO_BE_APPENDED_logbook_line); fclose(logbook_fs);
+    }
+
+    else {
+	fprintf(stderr, "%s will abort now because it failed to append to the logbook the following line:\n", prog_NAME);
+	fprintf(stderr, "\"%s\"\n\n", TO_BE_APPENDED_logbook_line);
+	fprintf(stderr, "Now I am going to exit with error code '-10' \u2261 246 (mod 2^8). Presumably you can check with 'echo $?'.\n");
+	exit(-10);
+    }
+}
+
