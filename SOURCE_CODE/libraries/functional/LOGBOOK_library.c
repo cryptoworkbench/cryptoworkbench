@@ -71,7 +71,7 @@ FILE *open_group_INNER(char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP
 	    execvp(ELEMENT_EXPORTER, ELEMENT_EXPORTER_argv); }
 	// ^^ Execute "group_exporter" with it's "STDOUT" directed to the write end of the pipe (namely "fd[1]")
 
-	FILE *group_exporter_STDOUT = fdopen(fd[0], "r"); dup2(fd[0], fileno(group_exporter_STDOUT)); close(fd[1]);
+	FILE *group_exporter_STDOUT = fdopen(fd[0], "r");
 	// ^^ Fix a new file descriptor
 
 	FILE *NEEDED_FILE = fopen(path_to_FILE, "w"); // << Create a filestream for the file we are about to create
