@@ -13,14 +13,14 @@ unsigned long FINITE_multiplication(unsigned long a, unsigned long b, unsigned l
 // ^^^ ~ Multiplication in infinite fields (regular multiplication without MODding the result)
 // ^^^ ~ Multiplication in finite fields (multiplication with MODding the result)
 
-INFINITE_field_combination get_INFINITE_field_combination_from_inflection_point_(unsigned long SP) {
-    if (SP == ADDITIVE_IDENTITY) return &addition;
-    else if (SP == MULTIPLICATIVE_IDENTITY) return &multiplication;
+INFINITE_field_combination get_INFINITE_field_combination_from_inflection_point_(unsigned long inflection_point) {
+    if (inflection_point == ADDITIVE_IDENTITY) return &addition;
+    else if (inflection_point == MULTIPLICATIVE_IDENTITY) return &multiplication;
 }
 
-FINITE_field_combination get_FINITE_field_combination_from_inflection_point_(unsigned long SP) {
-    if (SP == ADDITIVE_IDENTITY) return &FINITE_addition;
-    else if (SP == MULTIPLICATIVE_IDENTITY) return &FINITE_multiplication;
+FINITE_field_combination get_FINITE_field_combination_from_inflection_point_(unsigned long inflection_point) {
+    if (inflection_point == ADDITIVE_IDENTITY) return &FINITE_addition;
+    else if (inflection_point == MULTIPLICATIVE_IDENTITY) return &FINITE_multiplication;
 }
 
 unsigned long N_field_combine(unsigned long N_quotient, unsigned long A, unsigned long B, unsigned long ID) {
