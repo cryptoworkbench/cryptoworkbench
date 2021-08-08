@@ -19,7 +19,7 @@ cd ../Wipe_ARCHIVE && make Wipe_ARCHIVE && echo "#######===> The following instr
 "
 cd ../View_LOGBOOK && make View_LOGBOOK && echo "#######===> The following instrument has been assemblied/linked: View_LOGBOOK
 "
-cd ../Erase_LOGBOOK && make Erase_LOGBOOK && echo "#######===> The following instrument has been assemblied/linked: Erase_LOGBOOK
+cd ../Wipe_LOGBOOK && make Wipe_LOGBOOK && echo "#######===> The following instrument has been assemblied/linked: Wipe_LOGBOOK
 "
 echo "########### ASSEMBLY LINE HALTED !
 ########### The setup completed ! (presumably)
