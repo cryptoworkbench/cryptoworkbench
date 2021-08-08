@@ -52,8 +52,10 @@ FILE *open_group_INNER(char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP
 
     // ### Begin program operation ===>
     FILE *group_fs = NULL; if (!(group_fs = fopen(path_to_FILE, "r"))) { // << If the file does not exist
-	sprintf(LINE, "Could not find '%s' \u21D2 \u2115%s%s does not seem to have been archived before", path_to_FILE, group_CAP, symbol); append_to_LOGBOOK(LINE);
+	sprintf(LINE, "Could not to open '%s'", path_to_FILE); append_to_LOGBOOK(LINE);
 	// ^^ Explain that the needed file does not exist 
+
+	sprintf(LINE, "Assuming the 'ARCHIVE/' folder was there and it wasn't a permission thing, I will try to use '"ELEMENT_EXPORTER"' to autonomously archive \u2115%s%s", group_CAP, symbol); append_to_LOGBOOK(LINE);
 
 	sprintf(LINE, "%s using " ELEMENT_EXPORTER, argv_ZERO); // << Use LINE in order to send along a special "argv[0]" to "group_exporter"
 	char *ELEMENT_EXPORTER_argv[] = {LINE, group_CAP, group_ID, 0};
@@ -87,7 +89,7 @@ FILE *open_group_INNER(char **path_to_filename_INSERTMENT_SLOTH, char *group_CAP
 	else {
 	    sprintf(LINE, "FATAL ERROR: failed to create the required registry file using '"ELEMENT_EXPORTER"'");
 	    append_to_LOGBOOK(LINE); exit(0); }
-    } if (group_fs != NULL) sprintf(LINE, "Found '%s'", path_to_FILE); append_to_LOGBOOK(LINE);
+    } if (group_fs != NULL) sprintf(LINE, "Successfully opened '%s'", path_to_FILE); append_to_LOGBOOK(LINE);
     free(LINE); *path_to_filename_INSERTMENT_SLOTH = path_to_FILE; 
     return group_fs;
 }
