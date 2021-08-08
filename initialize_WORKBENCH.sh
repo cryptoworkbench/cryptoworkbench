@@ -3,7 +3,7 @@
 mkdir WORKBENCH/
 mkdir WORKBENCH/ARCHIVE
 clear && echo "########### ASSEMBLY LINE ROLLING ! #######=====>"
-cd SOURCE_CODE/INSTRUMENTS/group_element_table_exporter && make group_element_table_exporter && echo "#######===> The following instrument has been assemblied/linked: group_element_table_exporter
+cd SOURCE_CODE/INSTRUMENTS/modular_group_element_table_generator && make modular_group_element_table_generator && echo "#######===> The following instrument has been assemblied/linked: modular_group_element_table_generator
 "
 cd ../subgroup_examplifier && make subgroup_examplifier && echo "#######===> The following instrument has been assemblied/linked: subgroup_examplifier
 "
