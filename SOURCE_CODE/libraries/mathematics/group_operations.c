@@ -15,12 +15,12 @@ unsigned long FINITE_multiplication(unsigned long a, unsigned long b, unsigned l
 
 INFINITE_field_combination get_INFINITE_field_combination_from_inflection_point_(unsigned long inflection_point) {
     if (inflection_point == ADDITIVE_IDENTITY) return &addition;
-    else if (inflection_point == MULTIPLICATIVE_IDENTITY) return &multiplication;
+    else return &multiplication;
 }
 
 FINITE_field_combination get_FINITE_field_combination_from_inflection_point_(unsigned long inflection_point) {
     if (inflection_point == ADDITIVE_IDENTITY) return &FINITE_addition;
-    else if (inflection_point == MULTIPLICATIVE_IDENTITY) return &FINITE_multiplication;
+    else return &FINITE_multiplication;
 }
 
 unsigned long N_field_combine(unsigned long N_quotient, unsigned long A, unsigned long B, unsigned long ID) {
