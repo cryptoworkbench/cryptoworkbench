@@ -5,5 +5,5 @@
 *.o
 
 # Save a local collection of project to do's
-/source_code/under_development
+/SOURCE_CODE/under_development/
 /WORKBENCH/

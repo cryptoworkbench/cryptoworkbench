@@ -1,23 +1,55 @@
 #include <stdio.h>
 #include <stdlib.h>
+#define ADDITIVE_IDENTITY 0
+#define MULTIPLICATIVE_IDENTITY 1
 
-int _read_prime(unsigned long *prime_space_ptr, FILE *prime_table_fs, int binary_mode);
-unsigned long lookup_factorize(unsigned long presumed_composite, int binary_mode, FILE *prime_table_fs);
-/* ^^ Returns the least natural divisor of "presumed_composite" greater than 1, WITH OTHER WORDS: ==>
- * When "presumed_composite" is prime, this function returns "presumed_composite"
- * When "presumed_composite" is composite, this function returns the least (prime) divisor of "presumed_composite"
- *
- * This function at it's basis is just a simple primality checker.
- * When the supplied prime table is not extensive enough such that this primality check can be done, 0 is returned.
- */
+unsigned long N_addition(unsigned long a, unsigned long b);
+unsigned long FINITE_N_addition(unsigned long a, unsigned long b, unsigned long CAP);
+// ^^^ Define the ordinating addition operations for 'regular' (not FINITE) and 'modular' (FINITE) arithmetic respectively
 
-int prime(unsigned long presumed_composite, int binary_mode, FILE *prime_table_fs);
-// ^^ Ternary function to make the above factorization engine into a primality test
+unsigned long N_multiplication(unsigned long a, unsigned long b);
+unsigned long FINITE_N_multiplication(unsigned long a, unsigned long b, unsigned long CAP);
+// ^^^ Define the N_multiplication N_multiplication operations for 'regular' (not FINITE) and 'modular' (FINITE) arithmetic, also respectively
+
+typedef unsigned long (*INFINITE_field_combination) (unsigned long, unsigned long);
+typedef unsigned long (*FINITE_field_combination) (unsigned long, unsigned long, unsigned long);
+// ^^^ Define the neccessary function pointer types in order to define the following two functions
+
+INFINITE_field_combination get_INFINITE_field_combination_from_inflection_point_(unsigned long inflection_point);
+FINITE_field_combination get_FINITE_field_combination_from_inflection_point_(unsigned long inflection_point);
+// ^^^ Define two functions to get the right (in)finite field operation (addition or N_multiplication {right == regarding finite or infinite fields})
+
+unsigned long N_combine(unsigned long N_quotient, unsigned long A, unsigned long B, unsigned long ID);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 unsigned long GCD(unsigned long a, unsigned long b);
-/* ^^ Calculates the GCD using a procedural implementation of the euclidean algorithm: ^^
- * Order of inputs does not matter.
- */
+// ^^^ Calculates the GCD using a procedural implementation of the euclidean algorithm: ^^ Order of inputs does not matter.
 
 unsigned long extended_gcd(unsigned long a, unsigned long b, unsigned long *x, unsigned long *y);
 unsigned long multiplicative_inverse(unsigned long a, unsigned long mod);

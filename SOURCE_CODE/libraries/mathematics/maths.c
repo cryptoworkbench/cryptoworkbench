@@ -2,28 +2,45 @@
  *
  * See the header file for function descriptions. */
 #include "maths.h"
-#define ADDITIVE_IDENTITY 0
-#define MULTIPLICATIVE_IDENTITY 1
 
-int _read_prime(unsigned long *prime_space_ptr, FILE *prime_table_fs, int binary_mode) {
-    if (binary_mode)
-	return fread(prime_space_ptr, sizeof(unsigned long), 1, prime_table_fs);
-    else
-	return fscanf(prime_table_fs, "%lu\n", prime_space_ptr) + 1; }
+unsigned long N_addition(unsigned long a, unsigned long b) { return a + b; }
+unsigned long N_multiplication(unsigned long a, unsigned long b) { return a * b; }
+// ^^^ Define respectively, the following first-degree (in)finite field combinations:
+// ^^^ ~ Addition in infinite fields (regular addition without MODding the result)
+// ^^^ ~ Addition in finite fields (addition with MODding the result)
 
-unsigned long lookup_factorize(unsigned long presumed_composite, int binary_mode, FILE *prime_table_fs) {
-    unsigned long potential_divisor;
-    while (_read_prime(&potential_divisor, prime_table_fs, binary_mode)) {
-	if (potential_divisor * potential_divisor > presumed_composite)
-	    return presumed_composite;
-	else if (presumed_composite % potential_divisor == 0)
-	    return potential_divisor;
-    } return 0;
+unsigned long FINITE_N_addition(unsigned long a, unsigned long b, unsigned long CAP) { return N_addition(a, b) % CAP; }
+unsigned long FINITE_N_multiplication(unsigned long a, unsigned long b, unsigned long CAP) { return N_multiplication(a, b) % CAP; }
+// ^^^ Define respectively, the following second-degree (in)finite field combinations:
+// ^^^ ~ Multiplication in infinite fields (regular multiplication without MODding the result)
+// ^^^ ~ Multiplication in finite fields (multiplication with MODding the result)
+
+INFINITE_field_combination get_INFINITE_field_combination_from_inflection_point_(unsigned long inflection_point) {
+    if (inflection_point == ADDITIVE_IDENTITY) return &N_addition;
+    else return &N_multiplication;
 }
 
-int prime(unsigned long presumed_composite, int binary_mode, FILE *prime_table_fs)
-{ return (lookup_factorize(presumed_composite, binary_mode, prime_table_fs) == presumed_composite) ? 1 : 0; }
-// ^^ Ternary function in order to funnel factorize
+FINITE_field_combination get_FINITE_field_combination_from_inflection_point_(unsigned long inflection_point) {
+    if (inflection_point == ADDITIVE_IDENTITY) return &FINITE_N_addition;
+    else return &FINITE_N_multiplication;
+}
+
+unsigned long N_combine(unsigned long N_quotient, unsigned long A, unsigned long B, unsigned long ID) {
+    if (ID) return (N_quotient == ADDITIVE_IDENTITY) ? N_multiplication(A, B) : FINITE_N_multiplication(A, B, N_quotient);
+    return (N_quotient == ADDITIVE_IDENTITY) ? N_addition(A, B) : FINITE_N_addition(A, B, N_quotient);
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 unsigned long GCD(unsigned long a, unsigned long b) {
     unsigned long remainder = a % b;

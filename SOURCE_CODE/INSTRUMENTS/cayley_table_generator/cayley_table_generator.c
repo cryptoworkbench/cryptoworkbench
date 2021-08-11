@@ -21,14 +21,11 @@
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
-#include "../../libraries/mathematics/group_operations.h"
 // ^^^ LIBRARY INCLUSIONS
 
 #define RESET "\033[0m"
 #define RED "\033[31m"
 #define UNDERLINE "\e[4m"
-#define ADDITIVE_IDENTITY 0
-#define MULTIPLICATIVE_IDENTITY 1
 // ^^^ COLOUR AND MATHEMATICAL DEFINITIONS
 
 FILE *fs; // the line where main starts sets this to stdout  
@@ -40,8 +37,6 @@ const char *multiplicative_adjective = "multiplicative";
 const char *additive_adjective = "additive";
 const char *middle = "_group_of_integers_under_modulo_";
 const char *end = "_arithmatic";
-
-// unsigned long (*group_operation) (unsigned long, unsigned long, unsigned long); OLD #0
 
 struct group_meta {
     unsigned long modulus;
@@ -138,7 +133,7 @@ struct combination *combine(struct combination **source, struct group_meta *grou
     for (unsigned long round_no = ADDITIVE_IDENTITY; round_no < group->order; round_no++, unary_head = unary_head->next) {
 	struct element *unary_tail = unary_head; // Start combining
 	do {// Lookup the adress of the element that results from performing the group operation using the selected unary_head and unary_tail
-	    struct element *outcome = lookup(N_field_combine(group->modulus, unary_head->number, unary_tail->number, group->identity), group);
+	    struct element *outcome = lookup(N_combine(group->modulus, unary_head->number, unary_tail->number, group->identity), group);
 
 	    // Spawn the new association into memory
 	    spawn_association(source, unary_head, unary_tail, outcome);

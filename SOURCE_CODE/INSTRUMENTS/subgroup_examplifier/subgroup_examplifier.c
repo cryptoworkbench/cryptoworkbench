@@ -6,17 +6,12 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-// ^^^ STANDARD LIBRARY INCLUSIONS
-
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
 #include "../../libraries/functional/LOGBOOK_library.h" // << Needed for the definition of "struct group_prams"
-#include "../../libraries/mathematics/group_operations.h"
-// ^^^ PERSONAL LIBRARY INCLUSIONS
+// ^^ Library inclusions
 
-#define ADDITIVE_IDENTITY 0
-#define MULTIPLICATIVE_IDENTITY 1
 #define STDOUT_ARGV_ONE_INSTRUCTION "Please provide as second argument '0' for the ADDITIVE IDENTITY or '1' for the MULTIPLICATIVE IDENTITY.\n"
 #define STDOUT_ARGV_TWO_INSTRUCTION "Please provide as first argument the modulus of the group in decimal notation.\n"
 #define STDERR_HORIZONTAL_OFFSET_ERROR "Failed to parse \"%s\" (the 3th argument) as horizontal offset. Defaulting to not using a horizontal offset.\n"
@@ -92,7 +87,7 @@ struct permutation_piece *yield_subgroup(struct vertibrae *UPSTREAM, struct grou
     iterator->next = iterator; // Make it circular
 
     unsigned long subgroup_cardinality = 1; // <<< For we already have the identity element (see code above)
-    for (unsigned long generated_element = UPSTREAM->unit.number; generated_element != group->ID; generated_element = N_field_combine(group->CAP, generated_element, UPSTREAM->unit.number, group->ID)) {
+    for (unsigned long generated_element = UPSTREAM->unit.number; generated_element != group->ID; generated_element = N_combine(group->CAP, generated_element, UPSTREAM->unit.number, group->ID)) {
 	iterator = permutation_insert(UPSTREAM, generated_element, iterator); /* Put the current power of g into the permutation data structure */
 	subgroup_cardinality++;
     }
@@ -227,8 +222,8 @@ void QUIT_ON_ARGV_TWO_ERROR(char *argv_two) {
 }
 
 void QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
-    fprintf(stdout, STDOUT_ARGV_TWO_INSTRUCTION);
-    fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP: to attempt to open from REGISTRY/ the group '<\u2115/%s\u2115>' makes no sense to me. Returning '-1'.\n", argv_one);
+    fprintf(stdout, STDOUT_ARGV_TWO_INSTRUCTION); // Fix imperfection below "\u2115%s*"
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP: to attempt to open from ARCHIVE/ the group \u2115%s*' makes no sense to me. Returning '-1'.\n", argv_one);
     exit(-1);
 }
 

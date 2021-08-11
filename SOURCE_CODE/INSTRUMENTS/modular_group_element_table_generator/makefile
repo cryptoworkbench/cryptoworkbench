@@ -10,11 +10,8 @@
 ../../libraries/mathematics/.maths.o: ../../libraries/mathematics/maths.h ../../libraries/mathematics/maths.c
 	gcc -c ../../libraries/mathematics/maths.c -o ../../libraries/mathematics/.maths.o
 
-../../libraries/mathematics/.group_operations.o: ../../libraries/mathematics/group_operations.h ../../libraries/mathematics/group_operations.c
-	gcc -c ../../libraries/mathematics/group_operations.c -o ../../libraries/mathematics/.group_operations.o
-
 .modular_group_element_table_generator.o: modular_group_element_table_generator.c
 	gcc -c modular_group_element_table_generator.c -o .modular_group_element_table_generator.o
 
-modular_group_element_table_generator: ../../libraries/functional/.string.o ../../libraries/functional/.LOGBOOK_library.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .modular_group_element_table_generator.o
-	gcc ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_operations.o .modular_group_element_table_generator.o -o ../../../WORKBENCH/modular_group_element_table_generator
+modular_group_element_table_generator: ../../libraries/functional/.string.o ../../libraries/functional/.LOGBOOK_library.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o .modular_group_element_table_generator.o
+	gcc ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o .modular_group_element_table_generator.o -o ../../../WORKBENCH/modular_group_element_table_generator
