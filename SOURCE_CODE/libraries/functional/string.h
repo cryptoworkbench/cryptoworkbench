@@ -3,7 +3,7 @@
 // ^^^ Necessary library inclusions that are needed in "string.c"
 
 #define STRING_TERMINATING_CHARACTER 0
-#define BASE 10
+#define NUMERIC_BASE 10
 #define ASCII_BASE 48
 // ^^^ Necessary definitions that are needed in "string.c"
 

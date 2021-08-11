@@ -40,11 +40,11 @@ unsigned long ul_from_str(char *string) {
 
     char *current_character = (string + (length_of_string - 1));
     while (current_character != string) {
-	string_as_integer += (*current_character - ASCII_BASE) * exponentiate(BASE, iteration_count);
+	string_as_integer += (*current_character - ASCII_BASE) * N_exponentiation(NUMERIC_BASE, iteration_count);
 
 	iteration_count++; // Update the iteration count
 	current_character = (current_character - 1); // Move back one character
-    } string_as_integer += (*current_character - ASCII_BASE) * (exponentiate(BASE, length_of_string - 1));
+    } string_as_integer += (*current_character - ASCII_BASE) * (N_exponentiation(NUMERIC_BASE, length_of_string - 1));
     return string_as_integer;
 }
 
@@ -54,11 +54,11 @@ int string_to_int(char *string) {
 
     char *current_character = (string + (length_of_string - 1));
     while (current_character != string) {
-	string_as_integer += (*current_character - ASCII_BASE) * exponentiate(BASE, iteration_count);
+	string_as_integer += (*current_character - ASCII_BASE) * N_exponentiation(NUMERIC_BASE, iteration_count);
 
 	iteration_count++; // Update the iteration count
 	current_character = (current_character - 1); // Move back one character
-    } string_as_integer += (*current_character - ASCII_BASE) * (exponentiate(BASE, length_of_string - 1));
+    } string_as_integer += (*current_character - ASCII_BASE) * (N_exponentiation(NUMERIC_BASE, length_of_string - 1));
     return string_as_integer;
 }
 
@@ -67,10 +67,10 @@ unsigned long char_in_val(unsigned long a) {
 	return 1;
 
     unsigned long char_index, intermediate_value;
-    char_index = 0; intermediate_value = exponentiate(BASE, char_index);
+    char_index = 0; intermediate_value = N_exponentiation(NUMERIC_BASE, char_index);
 
-    while (!(intermediate_value >= a)) /* Calculate the first power of BASE which is greater than or equal to a */
-    { char_index++; intermediate_value = exponentiate(BASE, char_index); }
+    while (!(intermediate_value >= a)) /* Calculate the first power of NUMERIC_BASE which is greater than or equal to a */
+    { char_index++; intermediate_value = N_exponentiation(NUMERIC_BASE, char_index); }
 
     if (intermediate_value == a)
 	char_index++;
@@ -93,10 +93,10 @@ char *str_from_ul(unsigned long a, unsigned long min_out_length) { // Works!
 
     unsigned long a_copy = a; /* Start creating the string */
     for (unsigned long remainder = a_copy; char_index != 0; char_index--) {
-	remainder %= BASE; // Calculate remainder
+	remainder %= NUMERIC_BASE; // Calculate remainder
 	unsigned_long_as_string[number_of_heading_zeros + char_index - 1] = remainder + ASCII_BASE; // Put remainder in string
-	a_copy -= remainder; a_copy = a_copy / BASE; // Update a_copy
-	remainder = a_copy; // Restore our remainder variable so that we can remainder %= BASE
+	a_copy -= remainder; a_copy = a_copy / NUMERIC_BASE; // Update a_copy
+	remainder = a_copy; // Restore our remainder variable so that we can remainder %= NUMERIC_BASE
     } return unsigned_long_as_string;
 }
 
@@ -112,11 +112,11 @@ unsigned long *ul_ptr_from_str(unsigned long *UL_PTR_TO_UPDATE, char *term_argum
 
     char *current_character = (term_argument + (length_of_string - 1));
     while (current_character != term_argument) {
-	string_as_integer += (*current_character - ASCII_BASE) * exponentiate(BASE, iteration_count);
+	string_as_integer += (*current_character - ASCII_BASE) * N_exponentiation(NUMERIC_BASE, iteration_count);
 
 	iteration_count++; // Update the iteration count
 	current_character = (current_character - 1); // Move back one character
-    } string_as_integer += (*current_character - ASCII_BASE) * (exponentiate(BASE, length_of_string - 1));
+    } string_as_integer += (*current_character - ASCII_BASE) * (N_exponentiation(NUMERIC_BASE, length_of_string - 1));
 
     *UL_PTR_TO_UPDATE = string_as_integer; // <<< Inserts the parsed variable into the INSERTMENT_SLOTH (see header file "string.h")
     return UL_PTR_TO_UPDATE;

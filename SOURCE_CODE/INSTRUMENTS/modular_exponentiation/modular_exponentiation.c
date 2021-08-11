@@ -1,24 +1,27 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/maths.h" // mod_exponentiate();
+#include <stdio.h> // <<< Needed for "fprintf()"
+#include <stdlib.h> // <<< Needed for "malloc()"
+#include "../../libraries/mathematics/maths.h"
+#include "../../libraries/functional/string.h" // <<< Needed for "ul_ptr_from_str()"
 
-int main(int argc, char **argv) {
-    unsigned long modulus, exponent, base;
-    // ^^^ Declare needed variables
-    
-    fprintf(stdout, "Modulus: ");
-    if (4 > argc || (! ul_ptr_from_str(&modulus, argv[3]))) fscanf(stdin, "%lu", &modulus);
-    else fprintf(stdout, "%lu\n", modulus);
+void QUIT_ON_ARGV_THREE_ERROR(char *argv_three) {
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp CAP '%s'. Returning '-3'.\n", argv_three); exit(-2);
+}
 
-    fprintf(stdout, "Exponent: ");
-    if (3 > argc || (! ul_ptr_from_str(&exponent, argv[2]))) fscanf(stdin, "%lu", &exponent);
-    else fprintf(stdout, "%lu\n", exponent);
+void QUIT_ON_ARGV_TWO_ERROR(char *argv_two) {
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp base '%s'. Returning '-2'.\n", argv_two); exit(-2);
+}
 
-    fprintf(stdout, "Base: ");
-    if (2 > argc || (! ul_ptr_from_str(&base, argv[1]))) fscanf(stdin, "%lu", &base);
-    else fprintf(stdout, "%lu\n", base);
+void QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP '%s'. Returning '-1'.\n", argv_one); exit(-1);
+}
 
-    fprintf(stdout, "\n%lu^%lu %% %lu = %lu\n", base, exponent, modulus, mod_exponentiate(base, exponent, modulus));
-    exit(0);
+int main(int argc, char **argv) { UL BASE, Exponent, CAP;
+    if (2 > argc || !(ul_ptr_from_str(&BASE, argv[1]))) QUIT_ON_ARGV_ONE_ERROR(argv[1]);
+    else if (3 > argc || !(ul_ptr_from_str(&Exponent, argv[2]))) QUIT_ON_ARGV_TWO_ERROR(argv[2]);
+    else if (4 > argc || !(ul_ptr_from_str(&CAP, argv[3]))) QUIT_ON_ARGV_THREE_ERROR(argv[3]);
+    // ^^^ Parse terminal arguments
+
+    fprintf(stdout, "%lu^%lu %% %lu = %lu\n", BASE, Exponent, CAP, FINITE_N_exponentiation(BASE, Exponent, CAP));
+    // ^^^ Perform modular exponentiation using the "FINITE_N_exponentiation()" function
+    return 0;
 }

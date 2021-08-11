@@ -141,12 +141,12 @@ int main(int argc, char **argv) {
     // ^^^ Display selected variables
 
     fprintf(stdout, "#\n# Calculation Alice makes before communication:\n");
-    unsigned long public_alice = mod_exponentiate(base, private_alice, group_modulus);
+    unsigned long public_alice = FINITE_N_exponentiation(base, private_alice, group_modulus);
     fprintf(stdout, "# ~ %lu^%lu \u2261 %lu (%% %lu)\n", base, private_alice, public_alice, group_modulus);
     // ^^^ Display calculation on Alice's side
 
     fprintf(stdout, "#\n# Calculation Bob makes before communication:\n");
-    unsigned long public_bob = mod_exponentiate(base, private_bob, group_modulus);
+    unsigned long public_bob = FINITE_N_exponentiation(base, private_bob, group_modulus);
     fprintf(stdout, "# ~ %lu^%lu \u2261 %lu (%% %lu)", base, private_bob, public_bob, group_modulus);
     // ^^^ Display calculation on Bob's side
 
@@ -154,11 +154,11 @@ int main(int argc, char **argv) {
     // ^^^ Simulate open channel communication
 
     fprintf(stdout, "#\n# Calculation Alice makes after communication with Bob:\n");
-    unsigned long mutual_alice = mod_exponentiate(public_bob, private_alice, group_modulus);
+    unsigned long mutual_alice = FINITE_N_exponentiation(public_bob, private_alice, group_modulus);
     fprintf(stdout, "# ~ %lu^%lu \u2261 %lu (%% %lu)", public_bob, private_alice, mutual_alice, group_modulus);
 
     fprintf(stdout, "\n#\n# Calculation Bob makes after communication with Alice:\n");
-    unsigned long mutual_bob = mod_exponentiate(public_alice, private_bob, group_modulus);
+    unsigned long mutual_bob = FINITE_N_exponentiation(public_alice, private_bob, group_modulus);
     fprintf(stdout, "# ~ %lu^%lu \u2261 %lu (%% %lu)", public_alice, private_bob, mutual_bob, group_modulus);
 
     if (mutual_bob == mutual_alice) {
