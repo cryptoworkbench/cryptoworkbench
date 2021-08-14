@@ -230,7 +230,7 @@ void QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
 void HELP_AND_QUIT(char *argv_zero) { fprintf(stderr, HELP_INFORMATION, argv_zero); exit(0); }
 
 int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; // <<< Preliminary pointers
-    if (6 < argc || argc > 1 && (streql(argv[1], "--help") || streql(argv[1], "-h"))) HELP_AND_QUIT(argv[0]); else group = (struct group_prams *) malloc(sizeof(struct group_prams));
+    if (6 < argc || argc > 1 && (compare_strings(argv[1], 2, "--help", "-h"))) HELP_AND_QUIT(argv[0]); else group = (struct group_prams *) malloc(sizeof(struct group_prams));
     // ^^^ Allocate memory for CAP and ID values if necessary
 
     if (2 > argc || !(ul_ptr_from_str(&group->CAP, argv[1]))) QUIT_ON_ARGV_ONE_ERROR(argv[1]);

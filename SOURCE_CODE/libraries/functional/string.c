@@ -20,6 +20,19 @@ unsigned long str_len(const char *string_pointer) {
     return index;
 }
 
+int compare_strings(char *INPUT, int number_of_comparisons, ...) {
+    va_list ap;
+    va_start(ap, number_of_comparisons);
+
+    int i;
+    for (i = 0; i < number_of_comparisons; i++) {
+	if (streql(INPUT, va_arg(ap, char *))) return 1;
+    }
+    va_end(ap);
+
+    return 0;
+}
+
 /* Returns an int containing the number of characters in the string pointed at by the char pointer 'string_pointer' */
 int str_len_int(char *string_pointer) {
     int index = 0;
