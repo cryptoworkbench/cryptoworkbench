@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <string.h>
 #include <stdarg.h>
 #include "../mathematics/maths.h"
 // ^^^ Necessary library inclusions that are needed in "string.c"
@@ -14,7 +15,6 @@ unsigned long str_len(const char *string_pointer); // Just like in the standard 
 /* Returns an int containing the number of characters in the string pointed at by the char pointer 'string_pointer' */
 int str_len_int(char *string_pointer); // Almost the same functionality as the above function
 
-unsigned int streql(char *string_a, char *string_b); // Returns 1 if string_a and string_b are equal, returns 0 if not (BELOW FUNCTION DEPENDS ON THIS ONE)
 int compare_strings(char *INPUT, int number_of_comparisons, ...); // Variadic function that can compare one string against a variable number of strings to compare it to
 char *copy_over(char *recipient_adress, const char *source_adress); // Copies over source onto recipient, terminating at the string terminating character 0 in the byte sequence pointed at by source_adress, then appends one onto the string pointed at by char *repicient_adress
 

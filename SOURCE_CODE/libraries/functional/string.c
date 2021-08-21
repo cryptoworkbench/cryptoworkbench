@@ -3,16 +3,6 @@
  * See the header file for function descriptions. */
 #include "string.h"
 
-/* Returns 1 if string_a and string_b are equal, if not; returns 0 */
-unsigned int streql(char *string_a, char *string_b) {
-    unsigned long iter;
-    for (iter = 0; !(string_a[iter] == STRING_TERMINATING_CHARACTER || string_b[iter] == STRING_TERMINATING_CHARACTER) && (string_a[iter] == string_b[iter]); iter++) {}
-    if (string_a[iter] == string_b[iter])
-	return 1;
-    else
-	return 0;
-}
-
 /* Returns an unsigned long containing the number of characters in the string pointed at by the constant char pointer 'string_pointer' */
 unsigned long str_len(const char *string_pointer) {
     unsigned long index = 0;
@@ -26,7 +16,7 @@ int compare_strings(char *INPUT, int number_of_comparisons, ...) {
 
     int i;
     for (i = 0; i < number_of_comparisons; i++) {
-	if (streql(INPUT, va_arg(ap, char *))) return 1;
+	if (strcmp(INPUT, va_arg(ap, char *)) == 0) return 1;
     }
     va_end(ap);
 

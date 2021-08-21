@@ -234,7 +234,7 @@ int main(int argc, char **argv) { fs = stdout;
 	fscanf(stdin, "%lu", &group->modulus); }
 
     if (4 > argc) {
-    } else if (!streql(argv[3], "stdout")) {
+    } else if (strcmp(argv[3], "stdout") == 0) {
 	fs = fopen(argv[3], "w");
 	printf("Filestream opened to %s\n", argv[3]);
     } else
