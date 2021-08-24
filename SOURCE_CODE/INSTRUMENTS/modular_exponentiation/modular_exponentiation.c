@@ -21,7 +21,7 @@ int main(int argc, char **argv) { UL BASE, Exponent, CAP;
     else if (4 > argc || !(ul_ptr_from_str(&CAP, argv[3]))) QUIT_ON_ARGV_THREE_ERROR(argv[3]);
     // ^^^ Parse terminal arguments
 
-    fprintf(stdout, "%lu^%lu %% %lu = %lu\n", BASE, Exponent, CAP, FINITE_N_exponentiation(BASE, Exponent, CAP));
+    fprintf(stdout, "%lu^%lu %% %lu = %lu\n", BASE, Exponent, CAP, N_combine(CAP, BASE, Exponent, 2));
     // ^^^ Perform modular exponentiation using the "FINITE_N_exponentiation()" function
     return 0;
 }

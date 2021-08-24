@@ -43,36 +43,53 @@ unsigned long FINITE_N_addition(unsigned long A, unsigned long B, unsigned long 
 unsigned long FINITE_N_multiplication(unsigned long A, unsigned long B, unsigned long Limit) { return N_multiplication(A, B) % Limit; }
 // ^^^ The finite (modular) ones
 
-unsigned long N_combine(unsigned long N_quotient, unsigned long A, unsigned long B, unsigned long ID) {
-    if (ID) return (N_quotient == ADDITIVE_IDENTITY) ? N_multiplication(A, B) : FINITE_N_multiplication(A, B, N_quotient);
-    return (N_quotient == ADDITIVE_IDENTITY) ? N_addition(A, B) : FINITE_N_addition(A, B, N_quotient);
-}
-
 unsigned long N_exponentiation(unsigned long BASE, unsigned long Exponent) {
     unsigned long ans = (0 < BASE); for (unsigned long iter = 0; iter < Exponent; iter++) ans = N_multiplication(ans, BASE);
     return ans;
 }
 
-unsigned long FINITE_N_exponentiation(unsigned long BASE, unsigned long Exponent, unsigned long CAP) {
+unsigned long FINITE_N_exponentiation(unsigned long BASE, unsigned long Exponent, unsigned long Limit) {
     unsigned long least_BASE_two_logarihm = down_rounded_BASE_2_logarithm(Exponent);
-    unsigned long *residue_array = (unsigned long *) malloc(sizeof(unsigned long) * least_BASE_two_logarihm);
-    unsigned long NDX = ADDITIVE_IDENTITY; unsigned long ans = MULTIPLICATIVE_IDENTITY;
-    // ^^^ Prepare variables
+    unsigned long *residue_list = (unsigned long *) malloc(sizeof(unsigned long) * least_BASE_two_logarihm);
+    // ^^ Prepare obvious variables (variables you'd think about)
 
-    residue_array[NDX] = FINITE_N_addition(BASE, ADDITIVE_IDENTITY, CAP); do {
-	residue_array[NDX + 1] = FINITE_N_multiplication(residue_array[NDX], residue_array[NDX], CAP);
-	NDX++;
-    } while (NDX < least_BASE_two_logarihm);
-    // ^^^ Initialize array
+    UL iter = ADDITIVE_IDENTITY; UL exponentiation_RESULT = MULTIPLICATIVE_IDENTITY;
+    // ^^ Prepare less obvious variables (variables you come to realize you need once you start writting this function)
+
+    residue_list[iter] = FINITE_N_addition(ADDITIVE_IDENTITY, BASE, Limit);
+    // ^^ Start with a first mod calculation of "BASE^1 % Limit"
+
+    do {residue_list[iter + 1] = FINITE_N_multiplication(residue_list[iter], residue_list[iter], Limit); iter++; }
+    while (iter < least_BASE_two_logarihm);
+    // ^^ Continue the square and multiply method
 
     while (Exponent != 0) {
-	ans = (ans * residue_array[least_BASE_two_logarihm]) % CAP;
+	exponentiation_RESULT = (exponentiation_RESULT * residue_list[least_BASE_two_logarihm]) % Limit;
 	Exponent -= N_exponentiation(2, least_BASE_two_logarihm);
-	least_BASE_two_logarihm = down_rounded_BASE_2_logarithm(Exponent);
-    } free(residue_array);
-    // ^^^ Process array, arrive at result, and free array
+	least_BASE_two_logarihm = down_rounded_BASE_2_logarithm(Exponent); }
+    // ^^ Collect the pieces
+    
+    free(residue_list);
+    // ^^ Free residue_list
 
-    return ans;
+    return exponentiation_RESULT;
+}
+
+unsigned long N_combine(unsigned long N_quotient, unsigned long A, unsigned long B, unsigned long Operation) {
+   if (N_quotient != ADDITIVE_IDENTITY) {
+       switch (Operation) {
+	    case 0: return FINITE_N_addition(A, B, N_quotient);
+	    case 1: return FINITE_N_multiplication(A, B, N_quotient);
+	    default: return FINITE_N_exponentiation(A, B, N_quotient);
+       }; }
+  // ^^ Modular operations
+   else
+       switch (Operation) {
+	   case 0: return N_addition(A, B);
+	   case 1: return N_multiplication(A, B);
+	   default: return N_exponentiation(A, B);
+       };
+  // ^^ Regular operations
 }
 
 unsigned long GCD(unsigned long a, unsigned long b) {
