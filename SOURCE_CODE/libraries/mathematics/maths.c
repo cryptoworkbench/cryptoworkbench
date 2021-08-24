@@ -25,12 +25,22 @@ unsigned long down_rounded_BASE_2_logarithm(unsigned long base_exponent) {
     return return_value;
 }
 
-unsigned long N_addition(unsigned long a, unsigned long b) { return a + b; }
-unsigned long N_multiplication(unsigned long a, unsigned long b) { return a * b; }
-// ^^^ The infinite ones
+unsigned long N_addition(unsigned long A, unsigned long B) { return A + B; }
 
-unsigned long FINITE_N_addition(unsigned long a, unsigned long b, unsigned long CAP) { return N_addition(a, b) % CAP; }
-unsigned long FINITE_N_multiplication(unsigned long a, unsigned long b, unsigned long CAP) { return N_multiplication(a, b) % CAP; }
+unsigned long N_multiplication(unsigned long A, unsigned long B) {
+    unsigned long multiplication_RESULT = ADDITIVE_IDENTITY;
+    // ^^ Start with an empty set
+
+    UL iterator = ADDITIVE_IDENTITY;
+    do { multiplication_RESULT = N_addition(multiplication_RESULT, A);
+	iterator++; } while (iterator < B);
+    // ^^ And prove multiplicication is repeated addition
+
+    return multiplication_RESULT;
+}
+
+unsigned long FINITE_N_addition(unsigned long A, unsigned long B, unsigned long Limit) { return N_addition(A, B) % Limit; }
+unsigned long FINITE_N_multiplication(unsigned long A, unsigned long B, unsigned long Limit) { return N_multiplication(A, B) % Limit; }
 // ^^^ The finite (modular) ones
 
 unsigned long N_combine(unsigned long N_quotient, unsigned long A, unsigned long B, unsigned long ID) {

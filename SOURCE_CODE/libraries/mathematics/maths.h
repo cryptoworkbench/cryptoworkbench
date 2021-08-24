@@ -2,16 +2,18 @@
 #include <stdlib.h>
 #define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
+#define SET_DEVOID_OF_UNITS 0
+#define SET_DEVOID_OF_PRIME_FACTORS 1
 typedef unsigned long UL;
-typedef unsigned long * UL_ptr;
+typedef UL* UL_ptr;
 
-unsigned long N_addition(unsigned long a, unsigned long b);
-unsigned long FINITE_N_addition(unsigned long a, unsigned long b, unsigned long CAP);
+unsigned long N_addition(unsigned long A, unsigned long B);
+unsigned long FINITE_N_addition(unsigned long A, unsigned long B, unsigned long Limit);
 // ^^^ Define the addition operation for finite and non-finite arithmetic, with other words: --===>
 // ^>> Define the addition operation for "modular" and "regular" arithmetic
 
-unsigned long N_multiplication(unsigned long a, unsigned long b);
-unsigned long FINITE_N_multiplication(unsigned long a, unsigned long b, unsigned long CAP);
+unsigned long N_multiplication(unsigned long A, unsigned long B);
+unsigned long FINITE_N_multiplication(unsigned long A, unsigned long B, unsigned long Limit);
 // ^^^ Define the multiplication operation for finite and non-finite arithmetic, with other words: --===>
 // ^>> Define the multiplication operation for "modular" and "regular" arithmetic
 
