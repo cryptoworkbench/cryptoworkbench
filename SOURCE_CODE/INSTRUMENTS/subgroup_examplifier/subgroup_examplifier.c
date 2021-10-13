@@ -222,15 +222,15 @@ void QUIT_ON_ARGV_TWO_ERROR(char *argv_two) {
 }
 
 void QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
-    fprintf(stdout, STDOUT_ARGV_TWO_INSTRUCTION); // Fix imperfection below "\u2115%s*"
-    fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP: to attempt to open from ARCHIVE/ the group \u2115%s*' makes no sense to me. Returning '-1'.\n", argv_one);
+    fprintf(stdout, STDOUT_ARGV_TWO_INSTRUCTION);
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP: to attempt to open from ARCHIVE/ the group '\u2115%s*' makes no sense to me. Returning '-1'.\n", argv_one);
     exit(-1);
 }
 
 void HELP_AND_QUIT(char *argv_zero) { fprintf(stderr, HELP_INFORMATION, argv_zero); exit(0); }
 
 int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; // <<< Preliminary pointers
-    if (6 < argc || argc > 1 && (compare_strings(argv[1], 2, "--help", "-h"))) HELP_AND_QUIT(argv[0]); else group = (struct group_prams *) malloc(sizeof(struct group_prams));
+    if (6 < argc || argc > 1 && (match(argv[1], 2, "--help", "-h"))) HELP_AND_QUIT(argv[0]); else group = (struct group_prams *) malloc(sizeof(struct group_prams));
     // ^^^ Allocate memory for CAP and ID values if necessary
 
     if (2 > argc || !(ul_ptr_from_str(&group->CAP, argv[1]))) QUIT_ON_ARGV_ONE_ERROR(argv[1]);
