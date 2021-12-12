@@ -16,6 +16,8 @@ unsigned long str_len(const char *string_pointer); // Just like in the standard 
 int str_len_int(char *string_pointer); // Almost the same functionality as the above function
 
 int match(char *INPUT, int number_of_comparisons, ...); // Variadic function that can compare one string against a variable number of strings to compare it to
+int match_against_list(char *INPUT, char *char_PTR_array[]); // <<< Inst the makes
+
 char *copy_over(char *recipient_adress, const char *source_adress); // Copies over source onto recipient, terminating at the string terminating character 0 in the byte sequence pointed at by source_adress, then appends one onto the string pointed at by char *repicient_adress
 
 unsigned long ul_from_str(char *string); // Returns the numeric value represented by the string pointed to by char *string as unsigned long
@@ -24,7 +26,7 @@ int string_to_int(char *string); // Returns the numeric value represented by the
 unsigned long char_in_val(unsigned long a); // Calculates the number of characters needed to display a in base BASE notation (BASE = 10)
 char *str_from_ul(unsigned long a, unsigned long min_out_length); // Converts from ul to string with a minimum of min_out_length characters, heading zeros are fixed if needed, call as str_from_ul(unsigned long a, characters_in_val(a))
 
-unsigned long *update_UL_PTR_from_STRING(unsigned long *UL_PTR, char *STRING);
+unsigned long *STR_could_be_parsed_into_UL(char *STRING, unsigned long *UL_PTR);
 /* ^^^ Puts the numeric value of "STRING" at the location pointed at by "UL_PTR".
  * 
  * Returns "VOID" if "STRING" is not parsable as a base-10 number.

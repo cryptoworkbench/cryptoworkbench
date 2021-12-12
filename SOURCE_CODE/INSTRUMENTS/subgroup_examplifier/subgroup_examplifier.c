@@ -233,14 +233,14 @@ int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; /
     if (6 < argc || argc > 1 && (match(argv[1], 2, "--help", "-h"))) HELP_AND_QUIT(argv[0]); else group = (struct group_prams *) malloc(sizeof(struct group_prams));
     // ^^^ Allocate memory for CAP and ID values if necessary
 
-    if (2 > argc || !(update_UL_PTR_from_STRING(&group->CAP, argv[1]))) QUIT_ON_ARGV_ONE_ERROR(argv[1]);
-    else if (3 > argc || !(update_UL_PTR_from_STRING(&group->ID, argv[2]))) QUIT_ON_ARGV_TWO_ERROR(argv[2]);
+    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->CAP)) QUIT_ON_ARGV_ONE_ERROR(argv[1]);
+    else if (3 > argc || !STR_could_be_parsed_into_UL(argv[2], &group->ID)) QUIT_ON_ARGV_TWO_ERROR(argv[2]);
     // ^^^ Collect CAP and ID values from mandatory arguments, quit with appropiate error message upon failure
 
     struct offset_values *shifts = (struct offset_values *) malloc(sizeof(struct offset_values)); shifts->Y = shifts->X = 0;
     if (argc != 3) { switch (argc) { case 6: main_fs = fopen(argv[5], "w");
-	    case 5: if (!(update_UL_PTR_from_STRING(&shifts->Y, argv[4]))) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
-	    case 4: if (!(update_UL_PTR_from_STRING(&shifts->X, argv[3]))) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
+	    case 5: if (!(STR_could_be_parsed_into_UL(argv[4], &shifts->Y))) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
+	    case 4: if (!(STR_could_be_parsed_into_UL(argv[3], &shifts->X))) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
 	    default: if (!(group->ID)) { shifts->X %= group->CAP; shifts->Y %= group->CAP; } }
     } // <<< Do you remember Joseph-Louis Lagrange? (see "MATH_HINT_ONE")
     // ^^^ HANDLE the parsing of POTENTIAL ARGUMENTS (vertical and horizontal offset values default to 0 since their respective arguments are "[optional]")

@@ -20,6 +20,16 @@ int match(char *INPUT, int number_of_comparisons, ...) {
     va_end(ap); return 0;
 }
 
+int match_against_list(char *INPUT, char *char_PTR_array[]) {
+    int length = 0; do {
+	if (strcmp(char_PTR_array[length], INPUT) == 0) return 1;
+	else length++;
+    } while (char_PTR_array[length] != 0);
+
+    printf("Length of the list: %i\n", length);
+    return 0;
+}
+
 /* Returns an int containing the number of characters in the string pointed at by the char pointer 'string_pointer' */
 int str_len_int(char *string_pointer) {
     int index = 0;
@@ -100,7 +110,7 @@ char *str_from_ul(unsigned long a, unsigned long min_out_length) { // Works!
     } return unsigned_long_as_string;
 }
 
-unsigned long *update_UL_PTR_from_STRING(unsigned long *UL_PTR, char *STRING) { // Alternative to "ul_from_str()"
+unsigned long *STR_could_be_parsed_into_UL(char *STRING, unsigned long *UL_PTR) { // Alternative to "ul_from_str()"
     unsigned long length_of_string = 0; do {
 	if (STRING[length_of_string] >= ASCII_BASE && STRING[length_of_string] < ASCII_BASE + 10) length_of_string++;
 	else return NULL;
