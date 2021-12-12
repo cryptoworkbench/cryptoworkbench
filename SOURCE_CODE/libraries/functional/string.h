@@ -24,13 +24,8 @@ int string_to_int(char *string); // Returns the numeric value represented by the
 unsigned long char_in_val(unsigned long a); // Calculates the number of characters needed to display a in base BASE notation (BASE = 10)
 char *str_from_ul(unsigned long a, unsigned long min_out_length); // Converts from ul to string with a minimum of min_out_length characters, heading zeros are fixed if needed, call as str_from_ul(unsigned long a, characters_in_val(a))
 
-unsigned long *ul_ptr_from_str(unsigned long *INSERTMENT_SLOTH, char *terminal_argument);
-/* ^^^ ALTERNATIVE TO "ul_from_str()" ^^^
- * Supposed to be used for the parsing of command line arguments as integers of the data type "unsigned long"
- *
- * Feed it a char array at argv[index].
- *
- * Parses "argv[index]" into "INSERTMENT_SLOTH" if "argv[index]" is parsable. Returns "INSERTMENT_SLOTH" if "argv[index]" is parsable.
- *
- * Returns a "NULL" pointer if "argv[index]" is not parsable.
+unsigned long *update_UL_PTR_from_STRING(unsigned long *UL_PTR, char *STRING);
+/* ^^^ Puts the numeric value of "STRING" at the location pointed at by "UL_PTR".
+ * 
+ * Returns "VOID" if "STRING" is not parsable as a base-10 number.
  */
