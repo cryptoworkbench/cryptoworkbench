@@ -10,6 +10,29 @@ unsigned long str_len(const char *string_pointer) {
     return index;
 }
 
+int case_insensitive_cmp(char a, char b) {
+    // First we need to check if both characters are even from the alphabet
+    if (!((64 < a && a < 91) || (96 < a && a < 123)) || !((64 < b && b < 91) || ( 96 < b && b < 123)))
+	return 0; // << ^^^ If either one of the characters are not even from the alphabet
+
+    /* Now we should be able to know for sure both "a" and "b" are from the alphabet */
+    if (a == b) return 1; // <<< First we just check if the characters are the same:
+    else if (b == a + 32) return 1; // <<< If this is not the case, check if "b" is the uppercase variant of "a"
+    else if (a == b + 32) return 1; // <<< If this is also not the case, check if "a" is the uppercase variant of "b"
+    else return 0; // ^^^ << This function also works with "@" and "`"
+} // <<^^^ Only returns 1 if "a" and "b" are both from the alphabet and one is another case variant of the other
+
+int case_insensitive_strcmp(char *STR, char *STS) {
+    unsigned long STR_length = str_len(STR);
+    if (str_len(STS) != STR_length) return 0;
+    // ^^ If the strings are not even of the same length, they could never be the same independent of case
+
+    int i = 0; for (; i < STR_length; i++) if (case_insensitive_cmp(STR[i], STS[i]) == 0) return 0;
+    // ^^ Check to see if any of the characters are not each other's variants
+
+    if (i == STR_length) return 1;
+}
+
 int match(char *INPUT, int number_of_comparisons, ...) {
     va_list ap;
     va_start(ap, number_of_comparisons);
@@ -19,6 +42,7 @@ int match(char *INPUT, int number_of_comparisons, ...) {
     /* End function */
     va_end(ap); return 0;
 }
+
 
 int match_against_list(char *INPUT, char *char_PTR_array[]) {
     int length = 0; do {

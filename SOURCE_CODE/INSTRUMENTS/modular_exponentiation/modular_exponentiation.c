@@ -16,9 +16,9 @@ void QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
 }
 
 int main(int argc, char **argv) { UL BASE, Exponent, CAP;
-    if (2 > argc || !(ul_ptr_from_str(&BASE, argv[1]))) QUIT_ON_ARGV_ONE_ERROR(argv[1]);
-    else if (3 > argc || !(ul_ptr_from_str(&Exponent, argv[2]))) QUIT_ON_ARGV_TWO_ERROR(argv[2]);
-    else if (4 > argc || !(ul_ptr_from_str(&CAP, argv[3]))) QUIT_ON_ARGV_THREE_ERROR(argv[3]);
+    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &BASE)) QUIT_ON_ARGV_ONE_ERROR(argv[1]);
+    else if (3 > argc || !STR_could_be_parsed_into_UL(argv[2], &Exponent)) QUIT_ON_ARGV_TWO_ERROR(argv[2]);
+    else if (4 > argc || !STR_could_be_parsed_into_UL(argv[3], &CAP)) QUIT_ON_ARGV_THREE_ERROR(argv[3]);
     // ^^^ Parse terminal arguments
 
     fprintf(stdout, "%lu^%lu %% %lu = %lu\n", BASE, Exponent, CAP, N_combine(CAP, BASE, Exponent, 2));

@@ -48,7 +48,7 @@ void QUIT_ON_ARGV_ONE_ERROR(char *argv_one) { fprintf(stderr, ARGV_ONE_INSTRUCTI
 } // << ^^ Works in conjunction with the definition of ARGV_ONE_INSTRUCTION
 
 int main(int argc, char **argv) {
-    if (2 > argc || !(ul_ptr_from_str(&group.CAP, argv[1]))) QUIT_ON_ARGV_ONE_ERROR(argv[1]); if (3 > argc || !(ul_ptr_from_str(&group.ID, argv[2]))) QUIT_ON_ARGV_TWO_ERROR(argv[2]);
+    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group.CAP)) QUIT_ON_ARGV_ONE_ERROR(argv[1]); if (3 > argc || !STR_could_be_parsed_into_UL(argv[2], &group.ID)) QUIT_ON_ARGV_TWO_ERROR(argv[2]);
     // ^^ Parse the infinite field CAP and group ID
 
     unsigned long count = 0;

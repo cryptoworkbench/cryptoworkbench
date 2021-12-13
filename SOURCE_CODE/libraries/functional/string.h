@@ -12,6 +12,10 @@
 /* Returns an unsigned long containing the number of characters in the string pointed at by variable 'string_pointer' of type 'constant char *' */
 unsigned long str_len(const char *string_pointer); // Just like in the standard library, works just as expected
 
+/* Returns 1 if A and B are the same character, even when they are different in case. If either one of the characters are not from the alphabet, returns 0. */
+int case_insensitive_cmp(char A, char B);
+int case_insensitive_strcmp(char *STR, char *STS);
+
 /* Returns an int containing the number of characters in the string pointed at by the char pointer 'string_pointer' */
 int str_len_int(char *string_pointer); // Almost the same functionality as the above function
 
