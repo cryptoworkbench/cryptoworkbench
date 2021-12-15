@@ -30,24 +30,24 @@ struct permutation_piece {
     struct content *unit;
 };
 
-struct vertibrae {
+typedef struct vertibrae {
     unsigned long permutation_length;
     struct permutation_piece *permutation;
     struct content unit;
-};
+} array_piece; typedef array_piece *table_type;
 
 void triple_ref_LL_insert(struct triple_ref_LL **tracer, unsigned long new_ulong) {
-    struct triple_ref_LL *new_vertibrae = (struct triple_ref_LL *) malloc(sizeof(struct triple_ref_LL)); // Fix existence of new pointer_list element
-    new_vertibrae->next = NULL;
-    new_vertibrae->element = new_ulong;
+    struct triple_ref_LL *new_LL_element = (struct triple_ref_LL *) malloc(sizeof(struct triple_ref_LL)); // Fix existence of new pointer_list element
+    new_LL_element->next = NULL;
+    new_LL_element->element = new_ulong;
 
     while (*tracer) // ###==-- Find last insertion --===>
 	tracer = &(*tracer)->next;
 
-    *tracer = new_vertibrae; // <===-- And place the location of new_vertibrae into the next field of the previous insertion --==###
+    *tracer = new_LL_element; // <===-- And place the location of new_LL_element into the next field of the previous insertion --==###
 }
 
-struct triple_ref_LL *set_cardinality(char **argv, struct triple_ref_LL **channel, unsigned long *group_cardinality, group_OBJ group) {
+struct triple_ref_LL *establish_LL(char **argv, struct triple_ref_LL **channel, unsigned long *group_cardinality, unsigned long *cell_width, group_OBJ group) {
     char *path_to_filename; FILE *ELEMENT_database = open_group(argv[0], group, argv[1], &path_to_filename);
     // ^^^ Open filestream to element database
 
@@ -65,7 +65,31 @@ struct triple_ref_LL *set_cardinality(char **argv, struct triple_ref_LL **channe
     } last_element->next = first_element;
     // ^^^ Take out of the end product a singly-linked list that is circular and destroy any intermediary memory used
 
-    return last_element;
+    *cell_width = char_in_val(last_element->element);
+    return last_element->next;
+}
+
+table_type replace_LL_with_table(struct triple_ref_LL *chain, unsigned long group_cardinality, unsigned long cell_width) {
+    table_type table = (table_type) malloc(sizeof(array_piece) * group_cardinality);
+    /* ^^ Create table of necessitated size ^^ */
+
+    unsigned long index = 0; struct triple_ref_LL *do_loop_iterator = chain; do {
+	struct triple_ref_LL *suspend = do_loop_iterator;
+
+	table[index].unit.literal = suspend->element;
+	table[index].unit.ASCII_numerical = str_from_ul(table[index].unit.literal, cell_width);
+	/* ^^ Fill in unit ^^ */
+
+	do_loop_iterator = suspend->next;
+	
+	printf("Suspending: %lu.\n", suspend->element);
+	free(suspend);
+	
+	index++;
+    } while (do_loop_iterator != chain);
+    /* ^^^ Make an array of the required size. ^^^ */
+
+    return table;
 }
 
 int main(int argc, char **argv) { group_OBJ group;
@@ -82,24 +106,14 @@ int main(int argc, char **argv) { group_OBJ group;
     }
 
     unsigned long cell_width; unsigned long group_cardinality = 0;
-    struct triple_ref_LL *last_element = set_cardinality(argv, (struct triple_ref_LL **) sub_ordinator(), &group_cardinality, group);
-    cell_width = char_in_val(last_element->element);
-    struct triple_ref_LL *identity_element = last_element->next;
-
-    printf("Id: %lu\n", identity_element->element);
+    struct triple_ref_LL *identity_element = establish_LL(argv, (struct triple_ref_LL **) sub_ordinator(), &group_cardinality, &cell_width, group);
+    table_type table = replace_LL_with_table(identity_element, group_cardinality, cell_width);
+    
+    printf("Id: %lu\n", table[0].unit.literal);
     printf("Cell width: %lu\n", cell_width);
     printf("group cardinality: %lu\n", group_cardinality);
 
-    struct vertibrae *array = (struct vertibrae *) malloc(sizeof(struct vertibrae) * group_cardinality);
-
-    unsigned long index = 0; struct triple_ref_LL *do_loop_iterator = identity_element; do {
-	array[index].unit.literal = do_loop_iterator->element;
-	array[index].unit.ASCII_numerical = str_from_ul(array[index].unit.literal, cell_width);
-	do_loop_iterator = do_loop_iterator->next; index++;
-    } while (do_loop_iterator != identity_element);
-    /* ^^^ Make an array of the required size. ^^^ */
-
-    for (index = 0; index < group_cardinality; index++) fprintf(stdout, "Element: %s\n", array[index].unit.ASCII_numerical);
+    for (unsigned long index = 0; index < group_cardinality; index++) fprintf(stdout, "Element: %s\n", table[index].unit.ASCII_numerical);
 
     return 0;
 }
