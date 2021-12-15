@@ -9,40 +9,63 @@
 #include <stdlib.h>
 #include "error_functions.h" // <<< Needed for "HELP_AND_QUIT()" , "MOD_not_parsable_ERROR()", "ID_not_parsable_ERROR"
 #include "../../libraries/functional/string.h" // <<< Needed for variadic function "match()"
+#include "../../libraries/functional/triple_ref_pointers.h"
 #include "../../libraries/mathematics/universal_group_library.h" // <<< Needed for "group_OBJ"
 
 struct offset_values { unsigned long Y; unsigned long X; };
 // ^^ Not related to groups necessarily, so this is here instead of in "../../libraries/mathematics/universal_group_library.h"
 
-/*
-struct vertibrae *build_backbone(char *prog_NAME, struct vertibrae **channel, unsigned long *group_cardinality, struct group_prams *group) {
-    char *path_to_filename; char *group_CAP; FILE *ELEMENT_database = open_group(prog_NAME, group, &path_to_filename, &group_CAP);
+struct triple_ref_LL {
+    struct triple_ref_LL *next;
+    unsigned long element;
+};
+
+struct content {
+    unsigned long literal;
+    char *ASCII_numerical;
+};
+
+struct permutation_piece {
+    struct permutation_piece *next;
+    struct content *unit;
+};
+
+struct vertibrae {
+    unsigned long permutation_length;
+    struct permutation_piece *permutation;
+    struct content unit;
+};
+
+void triple_ref_LL_insert(struct triple_ref_LL **tracer, unsigned long new_ulong) {
+    struct triple_ref_LL *new_vertibrae = (struct triple_ref_LL *) malloc(sizeof(struct triple_ref_LL)); // Fix existence of new pointer_list element
+    new_vertibrae->next = NULL;
+    new_vertibrae->element = new_ulong;
+
+    while (*tracer) // ###==-- Find last insertion --===>
+	tracer = &(*tracer)->next;
+
+    *tracer = new_vertibrae; // <===-- And place the location of new_vertibrae into the next field of the previous insertion --==###
+}
+
+struct triple_ref_LL *set_cardinality(char **argv, struct triple_ref_LL **channel, unsigned long *group_cardinality, group_OBJ group) {
+    char *path_to_filename; FILE *ELEMENT_database = open_group(argv[0], group, argv[1], &path_to_filename);
     // ^^^ Open filestream to element database
 
     unsigned long group_ELEMENT;
-    while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { vertibrae_insert(channel, group_ELEMENT); (*group_cardinality)++; }
+    while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { triple_ref_LL_insert(channel, group_ELEMENT); (*group_cardinality)++; }
     // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
 
-    close_group(prog_NAME, group_CAP, symbol_to_use(group->ID), path_to_filename, ELEMENT_database);
+    close_group(argv[1], operation_symbol_from_ID_Sloth(group), path_to_filename, ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
-    struct vertibrae *last_element, *first_element;
-    last_element = first_element = (struct vertibrae *) disintermediate( (void **) channel);
+    struct triple_ref_LL *last_element, *first_element;
+    last_element = first_element = (struct triple_ref_LL *) disintermediate( (void **) channel);
     while (last_element->next) {
 	last_element = last_element->next;
     } last_element->next = first_element;
     // ^^^ Take out of the end product a singly-linked list that is circular and destroy any intermediary memory used
 
     return last_element;
-}
-*/
-
-void symbols(group_OBJ group) {
-    printf("Numerical denomination as ASCII character: %s\n", numerical_denomination_from_ID_Sloth(group));
-    printf("Operation symbol as ASCII character: %s\n", operation_symbol_from_ID_Sloth(group));
-    printf("Noun: %s\n", noun_from_ID_Sloth(group));
-    printf("Multiple: %s\n", multiple_from_ID_Sloth(group));
-    printf("Adjective: %s\n", adjective_from_ID_Sloth(group));
 }
 
 int main(int argc, char **argv) { group_OBJ group;
@@ -58,9 +81,25 @@ int main(int argc, char **argv) { group_OBJ group;
 	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the mod value to shifts when dealing with additive groups (see "MATH_HINT_ONE")
     }
 
-    char *filename;
-    open_group(argv[0], group, argv[1], &filename);
-    printf("Filename: %s\n", filename);
+    unsigned long cell_width; unsigned long group_cardinality = 0;
+    struct triple_ref_LL *last_element = set_cardinality(argv, (struct triple_ref_LL **) sub_ordinator(), &group_cardinality, group);
+    cell_width = char_in_val(last_element->element);
+    struct triple_ref_LL *identity_element = last_element->next;
+
+    printf("Id: %lu\n", identity_element->element);
+    printf("Cell width: %lu\n", cell_width);
+    printf("group cardinality: %lu\n", group_cardinality);
+
+    struct vertibrae *array = (struct vertibrae *) malloc(sizeof(struct vertibrae) * group_cardinality);
+
+    unsigned long index = 0; struct triple_ref_LL *do_loop_iterator = identity_element; do {
+	array[index].unit.literal = do_loop_iterator->element;
+	array[index].unit.ASCII_numerical = str_from_ul(array[index].unit.literal, cell_width);
+	do_loop_iterator = do_loop_iterator->next; index++;
+    } while (do_loop_iterator != identity_element);
+    /* ^^^ Make an array of the required size. ^^^ */
+
+    for (index = 0; index < group_cardinality; index++) fprintf(stdout, "Element: %s\n", array[index].unit.ASCII_numerical);
 
     return 0;
 }

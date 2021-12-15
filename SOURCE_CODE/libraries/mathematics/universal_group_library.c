@@ -88,3 +88,8 @@ FILE *open_group_INNER(char **path_to_filename_INSERTMENT_SLOTH, char *group_MOD
     free(LINE); *path_to_filename_INSERTMENT_SLOTH = path_to_FILE; 
     return group_fs;
 }
+
+void close_group(char *group_CAP, char *symbol_to_use, char *path_to_filename, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
+    sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", group_CAP, symbol_to_use, path_to_filename); append_to_LOGBOOK(BUFFER); fclose(opened_group);
+    sprintf(BUFFER, "Closed '%s'", path_to_filename); free(path_to_filename); append_to_LOGBOOK(BUFFER); free(BUFFER); fclose(logbook_fs);
+}
