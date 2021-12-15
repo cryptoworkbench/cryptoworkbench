@@ -19,29 +19,20 @@
 #define HELP_INFORMATION "Program usage: %s <CAP> <ID> [horizontal offset] [vertical offset] [output filename]\n\n<MANDATORY ARGUMENTS> are denoted like this. The program won't run without these.\n\n[optional arguments] are denoted like this. They are not very necessary.\n"
 // ^^^ (MATHEMATICAL) DEFINITIONS
 
-FILE *main_fs; // <<< ALL calls to "fprintf()" use main_fs
-
-struct content {
-    unsigned long number;
-    char *str;
-};
-
+struct offset_values { unsigned long Y; unsigned long X; };
+struct content { unsigned long number; char *str; };
 struct permutation_piece {
     struct permutation_piece *next;
-    struct content *unit;
-};
-
+    struct content *unit; };
 struct vertibrae {
     struct vertibrae *next;
     struct content unit;
     struct permutation_piece *permutation;
-    unsigned long permutation_length;
-};
+    unsigned long permutation_length; };
 
-struct offset_values {
-    unsigned long Y;
-    unsigned long X;
-};
+FILE *main_fs; // <<< ALL calls to "fprintf()" use main_fs
+
+char *help_queries[] = {"--help", "-h", "help", "instructions", "usage", "--instructions", "--usage", "syntax", "--syntax"};
 
 unsigned int coprime(unsigned long greatest_common_divisor) // Call as coprime(GCD(big, small)) ===>
   { return (greatest_common_divisor == 1) ? 1 : 0; } // <=== If the Greatest Common Divisor of the unsigned long variables 'big' and 'small' in GCD(big, small) = 1, big & small are coprime
@@ -230,7 +221,7 @@ void QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
 void HELP_AND_QUIT(char *argv_zero) { fprintf(stderr, HELP_INFORMATION, argv_zero); exit(0); }
 
 int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; // <<< Preliminary pointers
-    if (6 < argc || argc > 1 && (match(argv[1], 2, "--help", "-h"))) HELP_AND_QUIT(argv[0]); else group = (struct group_prams *) malloc(sizeof(struct group_prams));
+    if (6 < argc || argc > 1 && (match(argv[1], help_queries))) HELP_AND_QUIT(argv[0]); else group = (struct group_prams *) malloc(sizeof(struct group_prams));
     // ^^^ Allocate memory for CAP and ID values if necessary
 
     if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->CAP)) QUIT_ON_ARGV_ONE_ERROR(argv[1]);

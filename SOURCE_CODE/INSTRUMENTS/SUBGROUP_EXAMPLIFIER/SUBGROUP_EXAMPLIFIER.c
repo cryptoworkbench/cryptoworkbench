@@ -7,9 +7,8 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include "ERROR_FUNCTIONS.h" // <<< Needed for "HELP_AND_QUIT()" , "MOD_not_parsable_ERROR()", "ID_not_parsable_ERROR"
+#include "error_functions.h" // <<< Needed for "HELP_AND_QUIT()" , "MOD_not_parsable_ERROR()", "ID_not_parsable_ERROR"
 #include "../../libraries/functional/string.h" // <<< Needed for variadic function "match()"
-// #include "../../libraries/functional/LOGBOOK_library.h" // << Needed for the definition of "struct group_prams"
 #include "../../libraries/mathematics/universal_group_library.h" // <<< Needed for "group_OBJ"
 
 struct offset_values { unsigned long Y; unsigned long X; };
@@ -38,27 +37,30 @@ struct vertibrae *build_backbone(char *prog_NAME, struct vertibrae **channel, un
 }
 */
 
-int main(int argc, char **argv) { group_OBJ *group; // <<< Declare a pointer variable because we may allocate space to store group variables
-    if (5 < argc || argc > 1 && (match(argv[1], 2, "--help", "-h"))) HELP_AND_QUIT(argv[0]); else group = (group_OBJ *) malloc(sizeof(group_OBJ));
-    // ^^ Displays help when a wrong argument count was supplied, also when provoked using "-h" or "-help", otherwise allocates memory for MOD and ID struct sloths
+void symbols(group_OBJ group) {
+    printf("Numerical denomination as ASCII character: %s\n", numerical_denomination_from_ID_Sloth(group));
+    printf("Operation symbol as ASCII character: %s\n", operation_symbol_from_ID_Sloth(group));
+    printf("Noun: %s\n", noun_from_ID_Sloth(group));
+    printf("Multiple: %s\n", multiple_from_ID_Sloth(group));
+    printf("Adjective: %s\n", adjective_from_ID_Sloth(group));
+}
 
-    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->MOD)) MOD_not_parsable_ERROR(argv[1]);
-    if (3 > argc || !STR_could_be_parsed_into_ID(argv[2], &group->ID)) ID_not_parsable_ERROR(argv[2]);
-    // ^^ Automatically parse arguments that can be parsed, quit with error upon parsing error (/ impossibility)
+int main(int argc, char **argv) { group_OBJ group;
+    if (5 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); /* <== Display help if necessary. */ else group = (group_OBJ) malloc(sizeof(group_OBJ));
+    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->MOD)) MOD_not_parsable_ERROR(argv[1]); // << Parse MOD
+    if (3 > argc || !STR_could_be_parsed_into_group_OBJ_ID_Sloth(argv[2], group)) ID_not_parsable_ERROR(argv[1], argv[2]); // << Parse ID
 
-    fprintf(stdout, "Group modulus: %lu\n", group->MOD);
-    // ^^ Check the group modulus
-
-    if (group->ID == ADDITIVE) fprintf(stdout, "0, additive. ENUM as int: %i\n", ID_as_boolean(group->ID));
-    else if (group->ID == MULTIPLICATIVE) fprintf(stdout, "1, multiplicative. ENUM as int: %i\n", ID_as_boolean(group->ID));
-    // ^^ Check the group ID
-
+    /* Process offset values */
     struct offset_values *shifts = (struct offset_values *) malloc(sizeof(struct offset_values)); shifts->Y = shifts->X = 0;
     if (argc != 3) { switch (argc) {
 	    case 5: if (!STR_could_be_parsed_into_UL(argv[4], &shifts->Y)) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
 	    case 4: if (!STR_could_be_parsed_into_UL(argv[3], &shifts->X)) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
-	    default: if (!ID_as_boolean(group->ID)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the mod value to shifts when dealing with additive groups
-    } //    ^^^ << Do you remember Joseph-Louis Lagrange? (see "MATH_HINT_ONE")
+	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the mod value to shifts when dealing with additive groups (see "MATH_HINT_ONE")
+    }
+
+    char *filename;
+    open_group(argv[0], group, argv[1], &filename);
+    printf("Filename: %s\n", filename);
 
     return 0;
 }

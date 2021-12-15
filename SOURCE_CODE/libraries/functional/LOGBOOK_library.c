@@ -111,4 +111,3 @@ void flush_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line) {
 	exit(-10);
     }
 }
-

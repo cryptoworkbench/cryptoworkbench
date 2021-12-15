@@ -33,7 +33,16 @@ int case_insensitive_strcmp(char *STR, char *STS) {
     if (i == STR_length) return 1;
 }
 
-int match(char *INPUT, int number_of_comparisons, ...) {
+int match(char *INPUT, char *char_PTR_array[]) {
+    int length = 0; do {
+	if (strcmp(char_PTR_array[length], INPUT) == 0) return 1;
+	else length++;
+    } while (char_PTR_array[length] != 0);
+
+    return 0;
+}
+
+int match_variadic(char *INPUT, int number_of_comparisons, ...) {
     va_list ap;
     va_start(ap, number_of_comparisons);
 
@@ -41,17 +50,6 @@ int match(char *INPUT, int number_of_comparisons, ...) {
 
     /* End function */
     va_end(ap); return 0;
-}
-
-
-int match_against_list(char *INPUT, char *char_PTR_array[]) {
-    int length = 0; do {
-	if (strcmp(char_PTR_array[length], INPUT) == 0) return 1;
-	else length++;
-    } while (char_PTR_array[length] != 0);
-
-    printf("Length of the list: %i\n", length);
-    return 0;
 }
 
 /* Returns an int containing the number of characters in the string pointed at by the char pointer 'string_pointer' */
