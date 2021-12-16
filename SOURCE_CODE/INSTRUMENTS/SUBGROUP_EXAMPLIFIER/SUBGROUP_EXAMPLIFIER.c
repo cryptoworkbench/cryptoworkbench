@@ -63,12 +63,18 @@ struct permutation_piece *permutation_insert(unsigned long unit_identifier, stru
     return next_permutation_piece; // <=== Shift focus on new element ==###
 }
 
-void print_subgroup(struct permutation_piece *generator) {
-    printf("<%s> = {", generator->unit->ASCII_numerical);
-    struct permutation_piece *do_loop_iterator = generator; do {
-	printf("%s", do_loop_iterator->unit->ASCII_numerical);
-	do_loop_iterator = do_loop_iterator->next;
-	if (do_loop_iterator == generator) break;
+struct permutation_piece *hor(struct permutation_piece *start, unsigned long skips) {
+    for (unsigned long i = 0; i < skips; i++) {start = start->next; }
+    return start;
+}
+
+void print_subgroup(struct permutation_piece *generator, unsigned long horizontal_offset) {
+    printf("<%s> = {", generator->next->unit->ASCII_numerical);
+
+    struct permutation_piece *starting_point = hor(generator, horizontal_offset);
+    struct permutation_piece *do_loop_iterator = starting_point; do {
+	printf("%s", do_loop_iterator->unit->ASCII_numerical); do_loop_iterator = do_loop_iterator->next;
+	if (do_loop_iterator == starting_point) break;
 	else printf(", ");
     } while (1); printf("}\n");
 }
@@ -124,7 +130,7 @@ struct triple_ref_LL *establish_LL(char **argv, group_OBJ group, struct triple_r
     return last_element->next;
 }
 
-void replace_LL_with_table(struct triple_ref_LL *chain, unsigned long cell_width) {
+void replace_LL_with_table(struct triple_ref_LL *chain, unsigned long cell_width, group_OBJ group) {
     LOOKUP_table = (array_piece *) malloc(sizeof(array_piece) * cardinality);
     /* ^^ Allocates memory space on the heap for the table. ^^ */
 
@@ -134,6 +140,7 @@ void replace_LL_with_table(struct triple_ref_LL *chain, unsigned long cell_width
 	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(LOOKUP_table[index].unit.literal, cell_width);
 	do_loop_iterator = process->next; free(process); index++;
     } while (do_loop_iterator != chain); /* << Creates the table. ^^ */
+    // for (unsigned long i = 0; i < cardinality; i++) LOOKUP_table[index].permutation = yield_subgroup(LOOKUP_table[index].unit.literal, group);
 }
 
 int main(int argc, char **argv) { group_OBJ group;
@@ -150,17 +157,22 @@ int main(int argc, char **argv) { group_OBJ group;
     }
 
     unsigned long cell_width; struct triple_ref_LL *identity_element = establish_LL(argv, group, (struct triple_ref_LL **) sub_ordinator(), &cell_width);
-    replace_LL_with_table(identity_element, cell_width);
-    
-    fprintf(stdout, "ID: %lu\n", LOOKUP_table->unit.literal);
-    fprintf(stdout, "Cell width: %lu\n", cell_width);
-    fprintf(stdout, "Group cardinality: %lu\n\n", cardinality);
+    replace_LL_with_table(identity_element, cell_width, group);
 
-    for (unsigned long i = 0; i < cardinality; i++) {
-	LOOKUP_table[i].permutation = yield_subgroup(LOOKUP_table[i].unit.literal, group);
-	print_subgroup(LOOKUP_table[i].permutation);
+    for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++) {
+	LOOKUP_table[i % cardinality].permutation = yield_subgroup(LOOKUP_table[i % cardinality].unit.literal, group);
+	print_subgroup(LOOKUP_table[i % cardinality].permutation, shifts->X);
     }
 
+    char *adjective = adjective_from_ID_Sloth(group);
+    char *symbol = operation_symbol_from_ID_Sloth(group);
+    fprintf(stdout, "\nThe %s group of integers modulo %s, which is denoted '\u2115%s%s', contains %lu elements, in standard mathematical notation:\n", adjective, argv[1], argv[1], symbol, cardinality);
+    fprintf(stdout, "|\u2115%s%s| = %lu\n", argv[1], symbol, cardinality);
+    // ^^^ Print cardinality information about this group
+
+    unsigned long generator_count = 0;
+    for (unsigned long i = 0; i < cardinality; i++) if (LOOKUP_table[i].permutation_length == cardinality) generator_count++;
+    fprintf(stdout, "\nThis group contains %lu generators.\n", generator_count);
     return 0;
 }
 /* MATH HINTS (!):
