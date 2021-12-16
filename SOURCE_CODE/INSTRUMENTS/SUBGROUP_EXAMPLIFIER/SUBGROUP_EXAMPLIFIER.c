@@ -138,14 +138,14 @@ int main(int argc, char **argv) { group_OBJ group;
     unsigned long cell_width; struct triple_ref_LL *identity_element = establish_LL(argv, (struct triple_ref_LL **) sub_ordinator(), &cell_width, group);
     replace_LL_with_table(identity_element, cell_width);
     
-    printf("ID: %lu\n", LOOKUP_table[0].unit.literal);
-    printf("Cell width: %lu\n", cell_width);
-    printf("Group cardinality: %lu\n\n\n", cardinality);
+    fprintf(stdout, "ID: %lu\n", LOOKUP_table[0].unit.literal);
+    fprintf(stdout, "Cell width: %lu\n", cell_width);
+    fprintf(stdout, "Group cardinality: %lu\n\n", cardinality);
 
     for (unsigned long index = 0; index < group->MOD; index++) {
 	table_type table_partition = table_partition_search(index);
-	if (table_partition == NULL) fprintf(stdout, "Element %lu not found.\n", index);
-	else fprintf(stdout, "Element %lu found: %s, %lu\n", index, read_numerical(table_partition), read_ul(table_partition));
+	if (table_partition) fprintf(stdout, "Element %lu found: %s, %lu\n", index, table_partition->unit.ASCII_numerical, table_partition->unit.literal);
+	else fprintf(stdout, "Element %lu not found.\n", index);
     }
 
     return 0;
