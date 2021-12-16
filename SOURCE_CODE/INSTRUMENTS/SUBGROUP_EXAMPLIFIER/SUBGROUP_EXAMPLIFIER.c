@@ -143,9 +143,9 @@ int main(int argc, char **argv) { group_OBJ group;
     printf("Group cardinality: %lu\n\n\n", cardinality);
 
     for (unsigned long index = 0; index < group->MOD; index++) {
-	void *ptr = (void *) table_partition_search(index);
-	if (ptr == NULL) fprintf(stdout, "Element %lu not found.\n", index);
-	else fprintf(stdout, "Element %lu found: %s, %lu\n", index, read_numerical((struct vertibrae *) ptr), read_ul((struct vertibrae *) ptr));
+	table_type table_partition = table_partition_search(index);
+	if (table_partition == NULL) fprintf(stdout, "Element %lu not found.\n", index);
+	else fprintf(stdout, "Element %lu found: %s, %lu\n", index, read_numerical(table_partition), read_ul(table_partition));
     }
 
     return 0;
