@@ -4,6 +4,16 @@
  * Over at "../subgroup_examplifier/subgroup_examplifier.c" they are in the main file (the file which contains the "main()" function), now I keep them in the before-mentioned library . . . ^^
  *
  * Also now I abstract out the concept of additive and multiplicative group identities using an enum defined over at "../../libraries/mathematics/universal_group_library.h" (enum "GROUP_IDentity").
+ * The N_Combine function does NOT (!) depend on this.
+ *
+ * ##### === CURRENT STATUS === #####
+ * Almost finished rewritting "subgroup_examplifier.c".
+ *
+ * Now I need to:
+ * Put generators into a linked list and print out this linked list properly like "../../subgroup_examplifier/subgroup_examplifier" does. Almost there, woth no generators no error, seems to be a problem with print_LL.
+ * Put in modulus 13 and ID 1 to see an error.
+ *
+ * Free all of the memory used by the various processes of this program.
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -39,14 +49,6 @@ typedef struct vertibrae {
 
 unsigned long cardinality;
 table_type LOOKUP_table;
-
-unsigned long read_ul(struct vertibrae *ol) {
-    return ol->unit.literal;
-}
-
-char *read_numerical(struct vertibrae *ol) {
-    return ol->unit.ASCII_numerical;
-}
 
 array_piece *content_lookup(unsigned long ul) {
     for (unsigned long iter = 0; iter < cardinality; iter++) if (LOOKUP_table[iter].unit.literal == ul) return LOOKUP_table + iter;
@@ -108,6 +110,17 @@ void triple_ref_LL_insert(struct triple_ref_LL **tracer, unsigned long new_ulong
     *tracer = new_LL_element; // <===-- And place the location of new_LL_element into the next field of the previous insertion --==###
 }
 
+struct triple_ref_LL *circle(struct triple_ref_LL **channel) {
+    struct triple_ref_LL *last_element, *first_element;
+    last_element = first_element = (struct triple_ref_LL *) disintermediate( (void **) channel);
+    while (last_element->next) {
+	last_element = last_element->next;
+    } last_element->next = first_element;
+    // ^^^ Take out of the end product a singly-linked list that is circular and destroy any intermediary memory used
+
+    return last_element;
+}
+
 struct triple_ref_LL *establish_LL(char **argv, group_OBJ group, struct triple_ref_LL **channel, unsigned long *cell_width) {
     char *path_to_filename; FILE *ELEMENT_database = open_group(argv[0], group, argv[1], &path_to_filename); cardinality = 0;
     // ^^^ Open filestream to element database
@@ -119,13 +132,7 @@ struct triple_ref_LL *establish_LL(char **argv, group_OBJ group, struct triple_r
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), path_to_filename, ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
-    struct triple_ref_LL *last_element, *first_element;
-    last_element = first_element = (struct triple_ref_LL *) disintermediate( (void **) channel);
-    while (last_element->next) {
-	last_element = last_element->next;
-    } last_element->next = first_element;
-    // ^^^ Take out of the end product a singly-linked list that is circular and destroy any intermediary memory used
-
+    struct triple_ref_LL *last_element = circle(channel);
     *cell_width = char_in_val(last_element->element);
     return last_element->next;
 }
@@ -141,6 +148,13 @@ void replace_LL_with_table(struct triple_ref_LL *chain, unsigned long cell_width
 	do_loop_iterator = process->next; free(process); index++;
     } while (do_loop_iterator != chain); /* << Creates the table. ^^ */
     // for (unsigned long i = 0; i < cardinality; i++) LOOKUP_table[index].permutation = yield_subgroup(LOOKUP_table[index].unit.literal, group);
+}
+
+void print_LL(struct triple_ref_LL *power) {
+    struct triple_ref_LL *iter = power; do {
+	printf("%lu\n", iter->element);
+	iter = iter->next;
+    } while (iter != power->next);
 }
 
 int main(int argc, char **argv) { group_OBJ group;
@@ -171,8 +185,18 @@ int main(int argc, char **argv) { group_OBJ group;
     // ^^^ Print cardinality information about this group
 
     unsigned long generator_count = 0;
-    for (unsigned long i = 0; i < cardinality; i++) if (LOOKUP_table[i].permutation_length == cardinality) generator_count++;
-    fprintf(stdout, "\nThis group contains %lu generators.\n", generator_count);
+    struct triple_ref_LL **channel = (struct triple_ref_LL **) sub_ordinator();
+    for (unsigned long i = 0; i < cardinality; i++) if (LOOKUP_table[i].permutation_length == cardinality)
+    { triple_ref_LL_insert(channel, LOOKUP_table[i].unit.literal); generator_count++; }
+    struct triple_ref_LL *link = (struct triple_ref_LL *) disintermediate((void **) channel);
+
+    if (!generator_count) {
+	fprintf(stdout, "\nThis group contains 0 generators.\n");
+    } else {
+	fprintf(stdout, "\nThis group contains %lu generators:\n", generator_count);
+	print_LL(link);
+    }
+
     return 0;
 }
 /* MATH HINTS (!):
