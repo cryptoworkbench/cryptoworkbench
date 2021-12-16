@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "error_functions.h" // <<< Needed for "HELP_AND_QUIT()" , "MOD_not_parsable_ERROR()", "ID_not_parsable_ERROR"
+#include "../../libraries/mathematics/maths.h" // <<< Needed for "N_Combine"
 #include "../../libraries/functional/string.h" // <<< Needed for variadic function "match()"
 #include "../../libraries/functional/triple_ref_pointers.h"
 #include "../../libraries/mathematics/universal_group_library.h" // <<< Needed for "group_OBJ"
@@ -47,9 +48,47 @@ char *read_numerical(struct vertibrae *ol) {
     return ol->unit.ASCII_numerical;
 }
 
-array_piece *table_partition_search(unsigned long ul) {
+array_piece *content_lookup(unsigned long ul) {
     for (unsigned long iter = 0; iter < cardinality; iter++) if (LOOKUP_table[iter].unit.literal == ul) return LOOKUP_table + iter;
     return NULL;
+}
+
+struct permutation_piece *permutation_insert(unsigned long unit_identifier, struct permutation_piece *previous_permutation_piece) {
+    struct permutation_piece *next_permutation_piece = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Fix existence of new permutation_piece
+    next_permutation_piece->unit = &content_lookup(unit_identifier)->unit; // Fix first sloth
+
+    // ###== Insert new linked list element ===>
+    next_permutation_piece->next = previous_permutation_piece->next;
+    previous_permutation_piece->next = next_permutation_piece;
+    return next_permutation_piece; // <=== Shift focus on new element ==###
+}
+
+void print_subgroup(struct permutation_piece *generator) {
+    printf("<%s> = {", generator->unit->ASCII_numerical);
+    struct permutation_piece *do_loop_iterator = generator; do {
+	printf("%s", do_loop_iterator->unit->ASCII_numerical);
+	do_loop_iterator = do_loop_iterator->next;
+	if (do_loop_iterator == generator) break;
+	else printf(", ");
+    } while (1); printf("}\n");
+}
+
+// Returns a linked list which is in order of the permutation of the subgroup in question,
+// Think of a chain of shackles, this chain is returned at the shackle which points to the identity element unit's struct at a struct vertibrae data type
+struct permutation_piece *yield_subgroup(unsigned long start_element, group_OBJ group) {
+    struct permutation_piece *iterator = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Create element
+    iterator->unit = &content_lookup((unsigned long) boolean_from_ID_Sloth(group))->unit; // Set the identity value
+    iterator->next = iterator; // Make it circular
+
+    unsigned long subgroup_cardinality = 1; // << For we have already inserted the first element
+    unsigned long ID = boolean_from_ID_Sloth(group);
+    for (unsigned long generated_element = start_element; generated_element != ID; generated_element = N_combine(group->MOD, generated_element, start_element, ID)) {
+	iterator = permutation_insert(generated_element, iterator); // << Put the current power of g into the permutation data structure
+	subgroup_cardinality++;
+    }
+
+    content_lookup(start_element)->permutation_length = subgroup_cardinality;
+    return iterator->next;
 }
 
 void triple_ref_LL_insert(struct triple_ref_LL **tracer, unsigned long new_ulong) {
@@ -117,16 +156,13 @@ int main(int argc, char **argv) { group_OBJ group;
     fprintf(stdout, "Cell width: %lu\n", cell_width);
     fprintf(stdout, "Group cardinality: %lu\n\n", cardinality);
 
-    for (unsigned long index = 0; index < group->MOD; index++) {
-	table_type table_partition = table_partition_search(index);
-	if (table_partition) fprintf(stdout, "Element %lu found: %s, %lu\n", index, table_partition->unit.ASCII_numerical, table_partition->unit.literal);
-	else fprintf(stdout, "Element %lu not found.\n", index);
+    for (unsigned long i = 0; i < cardinality; i++) {
+	LOOKUP_table[i].permutation = yield_subgroup(LOOKUP_table[i].unit.literal, group);
+	print_subgroup(LOOKUP_table[i].permutation);
     }
 
-    /* Now we make the permutations */
     return 0;
 }
-
 /* MATH HINTS (!):
  * "MATH_HINT_ONE":
  * 	For any finite group G, the order (number of elements) of every subgroup of G divides the order of G. At the very least I know this to be true for additive groups.
