@@ -48,34 +48,9 @@ char *read_numerical(struct vertibrae *ol) {
 }
 
 array_piece *table_partition_search(unsigned long ul) {
-    for (unsigned long iter = 0; iter < cardinality; iter++)
-	if (LOOKUP_table[iter].unit.literal == ul) return &LOOKUP_table[iter];
-	// if (LOOKUP_table[iter].unit.literal == ul) return LOOKUP_table + iter;
-
+    for (unsigned long iter = 0; iter < cardinality; iter++) if (LOOKUP_table[iter].unit.literal == ul) return LOOKUP_table + iter;
     return NULL;
 }
-
-array_piece *table_partition_search_two(unsigned long ul) {
-    void *looper = (void *) LOOKUP_table;
-
-    for (unsigned long i = 0; i < cardinality; i++) {
-	if (read_ul( (array_piece *) looper) == ul) return (array_piece *) looper;
-	else looper += sizeof(struct vertibrae);
-    }
-}
-
-/* This function does seem to work
-array_piece *table_partition_search_three(unsigned long ul) {
-    array_piece *looper = LOOKUP_table;
-
-    unsigned long i = 0;
-    for (i = 0; i < cardinality; i++) {
-	if (looper->unit.literal == ul) return looper;
-	else { looper++; i++; }
-    }
-
-    return NULL;
-} */
 
 void triple_ref_LL_insert(struct triple_ref_LL **tracer, unsigned long new_ulong) {
     struct triple_ref_LL *new_LL_element = (struct triple_ref_LL *) malloc(sizeof(struct triple_ref_LL)); // Fix existence of new pointer_list element
@@ -88,7 +63,7 @@ void triple_ref_LL_insert(struct triple_ref_LL **tracer, unsigned long new_ulong
     *tracer = new_LL_element; // <===-- And place the location of new_LL_element into the next field of the previous insertion --==###
 }
 
-struct triple_ref_LL *establish_LL(char **argv, struct triple_ref_LL **channel, unsigned long *cell_width, group_OBJ group) {
+struct triple_ref_LL *establish_LL(char **argv, group_OBJ group, struct triple_ref_LL **channel, unsigned long *cell_width) {
     char *path_to_filename; FILE *ELEMENT_database = open_group(argv[0], group, argv[1], &path_to_filename); cardinality = 0;
     // ^^^ Open filestream to element database
 
@@ -135,10 +110,10 @@ int main(int argc, char **argv) { group_OBJ group;
 	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the mod value to shifts when dealing with additive groups (see "MATH_HINT_ONE")
     }
 
-    unsigned long cell_width; struct triple_ref_LL *identity_element = establish_LL(argv, (struct triple_ref_LL **) sub_ordinator(), &cell_width, group);
+    unsigned long cell_width; struct triple_ref_LL *identity_element = establish_LL(argv, group, (struct triple_ref_LL **) sub_ordinator(), &cell_width);
     replace_LL_with_table(identity_element, cell_width);
     
-    fprintf(stdout, "ID: %lu\n", LOOKUP_table[0].unit.literal);
+    fprintf(stdout, "ID: %lu\n", LOOKUP_table->unit.literal);
     fprintf(stdout, "Cell width: %lu\n", cell_width);
     fprintf(stdout, "Group cardinality: %lu\n\n", cardinality);
 
@@ -148,6 +123,7 @@ int main(int argc, char **argv) { group_OBJ group;
 	else fprintf(stdout, "Element %lu not found.\n", index);
     }
 
+    /* Now we make the permutations */
     return 0;
 }
 
