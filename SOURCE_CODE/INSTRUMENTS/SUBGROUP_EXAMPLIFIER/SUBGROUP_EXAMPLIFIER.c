@@ -97,7 +97,7 @@ void triple_ref_LL_insert(struct triple_ref_LL **tracer, unsigned long new_ulong
 
 // Returns a linked list which is in order of the permutation of the subgroup in question,
 // Think of a chain of shackles, this chain is returned at the shackle which points to the identity element unit's struct at a struct vertibrae data type
-struct permutation_piece *yield_subgroup(unsigned long index, group_OBJ group, struct triple_ref_LL **generator_channel, unsigned long *generator_count) {
+struct permutation_piece *yield_subgroup(unsigned long index, group_OBJ group, struct triple_ref_LL **generator_channel) {
     unsigned long start_element = LOOKUP_table[index].unit.literal;
     struct permutation_piece *iterator = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Create element
     iterator->unit = &content_lookup((unsigned long) boolean_from_ID_Sloth(group))->unit; // Set the identity value
@@ -106,12 +106,10 @@ struct permutation_piece *yield_subgroup(unsigned long index, group_OBJ group, s
     unsigned long subgroup_cardinality = 1; // << For we have already inserted the first element
     for (unsigned long generated_element = start_element; generated_element != boolean_from_ID_Sloth(group); generated_element = N_combine_ABSTR(group->MOD, generated_element, start_element, group->ID)) {
 	iterator = permutation_insert(generated_element, iterator); // << Put the current power of g into the permutation data structure
-	subgroup_cardinality++;
-    }
+	subgroup_cardinality++; }
 
+    if (subgroup_cardinality == cardinality) triple_ref_LL_insert(generator_channel, LOOKUP_table[index].unit.literal);
     content_lookup(start_element)->permutation_length = subgroup_cardinality;
-
-    if (subgroup_cardinality == cardinality) { triple_ref_LL_insert(generator_channel, LOOKUP_table[index].unit.literal); (*generator_count)++; }
     return iterator->next;
 }
 
@@ -142,7 +140,7 @@ struct triple_ref_LL *establish_LL(char **argv, group_OBJ group, struct triple_r
     return last_element->next;
 }
 
-void replace_LL_with_table(struct triple_ref_LL *chain, unsigned long cell_width, group_OBJ group, struct triple_ref_LL **generator_channel, unsigned long *generator_count) {
+void replace_LL_with_table(struct triple_ref_LL *chain, unsigned long cell_width, group_OBJ group, struct triple_ref_LL **generator_channel) {
     LOOKUP_table = (array_piece *) malloc(sizeof(array_piece) * cardinality);
     /* ^^ Allocates memory space on the heap for the table. ^^ */
 
@@ -154,17 +152,14 @@ void replace_LL_with_table(struct triple_ref_LL *chain, unsigned long cell_width
     } // << Creates the table. ^^
 
     for (index = 0; index < cardinality; index++) {
-	LOOKUP_table[index].permutation = yield_subgroup(index, group, generator_channel, generator_count);
+	LOOKUP_table[index].permutation = yield_subgroup(index, group, generator_channel);
 	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(LOOKUP_table[index].unit.literal, cell_width);
     }
 }
 
 unsigned long LL_count(struct triple_ref_LL *power) {
-    unsigned long LL_count = 1;
-    struct triple_ref_LL *iter = power; do {
-	iter = iter->next;
-	LL_count++;
-    } while (iter != power);
+    unsigned long LL_count = 0; struct triple_ref_LL *iter = power;
+    while (iter) { LL_count++; iter = iter->next; if (iter == power) break; }
     return LL_count;
 }
 
@@ -193,7 +188,7 @@ int main(int argc, char **argv) { group_OBJ group;
     // ^^^ Establish a linked list from element_database
 
     struct triple_ref_LL **generator_channel = (struct triple_ref_LL **) sub_ordinator(); unsigned long generator_count = 0; 
-    replace_LL_with_table(identity_element, cell_width, group, generator_channel, &generator_count);
+    replace_LL_with_table(identity_element, cell_width, group, generator_channel);
     struct triple_ref_LL *generator_list = zip(generator_channel); if (generator_list) generator_list = generator_list->next;
     // ^^^ Replace linked list with table and create a linked list of generators in the whilst
 
@@ -205,6 +200,7 @@ int main(int argc, char **argv) { group_OBJ group;
     fprintf(stdout, "|\u2115%s%s| = %lu\n", argv[1], symbol, cardinality);
     // ^^^ Print cardinality information about this group
 
+    generator_count = LL_count(generator_list);
     if (!generator_count) {
 	fprintf(stdout, "\nThis group contains 0 generators.\n");
     } else {
