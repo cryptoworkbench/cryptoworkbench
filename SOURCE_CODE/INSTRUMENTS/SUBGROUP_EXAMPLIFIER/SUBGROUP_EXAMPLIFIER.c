@@ -200,7 +200,7 @@ int main(int argc, char **argv) { group_OBJ group;
 	fprintf(stdout, "\nThis group contains 0 generators.\n");
     } else {
 	fprintf(stdout, "\nThis group contains %lu generators:\n", generator_count);
-	print_LL(link);
+	print_LL(link->next);
     }
 
     return 0;
