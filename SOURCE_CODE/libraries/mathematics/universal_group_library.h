@@ -39,3 +39,4 @@ void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line);
 FILE *open_group(char *prog_NAME, group_OBJ group, char *MOD, char **path_to_filename_INSERTMENT_SLOTH);
 FILE *open_group_INNER(char **path_to_filename_INSERTMENT_SLOTH, char *group_MOD, char *numerical_denomination, char *adjective, char *symbol, char *LINE);
 void close_group(char *group_CAP, char *symbol_to_use, char *path_to_filename, FILE *opened_group);
+unsigned long N_combine_ABSTR(unsigned long N_quotient, unsigned long A, unsigned long B, enum GROUP_IDentity Operation);

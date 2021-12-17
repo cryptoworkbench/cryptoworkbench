@@ -87,8 +87,7 @@ struct permutation_piece *yield_subgroup(unsigned long start_element, group_OBJ 
     iterator->next = iterator; // Make it circular
 
     unsigned long subgroup_cardinality = 1; // << For we have already inserted the first element
-    unsigned long ID = boolean_from_ID_Sloth(group);
-    for (unsigned long generated_element = start_element; generated_element != ID; generated_element = N_combine(group->MOD, generated_element, start_element, ID)) {
+    for (unsigned long generated_element = start_element; generated_element != boolean_from_ID_Sloth(group); generated_element = N_combine_ABSTR(group->MOD, generated_element, start_element, group->ID)) {
 	iterator = permutation_insert(generated_element, iterator); // << Put the current power of g into the permutation data structure
 	subgroup_cardinality++;
     }
