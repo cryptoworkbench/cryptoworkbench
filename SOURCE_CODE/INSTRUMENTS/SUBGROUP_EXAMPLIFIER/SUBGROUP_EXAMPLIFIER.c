@@ -115,7 +115,7 @@ struct permutation_piece *yield_subgroup(unsigned long index, group_OBJ group, s
     return iterator->next;
 }
 
-struct triple_ref_LL *circle(struct triple_ref_LL **channel) {
+struct triple_ref_LL *zip(struct triple_ref_LL **channel) {
     struct triple_ref_LL *last_element, *first_element;
     last_element = first_element = (struct triple_ref_LL *) disintermediate( (void **) channel);
     while (last_element->next) {
@@ -137,7 +137,7 @@ struct triple_ref_LL *establish_LL(char **argv, group_OBJ group, struct triple_r
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), path_to_filename, ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
-    struct triple_ref_LL *last_element = circle(channel);
+    struct triple_ref_LL *last_element = zip(channel);
     *cell_width = char_in_val(last_element->element);
     return last_element->next;
 }
@@ -155,7 +155,6 @@ void replace_LL_with_table(struct triple_ref_LL *chain, unsigned long cell_width
 
     for (index = 0; index < cardinality; index++) {
 	LOOKUP_table[index].permutation = yield_subgroup(index, group, generator_channel, generator_count);
-	// if (LOOKUP_table[index].permutation_length == cardinality) { triple_ref_LL_insert(generator_channel, LOOKUP_table[index].unit.literal); (*generator_count)++; }
 	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(LOOKUP_table[index].unit.literal, cell_width);
     }
 }
@@ -195,7 +194,7 @@ int main(int argc, char **argv) { group_OBJ group;
 
     struct triple_ref_LL **generator_channel = (struct triple_ref_LL **) sub_ordinator(); unsigned long generator_count = 0; 
     replace_LL_with_table(identity_element, cell_width, group, generator_channel, &generator_count);
-    struct triple_ref_LL *generator_list; if (generator_count != 0) generator_list = circle(generator_channel)->next;
+    struct triple_ref_LL *generator_list; if (generator_count != 0) generator_list = zip(generator_channel)->next;
     // ^^^ Replace linked list with table and create a linked list of generators in the whilst
 
     for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++) print_subgroup(LOOKUP_table[i % cardinality].permutation, shifts->X);
