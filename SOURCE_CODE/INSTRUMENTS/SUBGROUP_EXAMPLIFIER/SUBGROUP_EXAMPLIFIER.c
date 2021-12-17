@@ -81,7 +81,7 @@ void print_subgroup(struct permutation_piece *generator, unsigned long horizonta
 
 // Returns a linked list which is in order of the permutation of the subgroup in question,
 // Think of a chain of shackles, this chain is returned at the shackle which points to the identity element unit's struct at a struct vertibrae data type
-struct permutation_piece *yield_subgroup(unsigned long start_element, group_OBJ group) {
+struct permutation_piece *yield_subgroup(unsigned long start_element, group_OBJ group, unsigned long *generator_count) {
     struct permutation_piece *iterator = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Create element
     iterator->unit = &content_lookup((unsigned long) boolean_from_ID_Sloth(group))->unit; // Set the identity value
     iterator->next = iterator; // Make it circular
@@ -93,6 +93,7 @@ struct permutation_piece *yield_subgroup(unsigned long start_element, group_OBJ 
     }
 
     content_lookup(start_element)->permutation_length = subgroup_cardinality;
+    if (subgroup_cardinality == cardinality) *generator_count = *generator_count + 1;
     return iterator->next;
 }
 
@@ -134,18 +135,20 @@ struct triple_ref_LL *establish_LL(char **argv, group_OBJ group, struct triple_r
     return last_element->next;
 }
 
-void replace_LL_with_table(struct triple_ref_LL *chain, unsigned long cell_width, group_OBJ group) {
+void replace_LL_with_table(struct triple_ref_LL *chain, unsigned long cell_width, group_OBJ group, unsigned long *generator_count) {
     LOOKUP_table = (array_piece *) malloc(sizeof(array_piece) * cardinality);
     /* ^^ Allocates memory space on the heap for the table. ^^ */
 
     unsigned long index = 0; struct triple_ref_LL *do_loop_iterator = chain; do {
 	struct triple_ref_LL *process = do_loop_iterator;
 	LOOKUP_table[index].unit.literal = process->element;
-	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(LOOKUP_table[index].unit.literal, cell_width);
 	do_loop_iterator = process->next; free(process); index++;
     } while (do_loop_iterator != chain); /* << Creates the table. ^^ */
 
-    for (index = 0; index < cardinality; index++) LOOKUP_table[index].permutation = yield_subgroup(LOOKUP_table[index].unit.literal, group);
+    for (index = 0; index < cardinality; index++) {
+	LOOKUP_table[index].permutation = yield_subgroup(LOOKUP_table[index].unit.literal, group, generator_count);
+	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(LOOKUP_table[index].unit.literal, cell_width);
+    }
 }
 
 unsigned long LL_count(struct triple_ref_LL *power) {
@@ -178,8 +181,8 @@ int main(int argc, char **argv) { group_OBJ group;
 	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the mod value to shifts when dealing with additive groups (see "MATH_HINT_ONE")
     } // ^ Process offset values.
 
-    unsigned long cell_width; struct triple_ref_LL *identity_element = establish_LL(argv, group, (struct triple_ref_LL **) sub_ordinator(), &cell_width);
-    replace_LL_with_table(identity_element, cell_width, group);
+    unsigned long generator_count = 0; unsigned long cell_width; struct triple_ref_LL *identity_element = establish_LL(argv, group, (struct triple_ref_LL **) sub_ordinator(), &cell_width);
+    replace_LL_with_table(identity_element, cell_width, group, &generator_count);
 
     for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++) print_subgroup(LOOKUP_table[i % cardinality].permutation, shifts->X);
 
@@ -189,10 +192,8 @@ int main(int argc, char **argv) { group_OBJ group;
     fprintf(stdout, "|\u2115%s%s| = %lu\n", argv[1], symbol, cardinality);
     // ^^^ Print cardinality information about this group
 
-    unsigned long generator_count = 0;
     struct triple_ref_LL **channel = (struct triple_ref_LL **) sub_ordinator();
-    for (unsigned long i = 0; i < cardinality; i++) if (LOOKUP_table[i].permutation_length == cardinality)
-    { triple_ref_LL_insert(channel, LOOKUP_table[i].unit.literal); generator_count++; }
+    for (unsigned long i = 0; i < cardinality; i++) if (LOOKUP_table[i].permutation_length == cardinality) triple_ref_LL_insert(channel, LOOKUP_table[i].unit.literal);
     struct triple_ref_LL *link; if (generator_count > 0) link = circle(channel)->next;
 
     // generator_count = LL_count(link);
