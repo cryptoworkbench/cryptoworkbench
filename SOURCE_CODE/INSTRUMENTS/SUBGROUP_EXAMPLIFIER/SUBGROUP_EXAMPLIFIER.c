@@ -117,8 +117,8 @@ struct permutation_piece *yield_subgroup(unsigned long index, group_OBJ group, s
 
 struct triple_ref_LL *zip(struct triple_ref_LL **channel) {
     struct triple_ref_LL *last_element, *first_element;
-    last_element = first_element = (struct triple_ref_LL *) disintermediate( (void **) channel);
-    while (last_element->next) {
+    if (!(last_element = first_element = (struct triple_ref_LL *) disintermediate((void **) channel))) return NULL;
+    while (last_element == NULL || last_element->next) {
 	last_element = last_element->next;
     } last_element->next = first_element;
     // ^^^ Take out of the end product a singly-linked list that is circular and destroy any intermediary memory used
@@ -194,7 +194,7 @@ int main(int argc, char **argv) { group_OBJ group;
 
     struct triple_ref_LL **generator_channel = (struct triple_ref_LL **) sub_ordinator(); unsigned long generator_count = 0; 
     replace_LL_with_table(identity_element, cell_width, group, generator_channel, &generator_count);
-    struct triple_ref_LL *generator_list; if (generator_count != 0) generator_list = zip(generator_channel)->next;
+    struct triple_ref_LL *generator_list = zip(generator_channel); if (generator_list) generator_list = generator_list->next;
     // ^^^ Replace linked list with table and create a linked list of generators in the whilst
 
     for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++) print_subgroup(LOOKUP_table[i % cardinality].permutation, shifts->X);
