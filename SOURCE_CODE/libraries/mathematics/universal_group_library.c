@@ -95,18 +95,9 @@ void close_group(char *group_CAP, char *symbol_to_use, char *path_to_filename, F
 }
 
 unsigned long N_combine_ABSTR(unsigned long N_quotient, unsigned long A, unsigned long B, enum GROUP_IDentity Operation) {
-   if (N_quotient != ADDITIVE_IDENTITY) {
-       switch (Operation) {
-	    case ADDITIVE: return FINITE_N_addition(A, B, N_quotient);
-	    case MULTIPLICATIVE: return FINITE_N_multiplication(A, B, N_quotient);
-	    default: return FINITE_N_exponentiation(A, B, N_quotient);
-       }; }
-  // ^^ Modular operations
-   else
-       switch (Operation) {
-	   case ADDITIVE: return N_addition(A, B);
-	   case MULTIPLICATIVE: return N_multiplication(A, B);
-	   default: return N_exponentiation(A, B);
-       };
-  // ^^ Regular operations
+   switch (Operation) {
+	case ADDITIVE: return FINITE_N_addition(A, B, N_quotient);
+	case MULTIPLICATIVE: return FINITE_N_multiplication(A, B, N_quotient);
+	default: return FINITE_N_exponentiation(A, B, N_quotient);
+   };
 }

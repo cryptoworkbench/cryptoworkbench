@@ -15,9 +15,10 @@ static char *additive_signs[] = {"0", "+", "addition", "additions", "additive"};
 static char *multiplicative_signs[] = {"1", "*", "multiplication", "multiplications", "multiplicative"};
 
 enum GROUP_IDentity { ADDITIVE, MULTIPLICATIVE };
-typedef struct group_STRUCT { /* <<< This lib's version of "group_prams" */
+typedef struct group_STRUCT {
     enum GROUP_IDentity ID;
     unsigned long MOD;
+    unsigned long generator_count;
 } group; typedef group *group_OBJ;
 
 static char *argv_ZERO;

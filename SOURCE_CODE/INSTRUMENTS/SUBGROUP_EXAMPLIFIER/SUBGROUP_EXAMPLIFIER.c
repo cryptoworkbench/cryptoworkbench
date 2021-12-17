@@ -50,7 +50,7 @@ typedef struct vertibrae {
     struct content unit;
 } array_piece; typedef array_piece *table_type;
 
-unsigned long cardinality, generator_count;
+unsigned long cardinality;
 table_type LOOKUP_table;
 
 array_piece *content_lookup(unsigned long ul) {
@@ -100,7 +100,7 @@ void triple_ref_LL_insert(struct triple_ref_LL **tracer, unsigned long new_ulong
 struct permutation_piece *yield_subgroup(unsigned long index, group_OBJ group, struct triple_ref_LL **generator_channel) {
     unsigned long start_element = LOOKUP_table[index].unit.literal;
     struct permutation_piece *iterator = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Create element
-    iterator->unit = &LOOKUP_table[0].unit; // Set the identity value
+    iterator->unit = &LOOKUP_table[0].unit; // The identity value is always at the start of the lookup table
     iterator->next = iterator; // Make it circular
 
     unsigned long subgroup_cardinality = 1; // << For we have already inserted the first element
@@ -108,7 +108,7 @@ struct permutation_piece *yield_subgroup(unsigned long index, group_OBJ group, s
 	iterator = permutation_insert(generated_element, iterator); // << Put the current power of g into the permutation data structure
 	subgroup_cardinality++; }
 
-    if (subgroup_cardinality == cardinality) { generator_count++; triple_ref_LL_insert(generator_channel, LOOKUP_table[index].unit.literal); }
+    if (subgroup_cardinality == cardinality) { group->generator_count++; triple_ref_LL_insert(generator_channel, LOOKUP_table[index].unit.literal); }
     LOOKUP_table[index].permutation_length = subgroup_cardinality;
     return iterator->next;
 }
@@ -140,7 +140,7 @@ struct triple_ref_LL *establish_LL(char **argv, group_OBJ group, struct triple_r
     return last_element->next;
 }
 
-void replace_LL_with_table(struct triple_ref_LL *chain, unsigned long cell_width, group_OBJ group, struct triple_ref_LL **generator_channel) {
+void replace_LL_with_table(struct triple_ref_LL *chain, unsigned long cell_width, group_OBJ group, struct triple_ref_LL **generator_channel) { group->generator_count = 0;
     LOOKUP_table = (array_piece *) malloc(sizeof(array_piece) * cardinality);
     /* ^^ Allocates memory space on the heap for the table. ^^ */
 
@@ -171,7 +171,7 @@ void print_LL(struct triple_ref_LL *starting_point) {
     } while (1); printf("\n");
 }
 
-int main(int argc, char **argv) { generator_count = 0; group_OBJ group;
+int main(int argc, char **argv) { group_OBJ group;
     if (5 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));
     if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->MOD)) MOD_not_parsable_ERROR(argv[1]);
     if (3 > argc || !STR_could_be_parsed_into_group_OBJ_ID_Sloth(argv[2], group)) ID_not_parsable_ERROR(argv[1], argv[2]);
@@ -200,7 +200,7 @@ int main(int argc, char **argv) { generator_count = 0; group_OBJ group;
     // ^^^ Print cardinality information about this group
 
     struct triple_ref_LL *generator_list; if (generator_list = zip(generator_channel)) { generator_list = generator_list->next;
-	fprintf(stdout, "\nThis group contains these %lu generators:\n", generator_count);
+	fprintf(stdout, "\nThis group contains these %lu generators:\n", group->generator_count);
 	print_LL(generator_list);
     } else fprintf(stdout, "\nThis group contains 0 generators.\n");
 
