@@ -10,10 +10,8 @@
  * Almost finished rewritting "subgroup_examplifier.c".
  *
  * Now I need to:
- * Put generators into a linked list and print out this linked list properly like "../../subgroup_examplifier/subgroup_examplifier" does. Almost there, woth no generators no error, seems to be a problem with print_LL.
- * Put in modulus 13 and ID 1 to see an error.
- *
- * Free all of the memory used by the various processes of this program.
+ * ~ Make the listing function of generators better. (more streamlined).
+ * ~ Free all of the memory used by the various processes of this program.
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -150,11 +148,21 @@ void replace_LL_with_table(struct triple_ref_LL *chain, unsigned long cell_width
     // for (unsigned long i = 0; i < cardinality; i++) LOOKUP_table[index].permutation = yield_subgroup(LOOKUP_table[index].unit.literal, group);
 }
 
+unsigned long LL_count(struct triple_ref_LL *power) {
+    unsigned long LL_count = 1;
+    struct triple_ref_LL *iter = power; do {
+	iter = iter->next;
+	LL_count++;
+    } while (iter != power);
+    return LL_count;
+}
+
 void print_LL(struct triple_ref_LL *power) {
+    if (power == NULL) exit(0);
     struct triple_ref_LL *iter = power; do {
 	printf("%lu\n", iter->element);
 	iter = iter->next;
-    } while (iter != power->next);
+    } while (iter != power);
 }
 
 int main(int argc, char **argv) { group_OBJ group;
@@ -188,8 +196,9 @@ int main(int argc, char **argv) { group_OBJ group;
     struct triple_ref_LL **channel = (struct triple_ref_LL **) sub_ordinator();
     for (unsigned long i = 0; i < cardinality; i++) if (LOOKUP_table[i].permutation_length == cardinality)
     { triple_ref_LL_insert(channel, LOOKUP_table[i].unit.literal); generator_count++; }
-    struct triple_ref_LL *link = (struct triple_ref_LL *) disintermediate((void **) channel);
+    struct triple_ref_LL *link; if (generator_count > 0) link = circle(channel);
 
+    // generator_count = LL_count(link);
     if (!generator_count) {
 	fprintf(stdout, "\nThis group contains 0 generators.\n");
     } else {
