@@ -93,7 +93,7 @@ struct permutation_piece *yield_subgroup(unsigned long start_element, group_OBJ 
     }
 
     content_lookup(start_element)->permutation_length = subgroup_cardinality;
-    if (subgroup_cardinality == cardinality) *generator_count = *generator_count + 1;
+    if (subgroup_cardinality == cardinality) (*generator_count)++;
     return iterator->next;
 }
 
