@@ -144,7 +144,8 @@ void replace_LL_with_table(struct triple_ref_LL *chain, unsigned long cell_width
 	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(LOOKUP_table[index].unit.literal, cell_width);
 	do_loop_iterator = process->next; free(process); index++;
     } while (do_loop_iterator != chain); /* << Creates the table. ^^ */
-    // for (unsigned long i = 0; i < cardinality; i++) LOOKUP_table[index].permutation = yield_subgroup(LOOKUP_table[index].unit.literal, group);
+
+    for (index = 0; index < cardinality; index++) LOOKUP_table[index].permutation = yield_subgroup(LOOKUP_table[index].unit.literal, group);
 }
 
 unsigned long LL_count(struct triple_ref_LL *power) {
@@ -181,7 +182,7 @@ int main(int argc, char **argv) { group_OBJ group;
     replace_LL_with_table(identity_element, cell_width, group);
 
     for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++) {
-	LOOKUP_table[i % cardinality].permutation = yield_subgroup(LOOKUP_table[i % cardinality].unit.literal, group);
+	// LOOKUP_table[i % cardinality].permutation = yield_subgroup(LOOKUP_table[i % cardinality].unit.literal, group);
 	print_subgroup(LOOKUP_table[i % cardinality].permutation, shifts->X);
     }
 
