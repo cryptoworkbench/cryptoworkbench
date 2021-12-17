@@ -193,14 +193,14 @@ int main(int argc, char **argv) { group_OBJ group;
     struct triple_ref_LL **channel = (struct triple_ref_LL **) sub_ordinator();
     for (unsigned long i = 0; i < cardinality; i++) if (LOOKUP_table[i].permutation_length == cardinality)
     { triple_ref_LL_insert(channel, LOOKUP_table[i].unit.literal); generator_count++; }
-    struct triple_ref_LL *link; if (generator_count > 0) link = circle(channel);
+    struct triple_ref_LL *link; if (generator_count > 0) link = circle(channel)->next;
 
     // generator_count = LL_count(link);
     if (!generator_count) {
 	fprintf(stdout, "\nThis group contains 0 generators.\n");
     } else {
 	fprintf(stdout, "\nThis group contains %lu generators:\n", generator_count);
-	print_LL(link->next);
+	print_LL(link);
     }
 
     return 0;
