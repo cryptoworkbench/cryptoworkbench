@@ -205,6 +205,8 @@ int main(int argc, char **argv) { group_OBJ group;
     if (generator_list->element) print_generator_information(generator_list);
     else fprintf(stdout, "\nThis group does not contain any generators.\n");
 
+    /* Now I should free "generator_list".
+     * And after that I should free even more. */
     return 0;
 }
 /* MATH HINTS (!):
