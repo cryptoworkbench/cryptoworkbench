@@ -140,7 +140,7 @@ struct triple_ref_LL *establish_LL(char **argv, group_OBJ group, struct triple_r
     return last_element->next;
 }
 
-void replace_LL_with_table(struct triple_ref_LL *chain, unsigned long cell_width, group_OBJ group, struct triple_ref_LL **generator_channel) { group->generator_count = 0;
+struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL *chain, unsigned long cell_width, group_OBJ group, struct triple_ref_LL **generator_channel) { group->generator_count = 0;
     LOOKUP_table = (array_piece *) malloc(sizeof(array_piece) * cardinality);
     /* ^^ Allocates memory space on the heap for the table. ^^ */
 
@@ -149,12 +149,14 @@ void replace_LL_with_table(struct triple_ref_LL *chain, unsigned long cell_width
 	struct triple_ref_LL *process = do_loop_iterator;
 	LOOKUP_table[index].unit.literal = process->element;
 	do_loop_iterator = process->next; free(process);
-    } // << Creates the table. ^^
+    } // <<< Creates the tables and destroys the entire linked list.
 
     for (index = 0; index < cardinality; index++) {
 	LOOKUP_table[index].permutation = yield_subgroup(index, group, generator_channel);
 	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(LOOKUP_table[index].unit.literal, cell_width);
-    }
+    } // triple_ref_LL_insert(generator_count);
+
+    return zip(generator_channel);
 }
 
 unsigned long LL_count(struct triple_ref_LL *power) {
@@ -187,8 +189,7 @@ int main(int argc, char **argv) { group_OBJ group;
     unsigned long cell_width; struct triple_ref_LL *identity_element = establish_LL(argv, group, (struct triple_ref_LL **) sub_ordinator(), &cell_width);
     // ^^^ Establish a linked list from element_database
 
-    struct triple_ref_LL **generator_channel = (struct triple_ref_LL **) sub_ordinator();
-    replace_LL_with_table(identity_element, cell_width, group, generator_channel);
+    struct triple_ref_LL *generator_list = replace_LL_with_table(identity_element, cell_width, group, (struct triple_ref_LL **) sub_ordinator());
     // ^^^ Replace linked list with table and create a linked list of generators in the whilst
 
     for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++) print_subgroup(LOOKUP_table[i % cardinality].permutation, shifts->X);
@@ -199,7 +200,7 @@ int main(int argc, char **argv) { group_OBJ group;
     fprintf(stdout, "|\u2115%s%s| = %lu\n", argv[1], symbol, cardinality);
     // ^^^ Print cardinality information about this group
 
-    struct triple_ref_LL *generator_list; if (generator_list = zip(generator_channel)) { generator_list = generator_list->next;
+    if (generator_list) { generator_list = generator_list->next;
 	fprintf(stdout, "\nThis group contains these %lu generators:\n", group->generator_count);
 	print_LL(generator_list);
     } else fprintf(stdout, "\nThis group contains 0 generators.\n");
