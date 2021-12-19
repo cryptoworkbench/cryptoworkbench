@@ -1,22 +1,6 @@
-/* DOES NOT WORK WITH 12 1, I think in commit "30f6df5" this would work.
+/* Examplifies additive and multiplicative groups.
  *
- * Basically what I was trying to achieve is that "yield_subgroup()" automatically creates a linked list of generators.
- * It already counts the amount of generators for the "main()" function. So should be possible.
- *
- * This will be an entire rewrite of "subgroup_examplifier".
- *
- * Functional functions and definitions, namely the ones that only pertain to presentation, parsing errors, help message, etc, and not to the underlying mathematics per-se, are now in "ERROR_FUNCTIONS.h"
- * Over at "../subgroup_examplifier/subgroup_examplifier.c" they are in the main file (the file which contains the "main()" function), now I keep them in the before-mentioned library . . . ^^
- *
- * Also now I abstract out the concept of additive and multiplicative group identities using an enum defined over at "../../libraries/mathematics/universal_group_library.h" (enum "GROUP_IDentity").
- * The N_Combine function does NOT (!) depend on this.
- *
- * ##### === CURRENT STATUS === #####
- * Almost finished rewritting "subgroup_examplifier.c".
- *
- * Now I need to:
- * ~ Make the listing function of generators better. (more streamlined).
- * ~ Free all of the memory used by the various processes of this program.
+ * Next thing on the list is to make it export to external table files again.
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -45,13 +29,13 @@ struct permutation_piece {
 };
 
 typedef struct vertibrae {
-    unsigned long permutation_length;
     struct permutation_piece *permutation;
     struct content unit;
 } array_piece; typedef array_piece *table_type;
 
 unsigned long cardinality;
 table_type LOOKUP_table;
+FILE *main_fs; // << Next point of attention right here
 
 array_piece *content_lookup(unsigned long ul) {
     for (unsigned long iter = 0; iter < cardinality; iter++) if (LOOKUP_table[iter].unit.literal == ul) return LOOKUP_table + iter;
@@ -73,14 +57,15 @@ struct permutation_piece *hor(struct permutation_piece *start, unsigned long ski
     return start;
 }
 
-void print_subgroup(struct permutation_piece *generator, unsigned long horizontal_offset) {
+void print_subgroup(struct permutation_piece *generator, unsigned long *generator_count, unsigned long horizontal_offset) {
     printf("<%s> = {", generator->next->unit->ASCII_numerical);
     struct permutation_piece *starting_point = hor(generator, horizontal_offset);
-    struct permutation_piece *do_loop_iterator = starting_point; do {
-	printf("%s", do_loop_iterator->unit->ASCII_numerical); do_loop_iterator = do_loop_iterator->next;
+    struct permutation_piece *do_loop_iterator = starting_point; unsigned long index = 0; do {
+	printf("%s", do_loop_iterator->unit->ASCII_numerical); do_loop_iterator = do_loop_iterator->next; index++;
 	if (do_loop_iterator == starting_point) break;
 	else printf(", ");
     } while (1); printf("}\n");
+    if (index == cardinality) (*generator_count)++;
 }
 
 void triple_ref_LL_insert(struct triple_ref_LL **tracer, unsigned long new_ulong) {
@@ -96,7 +81,7 @@ void triple_ref_LL_insert(struct triple_ref_LL **tracer, unsigned long new_ulong
 
 // Returns a linked list which is in order of the permutation of the subgroup in question,
 // Think of a chain of shackles, this chain is returned at the shackle which points to the identity element unit's struct at a struct vertibrae data type
-struct permutation_piece *yield_subgroup(unsigned long index, group_OBJ group, struct triple_ref_LL **generator_channel, unsigned long *generator_count) {
+struct permutation_piece *yield_subgroup(unsigned long index, group_OBJ group, struct triple_ref_LL **generator_channel) {
     unsigned long start_element = LOOKUP_table[index].unit.literal;
     struct permutation_piece *iterator = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Create element
     iterator->unit = &LOOKUP_table[0].unit; // The identity value is always at the start of the lookup table
@@ -107,20 +92,14 @@ struct permutation_piece *yield_subgroup(unsigned long index, group_OBJ group, s
 	iterator = permutation_insert(generated_element, iterator); // << Put the current power of g into the permutation data structure
 	subgroup_cardinality++; }
 
-    if (subgroup_cardinality == cardinality) { (*generator_count)++; triple_ref_LL_insert(generator_channel, LOOKUP_table[index].unit.literal); }
-    LOOKUP_table[index].permutation_length = subgroup_cardinality;
+    if (subgroup_cardinality == cardinality) triple_ref_LL_insert(generator_channel, LOOKUP_table[index].unit.literal);
     return iterator->next;
 }
 
 struct triple_ref_LL *zip(struct triple_ref_LL **channel) {
-    struct triple_ref_LL *last_element, *first_element;
-    last_element = first_element = (struct triple_ref_LL *) disintermediate((void **) channel);
-    while (last_element->next) {
-	last_element = last_element->next;
-    } last_element->next = first_element;
-    // ^^^ Take out of the end product a singly-linked list that is circular and destroy any intermediary memory used
-
-    return last_element;
+    struct triple_ref_LL *last_shackle, *first_shackle; if (!(last_shackle = first_shackle = (struct triple_ref_LL *) disintermediate((void **) channel))) return NULL;
+    while (last_shackle->next) last_shackle = last_shackle->next; last_shackle->next = first_shackle;
+    return last_shackle;
 }
 
 struct triple_ref_LL *establish_LL(char **argv, group_OBJ group, struct triple_ref_LL **channel, unsigned long *cell_width) {
@@ -139,7 +118,7 @@ struct triple_ref_LL *establish_LL(char **argv, group_OBJ group, struct triple_r
     return last_element->next;
 }
 
-struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL *element_ring, unsigned long cell_width, group_OBJ group, struct triple_ref_LL **generator_information) {
+struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL *element_ring, unsigned long cell_width, group_OBJ group, struct triple_ref_LL **generator_list) {
     LOOKUP_table = (array_piece *) malloc(sizeof(array_piece) * cardinality); // << Allocates memory space on the heap for the table.
     unsigned long index; struct triple_ref_LL *iter = element_ring;
     for (index = 0; index < cardinality; index++) {
@@ -148,19 +127,17 @@ struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL *element_ring, 
 	iter = process->next; free(process);
     } // <<< Creates the table and destroys the entire linked list.
 
-    unsigned long generator_count = 0;
     for (index = 0; index < cardinality; index++) { // << Loop over the array one more time
-	LOOKUP_table[index].permutation = yield_subgroup(index, group, generator_information, &generator_count); // << Now "yield_subgroup()" can properly search through the able and count the amount of generators
+	LOOKUP_table[index].permutation = yield_subgroup(index, group, generator_list); // << Now "yield_subgroup()" can properly search through the able and count the amount of generators
 	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(LOOKUP_table[index].unit.literal, cell_width); // << Now with a little less pressure on memory is a good time to add the string representations
-    } triple_ref_LL_insert(generator_information, generator_count); // << Append to the linked list of generators generated by "yield_subgroup()" the number of generators found
-    return zip(generator_information); // << Returns this list at this entry
+    } return zip(generator_list); // << Returns this list at this entry
 }
 
-void process_generator_information(struct triple_ref_LL *head_of_LL) {
-    fprintf(stdout, "\nThis group contains these %lu generators:\n", head_of_LL->element);
-    struct triple_ref_LL *iter = head_of_LL->next; free(head_of_LL); do {
+void process_generator_information(unsigned long *generator_count, struct triple_ref_LL *list_of_generators) {
+    fprintf(stdout, "\nThis group contains these %lu generators:\n", *generator_count);
+    struct triple_ref_LL *iter = list_of_generators; do {
 	struct triple_ref_LL *iter_next = iter->next; printf("<%lu>", iter->element); free(iter); iter = iter_next;
-	if (iter == head_of_LL) break;
+	if (iter == list_of_generators) break;
 	else printf(", and\n");
     } while (1); printf("\n");
 } // ^ This function also free()'s the entries of the linked list
@@ -191,7 +168,8 @@ int main(int argc, char **argv) { group_OBJ group;
     struct triple_ref_LL *generator_list = replace_LL_with_table(identity_element, cell_width, group, (struct triple_ref_LL **) sub_ordinator());
     // ^^^ Substitute this circular linked list of group elements with an array-stored table of elements and free this linked list simultaneously.
 
-    for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++) print_subgroup(LOOKUP_table[i % cardinality].permutation, shifts->X);
+    unsigned long *generator_count; *(generator_count = (unsigned long *) malloc(sizeof(unsigned long))) = 0;
+    for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++) print_subgroup(LOOKUP_table[i % cardinality].permutation, generator_count, shifts->X);
     // ^^^ Print all of the subgroups with horizontal and vertical shifts applied. (Could also count generators here).
 
     char *symbol = operation_symbol_from_ID_Sloth(group);
@@ -199,7 +177,7 @@ int main(int argc, char **argv) { group_OBJ group;
     fprintf(stdout, "|\u2115%s%s| = %lu\n", argv[1], symbol, cardinality);
     // ^^^ Print cardinality information about this group.
 
-    if (generator_list->element) process_generator_information(generator_list); else { free(generator_list); fprintf(stdout, "\nThis group does not contain any generators.\n"); }
+    if (generator_list) process_generator_information(generator_count, generator_list->next); else fprintf(stdout, "\nThis group does not contain any generators.\n"); free(generator_count);
     // ^^^ Print information about the generators and entirely free the linked list holding this information.
 
     for (unsigned long index = 0; index < cardinality; index++) { free_permutation_pieces(index); free(LOOKUP_table[index].unit.ASCII_numerical); }
