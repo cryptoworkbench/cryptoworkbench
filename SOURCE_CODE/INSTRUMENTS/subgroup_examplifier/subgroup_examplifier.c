@@ -58,13 +58,13 @@ struct permutation_piece *hor(struct permutation_piece *start, unsigned long ski
 }
 
 void print_subgroup(struct permutation_piece *generator, unsigned long *generator_count, unsigned long horizontal_offset) {
-    printf("<%s> = {", generator->next->unit->ASCII_numerical);
+    fprintf(main_fs, "<%s> = {", generator->next->unit->ASCII_numerical);
     struct permutation_piece *starting_point = hor(generator, horizontal_offset);
     struct permutation_piece *do_loop_iterator = starting_point; unsigned long index = 0; do {
-	printf("%s", do_loop_iterator->unit->ASCII_numerical); do_loop_iterator = do_loop_iterator->next; index++;
+	fprintf(main_fs, "%s", do_loop_iterator->unit->ASCII_numerical); do_loop_iterator = do_loop_iterator->next; index++;
 	if (do_loop_iterator == starting_point) break;
-	else printf(", ");
-    } while (1); printf("}\n");
+	else fprintf(main_fs, ", ");
+    } while (1); fprintf(main_fs, "}\n");
     if (index == cardinality) (*generator_count)++;
 }
 
@@ -149,14 +149,14 @@ void free_permutation_pieces(unsigned long index) {
     } while (iter != LOOKUP_table[index].permutation);
 }
 
-int main(int argc, char **argv) { group_OBJ group;
-    if (5 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));
+int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
+    if (6 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));
     if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->MOD)) MOD_not_parsable_ERROR(argv[1]);
     if (3 > argc || !STR_could_be_parsed_into_group_OBJ_ID_Sloth(argv[2], group)) ID_not_parsable_ERROR(argv[1], argv[2]);
     // ^^^ Parse first two arguments and take care of the case where there are too many arguments.
 
     struct offset_values *shifts = (struct offset_values *) malloc(sizeof(struct offset_values)); shifts->Y = shifts->X = 0;
-    if (argc != 3) { switch (argc) {
+    if (argc != 3) { switch (argc) { case 6: main_fs = fopen(argv[5], "w");
 	    case 5: if (!STR_could_be_parsed_into_UL(argv[4], &shifts->Y)) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
 	    case 4: if (!STR_could_be_parsed_into_UL(argv[3], &shifts->X)) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
 	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the mod value to shifts when dealing with additive groups (see "MATH_HINT_ONE")
@@ -172,8 +172,13 @@ int main(int argc, char **argv) { group_OBJ group;
     for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++) print_subgroup(LOOKUP_table[i % cardinality].permutation, generator_count, shifts->X);
     // ^^^ Print all of the subgroups with horizontal and vertical shifts applied. (Could also count generators here).
 
+    char *adjective = adjective_from_ID_Sloth(group);
     char *symbol = operation_symbol_from_ID_Sloth(group);
-    fprintf(stdout, "\nThe %s group of integers modulo %s, which is denoted '\u2115%s%s', contains %lu elements, in standard mathematical notation:\n", adjective_from_ID_Sloth(group), argv[1], argv[1], symbol, cardinality);
+    if (main_fs != stdout) { main_fs = stdout;
+	fprintf(main_fs, "Wrote table for the %s group of integers modulo %s (\u2115%s%s), with offset values %s and %s, to external file: %s\n", adjective, argv[1], argv[1], symbol, argv[3], argv[4], argv[5]);
+    }
+
+    fprintf(stdout, "\nThe %s group of integers modulo %s, which is denoted '\u2115%s%s', contains %lu elements, in standard mathematical notation:\n", adjective, argv[1], argv[1], symbol, cardinality);
     fprintf(stdout, "|\u2115%s%s| = %lu\n", argv[1], symbol, cardinality);
     // ^^^ Print cardinality information about this group.
 
