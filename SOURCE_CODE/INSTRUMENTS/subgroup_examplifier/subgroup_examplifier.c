@@ -1,67 +1,66 @@
-/* Program operations:
- * Examplifies subgroups.
+/* DOES NOT WORK WITH 12 1, I think in commit "30f6df5" this would work.
  *
- * DEVELOPERS NOTE:
- * The construction in main()
+ * Basically what I was trying to achieve is that "yield_subgroup()" automatically creates a linked list of generators.
+ * It already counts the amount of generators for the "main()" function. So should be possible.
+ *
+ * This will be an entire rewrite of "subgroup_examplifier".
+ *
+ * Functional functions and definitions, namely the ones that only pertain to presentation, parsing errors, help message, etc, and not to the underlying mathematics per-se, are now in "ERROR_FUNCTIONS.h"
+ * Over at "../subgroup_examplifier/subgroup_examplifier.c" they are in the main file (the file which contains the "main()" function), now I keep them in the before-mentioned library . . . ^^
+ *
+ * Also now I abstract out the concept of additive and multiplicative group identities using an enum defined over at "../../libraries/mathematics/universal_group_library.h" (enum "GROUP_IDentity").
+ * The N_Combine function does NOT (!) depend on this.
+ *
+ * ##### === CURRENT STATUS === #####
+ * Almost finished rewritting "subgroup_examplifier.c".
+ *
+ * Now I need to:
+ * ~ Make the listing function of generators better. (more streamlined).
+ * ~ Free all of the memory used by the various processes of this program.
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../libraries/mathematics/maths.h"
-#include "../../libraries/functional/string.h"
+#include "error_functions.h" // <<< Needed for "HELP_AND_QUIT()" , "MOD_not_parsable_ERROR()", "ID_not_parsable_ERROR"
+#include "../../libraries/mathematics/maths.h" // <<< Needed for "N_Combine"
+#include "../../libraries/functional/string.h" // <<< Needed for variadic function "match()"
 #include "../../libraries/functional/triple_ref_pointers.h"
-#include "../../libraries/functional/LOGBOOK_library.h" // << Needed for the definition of "struct group_prams"
-// ^^ Library inclusions
-
-#define STDOUT_ARGV_ONE_INSTRUCTION "Please provide as second argument '0' for the ADDITIVE IDENTITY or '1' for the MULTIPLICATIVE IDENTITY.\n"
-#define STDOUT_ARGV_TWO_INSTRUCTION "Please provide as first argument the modulus of the group in decimal notation.\n"
-#define STDERR_HORIZONTAL_OFFSET_ERROR "Failed to parse \"%s\" (the 3th argument) as horizontal offset. Defaulting to not using a horizontal offset.\n"
-#define STDOUT_VERTICAL_OFFSET_ERROR "Failed to parse \"%s\" (the 4th argument) as vertical offset. Defaulting to not using a vertical offset.\n"
-#define HELP_INFORMATION "Program usage: %s <CAP> <ID> [horizontal offset] [vertical offset] [output filename]\n\n<MANDATORY ARGUMENTS> are denoted like this. The program won't run without these.\n\n[optional arguments] are denoted like this. They are not very necessary.\n"
-// ^^^ (MATHEMATICAL) DEFINITIONS
+#include "../../libraries/mathematics/universal_group_library.h" // <<< Needed for "group_OBJ"
 
 struct offset_values { unsigned long Y; unsigned long X; };
-struct content { unsigned long number; char *str; };
+// ^^ Not related to groups necessarily, so this is here instead of in "../../libraries/mathematics/universal_group_library.h"
+
+struct triple_ref_LL {
+    struct triple_ref_LL *next;
+    unsigned long element;
+};
+
+struct content {
+    unsigned long literal;
+    char *ASCII_numerical;
+};
+
 struct permutation_piece {
     struct permutation_piece *next;
-    struct content *unit; };
-struct vertibrae {
-    struct vertibrae *next;
-    struct content unit;
+    struct content *unit;
+};
+
+typedef struct vertibrae {
+    unsigned long permutation_length;
     struct permutation_piece *permutation;
-    unsigned long permutation_length; };
+    struct content unit;
+} array_piece; typedef array_piece *table_type;
 
-FILE *main_fs; // <<< ALL calls to "fprintf()" use main_fs
+unsigned long cardinality;
+table_type LOOKUP_table;
 
-char *help_queries[] = {"--help", "-h", "help", "instructions", "usage", "--instructions", "--usage", "syntax", "--syntax"};
-
-unsigned int coprime(unsigned long greatest_common_divisor) // Call as coprime(GCD(big, small)) ===>
-  { return (greatest_common_divisor == 1) ? 1 : 0; } // <=== If the Greatest Common Divisor of the unsigned long variables 'big' and 'small' in GCD(big, small) = 1, big & small are coprime
-
-struct content *content_lookup(struct vertibrae *UPSTREAM, unsigned long number) {
-    struct vertibrae *iterator = UPSTREAM;
-    do {
-	if (iterator->unit.number == number)
-	    return &iterator->unit;
-	else
-	    iterator = iterator->next;
-    } while (iterator != UPSTREAM);
+array_piece *content_lookup(unsigned long ul) {
+    for (unsigned long iter = 0; iter < cardinality; iter++) if (LOOKUP_table[iter].unit.literal == ul) return LOOKUP_table + iter;
+    return NULL;
 }
 
-void vertibrae_insert(struct vertibrae **tracer, unsigned long new_ulong) {
-    struct vertibrae *new_vertibrae = (struct vertibrae *) malloc(sizeof(struct vertibrae)); // Fix existence of new pointer_list element
-    new_vertibrae->next = NULL;
-    new_vertibrae->unit.number = new_ulong;
-    new_vertibrae->unit.str = NULL;
-
-    while (*tracer) // ###==-- Find last insertion --===>
-	tracer = &(*tracer)->next;
-
-    *tracer = new_vertibrae; // <===-- And place the location of new_vertibrae into the next field of the previous insertion --==###
-}
-
-struct permutation_piece *permutation_insert(struct vertibrae *UPSTREAM, unsigned long unit_identifier, struct permutation_piece *previous_permutation_piece) {
+struct permutation_piece *permutation_insert(unsigned long unit_identifier, struct permutation_piece *previous_permutation_piece) {
     struct permutation_piece *next_permutation_piece = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Fix existence of new permutation_piece
-    next_permutation_piece->unit = content_lookup(UPSTREAM, unit_identifier); // Fix first sloth
+    next_permutation_piece->unit = &content_lookup(unit_identifier)->unit; // Fix first sloth
 
     // ###== Insert new linked list element ===>
     next_permutation_piece->next = previous_permutation_piece->next;
@@ -69,135 +68,53 @@ struct permutation_piece *permutation_insert(struct vertibrae *UPSTREAM, unsigne
     return next_permutation_piece; // <=== Shift focus on new element ==###
 }
 
-/* Returns a linked list which is in order of the permutation of the subgroup in question,
- * Think of a chain of shackles, this chain is returned at the shackle which points to the identity element unit's struct at a struct vertibrae data type
- * */
-struct permutation_piece *yield_subgroup(struct vertibrae *UPSTREAM, struct group_prams *group) {
+struct permutation_piece *hor(struct permutation_piece *start, unsigned long skips) {
+    for (unsigned long i = 0; i < skips; i++) {start = start->next; }
+    return start;
+}
+
+void print_subgroup(struct permutation_piece *generator, unsigned long horizontal_offset) {
+    printf("<%s> = {", generator->next->unit->ASCII_numerical);
+    struct permutation_piece *starting_point = hor(generator, horizontal_offset);
+    struct permutation_piece *do_loop_iterator = starting_point; do {
+	printf("%s", do_loop_iterator->unit->ASCII_numerical); do_loop_iterator = do_loop_iterator->next;
+	if (do_loop_iterator == starting_point) break;
+	else printf(", ");
+    } while (1); printf("}\n");
+}
+
+void triple_ref_LL_insert(struct triple_ref_LL **tracer, unsigned long new_ulong) {
+    struct triple_ref_LL *new_LL_element = (struct triple_ref_LL *) malloc(sizeof(struct triple_ref_LL)); // Fix existence of new pointer_list element
+    new_LL_element->next = NULL;
+    new_LL_element->element = new_ulong;
+
+    while (*tracer) // ###==-- Find last insertion --===>
+	tracer = &(*tracer)->next;
+
+    *tracer = new_LL_element; // <===-- And place the location of new_LL_element into the next field of the previous insertion --==###
+}
+
+// Returns a linked list which is in order of the permutation of the subgroup in question,
+// Think of a chain of shackles, this chain is returned at the shackle which points to the identity element unit's struct at a struct vertibrae data type
+struct permutation_piece *yield_subgroup(unsigned long index, group_OBJ group, struct triple_ref_LL **generator_channel, unsigned long *generator_count) {
+    unsigned long start_element = LOOKUP_table[index].unit.literal;
     struct permutation_piece *iterator = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Create element
-    iterator->unit = content_lookup(UPSTREAM, group->ID); // Set the identity value
+    iterator->unit = &LOOKUP_table[0].unit; // The identity value is always at the start of the lookup table
     iterator->next = iterator; // Make it circular
 
-    unsigned long subgroup_cardinality = 1; // <<< For we already have the identity element (see code above)
-    for (unsigned long generated_element = UPSTREAM->unit.number; generated_element != group->ID; generated_element = N_combine(group->CAP, generated_element, UPSTREAM->unit.number, group->ID)) {
-	iterator = permutation_insert(UPSTREAM, generated_element, iterator); /* Put the current power of g into the permutation data structure */
-	subgroup_cardinality++;
-    }
+    unsigned long subgroup_cardinality = 1; // << For we have already inserted the first element
+    for (unsigned long generated_element = start_element; generated_element != boolean_from_ID_Sloth(group); generated_element = N_combine_ABSTR(group->MOD, generated_element, start_element, group->ID)) {
+	iterator = permutation_insert(generated_element, iterator); // << Put the current power of g into the permutation data structure
+	subgroup_cardinality++; }
 
-    UPSTREAM->permutation_length = subgroup_cardinality;
+    if (subgroup_cardinality == cardinality) { (*generator_count)++; triple_ref_LL_insert(generator_channel, LOOKUP_table[index].unit.literal); }
+    LOOKUP_table[index].permutation_length = subgroup_cardinality;
     return iterator->next;
 }
 
-struct permutation_piece *move_along_horizontally(struct permutation_piece *link, unsigned long horizontal) {
-    for (unsigned long i = 0; i < horizontal; link = link->next, i++) {}
-    return link;
-}
-
-void print_row(struct permutation_piece *identifier_shackle, unsigned long horizontal) {
-    /* ### Always display first the generator ### */
-    fprintf(main_fs, "<%s> = {", identifier_shackle->next->unit->str);
-
-    /* ### Move along the horizontal axis ### */
-    struct permutation_piece *first_to_print = move_along_horizontally(identifier_shackle, horizontal);
-
-    /* ### Start the subgroup printing do loop ### */
-    struct permutation_piece *do_loop_iterator = first_to_print; do {
-	fprintf(main_fs, "%s", do_loop_iterator->unit->str);
-	do_loop_iterator = do_loop_iterator->next;
-	
-	if (do_loop_iterator == first_to_print)
-	    break;
-	else
-	    fprintf(main_fs, ", ");
-    } while (1); fprintf(main_fs, "}\n");
-}
-
-void table_effect(unsigned long cardinality, unsigned long cell_width) {
-    printf(" ==    ");
-    for (unsigned long i = 0; i < cardinality; i++) {
-	printf(" ");
-	for (unsigned long j = 0; j < cell_width; j++)
-	    printf("=");
-	printf(" ");
-    }
-    printf("\n");
-}
-
-struct vertibrae *print_table(struct vertibrae *initial_row, struct offset_values *shifts) {
-    for (unsigned long i = 0; i < shifts->Y; initial_row = initial_row->next, i++) {}
-    // ^^^ Move along the Y axis
-
-    struct vertibrae *current_row = initial_row; do {
-	print_row(current_row->permutation, shifts->X);
-	current_row = current_row->next;
-    } while (current_row != initial_row);
-    return initial_row;
-}
-
-void free_substrate(struct permutation_piece *substrate) {
-    struct permutation_piece *iterator = substrate; do {
-	struct permutation_piece *permutation_piece_to_suspend = iterator;
-
-	iterator = iterator->next; // Dodge one free
-	free(permutation_piece_to_suspend);
-    } while (iterator != substrate);
-}
-
-void free_table(struct vertibrae *link) {
-    struct vertibrae *iterator = link; do {
-	free(iterator->unit.str);
-	free_substrate(iterator->permutation);
-
-	struct vertibrae *suspend = iterator;
-	iterator = iterator->next;
-	free(suspend);
-    } while (iterator != link);
-}
-
-void print_generators(struct vertibrae *identity_element, unsigned long group_cardinality) {
-    struct vertibrae *current_element = identity_element->next; do {
-	if (current_element->permutation_length == group_cardinality) fprintf(stdout, "\n%s", current_element->unit.str);
-	current_element = current_element->next;
-    } while (current_element != identity_element);
-}
-
-/* ### put generator count ### */
-void put_generator_count(struct vertibrae *identity_element, unsigned long group_cardinality) {
-    unsigned long generator_count = 0;
-    struct vertibrae *current_element = identity_element->next; do {
-	if (current_element->permutation_length == group_cardinality) generator_count++;
-	current_element = current_element->next;
-    } while (current_element != identity_element);
-    identity_element->permutation_length = generator_count;
-}
-
-struct vertibrae *setup_table(struct vertibrae *last_element, struct group_prams *group) {
-    unsigned long cell_width = char_in_val(last_element->unit.number);
-    struct vertibrae *identity_element = last_element->next;
-
-    unsigned long subgroup_size;
-    struct vertibrae *do_loop_iterator = identity_element; do {
-	do_loop_iterator->permutation = yield_subgroup(do_loop_iterator, group); // Generate subgroup in memory
-	do_loop_iterator->unit.str = str_from_ul(do_loop_iterator->unit.number, cell_width);
-	do_loop_iterator = do_loop_iterator->next;
-    } while (do_loop_iterator != identity_element); // << Return linked list at identity element
-    return do_loop_iterator; // <<< Returns linked list at identity element
-}
-
-struct vertibrae *build_backbone(char *prog_NAME, struct vertibrae **channel, unsigned long *group_cardinality, struct group_prams *group) {
-    char *path_to_filename; char *group_CAP; FILE *ELEMENT_database = open_group(prog_NAME, group, &path_to_filename, &group_CAP);
-    // ^^^ Open filestream to element database
-
-    unsigned long group_ELEMENT;
-    while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { vertibrae_insert(channel, group_ELEMENT); (*group_cardinality)++; }
-    // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
-
-    close_group(prog_NAME, group_CAP, symbol_to_use(group->ID), path_to_filename, ELEMENT_database);
-    // sprintf(BUFFER, "Sourced <\u2115/%lu\u2115, %s> successfully from said filestream", group->CAP, symbol); flush_to_LOGBOOK(prog_NAME, BUFFER); fclose(ELEMENT_database);
-    // sprintf(BUFFER, "Closed the filestream sourced by '%s'", path_to_filename); free(path_to_filename); flush_to_LOGBOOK(prog_NAME, BUFFER); free(BUFFER);
-    // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
-
-    struct vertibrae *last_element, *first_element;
-    last_element = first_element = (struct vertibrae *) disintermediate( (void **) channel);
+struct triple_ref_LL *zip(struct triple_ref_LL **channel) {
+    struct triple_ref_LL *last_element, *first_element;
+    last_element = first_element = (struct triple_ref_LL *) disintermediate((void **) channel);
     while (last_element->next) {
 	last_element = last_element->next;
     } last_element->next = first_element;
@@ -206,64 +123,94 @@ struct vertibrae *build_backbone(char *prog_NAME, struct vertibrae **channel, un
     return last_element;
 }
 
-void QUIT_ON_ARGV_TWO_ERROR(char *argv_two) {
-    fprintf(stdout, STDOUT_ARGV_ONE_INSTRUCTION);
-    fprintf(stderr, "\nFATAL ERROR: cannot grasp group ID: '%s' is neither '0' nor '1'. Returning '-2'.\n", argv_two);
-    exit(-2);
+struct triple_ref_LL *establish_LL(char **argv, group_OBJ group, struct triple_ref_LL **channel, unsigned long *cell_width) {
+    char *path_to_filename; FILE *ELEMENT_database = open_group(argv[0], group, argv[1], &path_to_filename); cardinality = 0;
+    // ^^^ Open filestream to element database
+
+    unsigned long group_ELEMENT;
+    while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { triple_ref_LL_insert(channel, group_ELEMENT); cardinality++; }
+    // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
+
+    close_group(argv[1], operation_symbol_from_ID_Sloth(group), path_to_filename, ELEMENT_database);
+    // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
+
+    struct triple_ref_LL *last_element = zip(channel);
+    *cell_width = char_in_val(last_element->element);
+    return last_element->next;
 }
 
-void QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
-    fprintf(stdout, STDOUT_ARGV_TWO_INSTRUCTION);
-    fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP: to attempt to open from ARCHIVE/ the group '\u2115%s*' makes no sense to me. Returning '-1'.\n", argv_one);
-    exit(-1);
+struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL *element_ring, unsigned long cell_width, group_OBJ group, struct triple_ref_LL **generator_information) {
+    LOOKUP_table = (array_piece *) malloc(sizeof(array_piece) * cardinality); // << Allocates memory space on the heap for the table.
+    unsigned long index; struct triple_ref_LL *iter = element_ring;
+    for (index = 0; index < cardinality; index++) {
+	struct triple_ref_LL *process = iter;
+	LOOKUP_table[index].unit.literal = process->element;
+	iter = process->next; free(process);
+    } // <<< Creates the table and destroys the entire linked list.
+
+    unsigned long generator_count = 0;
+    for (index = 0; index < cardinality; index++) { // << Loop over the array one more time
+	LOOKUP_table[index].permutation = yield_subgroup(index, group, generator_information, &generator_count); // << Now "yield_subgroup()" can properly search through the able and count the amount of generators
+	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(LOOKUP_table[index].unit.literal, cell_width); // << Now with a little less pressure on memory is a good time to add the string representations
+    } triple_ref_LL_insert(generator_information, generator_count); // << Append to the linked list of generators generated by "yield_subgroup()" the number of generators found
+    return zip(generator_information); // << Returns this list at this entry
 }
 
-void HELP_AND_QUIT(char *argv_zero) { fprintf(stderr, HELP_INFORMATION, argv_zero); exit(0); }
+void process_generator_information(struct triple_ref_LL *head_of_LL) {
+    fprintf(stdout, "\nThis group contains these %lu generators:\n", head_of_LL->element);
+    struct triple_ref_LL *iter = head_of_LL->next; free(head_of_LL); do {
+	struct triple_ref_LL *iter_next = iter->next; printf("<%lu>", iter->element); free(iter); iter = iter_next;
+	if (iter == head_of_LL) break;
+	else printf(", and\n");
+    } while (1); printf("\n");
+} // ^ This function also free()'s the entries of the linked list
 
-int main(int argc, char **argv) { struct group_prams *group; main_fs = stdout; // <<< Preliminary pointers
-    if (6 < argc || argc > 1 && (match(argv[1], help_queries))) HELP_AND_QUIT(argv[0]); else group = (struct group_prams *) malloc(sizeof(struct group_prams));
-    // ^^^ Allocate memory for CAP and ID values if necessary
+void free_permutation_pieces(unsigned long index) {
+    struct permutation_piece *iter = LOOKUP_table[index].permutation; do {
+	struct permutation_piece *iter_next = iter->next;
+	free(iter); iter = iter_next;
+    } while (iter != LOOKUP_table[index].permutation);
+}
 
-    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->CAP)) QUIT_ON_ARGV_ONE_ERROR(argv[1]);
-    else if (3 > argc || !STR_could_be_parsed_into_UL(argv[2], &group->ID)) QUIT_ON_ARGV_TWO_ERROR(argv[2]);
-    // ^^^ Collect CAP and ID values from mandatory arguments, quit with appropiate error message upon failure
+int main(int argc, char **argv) { group_OBJ group;
+    if (5 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));
+    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->MOD)) MOD_not_parsable_ERROR(argv[1]);
+    if (3 > argc || !STR_could_be_parsed_into_group_OBJ_ID_Sloth(argv[2], group)) ID_not_parsable_ERROR(argv[1], argv[2]);
+    // ^^^ Parse first two arguments and take care of the case where there are too many arguments.
 
     struct offset_values *shifts = (struct offset_values *) malloc(sizeof(struct offset_values)); shifts->Y = shifts->X = 0;
-    if (argc != 3) { switch (argc) { case 6: main_fs = fopen(argv[5], "w");
-	    case 5: if (!(STR_could_be_parsed_into_UL(argv[4], &shifts->Y))) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
-	    case 4: if (!(STR_could_be_parsed_into_UL(argv[3], &shifts->X))) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
-	    default: if (!(group->ID)) { shifts->X %= group->CAP; shifts->Y %= group->CAP; } }
-    } // <<< Do you remember Joseph-Louis Lagrange? (see "MATH_HINT_ONE")
-    // ^^^ HANDLE the parsing of POTENTIAL ARGUMENTS (vertical and horizontal offset values default to 0 since their respective arguments are "[optional]")
+    if (argc != 3) { switch (argc) {
+	    case 5: if (!STR_could_be_parsed_into_UL(argv[4], &shifts->Y)) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
+	    case 4: if (!STR_could_be_parsed_into_UL(argv[3], &shifts->X)) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
+	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the mod value to shifts when dealing with additive groups (see "MATH_HINT_ONE")
+    } // ^ Process offset values.
 
-    unsigned long cell_width; unsigned long group_cardinality = 0;
-    struct vertibrae *table = setup_table(build_backbone(argv[0], (struct vertibrae **) sub_ordinator(), &group_cardinality, group), group);
-    print_table(table, shifts);
+    unsigned long cell_width; struct triple_ref_LL *identity_element = establish_LL(argv, group, (struct triple_ref_LL **) sub_ordinator(), &cell_width);
+    // ^^^ Establish a circular linked list of group elements.
 
-    if (main_fs != stdout)
-    { fclose(main_fs); main_fs = stdout; }
-    else
-	fprintf(stdout, "\n");
-    // ^^^ We are done creating the table so stop writting externally
+    struct triple_ref_LL *generator_list = replace_LL_with_table(identity_element, cell_width, group, (struct triple_ref_LL **) sub_ordinator());
+    // ^^^ Substitute this circular linked list of group elements with an array-stored table of elements and free this linked list simultaneously.
 
-    char *adjective = adjective_to_use(group->ID);
-    char *symbol = symbol_to_use(group->ID);
-    fprintf(main_fs, "The %s group of integers modulo %lu, which is denoted '\u2115%lu%s', contains %lu elements, in standard mathematical notation:\n", adjective, group->CAP, group->CAP, symbol, group_cardinality);
-    fprintf(main_fs, "|\u2115%lu%s| = %lu\n", group->CAP, symbol, group_cardinality);
-    // ^^^ Print cardinality information about this group
+    for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++) print_subgroup(LOOKUP_table[i % cardinality].permutation, shifts->X);
+    // ^^^ Print all of the subgroups with horizontal and vertical shifts applied. (Could also count generators here).
 
-    put_generator_count(table, group_cardinality); fprintf(stdout, "\nThis group contains %lu generators", table->permutation_length);
-    if (0 < table->permutation_length) { fprintf(stdout, ":"); print_generators(table, group_cardinality); }
-    else fprintf(stdout, "."); fprintf(stdout, "\n");
-    // ^^^ Print generator information about this group
+    char *symbol = operation_symbol_from_ID_Sloth(group);
+    fprintf(stdout, "\nThe %s group of integers modulo %s, which is denoted '\u2115%s%s', contains %lu elements, in standard mathematical notation:\n", adjective_from_ID_Sloth(group), argv[1], argv[1], symbol, cardinality);
+    fprintf(stdout, "|\u2115%s%s| = %lu\n", argv[1], symbol, cardinality);
+    // ^^^ Print cardinality information about this group.
 
-    /* ### Gotta exit cleanly ### */
-    free_table(table);
-    free(group);
-    free(shifts);
-    exit(0);
+    if (generator_list->element) process_generator_information(generator_list); else { free(generator_list); fprintf(stdout, "\nThis group does not contain any generators.\n"); }
+    // ^^^ Print information about the generators and entirely free the linked list holding this information.
+
+    for (unsigned long index = 0; index < cardinality; index++) { free_permutation_pieces(index); free(LOOKUP_table[index].unit.ASCII_numerical); }
+    // ^^^ Free all of the sloths of memory referred to (in)directly by the table
+
+    free(LOOKUP_table);
+    // ^^^ Free this table
+
+    return 0;
 }
 /* MATH HINTS (!):
  * "MATH_HINT_ONE":
- * 	For any finite group G, the order (number of elements) of every subgroup of G divides the order of G.
- */
+ * 	For any finite group G, the order (number of elements) of every subgroup of G divides the order of G. This is applicable to additive groups here.
+ * 	*/
