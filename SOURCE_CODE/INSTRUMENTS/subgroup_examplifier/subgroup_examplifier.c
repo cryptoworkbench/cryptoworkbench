@@ -35,7 +35,8 @@ typedef struct vertibrae {
 
 unsigned long cardinality;
 table_type LOOKUP_table;
-FILE *main_fs; // << Next point of attention right here
+FILE *main_fs;
+struct offset_values *shifts;
 
 unsigned long index_lookup(unsigned long ul) {
     for (unsigned long index = 0; index < cardinality; index++)
@@ -54,17 +55,14 @@ struct permutation_piece *permutation_insert(unsigned long unit_identifier, stru
     return next_permutation_piece; // <=== Shift focus on new element ==###
 }
 
-struct permutation_piece *hor(struct permutation_piece *start, unsigned long skips) {
-    for (unsigned long i = 0; i < skips; i++) {start = start->next; }
-    return start;
-}
+void print_subgroup(struct permutation_piece *link) {
+    fprintf(main_fs, "<%s> = {", link->next->unit->ASCII_numerical);
+    for (unsigned long i = 0; i < shifts->X; i++) link = link->next;
+    // ^^ Prepare the printing of the subgroup's permutation cycle
 
-void print_subgroup(struct permutation_piece *generator, unsigned long horizontal_offset) {
-    fprintf(main_fs, "<%s> = {", generator->next->unit->ASCII_numerical);
-    struct permutation_piece *starting_point = hor(generator, horizontal_offset);
-    struct permutation_piece *do_loop_iterator = starting_point; unsigned long index = 0; do {
-	fprintf(main_fs, "%s", do_loop_iterator->unit->ASCII_numerical); do_loop_iterator = do_loop_iterator->next; index++;
-	if (do_loop_iterator == starting_point) break;
+    struct permutation_piece *do_loop_iterator = link; do {
+	fprintf(main_fs, "%s", do_loop_iterator->unit->ASCII_numerical); do_loop_iterator = do_loop_iterator->next;
+	if (do_loop_iterator == link) break;
 	else fprintf(main_fs, ", ");
     } while (1); fprintf(main_fs, "}");
 }
@@ -117,7 +115,7 @@ struct triple_ref_LL **establish_LL(char **argv, group_OBJ group, struct triple_
     return element_ll_INSERT_CHANNEL;
 }
 
-struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **element_ll_INSERT_CHANNEL, group_OBJ group, struct triple_ref_LL **generator_lll_INSERT_CHANNEL) {
+struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **element_ll_INSERT_CHANNEL, group_OBJ group, struct triple_ref_LL **generator_ll_INSERT_CHANNEL) {
     struct triple_ref_LL *iter = zip(element_ll_INSERT_CHANNEL); unsigned long cell_width = char_in_val(iter->element); iter = iter->next;
     // ^^ Determine required cell width for lookup table
 
@@ -132,16 +130,15 @@ struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **element_ll_IN
     } // <<< Creates the table and destroys the entire linked list.
 
     for (index = 0; index < cardinality; index++) { // << Loop over the array one more time
-	LOOKUP_table[index].permutation = yield_subgroup(index, group, generator_lll_INSERT_CHANNEL); // << Now "yield_subgroup()" can properly search through the able and count the amount of generators
+	LOOKUP_table[index].permutation = yield_subgroup(index, group, generator_ll_INSERT_CHANNEL); // << Now "yield_subgroup()" can properly search through the able and count the amount of generators
 	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(LOOKUP_table[index].unit.literal, cell_width); // << Now with a little less pressure on memory is a good time to add the string representations
-    } return zip(generator_lll_INSERT_CHANNEL); // << Returns this list at this entry
+    } return zip(generator_ll_INSERT_CHANNEL); // << Returns this list at this entry
 }
 
 unsigned long process_generator_information(struct triple_ref_LL *list_of_generators) {
-    unsigned long generator_count = 0;
-    struct triple_ref_LL *iter = list_of_generators; do {
+    unsigned long generator_count = 0; struct triple_ref_LL *iter = list_of_generators; do {
 	struct triple_ref_LL *iter_next = iter->next;
-	print_subgroup(LOOKUP_table[index_lookup(iter->element)].permutation, 0);
+	print_subgroup(LOOKUP_table[index_lookup(iter->element)].permutation);
 	free(iter); iter = iter_next; generator_count++;
 	if (iter == list_of_generators) break;
 	else printf(", and\n");
@@ -157,13 +154,18 @@ void free_permutation_pieces(unsigned long index) {
     } while (iter != LOOKUP_table[index].permutation);
 }
 
+void print_table() {
+    for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++)
+    { print_subgroup(LOOKUP_table[i % cardinality].permutation); fprintf(main_fs, "\n"); }
+}
+
 int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     if (6 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));
     if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->MOD)) MOD_not_parsable_ERROR(argv[1]);
     if (3 > argc || !STR_could_be_parsed_into_group_OBJ_ID_Sloth(argv[2], group)) ID_not_parsable_ERROR(argv[1], argv[2]);
     // ^^^ Parse first two arguments and take care of the case where there are too many arguments.
 
-    struct offset_values *shifts = (struct offset_values *) malloc(sizeof(struct offset_values)); shifts->Y = shifts->X = 0;
+    shifts = (struct offset_values *) malloc(sizeof(struct offset_values)); shifts->Y = shifts->X = 0;
     if (argc != 3) { switch (argc) { case 6: main_fs = fopen(argv[5], "w");
 	    case 5: if (!STR_could_be_parsed_into_UL(argv[4], &shifts->Y)) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
 	    case 4: if (!STR_could_be_parsed_into_UL(argv[3], &shifts->X)) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
@@ -173,21 +175,20 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     struct triple_ref_LL *generator_list = replace_LL_with_table(establish_LL(argv, group, (struct triple_ref_LL **) sub_ordinator()), group, (struct triple_ref_LL **) sub_ordinator());
     // ^^^ Substitute this circular linked list of group elements with an array-stored table of elements and free this linked list simultaneously.
 
-    for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++) { print_subgroup(LOOKUP_table[i % cardinality].permutation, shifts->X); fprintf(main_fs, "\n"); }
-    // ^^^ Print all of the subgroups with horizontal and vertical shifts applied. (Could also count generators here).
+    print_table();
 
     char *adjective = adjective_from_ID_Sloth(group);
     char *symbol = operation_symbol_from_ID_Sloth(group);
     if (main_fs != stdout) { fclose(main_fs); main_fs = stdout;
-	fprintf(main_fs, "Wrote table for the %s group of integers modulo %s (\u2115%s%s), with offset values %s and %s, to external file: %s\n", adjective, argv[1], argv[1], symbol, argv[3], argv[4], argv[5]); }
+	fprintf(main_fs, "Wrote table for the %s group of integers modulo %s (\u2115%s%s), with offset values %s and %s, to an external file called '%s'.\n", adjective, argv[1], argv[1], symbol, argv[3], argv[4], argv[5]); }
 
-    fprintf(stdout, "\nThe %s group of integers modulo %s, which is denoted '\u2115%s%s', contains %lu elements, in standard mathematical notation:\n", adjective, argv[1], argv[1], symbol, cardinality);
-    fprintf(stdout, "|\u2115%s%s| = %lu\n", argv[1], symbol, cardinality);
+    fprintf(stdout, "\nExamplified \u2115%s%s; pronunciated 'the %s group of integers modulo %s'.\n", argv[1], symbol, adjective, argv[1]);
+    fprintf(stdout, "\n'\u2115%s%s' contains %lu elements. |\u2115%s%s| = %lu\n", argv[1], symbol, cardinality, argv[1], symbol, cardinality);
     // ^^^ Print cardinality information about this group.
 
-    if (generator_list) {
-	fprintf(stdout, "\nGENERATOR INFORMATION ABOUT \u2115%s%s:\n", argv[1], symbol);
-	fprintf(stdout, "\nAre the only %lu generators that are present in \u2115%s%s.\n", process_generator_information(generator_list->next), argv[1], symbol);
+    if (generator_list) { /* <<< - If the is a list of generators, >>> - Initialize this list properly --> */ generator_list = generator_list->next;
+	fprintf(stdout, "\nGenerator count for \u2115%s%s:\n", argv[1], symbol); unsigned long generator_count = process_generator_information(generator_list);
+	fprintf(stdout, "\nThere are %lu. %lu generators are present in \u2115%s%s.\n", generator_count, generator_count, argv[1], symbol);
     } else fprintf(stdout, "\nThis group does not contain any generators.\n");
     // ^^^ Print information about the generators and entirely free the linked list holding this information.
 
