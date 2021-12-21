@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <unistd.h> // <<< Needed for "execvp()"
 #include <sys/wait.h> // <<< Needed for "waitpid()"
+#include "maths.h"
 #include "../functional/string.h"
 
 #define ELEMENT_EXPORTER "modular_group_element_table_generator"
@@ -23,7 +24,6 @@ typedef struct group_STRUCT {
 static char *argv_ZERO;
 static FILE *logbook_fs;
 /* ^^^ VARIABLE DEFINITIONS ^^^ */
-
 
 enum GROUP_IDentity *STR_could_be_parsed_into_group_OBJ_ID_Sloth(char *STR, group_OBJ group);
 /* ^^ Returns "NULL" upon parsing failure, otherwise parses "0" or "1" into their respective ENUM equivalents (a.k.a. representations) within this struct that is abbreviated "group_OBJ" */

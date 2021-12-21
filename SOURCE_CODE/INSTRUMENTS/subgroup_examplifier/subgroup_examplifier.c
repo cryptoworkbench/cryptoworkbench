@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "error_functions.h" // <<< Needed for "HELP_AND_QUIT()" , "MOD_not_parsable_ERROR()", "ID_not_parsable_ERROR"
-#include "../../libraries/mathematics/maths.h" // <<< Needed for "N_Combine"
 #include "../../libraries/functional/string.h" // <<< Needed for variadic function "match()"
 #include "../../libraries/functional/triple_ref_pointers.h"
 #include "../../libraries/mathematics/universal_group_library.h" // <<< Needed for "group_OBJ"
@@ -37,6 +36,7 @@ unsigned long cardinality;
 table_type LOOKUP_table;
 FILE *main_fs;
 struct offset_values *shifts;
+_group_operation group_operation; // <<--- Initialized by "replace_LL_with_table()"
 
 unsigned long index_lookup(unsigned long ul) {
     for (unsigned long index = 0; index < cardinality; index++)
@@ -87,7 +87,7 @@ struct permutation_piece *yield_subgroup(unsigned long index, group_OBJ group, s
     iterator->next = iterator; // Make it circular
 
     unsigned long subgroup_cardinality = 1; // << For we have already inserted the first element
-    for (unsigned long generated_element = start_element; generated_element != boolean_from_ID_Sloth(group); generated_element = N_combine(group->MOD, generated_element, start_element, group->ID)) {
+    for (unsigned long generated_element = start_element; generated_element != boolean_from_ID_Sloth(group); generated_element = group_operation(generated_element, start_element, group->MOD)) {
 	iterator = permutation_insert(generated_element, iterator); // << Put the current power of g into the permutation data structure
 	subgroup_cardinality++; }
 
@@ -129,6 +129,7 @@ struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **element_ll_IN
 	iter = process->next; free(process);
     } // <<< Creates the table and destroys the entire linked list.
 
+    group_operation = operation_from_ID(group->ID);
     for (index = 0; index < cardinality; index++) { // << Loop over the array one more time
 	LOOKUP_table[index].permutation = yield_subgroup(index, group, generator_ll_INSERT_CHANNEL); // << Now "yield_subgroup()" can properly search through the able and count the amount of generators
 	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(LOOKUP_table[index].unit.literal, cell_width); // << Now with a little less pressure on memory is a good time to add the string representations

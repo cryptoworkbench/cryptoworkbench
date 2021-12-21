@@ -75,14 +75,6 @@ unsigned long FINITE_N_exponentiation(unsigned long BASE, unsigned long Exponent
     return exponentiation_RESULT;
 }
 
-unsigned long FINITE_N_combine(unsigned long N_quotient, unsigned long A, unsigned long B, enum GROUP_IDentity Operation) {
-   switch (Operation) {
-	case ADDITIVE: return FINITE_N_addition(A, B, N_quotient);
-	case MULTIPLICATIVE: return FINITE_N_multiplication(A, B, N_quotient);
-	default: return FINITE_N_exponentiation(A, B, N_quotient);
-   };
-}
-
 unsigned long N_combine(unsigned long N_quotient, unsigned long A, unsigned long B, enum GROUP_IDentity Operation) {
    if (N_quotient != ADDITIVE_IDENTITY) {
        switch (Operation) {
@@ -98,6 +90,13 @@ unsigned long N_combine(unsigned long N_quotient, unsigned long A, unsigned long
 	   default: return N_exponentiation(A, B);
        };
   // ^^ Regular operations
+}
+
+_group_operation operation_from_ID(enum GROUP_IDentity ID) {
+    _group_operation return_value;
+    if (ID == ADDITIVE) return_value = FINITE_N_addition;
+    else if (ID == MULTIPLICATIVE) return_value = FINITE_N_multiplication;
+    return return_value;
 }
 
 unsigned long GCD(unsigned long a, unsigned long b) {
