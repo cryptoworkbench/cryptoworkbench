@@ -135,12 +135,12 @@ struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **element_ll_IN
     } return zip(generator_ll_INSERT_CHANNEL); // << Returns this list at this entry
 }
 
-unsigned long process_generator_information(struct triple_ref_LL *list_of_generators) {
-    unsigned long generator_count = 0; struct triple_ref_LL *iter = list_of_generators; do {
+unsigned long process_generator_information(struct triple_ref_LL *generator_list) {
+    unsigned long generator_count = 0; struct triple_ref_LL *iter = generator_list; do {
 	struct triple_ref_LL *iter_next = iter->next;
 	print_subgroup(LOOKUP_table[index_lookup(iter->element)].permutation);
 	free(iter); iter = iter_next; generator_count++;
-	if (iter == list_of_generators) break;
+	if (iter == generator_list) break;
 	else printf(", and\n");
     } while (1); printf("\n");
 
