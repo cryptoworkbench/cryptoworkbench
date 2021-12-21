@@ -76,18 +76,18 @@ unsigned long FINITE_N_exponentiation(unsigned long BASE, unsigned long Exponent
 }
 
 unsigned long N_combine(unsigned long N_quotient, unsigned long A, unsigned long B, enum GROUP_IDentity Operation) {
-   if (N_quotient != ADDITIVE_IDENTITY) {
+    if (N_quotient != ADDITIVE_IDENTITY) {
        switch (Operation) {
 	    case ADDITIVE: return FINITE_N_addition(A, B, N_quotient);
 	    case MULTIPLICATIVE: return FINITE_N_multiplication(A, B, N_quotient);
-	    default: return FINITE_N_exponentiation(A, B, N_quotient);
+	    case EXPONENTIAL: return FINITE_N_exponentiation(A, B, N_quotient);
        }; }
   // ^^ Modular operations
    else
        switch (Operation) {
 	   case ADDITIVE: return N_addition(A, B);
 	   case MULTIPLICATIVE: return N_multiplication(A, B);
-	   default: return N_exponentiation(A, B);
+	   case EXPONENTIAL: return N_exponentiation(A, B);
        };
   // ^^ Regular operations
 }

@@ -4,7 +4,7 @@
 #define MULTIPLICATIVE_IDENTITY 1
 #define SET_DEVOID_OF_UNITS 0
 #define SET_DEVOID_OF_PRIME_FACTORS 1
-enum GROUP_IDentity { ADDITIVE, MULTIPLICATIVE }; typedef enum GROUP_IDentity enum_GROUP_IDentity;
+enum GROUP_IDentity { ADDITIVE, MULTIPLICATIVE, EXPONENTIAL }; typedef enum GROUP_IDentity enum_GROUP_IDentity;
 
 typedef unsigned long UL;
 typedef UL* UL_ptr;
