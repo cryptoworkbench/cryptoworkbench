@@ -1,7 +1,4 @@
-/* Examplifies additive and multiplicative groups.
- *
- * Next thing on the list is to make it export to external table files again.
- */
+/* Examplifies additive and multiplicative groups. */
 #include <stdio.h>
 #include <stdlib.h>
 #include "error_functions.h" // <<< Needed for "HELP_AND_QUIT()" , "MOD_not_parsable_ERROR()", "ID_not_parsable_ERROR"
@@ -136,14 +133,15 @@ struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **element_ll_IN
     } return zip(generator_ll_INSERT_CHANNEL); // << Returns this list at this entry
 }
 
-unsigned long process_generator_information(struct triple_ref_LL *generator_list) {
+unsigned long process_generator_information(struct triple_ref_LL *generator_list, char *modulus, char *symbol) {
+    fprintf(main_fs, "\nGenerator count for \u2115%s%s:\n", modulus, symbol);
     unsigned long generator_count = 0; struct triple_ref_LL *iter = generator_list; do {
 	struct triple_ref_LL *iter_next = iter->next;
 	print_subgroup(LOOKUP_table[index_lookup(iter->element)].permutation);
 	free(iter); iter = iter_next; generator_count++;
 	if (iter == generator_list) break;
-	else printf(", and\n");
-    } while (1); printf("\n");
+	else fprintf(main_fs, ", and\n");
+    } while (1); fprintf(main_fs, "\n");
 
     return generator_count;
 } // ^ This function also free()'s the entries of the linked list
@@ -181,15 +179,16 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     char *adjective = adjective_from_ID_Sloth(group);
     char *symbol = operation_symbol_from_ID_Sloth(group);
     if (main_fs != stdout) { fclose(main_fs); main_fs = stdout;
-	fprintf(main_fs, "Wrote table for the %s group of integers modulo %s (\u2115%s%s), with offset values %s and %s, to an external file called '%s'.\n", adjective, argv[1], argv[1], symbol, argv[3], argv[4], argv[5]); }
+	fprintf(main_fs, "Wrote table for the %s group of integers modulo %s to the external file '%s'\n", adjective, argv[1], argv[5]);
+	fprintf(main_fs, "Vertical offset used: %s\nHorizontal offset used: %s\n", argv[3], argv[4]);
+    }
 
-    fprintf(stdout, "\nExamplified \u2115%s%s (pronunciated '_the %s group of integers modulo %s_')\n", argv[1], symbol, adjective, argv[1]);
-    fprintf(stdout, "\n'\u2115%s%s' contains %lu elements. |\u2115%s%s| = %lu\n", argv[1], symbol, cardinality, argv[1], symbol, cardinality);
+    fprintf(main_fs, "\n\u2115%s%s contains %lu elements a.k.a. |\u2115%s%s| = %lu\n", argv[1], symbol, cardinality, argv[1], symbol, cardinality);
     // ^^^ Print cardinality information about this group.
 
     if (generator_list) { /* <<< - If the is a list of generators, >>> - Initialize this list properly --> */ generator_list = generator_list->next;
-	fprintf(stdout, "\nGenerator count for \u2115%s%s:\n", argv[1], symbol); fprintf(stdout, "\nThere are %lu generators present in \u2115%s%s.\n", process_generator_information(generator_list), argv[1], symbol);
-    } else fprintf(stdout, "\nThis group does not contain any generators.\n");
+	fprintf(main_fs, "\nThese are the %lu generators present in \u2115%s%s \u2191\n", process_generator_information(generator_list, argv[1], symbol), argv[1], symbol);
+    } else fprintf(main_fs, "\nThis group does not contain any generators.\n");
     // ^^^ Print information about the generators and entirely free the linked list holding this information.
 
     for (unsigned long index = 0; index < cardinality; index++) { free_permutation_pieces(index); free(LOOKUP_table[index].unit.ASCII_numerical); }
