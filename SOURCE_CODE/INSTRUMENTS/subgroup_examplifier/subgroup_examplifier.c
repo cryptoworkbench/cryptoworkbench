@@ -187,8 +187,7 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     // ^^^ Print cardinality information about this group.
 
     if (generator_list) { /* <<< - If the is a list of generators, >>> - Initialize this list properly --> */ generator_list = generator_list->next;
-	fprintf(stdout, "\nGenerator count for \u2115%s%s:\n", argv[1], symbol); unsigned long generator_count = process_generator_information(generator_list);
-	fprintf(stdout, "\nThere are %lu. %lu generators are present in \u2115%s%s.\n", generator_count, generator_count, argv[1], symbol);
+	fprintf(stdout, "\nGenerator count for \u2115%s%s:\n", argv[1], symbol); fprintf(stdout, "\nThere are %lu generators present in \u2115%s%s.\n", process_generator_information(generator_list), argv[1], symbol);
     } else fprintf(stdout, "\nThis group does not contain any generators.\n");
     // ^^^ Print information about the generators and entirely free the linked list holding this information.
 
