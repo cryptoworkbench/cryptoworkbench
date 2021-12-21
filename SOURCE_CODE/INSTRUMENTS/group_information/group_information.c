@@ -1,39 +1,44 @@
 /* Examplifies additive and multiplicative groups. */
-#include <stdio.h>
-#include <stdlib.h>
-#include "error_functions.h" // <<< Needed for "HELP_AND_QUIT()" , "MOD_not_parsable_ERROR()", "ID_not_parsable_ERROR"
-#include "../../libraries/functional/string.h" // <<< Needed for "match()", "STR_could_be_parsed_into_UL()", etc
-#include "../../libraries/functional/triple_ref_pointers.h" // << Needed for "sub_ordinate()" and "disintermediate()"
-#include "../../libraries/mathematics/universal_group_library.h" // <<< Needed for "group_OBJ"
+#include "group_information.h"
 
-struct offset_values { unsigned long Y; unsigned long X; };
-// ^^ Not related to groups necessarily, so this is here instead of in "../../libraries/mathematics/universal_group_library.h"
+int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
+    if (6 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));
+    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->MOD)) MOD_not_parsable_ERROR(argv[1]);
+    if (3 > argc || !STR_could_be_parsed_into_group_OBJ_ID_Sloth(argv[2], group)) ID_not_parsable_ERROR(argv[1], argv[2]);
+    else group_operation = operation_from_ID(group->ID); // <^^^ Parses and processes everything that has to do with CMD args, also deals with the "help_queries"
 
-struct triple_ref_LL {
-    struct triple_ref_LL *next;
-    unsigned long element;
-};
+    shifts = (struct offset_values *) malloc(sizeof(struct offset_values)); shifts->Y = shifts->X = 0;
+    if (argc != 3) { switch (argc) { case 6: main_fs = fopen(argv[5], "w");
+	    case 5: if (!STR_could_be_parsed_into_UL(argv[4], &shifts->Y)) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
+	    case 4: if (!STR_could_be_parsed_into_UL(argv[3], &shifts->X)) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
+	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the mod value to shifts when dealing with additive groups (see "MATH_HINT_ONE")
+    } // ^ Process offset values.
 
-struct content {
-    unsigned long literal;
-    char *ASCII_numerical;
-};
+    struct triple_ref_LL *generator_list = replace_LL_with_table(establish_LL(argv, group, (struct triple_ref_LL **) sub_ordinator()), group, (struct triple_ref_LL **) sub_ordinator());
+    // ^^^ Substitute this circular linked list of group elements with an array-stored table of elements and free this linked list simultaneously.
 
-struct permutation_piece {
-    struct permutation_piece *next;
-    struct content *unit;
-};
+    print_table();
 
-typedef struct vertibrae {
-    struct permutation_piece *permutation;
-    struct content unit;
-} array_piece; typedef array_piece *table_type;
+    char *adjective = adjective_from_ID_Sloth(group);
+    char *symbol = operation_symbol_from_ID_Sloth(group);
+    if (main_fs != stdout) { fclose(main_fs); main_fs = stdout;
+	fprintf(main_fs, "Wrote table for the %s group of integers modulo %s to the external file '%s'\n", adjective, argv[1], argv[5]);
+	fprintf(main_fs, "Vertical offset used: %s\nHorizontal offset used: %s\n", argv[3], argv[4]); }
+    // ^^^ Only the table is supposed to be written to the external file
 
-unsigned long cardinality;
-table_type LOOKUP_table;
-FILE *main_fs;
-struct offset_values *shifts;
-_group_operation group_operation;
+    fprintf(main_fs, "\n\u2115%s%s contains %lu elements a.k.a. |\u2115%s%s| = %lu\n", argv[1], symbol, cardinality, argv[1], symbol, cardinality);
+    // ^^^ Print cardinality information about this group.
+
+    if (generator_list) { /* <<< - If there is a list of generators, >>> - Initialize this list properly --> */ generator_list = generator_list->next;
+	fprintf(main_fs, "\nThese are the %lu generators present in \u2115%s%s \u2191\n", process_generator_information(generator_list, argv[1], symbol), argv[1], symbol);
+    } else fprintf(main_fs, "\nThis group does not contain any generators.\n");
+    // ^^^ Print information about the generators and entirely free the linked list holding this information (if there was any in the first place 'padum thss')
+
+    for (unsigned long index = 0; index < cardinality; index++) { free_permutation_pieces(index); free(LOOKUP_table[index].unit.ASCII_numerical); } free(LOOKUP_table);
+    // ^^^ Free all of the sloths of memory referred to (in)directly by the table
+
+    return 0;
+}
 
 unsigned long index_lookup(unsigned long ul) {
     for (unsigned long index = 0; index < cardinality; index++)
@@ -157,43 +162,21 @@ void print_table() {
     { print_subgroup(LOOKUP_table[i % cardinality].permutation); fprintf(main_fs, "\n"); }
 }
 
-int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
-    if (6 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));
-    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->MOD)) MOD_not_parsable_ERROR(argv[1]);
-    if (3 > argc || !STR_could_be_parsed_into_group_OBJ_ID_Sloth(argv[2], group)) ID_not_parsable_ERROR(argv[1], argv[2]);
-    else group_operation = operation_from_ID(group->ID); // <^^^ Parses and processes everything that has to do with CMD args, also deals with the "help_queries"
+void ID_not_parsable_ERROR(char *argv_one, char *argv_two) {
+    fprintf(stdout, STDOUT_ARGV_ONE_INSTRUCTION, argv_one, argv_one, argv_one, argv_two);
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp group ID: '%s' is not in the first list nor in the second. Returning '-2'.\n", argv_two);
+    exit(-2);
+}
 
-    shifts = (struct offset_values *) malloc(sizeof(struct offset_values)); shifts->Y = shifts->X = 0;
-    if (argc != 3) { switch (argc) { case 6: main_fs = fopen(argv[5], "w");
-	    case 5: if (!STR_could_be_parsed_into_UL(argv[4], &shifts->Y)) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
-	    case 4: if (!STR_could_be_parsed_into_UL(argv[3], &shifts->X)) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
-	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the mod value to shifts when dealing with additive groups (see "MATH_HINT_ONE")
-    } // ^ Process offset values.
+void MOD_not_parsable_ERROR(char *argv_one) {
+    fprintf(stdout, STDOUT_ARGV_TWO_INSTRUCTION);
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP: to attempt to open from ARCHIVE/ the group '\u2115%s*' makes no sense to me. Returning '-1'.\n", argv_one);
+    exit(-1);
+}
 
-    struct triple_ref_LL *generator_list = replace_LL_with_table(establish_LL(argv, group, (struct triple_ref_LL **) sub_ordinator()), group, (struct triple_ref_LL **) sub_ordinator());
-    // ^^^ Substitute this circular linked list of group elements with an array-stored table of elements and free this linked list simultaneously.
-
-    print_table();
-
-    char *adjective = adjective_from_ID_Sloth(group);
-    char *symbol = operation_symbol_from_ID_Sloth(group);
-    if (main_fs != stdout) { fclose(main_fs); main_fs = stdout;
-	fprintf(main_fs, "Wrote table for the %s group of integers modulo %s to the external file '%s'\n", adjective, argv[1], argv[5]);
-	fprintf(main_fs, "Vertical offset used: %s\nHorizontal offset used: %s\n", argv[3], argv[4]); }
-    // ^^^ Only the table is supposed to be written to the external file
-
-    fprintf(main_fs, "\n\u2115%s%s contains %lu elements a.k.a. |\u2115%s%s| = %lu\n", argv[1], symbol, cardinality, argv[1], symbol, cardinality);
-    // ^^^ Print cardinality information about this group.
-
-    if (generator_list) { /* <<< - If there is a list of generators, >>> - Initialize this list properly --> */ generator_list = generator_list->next;
-	fprintf(main_fs, "\nThese are the %lu generators present in \u2115%s%s \u2191\n", process_generator_information(generator_list, argv[1], symbol), argv[1], symbol);
-    } else fprintf(main_fs, "\nThis group does not contain any generators.\n");
-    // ^^^ Print information about the generators and entirely free the linked list holding this information (if there was any in the first place 'padum thss')
-
-    for (unsigned long index = 0; index < cardinality; index++) { free_permutation_pieces(index); free(LOOKUP_table[index].unit.ASCII_numerical); } free(LOOKUP_table);
-    // ^^^ Free all of the sloths of memory referred to (in)directly by the table
-
-    return 0;
+void HELP_AND_QUIT(char *prog_NAME) {
+    fprintf(stderr, HELP_INFORMATION, prog_NAME);
+    exit(0);
 }
 /* MATH HINTS (!):
  * "MATH_HINT_ONE":
