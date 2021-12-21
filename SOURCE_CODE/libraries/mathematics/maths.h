@@ -4,6 +4,8 @@
 #define MULTIPLICATIVE_IDENTITY 1
 #define SET_DEVOID_OF_UNITS 0
 #define SET_DEVOID_OF_PRIME_FACTORS 1
+enum GROUP_IDentity { ADDITIVE, MULTIPLICATIVE }; typedef enum GROUP_IDentity enum_GROUP_IDentity;
+
 typedef unsigned long UL;
 typedef UL* UL_ptr;
 
@@ -23,7 +25,8 @@ unsigned long FINITE_N_exponentiation(unsigned long BASE, unsigned long Exponent
 // ^>> Define the exponentiation operation for "modular" and "regular" arithmetic
 
 
-unsigned long N_combine(unsigned long N_quotient, unsigned long A, unsigned long B, unsigned long ID);
+unsigned long FINITE_N_combine(unsigned long N_quotient, unsigned long A, unsigned long B, enum GROUP_IDentity Operation);
+unsigned long N_combine(unsigned long N_quotient, unsigned long A, unsigned long B, enum GROUP_IDentity Operation);
 // ^^^ Combine them all
 
 /* ### OLD FUNCTIONS: */

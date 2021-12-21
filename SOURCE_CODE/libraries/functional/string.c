@@ -1,6 +1,9 @@
 /* This library contains all of the string functions.
  *
- * See the header file for function descriptions. */
+ * See the header file for function descriptions.
+ *
+ * The warning for an implicit declaration of "N_exponentiation" during "gcc -c string.c -o .string.o" can be ignored. Just include .maths.o in the linking process.
+ * */
 #include "string.h"
 
 /* Returns an unsigned long containing the number of characters in the string pointed at by the constant char pointer 'string_pointer' */

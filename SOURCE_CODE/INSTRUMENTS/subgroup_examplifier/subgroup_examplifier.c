@@ -87,7 +87,7 @@ struct permutation_piece *yield_subgroup(unsigned long index, group_OBJ group, s
     iterator->next = iterator; // Make it circular
 
     unsigned long subgroup_cardinality = 1; // << For we have already inserted the first element
-    for (unsigned long generated_element = start_element; generated_element != boolean_from_ID_Sloth(group); generated_element = N_combine_ABSTR(group->MOD, generated_element, start_element, group->ID)) {
+    for (unsigned long generated_element = start_element; generated_element != boolean_from_ID_Sloth(group); generated_element = N_combine(group->MOD, generated_element, start_element, group->ID)) {
 	iterator = permutation_insert(generated_element, iterator); // << Put the current power of g into the permutation data structure
 	subgroup_cardinality++; }
 
@@ -182,7 +182,7 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     if (main_fs != stdout) { fclose(main_fs); main_fs = stdout;
 	fprintf(main_fs, "Wrote table for the %s group of integers modulo %s (\u2115%s%s), with offset values %s and %s, to an external file called '%s'.\n", adjective, argv[1], argv[1], symbol, argv[3], argv[4], argv[5]); }
 
-    fprintf(stdout, "\nExamplified \u2115%s%s; pronunciated 'the %s group of integers modulo %s'.\n", argv[1], symbol, adjective, argv[1]);
+    fprintf(stdout, "\nExamplified \u2115%s%s (pronunciated '_the %s group of integers modulo %s_')\n", argv[1], symbol, adjective, argv[1]);
     fprintf(stdout, "\n'\u2115%s%s' contains %lu elements. |\u2115%s%s| = %lu\n", argv[1], symbol, cardinality, argv[1], symbol, cardinality);
     // ^^^ Print cardinality information about this group.
 

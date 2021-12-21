@@ -93,11 +93,3 @@ void close_group(char *group_CAP, char *symbol_to_use, char *path_to_filename, F
     sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", group_CAP, symbol_to_use, path_to_filename); append_to_LOGBOOK(BUFFER); fclose(opened_group);
     sprintf(BUFFER, "Closed '%s'", path_to_filename); free(path_to_filename); append_to_LOGBOOK(BUFFER); free(BUFFER); fclose(logbook_fs);
 }
-
-unsigned long N_combine_ABSTR(unsigned long N_quotient, unsigned long A, unsigned long B, enum GROUP_IDentity Operation) {
-   switch (Operation) {
-	case ADDITIVE: return FINITE_N_addition(A, B, N_quotient);
-	case MULTIPLICATIVE: return FINITE_N_multiplication(A, B, N_quotient);
-	default: return FINITE_N_exponentiation(A, B, N_quotient);
-   };
-}
