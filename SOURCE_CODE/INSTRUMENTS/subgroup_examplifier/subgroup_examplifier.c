@@ -102,25 +102,28 @@ struct triple_ref_LL *zip(struct triple_ref_LL **channel) {
     return last_shackle;
 }
 
-struct triple_ref_LL *establish_LL(char **argv, group_OBJ group, struct triple_ref_LL **channel, unsigned long *cell_width) {
+struct triple_ref_LL **establish_LL(char **argv, group_OBJ group, struct triple_ref_LL **element_ll_INSERT_CHANNEL) {
     char *path_to_filename; FILE *ELEMENT_database = open_group(argv[0], group, argv[1], &path_to_filename); cardinality = 0;
     // ^^^ Open filestream to element database
 
     unsigned long group_ELEMENT;
-    while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { triple_ref_LL_insert(channel, group_ELEMENT); cardinality++; }
+    while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { triple_ref_LL_insert(element_ll_INSERT_CHANNEL, group_ELEMENT); cardinality++; }
     // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
 
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), path_to_filename, ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
-    struct triple_ref_LL *last_element = zip(channel);
-    *cell_width = char_in_val(last_element->element);
-    return last_element->next;
+    return element_ll_INSERT_CHANNEL;
 }
 
-struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL *element_ring, unsigned long cell_width, group_OBJ group, struct triple_ref_LL **generator_list) {
-    LOOKUP_table = (array_piece *) malloc(sizeof(array_piece) * cardinality); // << Allocates memory space on the heap for the table.
-    unsigned long index; struct triple_ref_LL *iter = element_ring;
+struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **channel, group_OBJ group, struct triple_ref_LL **generator_list) {
+    struct triple_ref_LL *iter = zip(channel); unsigned long cell_width = char_in_val(iter->element); iter = iter->next;
+    // ^^ Determine required cell width for lookup table
+
+    LOOKUP_table = (array_piece *) malloc(sizeof(array_piece) * cardinality);
+    // ^^ Allocate memory space on heap for lookup table.
+
+    unsigned long index; // << We will reuse index next for loop
     for (index = 0; index < cardinality; index++) {
 	struct triple_ref_LL *process = iter;
 	LOOKUP_table[index].unit.literal = process->element;
@@ -162,10 +165,7 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
 	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the mod value to shifts when dealing with additive groups (see "MATH_HINT_ONE")
     } // ^ Process offset values.
 
-    unsigned long cell_width; struct triple_ref_LL *identity_element = establish_LL(argv, group, (struct triple_ref_LL **) sub_ordinator(), &cell_width);
-    // ^^^ Establish a circular linked list of group elements.
-
-    struct triple_ref_LL *generator_list = replace_LL_with_table(identity_element, cell_width, group, (struct triple_ref_LL **) sub_ordinator());
+    struct triple_ref_LL *generator_list = replace_LL_with_table(establish_LL(argv, group, (struct triple_ref_LL **) sub_ordinator()), group, (struct triple_ref_LL **) sub_ordinator());
     // ^^^ Substitute this circular linked list of group elements with an array-stored table of elements and free this linked list simultaneously.
 
     unsigned long *generator_count; *(generator_count = (unsigned long *) malloc(sizeof(unsigned long))) = 0;
@@ -174,12 +174,11 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
 
     char *adjective = adjective_from_ID_Sloth(group);
     char *symbol = operation_symbol_from_ID_Sloth(group);
-    if (main_fs != stdout) { main_fs = stdout;
-	fprintf(main_fs, "Wrote table for the %s group of integers modulo %s (\u2115%s%s), with offset values %s and %s, to external file: %s\n", adjective, argv[1], argv[1], symbol, argv[3], argv[4], argv[5]);
-    }
+    if (main_fs != stdout) { fclose(main_fs); main_fs = stdout;
+	fprintf(main_fs, "Wrote table for the %s group of integers modulo %s (\u2115%s%s), with offset values %s and %s, to external file: %s\n", adjective, argv[1], argv[1], symbol, argv[3], argv[4], argv[5]); }
 
-    fprintf(stdout, "\nThe %s group of integers modulo %s, which is denoted '\u2115%s%s', contains %lu elements, in standard mathematical notation:\n", adjective, argv[1], argv[1], symbol, cardinality);
-    fprintf(stdout, "|\u2115%s%s| = %lu\n", argv[1], symbol, cardinality);
+    fprintf(main_fs, "\nThe %s group of integers modulo %s, which is denoted '\u2115%s%s', contains %lu elements, in standard mathematical notation:\n", adjective, argv[1], argv[1], symbol, cardinality);
+    fprintf(main_fs, "|\u2115%s%s| = %lu\n", argv[1], symbol, cardinality);
     // ^^^ Print cardinality information about this group.
 
     if (generator_list) process_generator_information(generator_count, generator_list->next); else fprintf(stdout, "\nThis group does not contain any generators.\n"); free(generator_count);
