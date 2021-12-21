@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "error_functions.h" // <<< Needed for "HELP_AND_QUIT()" , "MOD_not_parsable_ERROR()", "ID_not_parsable_ERROR"
-#include "../../libraries/functional/string.h" // <<< Needed for variadic function "match()"
-#include "../../libraries/functional/triple_ref_pointers.h"
+#include "../../libraries/functional/string.h" // <<< Needed for "match()", "STR_could_be_parsed_into_UL()", etc
+#include "../../libraries/functional/triple_ref_pointers.h" // << Needed for "sub_ordinate()" and "disintermediate()"
 #include "../../libraries/mathematics/universal_group_library.h" // <<< Needed for "group_OBJ"
 
 struct offset_values { unsigned long Y; unsigned long X; };
@@ -33,7 +33,7 @@ unsigned long cardinality;
 table_type LOOKUP_table;
 FILE *main_fs;
 struct offset_values *shifts;
-_group_operation group_operation; // <<--- Initialized by "replace_LL_with_table()"
+_group_operation group_operation;
 
 unsigned long index_lookup(unsigned long ul) {
     for (unsigned long index = 0; index < cardinality; index++)
@@ -126,7 +126,6 @@ struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **element_ll_IN
 	iter = process->next; free(process);
     } // <<< Creates the table and destroys the entire linked list.
 
-    group_operation = operation_from_ID(group->ID);
     for (index = 0; index < cardinality; index++) { // << Loop over the array one more time
 	LOOKUP_table[index].permutation = yield_subgroup(index, group, generator_ll_INSERT_CHANNEL); // << Now "yield_subgroup()" can properly search through the able and count the amount of generators
 	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(LOOKUP_table[index].unit.literal, cell_width); // << Now with a little less pressure on memory is a good time to add the string representations
@@ -162,7 +161,7 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     if (6 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));
     if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->MOD)) MOD_not_parsable_ERROR(argv[1]);
     if (3 > argc || !STR_could_be_parsed_into_group_OBJ_ID_Sloth(argv[2], group)) ID_not_parsable_ERROR(argv[1], argv[2]);
-    // ^^^ Parse first two arguments and take care of the case where there are too many arguments.
+    else group_operation = operation_from_ID(group->ID); // <^^^ Parses and processes everything that has to do with CMD args, also deals with the "help_queries"
 
     shifts = (struct offset_values *) malloc(sizeof(struct offset_values)); shifts->Y = shifts->X = 0;
     if (argc != 3) { switch (argc) { case 6: main_fs = fopen(argv[5], "w");
@@ -180,22 +179,19 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     char *symbol = operation_symbol_from_ID_Sloth(group);
     if (main_fs != stdout) { fclose(main_fs); main_fs = stdout;
 	fprintf(main_fs, "Wrote table for the %s group of integers modulo %s to the external file '%s'\n", adjective, argv[1], argv[5]);
-	fprintf(main_fs, "Vertical offset used: %s\nHorizontal offset used: %s\n", argv[3], argv[4]);
-    }
+	fprintf(main_fs, "Vertical offset used: %s\nHorizontal offset used: %s\n", argv[3], argv[4]); }
+    // ^^^ Only the table is supposed to be written to the external file
 
     fprintf(main_fs, "\n\u2115%s%s contains %lu elements a.k.a. |\u2115%s%s| = %lu\n", argv[1], symbol, cardinality, argv[1], symbol, cardinality);
     // ^^^ Print cardinality information about this group.
 
-    if (generator_list) { /* <<< - If the is a list of generators, >>> - Initialize this list properly --> */ generator_list = generator_list->next;
+    if (generator_list) { /* <<< - If there is a list of generators, >>> - Initialize this list properly --> */ generator_list = generator_list->next;
 	fprintf(main_fs, "\nThese are the %lu generators present in \u2115%s%s \u2191\n", process_generator_information(generator_list, argv[1], symbol), argv[1], symbol);
     } else fprintf(main_fs, "\nThis group does not contain any generators.\n");
-    // ^^^ Print information about the generators and entirely free the linked list holding this information.
+    // ^^^ Print information about the generators and entirely free the linked list holding this information (if there was any in the first place 'padum thss')
 
-    for (unsigned long index = 0; index < cardinality; index++) { free_permutation_pieces(index); free(LOOKUP_table[index].unit.ASCII_numerical); }
+    for (unsigned long index = 0; index < cardinality; index++) { free_permutation_pieces(index); free(LOOKUP_table[index].unit.ASCII_numerical); } free(LOOKUP_table);
     // ^^^ Free all of the sloths of memory referred to (in)directly by the table
-
-    free(LOOKUP_table);
-    // ^^^ Free this table
 
     return 0;
 }
