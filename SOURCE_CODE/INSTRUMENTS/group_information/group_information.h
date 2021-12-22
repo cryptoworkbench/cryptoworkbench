@@ -10,8 +10,7 @@
 #define HELP_INFORMATION "Program usage: %s <CAP> <ID> [horizontal offset] [vertical offset] [output filename]\n\n<MANDATORY ARGUMENTS> are denoted like this. The program won't run without these.\n\n[optional arguments] are denoted like this. They are not very necessary.\n"
 
 struct offset_values { unsigned long Y; unsigned long X; };
-struct triple_ref_LL { struct triple_ref_LL *next; unsigned long element; };
-struct triple_ref_PTR_pair { struct triple_ref_LL **head; struct triple_ref_LL **iterator; };
+struct triple_ref_LL { struct triple_ref_LL *next; unsigned long element; }; struct triple_ref_PTR_pair { struct triple_ref_LL **head; struct triple_ref_LL **iterator; };
 struct content { unsigned long literal; char *ASCII_numerical; };
 struct permutation_piece { struct permutation_piece *next; struct content *unit; };
 typedef struct vertibrae { struct permutation_piece *permutation; struct content unit; } array_piece;
