@@ -97,38 +97,36 @@ struct permutation_piece *yield_subgroup(struct triple_ref_LL ***generator_chann
     return iterator->next;
 }
 
-struct triple_ref_LL *zip(struct triple_ref_LL **channel) {
+struct triple_ref_LL *zip(struct triple_ref_LL **zoom_out) {
     struct triple_ref_LL *last_shackle, *first_shackle;
-    if (last_shackle = first_shackle = (struct triple_ref_LL *) disintermediate((void **) channel)) {
+    if (last_shackle = first_shackle = (struct triple_ref_LL *) zoom_in((void **) zoom_out)) {
 	while (last_shackle->next) last_shackle = last_shackle->next;
 	last_shackle->next = first_shackle; return last_shackle;
     } else return NULL;
 }
 
 struct triple_ref_LL **establish_LL(char **argv, group_OBJ group) {
-    struct triple_ref_PTR_pair element_LL_PTRs;
-    element_LL_PTRs.iterator = element_LL_PTRs.head = (struct triple_ref_LL **) sub_ordinator();
-    // ^^^ Make sure to keep an eye of the head of the linked list
+    struct triple_ref_PTR_pair element_LL_PTRs; element_LL_PTRs.iterator = element_LL_PTRs.head = (struct triple_ref_LL **) zoom_out();
+    // ^^^ Keep an eye of the head of the open linked list that "triple_ref_LL_insert()" will create. ^^
 
     char *path_to_filename; FILE *ELEMENT_database = open_group(argv[0], group, argv[1], &path_to_filename); cardinality = 0;
-    // ^^^ Open filestream to element database
+    // ^^^ Open filestream to element database and initialize cardinality counter. ^^
 
-    unsigned long group_ELEMENT;
-    while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { triple_ref_LL_insert(&element_LL_PTRs.iterator, group_ELEMENT); cardinality++; }
-    // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
+    unsigned long group_ELEMENT; while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { triple_ref_LL_insert(&element_LL_PTRs.iterator, group_ELEMENT); cardinality++; }
+    // ^^^ Manifest open linked list consisting of all this "group"'s elements using "triple_ref_LL_insert()" (this linked list can only be closed performing "zip(element_LL_PTRs.head)"). ^^
 
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), path_to_filename, ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
-    return element_LL_PTRs.head;
+    return element_LL_PTRs.head; // << Returns an open linked list consisting of the group's element in chronological order of interpretation from "ELEMENT_database".
 }
 
-struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **INSRT_CHAN_for_element_LL, group_OBJ group) {
-    struct triple_ref_LL *iter = zip(INSRT_CHAN_for_element_LL); unsigned long cell_width = char_in_val(iter->element); iter = iter->next;
+struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **open_LL_with_elements, group_OBJ group) {
+    struct triple_ref_LL *LL_with_elements = zip(open_LL_with_elements); unsigned long cell_width = char_in_val(LL_with_elements->element); LL_with_elements = LL_with_elements->next;
     // ^^ First finish the handling of the previous triple ref trick we were doing
 
     struct triple_ref_PTR_pair generator_LL_PTRs;
-    generator_LL_PTRs.iterator = generator_LL_PTRs.head = (struct triple_ref_LL **) sub_ordinator();
+    generator_LL_PTRs.iterator = generator_LL_PTRs.head = (struct triple_ref_LL **) zoom_out();
     // ^^ Declare new points and perform the same magic but this time in order to create a list of generators
 
     LOOKUP_table = (array_piece *) malloc(sizeof(array_piece) * cardinality);
@@ -136,9 +134,9 @@ struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **INSRT_CHAN_fo
 
     unsigned long index; // << We will reuse unsigned long index at these 2 for loop's
     for (index = 0; index < cardinality; index++) {
-	struct triple_ref_LL *process = iter;
+	struct triple_ref_LL *process = LL_with_elements;
 	LOOKUP_table[index].unit.literal = process->element;
-	iter = process->next; free(process);
+	LL_with_elements = process->next; free(process);
     } // <<< Creates the table and destroys the entire linked list.
 
     for (index = 0; index < cardinality; index++) { // << Loop over the array one more time

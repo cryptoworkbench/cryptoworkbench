@@ -1,3 +1,3 @@
 #include <stdlib.h>
-void **sub_ordinator();
-void *disintermediate(void **to_be_dereferenced);
+void **zoom_out();
+void *zoom_in(void **to_be_dereferenced);
