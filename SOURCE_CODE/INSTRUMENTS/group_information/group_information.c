@@ -82,10 +82,10 @@ void triple_ref_LL_insert(struct _LL ***tracer_location, unsigned long new_ulong
 
 // Returns a linked list which is in order of the permutation of the subgroup in question,
 // Think of a chain of shackles, this chain is returned at the shackle which points to the identity element unit's struct at a struct vertibrae data type
-struct permutation_piece *yield_subgroup(struct _LL ***generator_channel, unsigned long index, group_OBJ group) {
+struct permutation_piece *yield_subgroup(struct _LL ***generator_CHANNEL, unsigned long index, group_OBJ group) {
     unsigned long start_element = LOOKUP_table[index].unit.literal;
     struct permutation_piece *iterator = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Create element
-    iterator->unit = &LOOKUP_table[0].unit; // The identity value is always at the start of the lookup table
+    iterator->unit = &LOOKUP_table->unit; // The identity value is always at the start of the lookup table
     iterator->next = iterator; // Make it circular
 
     unsigned long subgroup_cardinality = 1; // << For we have already inserted the first element
@@ -93,7 +93,7 @@ struct permutation_piece *yield_subgroup(struct _LL ***generator_channel, unsign
 	iterator = permutation_insert(generated_element, iterator); // << Put the current power of g into the permutation data structure
 	subgroup_cardinality++; }
 
-    if (subgroup_cardinality == cardinality) triple_ref_LL_insert(generator_channel, LOOKUP_table[index].unit.literal);
+    if (subgroup_cardinality == cardinality) triple_ref_LL_insert(generator_CHANNEL, LOOKUP_table[index].unit.literal);
     return iterator->next;
 }
 
