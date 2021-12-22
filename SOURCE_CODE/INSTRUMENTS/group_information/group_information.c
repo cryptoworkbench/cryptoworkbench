@@ -106,26 +106,26 @@ struct _LL *CHANNEL_close(struct _LL **channel) {
 }
 
 struct _LL **establish_LL(char **argv, group_OBJ group) {
-    struct _LL_tracer_pair element_CHANNEL_PTR_pair; initialize_PTR_pair((void **) &element_CHANNEL_PTR_pair.iterator, (void **) &element_CHANNEL_PTR_pair.head);
+    struct _CHANNEL_PTR_pair element_CHANNEL_PTR_pair; initialize_PTR_pair(&element_CHANNEL_PTR_pair.iterator, &element_CHANNEL_PTR_pair.head);
     // ^^^ Keep an eye of the head of the open linked list that "triple_ref_LL_insert()" will create. ^^
 
     char *path_to_filename; FILE *ELEMENT_database = open_group(argv[0], group, argv[1], &path_to_filename); cardinality = 0;
     // ^^^ Open filestream to element database and initialize cardinality counter. ^^
 
-    unsigned long group_ELEMENT; while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { triple_ref_LL_insert(&element_CHANNEL_PTR_pair.iterator, group_ELEMENT); cardinality++; }
+    unsigned long group_ELEMENT; while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { triple_ref_LL_insert((struct _LL ***) &element_CHANNEL_PTR_pair.iterator, group_ELEMENT); cardinality++; }
     // ^^^ Manifest open linked list consisting of all this "group"'s elements using "triple_ref_LL_insert()" (this linked list can only be closed performing "CHANNEL_close(element_CHANNEL_PTR_pair.head)"). ^^
 
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), path_to_filename, ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
-    return element_CHANNEL_PTR_pair.head; // << Returns an open linked list consisting of the group's element in chronological order of interpretation from "ELEMENT_database".
+    return (struct _LL **) element_CHANNEL_PTR_pair.head; // << Returns an open linked list consisting of the group's element in chronological order of interpretation from "ELEMENT_database".
 }
 
 struct _LL *replace_LL_with_table(struct _LL **element_CHANNEL, group_OBJ group) {
     struct _LL *element_LL = CHANNEL_close(element_CHANNEL); unsigned long cell_width = char_in_val(element_LL->element); element_LL = element_LL->next;
     // ^^ First finish the handling of the previous triple ref trick we were doing
 
-    struct _LL_tracer_pair generator_CHANNEL_PTR_pair; initialize_PTR_pair((void **) &generator_CHANNEL_PTR_pair.iterator, (void **) &generator_CHANNEL_PTR_pair.head); // << Declare new pointers and perform the same magic but this time in order to create a list of generators
+    struct _CHANNEL_PTR_pair generator_CHANNEL_PTR_pair; initialize_PTR_pair(&generator_CHANNEL_PTR_pair.iterator, &generator_CHANNEL_PTR_pair.head); // << Declare new pointers and perform the same magic but this time in order to create a list of generators
 
     LOOKUP_table = (array_piece *) malloc(sizeof(array_piece) * cardinality);
     // ^^ Actually initialize the lookup table by allocating memory on the heap for it
@@ -138,9 +138,9 @@ struct _LL *replace_LL_with_table(struct _LL **element_CHANNEL, group_OBJ group)
     } // <<< Creates the table and destroys the entire linked list.
 
     for (index = 0; index < cardinality; index++) { // << Loop over the array one more time
-	LOOKUP_table[index].permutation = yield_subgroup(&generator_CHANNEL_PTR_pair.iterator, index, group); // << Now "yield_subgroup()" can properly search through the able and count the amount of generators
+	LOOKUP_table[index].permutation = yield_subgroup((struct _LL ***) &generator_CHANNEL_PTR_pair.iterator, index, group); // << Now "yield_subgroup()" can properly search through the able and count the amount of generators
 	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(LOOKUP_table[index].unit.literal, cell_width); // << Now with a little less pressure on memory is a good time to add the string representations
-    } return CHANNEL_close(generator_CHANNEL_PTR_pair.head); // << Returns this list at this entry
+    } return CHANNEL_close((struct _LL **) generator_CHANNEL_PTR_pair.head); // << Returns this list at this entry
 }
 
 unsigned long process_generator_information(struct _LL *generator_list, char *modulus, char *symbol) {
