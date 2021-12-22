@@ -106,7 +106,7 @@ struct _LL *LL_from_CHANNEL(struct _LL **channel) {
 }
 
 struct _LL **establish_LL(char **argv, group_OBJ group) {
-    struct _CHANNEL_PTR_pair element_CHANNEL_PTR_pair; INITIALIZE_CHANNEL_PTR_pair(&element_CHANNEL_PTR_pair);
+    struct _CHANNEL_PTR_pair element_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair();
     // ^^^ Keep an eye of the head of the open linked list that "triple_ref_LL_insert()" will create. ^^
 
     char *path_to_filename; FILE *ELEMENT_database = open_group(argv[0], group, argv[1], &path_to_filename); cardinality = 0;
@@ -125,7 +125,7 @@ struct _LL *replace_LL_with_table(struct _LL **element_CHANNEL, group_OBJ group)
     struct _LL *element_LL = LL_from_CHANNEL(element_CHANNEL); unsigned long cell_width = char_in_val(element_LL->element); element_LL = element_LL->next;
     // ^^ First finish the handling of the previous triple ref trick we were doing
 
-    struct _CHANNEL_PTR_pair generator_CHANNEL_PTR_pair; INITIALIZE_CHANNEL_PTR_pair(&generator_CHANNEL_PTR_pair); // << Declare new pointers and perform the same magic but this time in order to create a list of generators
+    struct _CHANNEL_PTR_pair generator_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair(); // << Declare new pointers and perform the same magic but this time in order to create a list of generators
     LOOKUP_table = (array_piece *) malloc(sizeof(array_piece) * cardinality);
     // ^^ Actually initialize the lookup table by allocating memory on the heap for it
 

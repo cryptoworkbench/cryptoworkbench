@@ -7,7 +7,10 @@ void **open_CHANNEL() {
     return source; }
 // ^^ Open source
 
-void INITIALIZE_CHANNEL_PTR_pair(struct _CHANNEL_PTR_pair *in) { in->iterator = in->head = open_CHANNEL(); }
+struct _CHANNEL_PTR_pair INITIALIZE_CHANNEL_PTR_pair() {
+    struct _CHANNEL_PTR_pair ret_val; ret_val.iterator = ret_val.head = open_CHANNEL();
+    return ret_val;
+}
 
 void *_close_CHANNEL(void **to_be_dereferenced) {
     void *return_value = *to_be_dereferenced; free(to_be_dereferenced);
