@@ -1,4 +1,7 @@
-/* Examplifies additive and multiplicative groups. */
+/* Examplifies additive and multiplicative groups.
+ *
+ * I want to modify "permutation_insert()" so that it return's "void" and updates ...
+ * */
 #include "group_information.h"
 
 int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
@@ -45,9 +48,9 @@ unsigned long index_lookup(unsigned long ul) {
     return 0;
 }
 
-struct permutation_piece *permutation_insert(unsigned long unit_identifier, struct permutation_piece *previous_permutation_piece) {
+struct permutation_piece *permutation_insert(unsigned long permutation_identifier, struct permutation_piece *previous_permutation_piece) {
     struct permutation_piece *next_permutation_piece = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Fix existence of new permutation_piece
-    next_permutation_piece->unit = &LOOKUP_table[index_lookup(unit_identifier)].unit; // Fix first sloth
+    next_permutation_piece->unit = &LOOKUP_table[index_lookup(permutation_identifier)].unit; // Fix first sloth
 
     // ###== Insert new linked list element ===>
     next_permutation_piece->next = previous_permutation_piece->next;
@@ -93,6 +96,9 @@ struct permutation_piece *yield_subgroup(struct _LL ***generator_CHANNEL, unsign
 	subgroup_cardinality++; }
 
     if (subgroup_cardinality == cardinality) triple_ref_LL_insert(generator_CHANNEL, LOOKUP_table[index].unit.literal);
+
+    // MAKE CIRCULAR LL FROM PERMUTATION CHANNEL
+    // RETURN THIS LL AT ITS NEXT
     return iterator->next;
 }
 
@@ -104,7 +110,7 @@ struct _LL *LL_from_CHANNEL(struct _LL **channel) {
     } else return NULL;
 }
 
-struct _LL **establish_LL(char **argv, group_OBJ group) {
+struct _LL *establish_LL(char **argv, group_OBJ group) {
     struct _CHANNEL_PTR_pair element_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair();
     // ^^^ Keep an eye of the head of the open linked list that "triple_ref_LL_insert()" will create. ^^
 
@@ -117,11 +123,11 @@ struct _LL **establish_LL(char **argv, group_OBJ group) {
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
-    return (struct _LL **) element_CHANNEL_PTR_pair.head; // << Returns an open linked list consisting of the group's element in chronological order of interpretation from "ELEMENT_database".
+    return LL_from_CHANNEL((struct _LL **) element_CHANNEL_PTR_pair.head); // << Returns an open linked list consisting of the group's element in chronological order of interpretation from "ELEMENT_database".
 }
 
-struct _LL *replace_LL_with_table(struct _LL **element_CHANNEL, group_OBJ group) {
-    struct _LL *element_LL = LL_from_CHANNEL(element_CHANNEL); unsigned long cell_width = char_in_val(element_LL->element); element_LL = element_LL->next;
+struct _LL *replace_LL_with_table(struct _LL *element_LL, group_OBJ group) {
+    unsigned long cell_width = char_in_val(element_LL->element); element_LL = element_LL->next;
     // ^^ First finish the handling of the previous triple ref trick we were doing
 
     struct _CHANNEL_PTR_pair generator_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair(); // << Declare new pointers and perform the same magic but this time in order to create a list of generators
