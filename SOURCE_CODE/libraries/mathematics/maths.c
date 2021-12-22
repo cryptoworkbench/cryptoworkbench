@@ -41,6 +41,7 @@ unsigned long N_multiplication(unsigned long A, unsigned long B) {
 
 unsigned long FINITE_N_addition(unsigned long A, unsigned long B, unsigned long Limit) { return N_addition(A, B) % Limit; }
 unsigned long FINITE_N_multiplication(unsigned long A, unsigned long B, unsigned long Limit) { return N_multiplication(A, B) % Limit; }
+_group_operation operation_from_ID(enum GROUP_IDentity ID) { return (ID == ADDITIVE) ? FINITE_N_addition : FINITE_N_multiplication; }
 // ^^^ The finite (modular) ones
 
 unsigned long N_exponentiation(unsigned long BASE, unsigned long Exponent) {
@@ -90,13 +91,6 @@ unsigned long N_combine(unsigned long N_quotient, unsigned long A, unsigned long
 	   case EXPONENTIAL: return N_exponentiation(A, B);
        };
   // ^^ Regular operations
-}
-
-_group_operation operation_from_ID(enum GROUP_IDentity ID) {
-    _group_operation return_value;
-    if (ID == ADDITIVE) return_value = FINITE_N_addition;
-    else if (ID == MULTIPLICATIVE) return_value = FINITE_N_multiplication;
-    return return_value;
 }
 
 unsigned long GCD(unsigned long a, unsigned long b) {

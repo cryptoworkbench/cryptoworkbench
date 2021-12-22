@@ -14,10 +14,8 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
 	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the mod value to shifts when dealing with additive groups (see "MATH_HINT_ONE")
     } // ^ Process offset values.
 
-    struct triple_ref_LL *generator_list = replace_LL_with_table(establish_LL(argv, group), group);
+    struct triple_ref_LL *generator_list = replace_LL_with_table(establish_LL(argv, group), group); print_table();
     // ^^^ Substitute this circular linked list of group elements with an array-stored table of elements and free this linked list simultaneously.
-
-    print_table();
 
     char *adjective = adjective_from_ID_Sloth(group);
     char *symbol = operation_symbol_from_ID_Sloth(group);

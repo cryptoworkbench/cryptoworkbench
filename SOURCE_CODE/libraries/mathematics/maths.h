@@ -25,7 +25,7 @@ unsigned long FINITE_N_exponentiation(unsigned long BASE, unsigned long Exponent
 // ^>> Define the exponentiation operation for "modular" and "regular" arithmetic
 
 typedef unsigned long (*_group_operation) (unsigned long, unsigned long, unsigned long); // << Declare a variable type for #23 & #18
-_group_operation operation_from_ID(enum GROUP_IDentity ID);
+_group_operation operation_from_ID(enum GROUP_IDentity ID); // << Returns "FINITE_n_multiplication()" or "FINITE_N_multiplication()"
 unsigned long N_combine(unsigned long N_quotient, unsigned long A, unsigned long B, enum GROUP_IDentity Operation);
 // ^^^ Combine them all
 
