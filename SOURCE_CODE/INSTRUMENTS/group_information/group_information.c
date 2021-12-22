@@ -105,8 +105,10 @@ struct triple_ref_LL *zip(struct triple_ref_LL **zoom_out) {
     } else return NULL;
 }
 
+struct triple_ref_PTR_pair initialize_PTR_pair(struct triple_ref_LL **open_channel) { struct triple_ref_PTR_pair PTR_pair; PTR_pair.iterator = PTR_pair.head = open_channel; return PTR_pair; }
+
 struct triple_ref_LL **establish_LL(char **argv, group_OBJ group) {
-    struct triple_ref_PTR_pair element_LL_PTRs; element_LL_PTRs.iterator = element_LL_PTRs.head = (struct triple_ref_LL **) zoom_out();
+    struct triple_ref_PTR_pair element_LL_PTRs = initialize_PTR_pair((struct triple_ref_LL **) zoom_out());
     // ^^^ Keep an eye of the head of the open linked list that "triple_ref_LL_insert()" will create. ^^
 
     char *path_to_filename; FILE *ELEMENT_database = open_group(argv[0], group, argv[1], &path_to_filename); cardinality = 0;
@@ -125,8 +127,7 @@ struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **open_LL_with_
     struct triple_ref_LL *LL_with_elements = zip(open_LL_with_elements); unsigned long cell_width = char_in_val(LL_with_elements->element); LL_with_elements = LL_with_elements->next;
     // ^^ First finish the handling of the previous triple ref trick we were doing
 
-    struct triple_ref_PTR_pair generator_LL_PTRs;
-    generator_LL_PTRs.iterator = generator_LL_PTRs.head = (struct triple_ref_LL **) zoom_out();
+    struct triple_ref_PTR_pair generator_LL_PTRs = initialize_PTR_pair((struct triple_ref_LL **) zoom_out());
     // ^^ Declare new points and perform the same magic but this time in order to create a list of generators
 
     LOOKUP_table = (array_piece *) malloc(sizeof(array_piece) * cardinality);
