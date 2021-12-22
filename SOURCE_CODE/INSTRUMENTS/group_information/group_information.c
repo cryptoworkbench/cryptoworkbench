@@ -97,9 +97,9 @@ struct permutation_piece *yield_subgroup(struct _LL ***generator_CHANNEL, unsign
     return iterator->next;
 }
 
-struct _LL *CHANNEL_close(struct _LL **channel) {
+struct _LL *LL_from_CHANNEL(struct _LL **channel) {
     struct _LL *last_shackle, *first_shackle;
-    if (last_shackle = first_shackle = (struct _LL *) _CHANNEL_close((void **) channel)) {
+    if (last_shackle = first_shackle = (struct _LL *) _close_CHANNEL((void **) channel)) {
 	while (last_shackle->next) last_shackle = last_shackle->next;
 	last_shackle->next = first_shackle; return last_shackle;
     } else return NULL;
@@ -113,7 +113,7 @@ struct _LL **establish_LL(char **argv, group_OBJ group) {
     // ^^^ Open filestream to element database and initialize cardinality counter. ^^
 
     unsigned long group_ELEMENT; while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { triple_ref_LL_insert((struct _LL ***) &element_CHANNEL_PTR_pair.iterator, group_ELEMENT); cardinality++; }
-    // ^^^ Manifest open linked list consisting of all this "group"'s elements using "triple_ref_LL_insert()" (this linked list can only be closed performing "CHANNEL_close(element_CHANNEL_PTR_pair.head)"). ^^
+    // ^^^ Manifest open linked list consisting of all this "group"'s elements using "triple_ref_LL_insert()" (this linked list can only be closed performing "LL_from_CHANNEL(element_CHANNEL_PTR_pair.head)"). ^^
 
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), path_to_filename, ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
@@ -122,7 +122,7 @@ struct _LL **establish_LL(char **argv, group_OBJ group) {
 }
 
 struct _LL *replace_LL_with_table(struct _LL **element_CHANNEL, group_OBJ group) {
-    struct _LL *element_LL = CHANNEL_close(element_CHANNEL); unsigned long cell_width = char_in_val(element_LL->element); element_LL = element_LL->next;
+    struct _LL *element_LL = LL_from_CHANNEL(element_CHANNEL); unsigned long cell_width = char_in_val(element_LL->element); element_LL = element_LL->next;
     // ^^ First finish the handling of the previous triple ref trick we were doing
 
     struct _CHANNEL_PTR_pair generator_CHANNEL_PTR_pair; initialize_PTR_pair(&generator_CHANNEL_PTR_pair.iterator, &generator_CHANNEL_PTR_pair.head); // << Declare new pointers and perform the same magic but this time in order to create a list of generators
@@ -140,7 +140,7 @@ struct _LL *replace_LL_with_table(struct _LL **element_CHANNEL, group_OBJ group)
     for (index = 0; index < cardinality; index++) { // << Loop over the array one more time
 	LOOKUP_table[index].permutation = yield_subgroup((struct _LL ***) &generator_CHANNEL_PTR_pair.iterator, index, group); // << Now "yield_subgroup()" can properly search through the able and count the amount of generators
 	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(LOOKUP_table[index].unit.literal, cell_width); // << Now with a little less pressure on memory is a good time to add the string representations
-    } return CHANNEL_close((struct _LL **) generator_CHANNEL_PTR_pair.head); // << Returns this list at this entry
+    } return LL_from_CHANNEL((struct _LL **) generator_CHANNEL_PTR_pair.head); // << Returns this list at this entry
 }
 
 unsigned long process_generator_information(struct _LL *generator_list, char *modulus, char *symbol) {
