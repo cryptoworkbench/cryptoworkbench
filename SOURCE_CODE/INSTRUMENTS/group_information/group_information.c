@@ -106,29 +106,29 @@ struct triple_ref_LL *zip(struct triple_ref_LL **channel) {
 }
 
 struct triple_ref_LL **establish_LL(char **argv, group_OBJ group) {
-    struct triple_ref_LL **HEAD_OF_element_LL, **INSRT_CHAN_for_element_LL;
-    INSRT_CHAN_for_element_LL = HEAD_OF_element_LL = (struct triple_ref_LL **) sub_ordinator();
+    struct triple_ref_PTR_pair element_LL_PTRs;
+    element_LL_PTRs.iterator = element_LL_PTRs.head = (struct triple_ref_LL **) sub_ordinator();
     // ^^^ Make sure to keep an eye of the head of the linked list
 
     char *path_to_filename; FILE *ELEMENT_database = open_group(argv[0], group, argv[1], &path_to_filename); cardinality = 0;
     // ^^^ Open filestream to element database
 
     unsigned long group_ELEMENT;
-    while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { triple_ref_LL_insert(&INSRT_CHAN_for_element_LL, group_ELEMENT); cardinality++; }
+    while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { triple_ref_LL_insert(&element_LL_PTRs.iterator, group_ELEMENT); cardinality++; }
     // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
 
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), path_to_filename, ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
-    return HEAD_OF_element_LL;
+    return element_LL_PTRs.head;
 }
 
 struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **INSRT_CHAN_for_element_LL, group_OBJ group) {
     struct triple_ref_LL *iter = zip(INSRT_CHAN_for_element_LL); unsigned long cell_width = char_in_val(iter->element); iter = iter->next;
     // ^^ First finish the handling of the previous triple ref trick we were doing
 
-    struct triple_ref_LL **INSRT_CHAN_for_generator_LL, **HEAD_OF_generator_LL;
-    INSRT_CHAN_for_generator_LL = HEAD_OF_generator_LL = (struct triple_ref_LL **) sub_ordinator();
+    struct triple_ref_PTR_pair generator_LL_PTRs;
+    generator_LL_PTRs.iterator = generator_LL_PTRs.head = (struct triple_ref_LL **) sub_ordinator();
     // ^^ Declare new points and perform the same magic but this time in order to create a list of generators
 
     LOOKUP_table = (array_piece *) malloc(sizeof(array_piece) * cardinality);
@@ -142,9 +142,9 @@ struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **INSRT_CHAN_fo
     } // <<< Creates the table and destroys the entire linked list.
 
     for (index = 0; index < cardinality; index++) { // << Loop over the array one more time
-	LOOKUP_table[index].permutation = yield_subgroup(&INSRT_CHAN_for_generator_LL, index, group); // << Now "yield_subgroup()" can properly search through the able and count the amount of generators
+	LOOKUP_table[index].permutation = yield_subgroup(&generator_LL_PTRs.iterator, index, group); // << Now "yield_subgroup()" can properly search through the able and count the amount of generators
 	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(LOOKUP_table[index].unit.literal, cell_width); // << Now with a little less pressure on memory is a good time to add the string representations
-    } return zip(HEAD_OF_generator_LL); // << Returns this list at this entry
+    } return zip(generator_LL_PTRs.head); // << Returns this list at this entry
 }
 
 unsigned long process_generator_information(struct triple_ref_LL *generator_list, char *modulus, char *symbol) {

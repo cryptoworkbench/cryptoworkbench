@@ -11,6 +11,7 @@
 
 struct offset_values { unsigned long Y; unsigned long X; };
 struct triple_ref_LL { struct triple_ref_LL *next; unsigned long element; };
+struct triple_ref_PTR_pair { struct triple_ref_LL **head; struct triple_ref_LL **iterator; };
 struct content { unsigned long literal; char *ASCII_numerical; };
 struct permutation_piece { struct permutation_piece *next; struct content *unit; };
 typedef struct vertibrae { struct permutation_piece *permutation; struct content unit; } array_piece;
