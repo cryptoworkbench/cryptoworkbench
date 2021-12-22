@@ -69,7 +69,7 @@ void print_subgroup(struct permutation_piece *link) {
     } while (1); fprintf(main_fs, "}");
 }
 
-void triple_ref_LL_insert(struct triple_ref_LL **tracer, unsigned long new_ulong) {
+struct triple_ref_LL **triple_ref_LL_insert(struct triple_ref_LL **tracer, unsigned long new_ulong) {
     struct triple_ref_LL *new_LL_element = (struct triple_ref_LL *) malloc(sizeof(struct triple_ref_LL)); // Fix existence of new pointer_list element
     new_LL_element->next = NULL;
     new_LL_element->element = new_ulong;
@@ -78,6 +78,7 @@ void triple_ref_LL_insert(struct triple_ref_LL **tracer, unsigned long new_ulong
 	tracer = &(*tracer)->next;
 
     *tracer = new_LL_element; // <===-- And place the location of new_LL_element into the next field of the previous insertion --==###
+    return tracer;
 }
 
 // Returns a linked list which is in order of the permutation of the subgroup in question,
@@ -98,23 +99,28 @@ struct permutation_piece *yield_subgroup(unsigned long index, group_OBJ group, s
 }
 
 struct triple_ref_LL *zip(struct triple_ref_LL **channel) {
-    struct triple_ref_LL *last_shackle, *first_shackle; if (!(last_shackle = first_shackle = (struct triple_ref_LL *) disintermediate((void **) channel))) return NULL;
-    while (last_shackle->next) last_shackle = last_shackle->next; last_shackle->next = first_shackle;
-    return last_shackle;
+    struct triple_ref_LL *last_shackle, *first_shackle;
+    if (last_shackle = first_shackle = (struct triple_ref_LL *) disintermediate((void **) channel)) {
+	while (last_shackle->next) last_shackle = last_shackle->next;
+	last_shackle->next = first_shackle; return last_shackle;
+    } else return NULL;
 }
 
-struct triple_ref_LL **establish_LL(char **argv, group_OBJ group, struct triple_ref_LL **element_ll_INSERT_CHANNEL) {
+struct triple_ref_LL **establish_LL(char **argv, group_OBJ group, struct triple_ref_LL **tracer) {
+    struct triple_ref_LL **original_tracer = tracer;
+    // ^^^ Make sure to keep an eye of the head of the linked list
+
     char *path_to_filename; FILE *ELEMENT_database = open_group(argv[0], group, argv[1], &path_to_filename); cardinality = 0;
     // ^^^ Open filestream to element database
 
     unsigned long group_ELEMENT;
-    while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { triple_ref_LL_insert(element_ll_INSERT_CHANNEL, group_ELEMENT); cardinality++; }
+    while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { tracer = triple_ref_LL_insert(tracer, group_ELEMENT); cardinality++; }
     // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
 
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), path_to_filename, ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
-    return element_ll_INSERT_CHANNEL;
+    return original_tracer;
 }
 
 struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **element_ll_INSERT_CHANNEL, group_OBJ group, struct triple_ref_LL **generator_ll_INSERT_CHANNEL) {

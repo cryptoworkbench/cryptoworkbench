@@ -26,7 +26,7 @@ _group_operation group_operation;
 unsigned long index_lookup(unsigned long ul);
 struct permutation_piece *permutation_insert(unsigned long unit_identifier, struct permutation_piece *previous_permutation_piece);
 void print_subgroup(struct permutation_piece *link);
-void triple_ref_LL_insert(struct triple_ref_LL **tracer, unsigned long new_ulong);
+struct triple_ref_LL **triple_ref_LL_insert(struct triple_ref_LL **tracer, unsigned long new_ulong);
 struct permutation_piece *yield_subgroup(unsigned long index, group_OBJ group, struct triple_ref_LL **generator_channel);
 struct triple_ref_LL *zip(struct triple_ref_LL **channel);
 struct triple_ref_LL **establish_LL(char **argv, group_OBJ group, struct triple_ref_LL **element_ll_INSERT_CHANNEL);
