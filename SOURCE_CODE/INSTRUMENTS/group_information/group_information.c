@@ -103,11 +103,12 @@ struct permutation_piece *yield_subgroup(struct _LL ***generator_CHANNEL, unsign
     return iterator->next;
 }
 
-struct _LL *LL_from_CHANNEL(struct _LL **channel) {
-    struct _LL *last_shackle, *first_shackle;
-    if (last_shackle = first_shackle = (struct _LL *) _close_CHANNEL((void **) channel)) {
-	while (last_shackle->next) last_shackle = last_shackle->next;
-	last_shackle->next = first_shackle; return last_shackle;
+struct _LL *LL_from_CHANNEL(struct _CHANNEL_PTR_pair *CHANNEL_PTR_pair) {
+    struct _LL *first_shackle;
+    if (first_shackle = (struct _LL *) _close_CHANNEL(CHANNEL_PTR_pair->head)) {
+	struct _LL *last_shackle = (struct _LL *) CHANNEL_PTR_pair->iterator;
+	last_shackle->next = first_shackle;
+	return last_shackle;
     } else return NULL;
 }
 
@@ -124,9 +125,9 @@ struct _LL *establish_LL(char **argv, group_OBJ group) {
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
-    struct _LL *first_shackle = (struct _LL *) _close_CHANNEL(element_CHANNEL_PTR_pair.head);
-    struct _LL *last_shackle = (struct _LL *) element_CHANNEL_PTR_pair.iterator; last_shackle->next = first_shackle;
-    return last_shackle;
+    struct _LL *ret_val = LL_from_CHANNEL(&element_CHANNEL_PTR_pair);
+    if (ret_val) return ret_val;
+    else { fprintf(stderr, "No group elements to be added from 'ARCHIVE/...' file. Returning '-10'.\n"); exit(-10); }
 }
 
 struct _LL *replace_LL_with_table(struct _LL *element_LL, group_OBJ group) {
@@ -147,7 +148,9 @@ struct _LL *replace_LL_with_table(struct _LL *element_LL, group_OBJ group) {
     for (index = 0; index < cardinality; index++) { // << Loop over the array one more time
 	LOOKUP_table[index].permutation = yield_subgroup((struct _LL ***) &generator_CHANNEL_PTR_pair.iterator, index, group); // << Now "yield_subgroup()" can properly search through the able and count the amount of generators
 	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(LOOKUP_table[index].unit.literal, cell_width); // << Now with a little less pressure on memory is a good time to add the string representations
-    } return LL_from_CHANNEL((struct _LL **) generator_CHANNEL_PTR_pair.head); // << Returns this list at this entry
+    }
+
+    return LL_from_CHANNEL(&generator_CHANNEL_PTR_pair);
 }
 
 unsigned long process_generator_information(struct _LL *generator_list, char *modulus, char *symbol) {
