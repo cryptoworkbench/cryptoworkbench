@@ -10,8 +10,8 @@
 #define HELP_INFORMATION "Program usage: %s <CAP> <ID> [horizontal offset] [vertical offset] [output filename]\n\n<MANDATORY ARGUMENTS> are denoted like this. The program won't run without these.\n\n[optional arguments] are denoted like this. They are not very necessary.\n"
 
 struct offset_values { unsigned long Y; unsigned long X; };
-struct triple_ref_LL { struct triple_ref_LL *next; unsigned long element; };
-struct triple_ref_PTR_pair { struct triple_ref_LL **head; struct triple_ref_LL **iterator; };
+struct _LL { struct _LL *next; unsigned long element; };
+struct _LL_tracer_pair { struct _LL **head; struct _LL **iterator; };
 struct content { unsigned long literal; char *ASCII_numerical; };
 struct permutation_piece { struct permutation_piece *next; struct content *unit; };
 typedef struct vertibrae { struct permutation_piece *permutation; struct content unit; } array_piece;
@@ -27,12 +27,12 @@ _group_operation group_operation;
 unsigned long index_lookup(unsigned long ul);
 struct permutation_piece *permutation_insert(unsigned long unit_identifier, struct permutation_piece *previous_permutation_piece);
 void print_subgroup(struct permutation_piece *link);
-void triple_ref_LL_insert(struct triple_ref_LL ***tracer, unsigned long new_ulong);
-struct permutation_piece *yield_subgroup(struct triple_ref_LL ***generator_channel, unsigned long index, group_OBJ group);
-struct triple_ref_LL *zip(struct triple_ref_LL **channel);
-struct triple_ref_LL **establish_LL(char **argv, group_OBJ group);
-struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **element_ll_INSERT_CHANNEL, group_OBJ group);
-unsigned long process_generator_information(struct triple_ref_LL *generator_list, char *modulus, char *symbol);
+void triple_ref_LL_insert(struct _LL ***tracer, unsigned long new_ulong);
+struct permutation_piece *yield_subgroup(struct _LL ***generator_channel, unsigned long index, group_OBJ group);
+struct _LL *zip(struct _LL **channel);
+struct _LL **establish_LL(char **argv, group_OBJ group);
+struct _LL *replace_LL_with_table(struct _LL **element_ll_INSERT_CHANNEL, group_OBJ group);
+unsigned long process_generator_information(struct _LL *generator_list, char *modulus, char *symbol);
 void free_permutation_pieces(unsigned long index);
 void print_table();
 void HELP_AND_QUIT(char *prog_NAME);
