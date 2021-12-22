@@ -79,7 +79,8 @@ void triple_ref_LL_insert(struct _LL ***tracer_location, unsigned long new_ulong
     **tracer_location = new_LL_element;
     /* Add at the end ^^. */
     
-    *tracer_location = (struct _LL **) **tracer_location; // << Update pointer to the tracer
+    *tracer_location = (struct _LL **) **tracer_location;
+    /* And move onto this newly added spot ^^. */
 }
 
 // Returns a linked list which is in order of the permutation of the subgroup in question,
@@ -123,8 +124,9 @@ struct _LL *establish_LL(char **argv, group_OBJ group) {
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
-    // if (*element_CHANNEL_PTR_pair.head == *element_CHANNEL_PTR_pair.iterator) printf("They are the same.\n"); // <<< "I NEED TO EXPERIMENT WITH THIS."
-    return LL_from_CHANNEL((struct _LL **) element_CHANNEL_PTR_pair.head); // << Returns an open linked list consisting of the group's element in chronological order of interpretation from "ELEMENT_database".
+    struct _LL *first_shackle = (struct _LL *) _close_CHANNEL(element_CHANNEL_PTR_pair.head);
+    struct _LL *last_shackle = (struct _LL *) element_CHANNEL_PTR_pair.iterator; last_shackle->next = first_shackle;
+    return last_shackle;
 }
 
 struct _LL *replace_LL_with_table(struct _LL *element_LL, group_OBJ group) {
