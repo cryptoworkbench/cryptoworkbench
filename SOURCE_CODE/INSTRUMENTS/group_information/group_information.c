@@ -14,7 +14,7 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
 	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the mod value to shifts when dealing with additive groups (see "MATH_HINT_ONE")
     } // ^ Process offset values.
 
-    struct triple_ref_LL *generator_list = replace_LL_with_table(establish_LL(argv, group, (struct triple_ref_LL **) sub_ordinator()), group, (struct triple_ref_LL **) sub_ordinator());
+    struct triple_ref_LL *generator_list = replace_LL_with_table(establish_LL(argv, group, (struct triple_ref_LL **) sub_ordinator()), group);
     // ^^^ Substitute this circular linked list of group elements with an array-stored table of elements and free this linked list simultaneously.
 
     print_table();
@@ -70,20 +70,14 @@ void print_subgroup(struct permutation_piece *link) {
 }
 
 struct triple_ref_LL **triple_ref_LL_insert(struct triple_ref_LL **tracer, unsigned long new_ulong) {
-    struct triple_ref_LL *new_LL_element = (struct triple_ref_LL *) malloc(sizeof(struct triple_ref_LL)); // Fix existence of new pointer_list element
-    new_LL_element->next = NULL;
-    new_LL_element->element = new_ulong;
-
-    while (*tracer) // ###==-- Find last insertion --===>
-	tracer = &(*tracer)->next;
-
-    *tracer = new_LL_element; // <===-- And place the location of new_LL_element into the next field of the previous insertion --==###
-    return tracer;
+    struct triple_ref_LL *new_LL_element = (struct triple_ref_LL *) malloc(sizeof(struct triple_ref_LL)); // Fix existence of new element
+    new_LL_element->element = new_ulong; new_LL_element->next = NULL; // Initialize new element with ulong
+    while (*tracer) tracer = &(*tracer)->next; *tracer = new_LL_element; return tracer; // Insert at the end of the linked list and return at the end
 }
 
 // Returns a linked list which is in order of the permutation of the subgroup in question,
 // Think of a chain of shackles, this chain is returned at the shackle which points to the identity element unit's struct at a struct vertibrae data type
-struct permutation_piece *yield_subgroup(unsigned long index, group_OBJ group, struct triple_ref_LL **generator_channel) {
+struct permutation_piece *yield_subgroup(struct triple_ref_LL ***generator_channel, unsigned long index, group_OBJ group) {
     unsigned long start_element = LOOKUP_table[index].unit.literal;
     struct permutation_piece *iterator = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Create element
     iterator->unit = &LOOKUP_table[0].unit; // The identity value is always at the start of the lookup table
@@ -94,7 +88,7 @@ struct permutation_piece *yield_subgroup(unsigned long index, group_OBJ group, s
 	iterator = permutation_insert(generated_element, iterator); // << Put the current power of g into the permutation data structure
 	subgroup_cardinality++; }
 
-    if (subgroup_cardinality == cardinality) triple_ref_LL_insert(generator_channel, LOOKUP_table[index].unit.literal);
+    if (subgroup_cardinality == cardinality) *generator_channel = triple_ref_LL_insert(*generator_channel, LOOKUP_table[index].unit.literal);
     return iterator->next;
 }
 
@@ -123,7 +117,9 @@ struct triple_ref_LL **establish_LL(char **argv, group_OBJ group, struct triple_
     return original_tracer;
 }
 
-struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **element_ll_INSERT_CHANNEL, group_OBJ group, struct triple_ref_LL **generator_ll_INSERT_CHANNEL) {
+struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **element_ll_INSERT_CHANNEL, group_OBJ group) {
+    struct triple_ref_LL **generator_ll_INSERT_CHANNEL; struct triple_ref_LL **original_tracer;
+    generator_ll_INSERT_CHANNEL = original_tracer = (struct triple_ref_LL **) sub_ordinator();
     struct triple_ref_LL *iter = zip(element_ll_INSERT_CHANNEL); unsigned long cell_width = char_in_val(iter->element); iter = iter->next;
     // ^^ Determine required cell width for lookup table
 
@@ -138,9 +134,9 @@ struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **element_ll_IN
     } // <<< Creates the table and destroys the entire linked list.
 
     for (index = 0; index < cardinality; index++) { // << Loop over the array one more time
-	LOOKUP_table[index].permutation = yield_subgroup(index, group, generator_ll_INSERT_CHANNEL); // << Now "yield_subgroup()" can properly search through the able and count the amount of generators
+	LOOKUP_table[index].permutation = yield_subgroup(&generator_ll_INSERT_CHANNEL, index, group); // << Now "yield_subgroup()" can properly search through the able and count the amount of generators
 	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(LOOKUP_table[index].unit.literal, cell_width); // << Now with a little less pressure on memory is a good time to add the string representations
-    } return zip(generator_ll_INSERT_CHANNEL); // << Returns this list at this entry
+    } return zip(original_tracer); // << Returns this list at this entry
 }
 
 unsigned long process_generator_information(struct triple_ref_LL *generator_list, char *modulus, char *symbol) {
