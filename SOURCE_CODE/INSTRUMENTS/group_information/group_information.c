@@ -68,16 +68,15 @@ void print_subgroup(struct permutation_piece *link) {
 }
 
 void triple_ref_LL_insert(struct _LL ***tracer_location, unsigned long new_ulong) {
-    struct _LL **tracer = *tracer_location;
     struct _LL *new_LL_element = (struct _LL *) malloc(sizeof(struct _LL)); // Fix existence of new element
     new_LL_element->element = new_ulong; new_LL_element->next = NULL;
     /* Manifest new element for ulong ^^. */
 
-    while (*tracer) tracer = &(*tracer)->next;
-    *tracer = new_LL_element;
+    while (**tracer_location) *tracer_location = &(***tracer_location).next;
+    **tracer_location = new_LL_element;
     /* Add at the end ^^. */
     
-    *tracer_location = tracer; // << Update pointer to the tracer
+    *tracer_location = (struct _LL **) **tracer_location; // << Update pointer to the tracer
 }
 
 // Returns a linked list which is in order of the permutation of the subgroup in question,
