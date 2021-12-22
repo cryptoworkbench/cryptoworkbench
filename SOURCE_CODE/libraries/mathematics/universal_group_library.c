@@ -1,8 +1,8 @@
 #include "universal_group_library.h"
 
-enum GROUP_IDentity *STR_could_be_parsed_into_group_OBJ_ID_Sloth(char *STR, group_OBJ group_to_be_initialized) {
-    if (match(STR, additive_signs)) { group_to_be_initialized->ID = ADDITIVE; return &group_to_be_initialized->ID; }
-    else if (match(STR, multiplicative_signs)) { group_to_be_initialized->ID = MULTIPLICATIVE; return &group_to_be_initialized->ID; }
+enum GROUP_IDentity *STR_could_be_parsed_into_enum_GROUP_IDentity(char *STR, enum GROUP_IDentity *ID) {
+    if (match(STR, additive_signs)) { *ID = ADDITIVE; return ID; }
+    else if (match(STR, multiplicative_signs)) { *ID = MULTIPLICATIVE; return ID; }
     else return NULL;
 }
 

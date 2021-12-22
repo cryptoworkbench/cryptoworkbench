@@ -4,7 +4,7 @@
 int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     if (6 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));
     if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->MOD)) MOD_not_parsable_ERROR(argv[1]);
-    if (3 > argc || !STR_could_be_parsed_into_group_OBJ_ID_Sloth(argv[2], group)) ID_not_parsable_ERROR(argv[1], argv[2]);
+    if (3 > argc || !STR_could_be_parsed_into_enum_GROUP_IDentity(argv[2], &group->ID)) ID_not_parsable_ERROR(argv[1], argv[2]);
     else group_operation = operation_from_ID(group->ID); // <^^^ Parses and processes everything that has to do with CMD args, also deals with the "help_queries"
 
     shifts = (struct offset_values *) malloc(sizeof(struct offset_values)); shifts->Y = shifts->X = 0;
@@ -126,7 +126,6 @@ struct _LL *replace_LL_with_table(struct _LL **element_CHANNEL, group_OBJ group)
     // ^^ First finish the handling of the previous triple ref trick we were doing
 
     struct _CHANNEL_PTR_pair generator_CHANNEL_PTR_pair; INITIALIZE_CHANNEL_PTR_pair(&generator_CHANNEL_PTR_pair); // << Declare new pointers and perform the same magic but this time in order to create a list of generators
-
     LOOKUP_table = (array_piece *) malloc(sizeof(array_piece) * cardinality);
     // ^^ Actually initialize the lookup table by allocating memory on the heap for it
 
