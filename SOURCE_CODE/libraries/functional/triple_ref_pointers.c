@@ -7,7 +7,7 @@ void **open_CHANNEL() {
     return source; }
 // ^^ Open source
 
-void initialize_PTR_pair(void ***PTR_one, void ***PTR_two) { *PTR_one = *PTR_two = open_CHANNEL(); }
+void INITIALIZE_CHANNEL_PTR_pair(void ***PTR_one, void ***PTR_two) { *PTR_one = *PTR_two = open_CHANNEL(); }
 
 void *_close_CHANNEL(void **to_be_dereferenced) {
     void *return_value = *to_be_dereferenced; free(to_be_dereferenced);
