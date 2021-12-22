@@ -14,7 +14,7 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
 	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the mod value to shifts when dealing with additive groups (see "MATH_HINT_ONE")
     } // ^ Process offset values.
 
-    struct triple_ref_LL *generator_list = replace_LL_with_table(establish_LL(argv, group, (struct triple_ref_LL **) sub_ordinator()), group);
+    struct triple_ref_LL *generator_list = replace_LL_with_table(establish_LL(argv, group), group);
     // ^^^ Substitute this circular linked list of group elements with an array-stored table of elements and free this linked list simultaneously.
 
     print_table();
@@ -69,10 +69,18 @@ void print_subgroup(struct permutation_piece *link) {
     } while (1); fprintf(main_fs, "}");
 }
 
-struct triple_ref_LL **triple_ref_LL_insert(struct triple_ref_LL **tracer, unsigned long new_ulong) {
+void triple_ref_LL_insert(struct triple_ref_LL ***tracer_location, unsigned long new_ulong) {
+    struct triple_ref_LL **tracer = *tracer_location;
     struct triple_ref_LL *new_LL_element = (struct triple_ref_LL *) malloc(sizeof(struct triple_ref_LL)); // Fix existence of new element
-    new_LL_element->element = new_ulong; new_LL_element->next = NULL; // Initialize new element with ulong
-    while (*tracer) tracer = &(*tracer)->next; *tracer = new_LL_element; return tracer; // Insert at the end of the linked list and return at the end
+    new_LL_element->element = new_ulong; new_LL_element->next = NULL;
+    /* Manifest new element for ulong ^^. */
+
+    while (*tracer) tracer = &(*tracer)->next;
+    *tracer = new_LL_element;
+    /* Add at the end ^^. */
+    
+    *tracer_location = tracer;
+    /* Return at the end */
 }
 
 // Returns a linked list which is in order of the permutation of the subgroup in question,
@@ -88,7 +96,7 @@ struct permutation_piece *yield_subgroup(struct triple_ref_LL ***generator_chann
 	iterator = permutation_insert(generated_element, iterator); // << Put the current power of g into the permutation data structure
 	subgroup_cardinality++; }
 
-    if (subgroup_cardinality == cardinality) *generator_channel = triple_ref_LL_insert(*generator_channel, LOOKUP_table[index].unit.literal);
+    if (subgroup_cardinality == cardinality) triple_ref_LL_insert(generator_channel, LOOKUP_table[index].unit.literal);
     return iterator->next;
 }
 
@@ -100,15 +108,17 @@ struct triple_ref_LL *zip(struct triple_ref_LL **channel) {
     } else return NULL;
 }
 
-struct triple_ref_LL **establish_LL(char **argv, group_OBJ group, struct triple_ref_LL **tracer) {
-    struct triple_ref_LL **original_tracer = tracer;
+struct triple_ref_LL **establish_LL(char **argv, group_OBJ group) {
+    struct triple_ref_LL **original_tracer;
+    struct triple_ref_LL **tracer;
+    tracer = original_tracer = (struct triple_ref_LL **) sub_ordinator();
     // ^^^ Make sure to keep an eye of the head of the linked list
 
     char *path_to_filename; FILE *ELEMENT_database = open_group(argv[0], group, argv[1], &path_to_filename); cardinality = 0;
     // ^^^ Open filestream to element database
 
     unsigned long group_ELEMENT;
-    while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { tracer = triple_ref_LL_insert(tracer, group_ELEMENT); cardinality++; }
+    while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { triple_ref_LL_insert(&tracer, group_ELEMENT); cardinality++; }
     // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
 
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), path_to_filename, ELEMENT_database);
