@@ -79,8 +79,7 @@ void triple_ref_LL_insert(struct triple_ref_LL ***tracer_location, unsigned long
     *tracer = new_LL_element;
     /* Add at the end ^^. */
     
-    *tracer_location = tracer;
-    /* Return at the end */
+    *tracer_location = tracer; // << Update pointer to the tracer
 }
 
 // Returns a linked list which is in order of the permutation of the subgroup in question,
@@ -109,32 +108,33 @@ struct triple_ref_LL *zip(struct triple_ref_LL **channel) {
 }
 
 struct triple_ref_LL **establish_LL(char **argv, group_OBJ group) {
-    struct triple_ref_LL **original_tracer;
-    struct triple_ref_LL **tracer;
-    tracer = original_tracer = (struct triple_ref_LL **) sub_ordinator();
+    struct triple_ref_LL **element_ll_HEAD, **element_ll_INSERT_CHANNEL;
+    element_ll_INSERT_CHANNEL = element_ll_HEAD = (struct triple_ref_LL **) sub_ordinator();
     // ^^^ Make sure to keep an eye of the head of the linked list
 
     char *path_to_filename; FILE *ELEMENT_database = open_group(argv[0], group, argv[1], &path_to_filename); cardinality = 0;
     // ^^^ Open filestream to element database
 
     unsigned long group_ELEMENT;
-    while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { triple_ref_LL_insert(&tracer, group_ELEMENT); cardinality++; }
+    while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { triple_ref_LL_insert(&element_ll_INSERT_CHANNEL, group_ELEMENT); cardinality++; }
     // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
 
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), path_to_filename, ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
-    return original_tracer;
+    return element_ll_HEAD;
 }
 
 struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **element_ll_INSERT_CHANNEL, group_OBJ group) {
-    struct triple_ref_LL **generator_ll_INSERT_CHANNEL; struct triple_ref_LL **original_tracer;
-    generator_ll_INSERT_CHANNEL = original_tracer = (struct triple_ref_LL **) sub_ordinator();
     struct triple_ref_LL *iter = zip(element_ll_INSERT_CHANNEL); unsigned long cell_width = char_in_val(iter->element); iter = iter->next;
-    // ^^ Determine required cell width for lookup table
+    // ^^ First finish the handling of the previous triple ref trick we were doing
+
+    struct triple_ref_LL **generator_ll_INSERT_CHANNEL, **generator_ll_HEAD;
+    generator_ll_INSERT_CHANNEL = generator_ll_HEAD = (struct triple_ref_LL **) sub_ordinator();
+    // ^^ Declare new points and perform the same magic but this time in order to create a list of generators
 
     LOOKUP_table = (array_piece *) malloc(sizeof(array_piece) * cardinality);
-    // ^^ Allocate memory space on heap for lookup table.
+    // ^^ Actually initialize the lookup table by allocating memory on the heap for it
 
     unsigned long index; // << We will reuse unsigned long index at these 2 for loop's
     for (index = 0; index < cardinality; index++) {
@@ -146,7 +146,7 @@ struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **element_ll_IN
     for (index = 0; index < cardinality; index++) { // << Loop over the array one more time
 	LOOKUP_table[index].permutation = yield_subgroup(&generator_ll_INSERT_CHANNEL, index, group); // << Now "yield_subgroup()" can properly search through the able and count the amount of generators
 	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(LOOKUP_table[index].unit.literal, cell_width); // << Now with a little less pressure on memory is a good time to add the string representations
-    } return zip(original_tracer); // << Returns this list at this entry
+    } return zip(generator_ll_HEAD); // << Returns this list at this entry
 }
 
 unsigned long process_generator_information(struct triple_ref_LL *generator_list, char *modulus, char *symbol) {
