@@ -23,6 +23,7 @@ typedef struct group_STRUCT {
 
 static char *argv_ZERO;
 static FILE *logbook_fs;
+static char *path_to_FILE;
 /* ^^^ VARIABLE DEFINITIONS ^^^ */
 
 enum GROUP_IDentity *STR_could_be_parsed_into_enum_GROUP_IDentity(char *STR, enum GROUP_IDentity *ID);
@@ -36,6 +37,6 @@ char *adjective_from_ID_Sloth(group_OBJ group);
 int boolean_from_ID_Sloth(group_OBJ group);
 
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line);
-FILE *open_group(char *prog_NAME, group_OBJ group, char *MOD, char **path_to_filename_INSERTMENT_SLOTH);
-FILE *open_group_INNER(char **path_to_filename_INSERTMENT_SLOTH, char *group_MOD, char *numerical_denomination, char *adjective, char *symbol, char *LINE);
-void close_group(char *group_CAP, char *symbol_to_use, char *path_to_filename, FILE *opened_group);
+FILE *open_group(char *prog_NAME, group_OBJ group, char *MOD);
+FILE *open_group_INNER(char *group_MOD, char *numerical_denomination, char *adjective, char *symbol, char *LINE);
+void close_group(char *group_CAP, char *symbol_to_use, FILE *opened_group);

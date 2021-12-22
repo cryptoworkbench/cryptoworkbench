@@ -109,13 +109,13 @@ struct _LL **establish_LL(char **argv, group_OBJ group) {
     struct _CHANNEL_PTR_pair element_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair();
     // ^^^ Keep an eye of the head of the open linked list that "triple_ref_LL_insert()" will create. ^^
 
-    char *path_to_filename; FILE *ELEMENT_database = open_group(argv[0], group, argv[1], &path_to_filename); cardinality = 0;
+    FILE *ELEMENT_database = open_group(argv[0], group, argv[1]); cardinality = 0;
     // ^^^ Open filestream to element database and initialize cardinality counter. ^^
 
     unsigned long group_ELEMENT; while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { triple_ref_LL_insert((struct _LL ***) &element_CHANNEL_PTR_pair.iterator, group_ELEMENT); cardinality++; }
     // ^^^ Manifest open linked list consisting of all this "group"'s elements using "triple_ref_LL_insert()" (this linked list can only be closed performing "LL_from_CHANNEL(element_CHANNEL_PTR_pair.head)"). ^^
 
-    close_group(argv[1], operation_symbol_from_ID_Sloth(group), path_to_filename, ELEMENT_database);
+    close_group(argv[1], operation_symbol_from_ID_Sloth(group), ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
     return (struct _LL **) element_CHANNEL_PTR_pair.head; // << Returns an open linked list consisting of the group's element in chronological order of interpretation from "ELEMENT_database".

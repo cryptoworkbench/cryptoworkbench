@@ -20,7 +20,7 @@ char *BUFFER_OF_SIZE(unsigned int SIZE) {
 
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line) { fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", argv_ZERO, TO_BE_APPENDED_logbook_line); fflush(logbook_fs); }
 
-FILE *open_group(char *prog_NAME, group_OBJ group, char *MOD, char **path_to_filename_INSERTMENT_SLOTH) {
+FILE *open_group(char *prog_NAME, group_OBJ group, char *MOD) {
     argv_ZERO = prog_NAME;
     // ^^ Set the gobal variable "argv_ZERO" based on what was passed on to this function as "argv[0]"
 
@@ -32,16 +32,16 @@ FILE *open_group(char *prog_NAME, group_OBJ group, char *MOD, char **path_to_fil
     char *operation_symbol = operation_symbol_from_ID_Sloth(group);
     // ^^ Prepare the char pointers "open_group_as_INNER()" needs
 
-    FILE *opened_group = open_group_INNER(path_to_filename_INSERTMENT_SLOTH, MOD, group_ID, adjective, operation_symbol, BUFFER_OF_SIZE(200));
+    FILE *opened_group = open_group_INNER(MOD, group_ID, adjective, operation_symbol, BUFFER_OF_SIZE(200));
     return opened_group;
 }
 
-FILE *open_group_INNER(char **path_to_filename_INSERTMENT_SLOTH, char *group_MOD, char *numerical_denomination, char *adjective, char *symbol, char *LINE) {
+FILE *open_group_INNER(char *group_MOD, char *numerical_denomination, char *adjective, char *symbol, char *LINE) {
     char *name_of_FILE = (char *) malloc(sizeof(char) * (str_len(adjective) + str_len(FILENAME_BODY) + str_len(group_MOD) + 1));
     sprintf(name_of_FILE, "%s%s%s", adjective, FILENAME_BODY, group_MOD);
     // ^^ Prepare the filename
 
-    char *path_to_FILE = (char *) malloc(sizeof(char) * (str_len(ARCHIVE_FOLDER) + str_len(name_of_FILE) + 1));
+    path_to_FILE = (char *) malloc(sizeof(char) * (str_len(ARCHIVE_FOLDER) + str_len(name_of_FILE) + 1));
     sprintf(path_to_FILE, ARCHIVE_FOLDER "%s", name_of_FILE);
     // ^^ Prepare the path
 
@@ -85,11 +85,11 @@ FILE *open_group_INNER(char **path_to_filename_INSERTMENT_SLOTH, char *group_MOD
 	    sprintf(LINE, "FATAL ERROR: failed to create the required registry file using '"ELEMENT_EXPORTER"'");
 	    append_to_LOGBOOK(LINE); exit(0); }
     } if (group_fs != NULL) sprintf(LINE, "Successfully opened '%s'", path_to_FILE); append_to_LOGBOOK(LINE);
-    free(LINE); *path_to_filename_INSERTMENT_SLOTH = path_to_FILE; 
+    free(LINE);
     return group_fs;
 }
 
-void close_group(char *group_CAP, char *symbol_to_use, char *path_to_filename, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", group_CAP, symbol_to_use, path_to_filename); append_to_LOGBOOK(BUFFER); fclose(opened_group);
-    sprintf(BUFFER, "Closed '%s'", path_to_filename); free(path_to_filename); append_to_LOGBOOK(BUFFER); free(BUFFER); fclose(logbook_fs);
+void close_group(char *group_CAP, char *symbol_to_use, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
+    sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", group_CAP, symbol_to_use, path_to_FILE); append_to_LOGBOOK(BUFFER); fclose(opened_group);
+    sprintf(BUFFER, "Closed '%s'", path_to_FILE); free(path_to_FILE); append_to_LOGBOOK(BUFFER); free(BUFFER); fclose(logbook_fs);
 }
