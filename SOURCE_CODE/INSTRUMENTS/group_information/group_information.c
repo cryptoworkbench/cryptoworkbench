@@ -105,10 +105,8 @@ struct triple_ref_LL *CLOSE___CHANNEL(struct triple_ref_LL **zoom_out) {
     } else return NULL;
 }
 
-void initialize_PTR_pair(struct triple_ref_PTR_pair *PTR_pair) { PTR_pair->iterator = PTR_pair->head = (struct triple_ref_LL **) zoom_out(); }
-
 struct triple_ref_LL **establish_LL(char **argv, group_OBJ group) {
-    struct triple_ref_PTR_pair element_LL_PTRs; initialize_PTR_pair(&element_LL_PTRs);
+    struct triple_ref_PTR_pair element_LL_PTRs; initialize_PTR_pair((void **) &element_LL_PTRs.iterator, (void **) &element_LL_PTRs.head);
     // ^^^ Keep an eye of the head of the open linked list that "triple_ref_LL_insert()" will create. ^^
 
     char *path_to_filename; FILE *ELEMENT_database = open_group(argv[0], group, argv[1], &path_to_filename); cardinality = 0;
@@ -127,7 +125,7 @@ struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **OPEN_element_
     struct triple_ref_LL *LL_with_elements = CLOSE___CHANNEL(OPEN_element_CHANNEL); unsigned long cell_width = char_in_val(LL_with_elements->element); LL_with_elements = LL_with_elements->next;
     // ^^ First finish the handling of the previous triple ref trick we were doing
 
-    struct triple_ref_PTR_pair generator_LL_PTRs; initialize_PTR_pair(&generator_LL_PTRs); // << Declare new pointers and perform the same magic but this time in order to create a list of generators
+    struct triple_ref_PTR_pair generator_LL_PTRs; initialize_PTR_pair((void **) &generator_LL_PTRs.iterator, (void **) &generator_LL_PTRs.head); // << Declare new pointers and perform the same magic but this time in order to create a list of generators
 
     LOOKUP_table = (array_piece *) malloc(sizeof(array_piece) * cardinality);
     // ^^ Actually initialize the lookup table by allocating memory on the heap for it

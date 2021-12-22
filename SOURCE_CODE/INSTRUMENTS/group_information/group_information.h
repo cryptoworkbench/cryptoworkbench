@@ -30,7 +30,6 @@ void print_subgroup(struct permutation_piece *link);
 void triple_ref_LL_insert(struct triple_ref_LL ***tracer, unsigned long new_ulong);
 struct permutation_piece *yield_subgroup(struct triple_ref_LL ***generator_channel, unsigned long index, group_OBJ group);
 struct triple_ref_LL *zip(struct triple_ref_LL **channel);
-void initialize_PTR_pair(struct triple_ref_PTR_pair *PTR_pair);
 struct triple_ref_LL **establish_LL(char **argv, group_OBJ group);
 struct triple_ref_LL *replace_LL_with_table(struct triple_ref_LL **element_ll_INSERT_CHANNEL, group_OBJ group);
 unsigned long process_generator_information(struct triple_ref_LL *generator_list, char *modulus, char *symbol);
