@@ -123,6 +123,7 @@ struct _LL *establish_LL(char **argv, group_OBJ group) {
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
+    // if (*element_CHANNEL_PTR_pair.head == *element_CHANNEL_PTR_pair.iterator) printf("They are the same.\n"); // <<< "I NEED TO EXPERIMENT WITH THIS."
     return LL_from_CHANNEL((struct _LL **) element_CHANNEL_PTR_pair.head); // << Returns an open linked list consisting of the group's element in chronological order of interpretation from "ELEMENT_database".
 }
 
