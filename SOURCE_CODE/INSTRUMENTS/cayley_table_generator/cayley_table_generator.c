@@ -81,7 +81,7 @@ struct element *setup_group(struct element **linked_list_connection, struct grou
 	if (group->identity == ADDITIVE_IDENTITY || coprime(GCD(group->modulus, element))) { spawn_element(linked_list_connection, element); group->order++; }
     // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
 
-    struct element *iterator, *identity; iterator = identity = (struct element *) disintermediate( (void **) linked_list_connection);
+    struct element *iterator, *identity; iterator = identity = (struct element *) _close_CHANNEL( (void **) linked_list_connection);
     while (iterator->next) { iterator = iterator->next; } group->cell_width = char_in_val(iterator->number);
     // ^^^ Take out of the end product a singly-linked list and destroy any intermediary memory used
 
@@ -141,7 +141,7 @@ struct combination *combine(struct combination **source, struct group_meta *grou
 	    // Move along the vertical axis (y)
 	    unary_tail = unary_tail->next;
 	} while (unary_tail); }
-    return (struct combination *) disintermediate( (void **) source); }
+    return (struct combination *) _close_CHANNEL( (void **) source); }
 
 void bar(unsigned long spaces) {
     for (unsigned long iter = 0; iter < spaces; iter++)
@@ -241,10 +241,10 @@ int main(int argc, char **argv) { fs = stdout;
 	printf("%s\n", argv[3]);
 
     // Initialize group
-    group->ll = setup_group((struct element **) sub_ordinator(), group);
+    group->ll = setup_group((struct element **) open_CHANNEL(), group);
 
     // Initialize combination ll
-    combination_ll = combine((struct combination **) sub_ordinator(), group);
+    combination_ll = combine((struct combination **) open_CHANNEL(), group);
 
     // Print first table row
     fprintf(stdout, UNDERLINE); fprintf(fs, " "); fprintf(stdout, RED);
