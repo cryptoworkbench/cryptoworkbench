@@ -55,25 +55,25 @@ FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, cons
     // ^^ Prepare the path
 
     // ### Begin program operation ===>
-    FILE *group_fs = NULL; if (!(group_fs = fopen(path_to_FILE, "r"))) { // << If the file does not exist
+    FILE *group_fs = NULL;
+    if (group_fs = fopen(path_to_FILE, "r")) { sprintf(LINE, "Successfully opened '%s'", path_to_FILE); append_to_LOGBOOK(LINE); free(LINE); }
+    else {
 	sprintf(LINE, "Could not to open '%s'", path_to_FILE); append_to_LOGBOOK(LINE);
 	// ^^ Explain that the needed file does not exist 
 
-	sprintf(LINE, "Assuming the 'ARCHIVE/' folder was there and it wasn't a permission thing, I will try to use '"ELEMENT_EXPORTER"' to autonomously archive \u2115%s%s", group_MOD, symbol); append_to_LOGBOOK(LINE);
+	sprintf(LINE, "Assuming the 'ARCHIVE/' folder was there and it wasn't a permission thing, I will try to use '"ELEMENT_EXPORTER"' to autonomously archive \u2115%s%s", group_MOD, symbol);
+	append_to_LOGBOOK(LINE);
 
 	sprintf(LINE, "%s using " ELEMENT_EXPORTER, argv_ZERO); // << Use LINE in order to send along a special "argv[0]" to "group_exporter"
 	char *ELEMENT_EXPORTER_argv[] = {LINE, group_MOD, (char *) numerical_denomination, 0};
 	// ^^ Prepare the char pointer array "group_exporter" will receive as "char *argv[]" (a.k.a. "char **argv")
 
-	int fd[2]; if (pipe(fd) == -1) { fprintf(stderr, "Failed to open pipe.\n"); exit(-1); }
-	// ^^ Open pipe
+	int fd[2]; if (pipe(fd) == -1) { fprintf(stderr, "Failed to open pipe.\n"); exit(-1); } // < Open pipe
 
-	pid_t group_exporter_PID = fork(); if (group_exporter_PID == -1) { sprintf(LINE, FORK_ERROR); append_to_LOGBOOK(LINE); exit(-10); }
-	// ^^ Fork
+	pid_t group_exporter_PID = fork(); if (group_exporter_PID == -1) { sprintf(LINE, FORK_ERROR); append_to_LOGBOOK(LINE); exit(-10); } // < Fork
 
-	if (!group_exporter_PID) { dup2(fd[1], 1); close(fd[0]);
-	    execvp(ELEMENT_EXPORTER, ELEMENT_EXPORTER_argv); }
-	// ^^ Execute "group_exporter" with it's "STDOUT" directed to the write end of the pipe (namely "fd[1]")
+	if (!group_exporter_PID) { dup2(fd[1], 1); close(fd[0]); execvp(ELEMENT_EXPORTER, ELEMENT_EXPORTER_argv); }
+	// ^ Execute "group_exporter" with it's "STDOUT" directed to the write end of the pipe (namely "fd[1]")
 
 	FILE *group_exporter_STDOUT = fdopen(fd[0], "r");
 	// ^^ Fix a new file descriptor
@@ -89,13 +89,11 @@ FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, cons
 	int ELEMENT_EXPORTER_exit_status = WEXITSTATUS(ELEMENT_EXPORTER_exit_status_RAW);
 	if (ELEMENT_EXPORTER_exit_status && (group_fs = fopen(path_to_FILE, "r"))) {
 	    sprintf(LINE, ELEMENT_EXPORTER " returned an exit status of '%i' \u21D2 \u2115%s%s should be registered now", ELEMENT_EXPORTER_exit_status, group_MOD, symbol);
-	    append_to_LOGBOOK(LINE); }
-	else {
+	    append_to_LOGBOOK(LINE);
+	} else {
 	    sprintf(LINE, "FATAL ERROR: failed to create the required registry file using '"ELEMENT_EXPORTER"'");
-	    append_to_LOGBOOK(LINE); exit(0); }
-    } if (group_fs != NULL) sprintf(LINE, "Successfully opened '%s'", path_to_FILE); append_to_LOGBOOK(LINE);
-    free(LINE);
-    return group_fs;
+	    append_to_LOGBOOK(LINE); exit(0);
+	} } return group_fs;
 }
 
 void close_group(char *group_CAP, char *symbol_to_use, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
