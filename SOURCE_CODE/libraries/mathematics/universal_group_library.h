@@ -38,7 +38,8 @@ char *adjective_from_ID_Sloth(group_OBJ group);
 int boolean_from_ID_Sloth(group_OBJ group);
 
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line);
-void single_line_append_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line);
+void open_and_append_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line);
 FILE *open_group(char *prog_NAME, group_OBJ group, char *MOD);
 FILE *open_group_INNER(char *group_MOD, char *numerical_denomination, char *adjective, char *symbol, char *LINE);
 void close_group(char *group_CAP, char *symbol_to_use, FILE *opened_group);
+void close_logbook();

@@ -135,13 +135,12 @@ struct _LL *replace_LL_with_table(struct _LL *element_LL, group_OBJ group) {
     for (index = 0; index < cardinality; index++) {
 	struct _LL *process = element_LL;
 	LOOKUP_table[index].unit.literal = process->element;
+	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(process->element, cell_width); // << Now with a little less pressure on memory is a good time to add the string representations
 	element_LL = process->next; free(process);
     } // <<< Creates the table and destroys the entire linked list.
 
-    for (index = 0; index < cardinality; index++) { // << Loop over the array one more time
-	LOOKUP_table[index].permutation = yield_subgroup((struct _LL ***) &generator_CHANNEL_PTR_pair.iterator, index, group);
-	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(LOOKUP_table[index].unit.literal, cell_width); // << Now with a little less pressure on memory is a good time to add the string representations
-    }
+    for (index = 0; index < cardinality; index++) LOOKUP_table[index].permutation = yield_subgroup((struct _LL ***) &generator_CHANNEL_PTR_pair.iterator, index, group);
+    // ^^ Loop over the array one more time and determine the permutations definitevely.
 
     return LL_from_CHANNEL(&generator_CHANNEL_PTR_pair);
 }

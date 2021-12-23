@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
 
     printf("\nExported %lu elements.\n", count);
     char *BUFFER = BUFFER_OF_SIZE(50); sprintf(BUFFER, "Exported \u2115%lu%s", _group.MOD, operation_symbol_from_ID_Sloth(&_group));
-    single_line_append_to_LOGBOOK(argv[0], BUFFER); free(BUFFER);
+    open_and_append_to_LOGBOOK(argv[0], BUFFER); free(BUFFER); close_logbook();
     // ^^ Notify in the LOGBOOK about my operations
 
     if (4 > argc) return 1; else execvp(*(argv + 3), (argv + 3));

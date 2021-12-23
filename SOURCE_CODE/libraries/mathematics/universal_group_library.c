@@ -24,12 +24,9 @@ void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line) {
     fflush(logbook_fs);
 }
 
-void single_line_append_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line) {
-    /* Maybe this function won't work when "logbook_fs" has already been opened. */
+void open_and_append_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line) {
     if ( !(logbook_fs = fopen(LOGBOOK_PATH, "a"))) { fprintf(stderr, "Failed to open logbook!\n"); exit(-10); }
-    argv_ZERO = prog_NAME;
-    fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", argv_ZERO, TO_BE_APPENDED_logbook_line);
-    fclose(logbook_fs);
+    fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", prog_NAME, TO_BE_APPENDED_logbook_line); fflush(logbook_fs);
 }
 
 FILE *open_group(char *prog_NAME, group_OBJ group, char *MOD) {
@@ -103,5 +100,9 @@ FILE *open_group_INNER(char *group_MOD, char *numerical_denomination, char *adje
 
 void close_group(char *group_CAP, char *symbol_to_use, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
     sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", group_CAP, symbol_to_use, path_to_FILE); append_to_LOGBOOK(BUFFER); fclose(opened_group);
-    sprintf(BUFFER, "Closed '%s'", path_to_FILE); free(path_to_FILE); append_to_LOGBOOK(BUFFER); free(BUFFER); fclose(logbook_fs);
+    sprintf(BUFFER, "Closed '%s'", path_to_FILE); free(path_to_FILE); append_to_LOGBOOK(BUFFER); free(BUFFER); close_logbook();
+}
+
+void close_logbook() {
+    fclose(logbook_fs);
 }
