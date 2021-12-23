@@ -20,7 +20,7 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
 	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the mod value to shifts when dealing with additive groups (see "MATH_HINT_ONE")
     } // ^ Process offset values.
 
-    struct _general_LL *generator_list = replace_LL_with_table(establish_LL(argv, group), group); print_table();
+    struct _general_LL *generator_list = element_LL_process(element_LL_from_file(argv, group), group); print_table();
     // ^^^ Substitute this circular linked list of group elements with an array-stored table of elements and free this linked list simultaneously.
 
     char *adjective = adjective_from_ID_Sloth(group);
@@ -105,7 +105,7 @@ struct _general_LL *LL_from_CHANNEL(struct _CHANNEL_PTR_pair *CHANNEL_PTR_pair) 
     } else return NULL;
 }
 
-struct _general_LL *establish_LL(char **argv, group_OBJ group) {
+struct _general_LL *element_LL_from_file(char **argv, group_OBJ group) {
     struct _CHANNEL_PTR_pair element_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair();
     // ^^^ Keep an eye of the head of the open linked list that "_general_LL_insert()" will create. ^^
 
@@ -118,12 +118,12 @@ struct _general_LL *establish_LL(char **argv, group_OBJ group) {
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
-    struct _general_LL *element_LL = LL_from_CHANNEL(&element_CHANNEL_PTR_pair);
-    if (element_LL) return element_LL;
+    struct _general_LL *ret_VAL = LL_from_CHANNEL(&element_CHANNEL_PTR_pair);
+    if (ret_VAL) return ret_VAL;
     else { fprintf(stderr, "No group elements to be could be interpreted a file within folder \"ARCHIVE/\". Returning '-10'.\n"); exit(-10); }
 }
 
-struct _general_LL *replace_LL_with_table(struct _general_LL *element_LL, group_OBJ group) {
+struct _general_LL *element_LL_process(struct _general_LL *element_LL, group_OBJ group) {
     unsigned long cell_width = char_in_val(element_LL->element); element_LL = element_LL->next;
     // ^^ First finish the handling of the previous triple ref trick we were doing
 
