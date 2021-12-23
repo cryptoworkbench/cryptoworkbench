@@ -115,9 +115,11 @@ struct _general_LL *element_LL_from_file(char **argv, group_OBJ group) {
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
-    struct _general_LL *ret_VAL = LL_from_CHANNEL(element_CHANNEL_PTR_pair);
-    if (ret_VAL) return ret_VAL;
-    else { fprintf(stderr, "No group elements to be could be interpreted a file within folder \"ARCHIVE/\". Returning '-10'.\n"); exit(-10); }
+    struct _general_LL *ret_VAL; 
+    if (ret_VAL = LL_from_CHANNEL(element_CHANNEL_PTR_pair)) return ret_VAL;
+    else {
+	open_and_append_to_LOGBOOK(argv[0], "No group elements could be interpreted from this file in 'ARCHIVE/'. Returning '-10'.\n"); close_logbook(); exit(-10);
+    }
 }
 
 struct _general_LL *element_LL_process(struct _general_LL *element_LL, group_OBJ group) {

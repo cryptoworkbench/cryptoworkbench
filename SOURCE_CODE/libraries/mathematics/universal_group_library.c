@@ -7,11 +7,11 @@ enum GROUP_IDentity *STR_could_be_parsed_into_enum_GROUP_IDentity(char *STR, enu
     else return NULL;
 }
 
-char *numerical_denomination_from_ID_Sloth(group_OBJ group) { return (group->ID == ADDITIVE) ? additive_signs[0] : multiplicative_signs[0]; }
-char *operation_symbol_from_ID_Sloth(group_OBJ group) { return (group->ID == ADDITIVE) ? additive_signs[1] : multiplicative_signs[1]; }
-char *noun_from_ID_Sloth(group_OBJ group) { return (group->ID == ADDITIVE) ? additive_signs[2] : multiplicative_signs[2]; }
-char *multiple_from_ID_Sloth(group_OBJ group) { return (group->ID == ADDITIVE) ? additive_signs[3] : multiplicative_signs[3]; }
-char *adjective_from_ID_Sloth(group_OBJ group) { return (group->ID == ADDITIVE) ? additive_signs[4] : multiplicative_signs[4]; }
+const char *numerical_denomination_from_ID_Sloth(group_OBJ group) { return (group->ID == ADDITIVE) ? additive_signs[0] : multiplicative_signs[0]; }
+const char *operation_symbol_from_ID_Sloth(group_OBJ group) { return (group->ID == ADDITIVE) ? additive_signs[1] : multiplicative_signs[1]; }
+const char *noun_from_ID_Sloth(group_OBJ group) { return (group->ID == ADDITIVE) ? additive_signs[2] : multiplicative_signs[2]; }
+const char *multiple_from_ID_Sloth(group_OBJ group) { return (group->ID == ADDITIVE) ? additive_signs[3] : multiplicative_signs[3]; }
+const char *adjective_from_ID_Sloth(group_OBJ group) { return (group->ID == ADDITIVE) ? additive_signs[4] : multiplicative_signs[4]; }
 int boolean_from_ID_Sloth(group_OBJ group) { return (group->ID == ADDITIVE) ? 0 : 1; }
 
 char *BUFFER_OF_SIZE(unsigned int SIZE) {
@@ -36,16 +36,16 @@ FILE *open_group(char *prog_NAME, group_OBJ group, char *MOD) {
     if ( !(logbook_fs = fopen(LOGBOOK_PATH, "a"))) { fprintf(stderr, "Failed to open logbook!\n"); exit(-10); }
     // ^^ Exit when the logbook won't open
 
-    char *group_ID = numerical_denomination_from_ID_Sloth(group);
-    char *adjective = adjective_from_ID_Sloth(group);
-    char *operation_symbol = operation_symbol_from_ID_Sloth(group);
+    const char *group_ID = numerical_denomination_from_ID_Sloth(group);
+    const char *adjective = adjective_from_ID_Sloth(group);
+    const char *operation_symbol = operation_symbol_from_ID_Sloth(group);
     // ^^ Prepare the char pointers "open_group_as_INNER()" needs
 
     FILE *opened_group = open_group_INNER(MOD, group_ID, adjective, operation_symbol, BUFFER_OF_SIZE(200));
     return opened_group;
 }
 
-FILE *open_group_INNER(char *group_MOD, char *numerical_denomination, char *adjective, char *symbol, char *LINE) {
+FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, const char *adjective, const char *symbol, char *LINE) {
     char *name_of_FILE = (char *) malloc(sizeof(char) * (str_len(adjective) + str_len(FILENAME_BODY) + str_len(group_MOD) + 1));
     sprintf(name_of_FILE, "%s%s%s", adjective, FILENAME_BODY, group_MOD);
     // ^^ Prepare the filename
@@ -62,7 +62,7 @@ FILE *open_group_INNER(char *group_MOD, char *numerical_denomination, char *adje
 	sprintf(LINE, "Assuming the 'ARCHIVE/' folder was there and it wasn't a permission thing, I will try to use '"ELEMENT_EXPORTER"' to autonomously archive \u2115%s%s", group_MOD, symbol); append_to_LOGBOOK(LINE);
 
 	sprintf(LINE, "%s using " ELEMENT_EXPORTER, argv_ZERO); // << Use LINE in order to send along a special "argv[0]" to "group_exporter"
-	char *ELEMENT_EXPORTER_argv[] = {LINE, group_MOD, numerical_denomination, 0};
+	char *ELEMENT_EXPORTER_argv[] = {LINE, group_MOD, (char *) numerical_denomination, 0};
 	// ^^ Prepare the char pointer array "group_exporter" will receive as "char *argv[]" (a.k.a. "char **argv")
 
 	int fd[2]; if (pipe(fd) == -1) { fprintf(stderr, "Failed to open pipe.\n"); exit(-1); }

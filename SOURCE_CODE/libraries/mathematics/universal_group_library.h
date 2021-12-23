@@ -12,8 +12,8 @@
 #define FORK_ERROR "Failed to split up myself into two daughter processes so that I could dedicate one part of my being to securing the group."
 #define FILE_DESCRIPTOR_ERROR "Failed to rewrite the file descriptor of child process."
 
-static char *additive_signs[] = {"0", "+", "addition", "additions", "additive"};
-static char *multiplicative_signs[] = {"1", "*", "multiplication", "multiplications", "multiplicative"};
+const char *additive_signs[] = {"0", "+", "addition", "additions", "additive"};
+const char *multiplicative_signs[] = {"1", "*", "multiplication", "multiplications", "multiplicative"};
 
 typedef struct group_STRUCT {
     enum GROUP_IDentity ID;
@@ -30,16 +30,16 @@ enum GROUP_IDentity *STR_could_be_parsed_into_enum_GROUP_IDentity(char *STR, enu
 /* ^^ Returns "NULL" upon parsing failure, otherwise parses "0" or "1" into their respective ENUM equivalents (a.k.a. representations) within this struct that is abbreviated "group_OBJ" */
 
 char *BUFFER_OF_SIZE(unsigned int SIZE);
-char *numerical_denomination_from_ID_Sloth(group_OBJ group);
-char *operation_symbol_from_ID_Sloth(group_OBJ group);
-char *noun_from_ID_Sloth(group_OBJ group);
-char *multiple_from_ID_Sloth(group_OBJ group);
-char *adjective_from_ID_Sloth(group_OBJ group);
+const char *numerical_denomination_from_ID_Sloth(group_OBJ group);
+const char *operation_symbol_from_ID_Sloth(group_OBJ group);
+const char *noun_from_ID_Sloth(group_OBJ group);
+const char *multiple_from_ID_Sloth(group_OBJ group);
+const char *adjective_from_ID_Sloth(group_OBJ group);
 int boolean_from_ID_Sloth(group_OBJ group);
 
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line);
 void open_and_append_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line);
 FILE *open_group(char *prog_NAME, group_OBJ group, char *MOD);
-FILE *open_group_INNER(char *group_MOD, char *numerical_denomination, char *adjective, char *symbol, char *LINE);
+FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, const char *adjective, const char *symbol, char *LINE);
 void close_group(char *group_CAP, char *symbol_to_use, FILE *opened_group);
 void close_logbook();
