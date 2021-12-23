@@ -92,7 +92,7 @@ struct _general_LL *yield_subgroup(struct _general_LL ***generator_CHANNEL, unsi
     } while (generated_element != ID);
     // printf("Leaving yield_subgroup(), subgroup card: %lu\n", subgroup_card);
     
-    if (subgroup_card == cardinality) _general_LL_insert(generator_CHANNEL, LOOKUP_table[index].unit.literal);
+    if (subgroup_card == cardinality) _general_LL_insert(generator_CHANNEL, index);
     return LL_from_CHANNEL(&permutation_CHANNEL_PTR_pair)->next;
 }
 
@@ -149,7 +149,7 @@ unsigned long process_generator_information(struct _general_LL *generator_list, 
     fprintf(main_fs, "\nGenerator count for \u2115%s%s:\n", modulus, symbol);
     unsigned long generator_count = 0; struct _general_LL *iter = generator_list; do {
 	struct _general_LL *iter_next = iter->next;
-	print_subgroup(index_lookup(iter->element));
+	print_subgroup(iter->element);
 	free(iter); iter = iter_next; generator_count++;
 	if (iter == generator_list) break;
 	else fprintf(main_fs, ", and\n");
