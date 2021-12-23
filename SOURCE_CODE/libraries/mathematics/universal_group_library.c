@@ -20,6 +20,15 @@ char *BUFFER_OF_SIZE(unsigned int SIZE) {
 
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line) { fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", argv_ZERO, TO_BE_APPENDED_logbook_line); fflush(logbook_fs); }
 
+void OPEN_LOGBOOK_AND_SET_argv_ZERO(char *prog_NAME) {
+    if ( !(logbook_fs = fopen(LOGBOOK_PATH, "a"))) { fprintf(stderr, "Failed to open logbook!\n"); exit(-10); }
+    argv_ZERO = prog_NAME;
+}
+
+void CLOSE_LOGBOOK() {
+    fclose(logbook_fs);
+}
+
 FILE *open_group(char *prog_NAME, group_OBJ group, char *MOD) {
     argv_ZERO = prog_NAME;
     // ^^ Set the gobal variable "argv_ZERO" based on what was passed on to this function as "argv[0]"

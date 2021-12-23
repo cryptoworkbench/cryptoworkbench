@@ -5,7 +5,7 @@
  * Make a triple_ref_insert function for "struct permutation_piece".
  *
  * */
-#include "group_information.h"
+#include "subgroup_information.h"
 
 int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     if (6 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));

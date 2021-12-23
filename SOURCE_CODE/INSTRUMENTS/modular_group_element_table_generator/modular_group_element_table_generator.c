@@ -23,20 +23,22 @@
 #include "modular_group_element_table_generator.h"
 
 int main(int argc, char **argv) {
-    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group.CAP)) QUIT_ON_ARGV_ONE_ERROR(argv[1]); if (3 > argc || !STR_could_be_parsed_into_UL(argv[2], &group.ID)) QUIT_ON_ARGV_TWO_ERROR(argv[2]);
+    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &_group.MOD)) QUIT_ON_ARGV_ONE_ERROR(argv[1]);
+    if (3 > argc || !STR_could_be_parsed_into_enum_GROUP_IDentity(argv[2], &_group.ID)) QUIT_ON_ARGV_TWO_ERROR(argv[2]);
     // ^^ Parse the infinite field CAP and group ID
 
     unsigned long count = 0;
-    for (unsigned long element = group.ID; element < group.CAP; element++)
-	if (group.ID == ADDITIVE_IDENTITY || GCD(group.CAP, element) == MULTIPLICATIVE_IDENTITY) {
+    for (unsigned long element = boolean_from_ID_Sloth(&_group); element < _group.MOD; element++)
+	if (_group.ID == ADDITIVE || GCD(_group.MOD, element) == MULTIPLICATIVE_IDENTITY) {
 	    fprintf(stdout, "%lu\n", element);
 	    count++;
 	}
     // ^^ Export the group
 
     printf("\nExported %lu elements.\n", count);
-    char *BUFFER = BUFFER_OF_SIZE(50); sprintf(BUFFER, "Exported \u2115%lu%s", group.CAP, symbol_to_use(group.ID));
-    flush_to_LOGBOOK(argv[0], BUFFER); free(BUFFER);
+    OPEN_LOGBOOK_AND_SET_argv_ZERO(argv[0]);
+    char *BUFFER = BUFFER_OF_SIZE(50); sprintf(BUFFER, "Exported \u2115%lu%s", _group.MOD, operation_symbol_from_ID_Sloth(&_group));
+    append_to_LOGBOOK(BUFFER); free(BUFFER); CLOSE_LOGBOOK();
     // ^^ Notify in the LOGBOOK about my operations
 
     if (4 > argc) return 1; else execvp(*(argv + 3), (argv + 3));

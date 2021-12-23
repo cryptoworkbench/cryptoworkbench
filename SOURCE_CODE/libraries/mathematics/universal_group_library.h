@@ -29,6 +29,7 @@ static char *path_to_FILE;
 enum GROUP_IDentity *STR_could_be_parsed_into_enum_GROUP_IDentity(char *STR, enum GROUP_IDentity *ID);
 /* ^^ Returns "NULL" upon parsing failure, otherwise parses "0" or "1" into their respective ENUM equivalents (a.k.a. representations) within this struct that is abbreviated "group_OBJ" */
 
+char *BUFFER_OF_SIZE(unsigned int SIZE);
 char *numerical_denomination_from_ID_Sloth(group_OBJ group);
 char *operation_symbol_from_ID_Sloth(group_OBJ group);
 char *noun_from_ID_Sloth(group_OBJ group);
@@ -37,6 +38,9 @@ char *adjective_from_ID_Sloth(group_OBJ group);
 int boolean_from_ID_Sloth(group_OBJ group);
 
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line);
+void flush_to_LOGBOOK(char *ZERO, char *TO_BE_APPENDED_logbook_line);
+void OPEN_LOGBOOK_AND_SET_argv_ZERO(char *prog_NAME);
 FILE *open_group(char *prog_NAME, group_OBJ group, char *MOD);
 FILE *open_group_INNER(char *group_MOD, char *numerical_denomination, char *adjective, char *symbol, char *LINE);
 void close_group(char *group_CAP, char *symbol_to_use, FILE *opened_group);
+void CLOSE_LOGBOOK();
