@@ -51,8 +51,9 @@ unsigned long index_lookup(unsigned long ul) {
     return 0;
 }
 
-void print_subgroup(struct permutation_piece *link) {
-    fprintf(main_fs, "<%s> = {", link->next->unit->ASCII_numerical);
+void print_subgroup(unsigned long index) {
+    fprintf(main_fs, "<%s> = {", LOOKUP_table[index].unit.ASCII_numerical);
+    struct permutation_piece *link = LOOKUP_table[index].permutation;
     for (unsigned long i = 0; i < shifts->X; i++) link = link->next;
     // ^^ Prepare the printing of the subgroup's permutation cycle
 
@@ -162,7 +163,7 @@ unsigned long process_generator_information(struct _LL *generator_list, char *mo
     fprintf(main_fs, "\nGenerator count for \u2115%s%s:\n", modulus, symbol);
     unsigned long generator_count = 0; struct _LL *iter = generator_list; do {
 	struct _LL *iter_next = iter->next;
-	print_subgroup(LOOKUP_table[index_lookup(iter->element)].permutation);
+	print_subgroup(index_lookup(iter->element));
 	free(iter); iter = iter_next; generator_count++;
 	if (iter == generator_list) break;
 	else fprintf(main_fs, ", and\n");
@@ -180,7 +181,7 @@ void free_permutation_pieces(unsigned long index) {
 
 void print_table() {
     for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++)
-    { print_subgroup(LOOKUP_table[i % cardinality].permutation); fprintf(main_fs, "\n"); }
+    { print_subgroup(i % cardinality); fprintf(main_fs, "\n"); }
 }
 
 void ID_not_parsable_ERROR(char *argv_one, char *argv_two) {
