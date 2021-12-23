@@ -12,8 +12,7 @@
 struct offset_values { unsigned long Y; unsigned long X; };
 struct _LL { struct _LL *next; unsigned long element; };
 struct content { unsigned long literal; char *ASCII_numerical; };
-struct permutation_piece { struct permutation_piece *next; struct content *unit; };
-typedef struct vertibrae { struct permutation_piece *permutation; struct content unit; } array_piece;
+typedef struct vertibrae { struct _LL *permutation; struct content unit; } array_piece;
 typedef array_piece *table_type;
 static char *help_queries[] = {"--help", "-h", "help", "instructions", "usage", "--instructions", "--usage", "syntax", "--syntax"};
 unsigned long cardinality;
@@ -24,11 +23,12 @@ _group_operation group_operation;
 // ^^^ Variable (type) declaration(s)
 
 unsigned long index_lookup(unsigned long ul);
+struct _LL *LL_from_CHANNEL(struct _CHANNEL_PTR_pair *CHANNEL_PTR_pair);
 struct permutation_piece *permutation_insert(unsigned long unit_identifier, struct permutation_piece *previous_permutation_piece);
 void print_subgroup(unsigned long index);
 void triple_ref_LL_insert(struct _LL ***tracer, unsigned long new_ulong);
 struct permutation_piece *anew_LL_from_CHANNEL(struct _CHANNEL_PTR_pair *CHANNEL_PTR_pair);
-struct permutation_piece *yield_subgroup(struct _LL ***generator_channel, unsigned long index, group_OBJ group);
+struct _LL *yield_subgroup(struct _LL ***generator_channel, unsigned long index, group_OBJ group);
 struct _LL *zip(struct _LL **channel);
 struct _LL *establish_LL(char **argv, group_OBJ group);
 struct _LL *replace_LL_with_table(struct _LL *element_LL, group_OBJ group);

@@ -53,28 +53,16 @@ unsigned long index_lookup(unsigned long ul) {
 
 void print_subgroup(unsigned long index) {
     fprintf(main_fs, "<%s> = {", LOOKUP_table[index].unit.ASCII_numerical);
-    struct permutation_piece *link = LOOKUP_table[index].permutation;
+    struct _LL *link = LOOKUP_table[index].permutation;
     for (unsigned long i = 0; i < shifts->X; i++) link = link->next;
     // ^^ Prepare the printing of the subgroup's permutation cycle
 
-    struct permutation_piece *do_loop_iterator = link; do {
-	fprintf(main_fs, "%s", do_loop_iterator->unit->ASCII_numerical); do_loop_iterator = do_loop_iterator->next;
+    struct _LL *do_loop_iterator = link;
+    do {
+	fprintf(main_fs, "%s", LOOKUP_table[do_loop_iterator->element].unit.ASCII_numerical); do_loop_iterator = do_loop_iterator->next;
 	if (do_loop_iterator == link) break;
 	else fprintf(main_fs, ", ");
     } while (1); fprintf(main_fs, "}");
-}
-
-void triple_ref_permutation_insert(struct permutation_piece ***tracer_location, unsigned long permutation_identifier) {
-    struct permutation_piece *new_LL_element = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Fix existence of new element
-    new_LL_element->unit = &LOOKUP_table[index_lookup(permutation_identifier)].unit; new_LL_element->next = NULL;
-    /* Manifest new element for ulong ^^. */
-
-    while (**tracer_location) *tracer_location = &(***tracer_location).next;
-    **tracer_location = new_LL_element;
-    /* Add at the end ^^. */
-    
-    *tracer_location = (struct permutation_piece **) **tracer_location;
-    /* And move onto this newly added spot ^^. */
 }
 
 void triple_ref_LL_insert(struct _LL ***tracer_location, unsigned long new_ulong) {
@@ -90,29 +78,28 @@ void triple_ref_LL_insert(struct _LL ***tracer_location, unsigned long new_ulong
     /* And move onto this newly added spot ^^. */
 }
 
-struct permutation_piece *yield_subgroup(struct _LL ***generator_CHANNEL, unsigned long index, group_OBJ group) {
+struct _LL *yield_subgroup(struct _LL ***generator_CHANNEL, unsigned long index, group_OBJ group) {
     unsigned long ID = boolean_from_ID_Sloth(group);
     struct _CHANNEL_PTR_pair permutation_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair();
-    unsigned long subgroup_card = 0; unsigned long generated_element = ID; do {
-	triple_ref_permutation_insert((struct permutation_piece ***) &permutation_CHANNEL_PTR_pair.iterator, generated_element); subgroup_card++;
+    unsigned long subgroup_card = 0;
+
+    // printf("\nArrived in \"yield_subgroup()\".\nElement = LOOKUP_table[%lu] = %lu.\n", index, LOOKUP_table[index].unit.literal);
+    unsigned long generated_element = ID; do {
+	triple_ref_LL_insert((struct _LL ***) &permutation_CHANNEL_PTR_pair.iterator, index_lookup(generated_element));
+	subgroup_card++;
+	// printf("Added %lu.\n", LOOKUP_table[index], generated_element);
 	generated_element = group_operation(generated_element, LOOKUP_table[index].unit.literal, group->MOD);
-    } while (generated_element != ID); if (subgroup_card == cardinality) triple_ref_LL_insert(generator_CHANNEL, LOOKUP_table[index].unit.literal);
-    return anew_LL_from_CHANNEL(&permutation_CHANNEL_PTR_pair)->next;
+    } while (generated_element != ID);
+    // printf("Leaving yield_subgroup(), subgroup card: %lu\n", subgroup_card);
+    
+    if (subgroup_card == cardinality) triple_ref_LL_insert(generator_CHANNEL, LOOKUP_table[index].unit.literal);
+    return LL_from_CHANNEL(&permutation_CHANNEL_PTR_pair)->next;
 }
 
 struct _LL *LL_from_CHANNEL(struct _CHANNEL_PTR_pair *CHANNEL_PTR_pair) {
     struct _LL *first_shackle;
     if (first_shackle = (struct _LL *) _close_CHANNEL(CHANNEL_PTR_pair->head)) {
 	struct _LL *last_shackle = (struct _LL *) CHANNEL_PTR_pair->iterator;
-	last_shackle->next = first_shackle;
-	return last_shackle;
-    } else return NULL;
-}
-
-struct permutation_piece *anew_LL_from_CHANNEL(struct _CHANNEL_PTR_pair *CHANNEL_PTR_pair) {
-    struct permutation_piece *first_shackle;
-    if (first_shackle = (struct permutation_piece *) _close_CHANNEL(CHANNEL_PTR_pair->head)) {
-	struct permutation_piece *last_shackle = (struct permutation_piece *) CHANNEL_PTR_pair->iterator;
 	last_shackle->next = first_shackle;
 	return last_shackle;
     } else return NULL;
@@ -152,7 +139,7 @@ struct _LL *replace_LL_with_table(struct _LL *element_LL, group_OBJ group) {
     } // <<< Creates the table and destroys the entire linked list.
 
     for (index = 0; index < cardinality; index++) { // << Loop over the array one more time
-	LOOKUP_table[index].permutation = yield_subgroup((struct _LL ***) &generator_CHANNEL_PTR_pair.iterator, index, group); // << Now "yield_subgroup()" can properly search through the able and count the amount of generators
+	LOOKUP_table[index].permutation = yield_subgroup((struct _LL ***) &generator_CHANNEL_PTR_pair.iterator, index, group);
 	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(LOOKUP_table[index].unit.literal, cell_width); // << Now with a little less pressure on memory is a good time to add the string representations
     }
 
@@ -173,8 +160,8 @@ unsigned long process_generator_information(struct _LL *generator_list, char *mo
 } // ^ This function also free()'s the entries of the linked list
 
 void free_permutation_pieces(unsigned long index) {
-    struct permutation_piece *iter = LOOKUP_table[index].permutation; do {
-	struct permutation_piece *iter_next = iter->next;
+    struct _LL *iter = LOOKUP_table[index].permutation; do {
+	struct _LL *iter_next = iter->next;
 	free(iter); iter = iter_next;
     } while (iter != LOOKUP_table[index].permutation);
 }
