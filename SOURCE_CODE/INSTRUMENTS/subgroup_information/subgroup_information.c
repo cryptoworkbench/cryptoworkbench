@@ -83,23 +83,20 @@ struct _general_LL *yield_subgroup(struct _general_LL ***generator_CHANNEL, unsi
     struct _CHANNEL_PTR_pair permutation_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair();
     unsigned long subgroup_card = 0;
 
-    // printf("\nArrived in \"yield_subgroup()\".\nElement = LOOKUP_table[%lu] = %lu.\n", index, LOOKUP_table[index].unit.literal);
     unsigned long generated_element = ID; do {
 	_general_LL_insert((struct _general_LL ***) &permutation_CHANNEL_PTR_pair.iterator, index_lookup(generated_element));
 	subgroup_card++;
-	// printf("Added %lu.\n", LOOKUP_table[index], generated_element);
 	generated_element = group_operation(generated_element, LOOKUP_table[index].unit.literal, group->MOD);
     } while (generated_element != ID);
-    // printf("Leaving yield_subgroup(), subgroup card: %lu\n", subgroup_card);
     
     if (subgroup_card == cardinality) _general_LL_insert(generator_CHANNEL, index);
-    return LL_from_CHANNEL(&permutation_CHANNEL_PTR_pair)->next;
+    return LL_from_CHANNEL(permutation_CHANNEL_PTR_pair)->next;
 }
 
-struct _general_LL *LL_from_CHANNEL(struct _CHANNEL_PTR_pair *CHANNEL_PTR_pair) {
+struct _general_LL *LL_from_CHANNEL(struct _CHANNEL_PTR_pair CHANNEL_PTR_pair) {
     struct _general_LL *first_shackle;
-    if (first_shackle = (struct _general_LL *) _close_CHANNEL(CHANNEL_PTR_pair->head)) {
-	struct _general_LL *last_shackle = (struct _general_LL *) CHANNEL_PTR_pair->iterator;
+    if (first_shackle = (struct _general_LL *) _close_CHANNEL(CHANNEL_PTR_pair.head)) {
+	struct _general_LL *last_shackle = (struct _general_LL *) CHANNEL_PTR_pair.iterator;
 	last_shackle->next = first_shackle;
 	return last_shackle;
     } else return NULL;
@@ -118,7 +115,7 @@ struct _general_LL *element_LL_from_file(char **argv, group_OBJ group) {
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
-    struct _general_LL *ret_VAL = LL_from_CHANNEL(&element_CHANNEL_PTR_pair);
+    struct _general_LL *ret_VAL = LL_from_CHANNEL(element_CHANNEL_PTR_pair);
     if (ret_VAL) return ret_VAL;
     else { fprintf(stderr, "No group elements to be could be interpreted a file within folder \"ARCHIVE/\". Returning '-10'.\n"); exit(-10); }
 }
@@ -142,7 +139,7 @@ struct _general_LL *element_LL_process(struct _general_LL *element_LL, group_OBJ
     for (index = 0; index < cardinality; index++) LOOKUP_table[index].permutation = yield_subgroup((struct _general_LL ***) &generator_CHANNEL_PTR_pair.iterator, index, group);
     // ^^ Loop over the array one more time and determine the permutations definitevely.
 
-    return LL_from_CHANNEL(&generator_CHANNEL_PTR_pair);
+    return LL_from_CHANNEL(generator_CHANNEL_PTR_pair);
 }
 
 unsigned long process_generator_information(struct _general_LL *generator_list, char *modulus, char *symbol) {

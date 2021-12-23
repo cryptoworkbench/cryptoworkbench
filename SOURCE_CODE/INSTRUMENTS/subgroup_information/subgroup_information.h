@@ -23,7 +23,7 @@ _group_operation group_operation;
 // ^^^ Variable (type) declaration(s)
 
 unsigned long index_lookup(unsigned long ul);
-struct _general_LL *LL_from_CHANNEL(struct _CHANNEL_PTR_pair *CHANNEL_PTR_pair);
+struct _general_LL *LL_from_CHANNEL(struct _CHANNEL_PTR_pair CHANNEL_PTR_pair);
 void print_subgroup(unsigned long index);
 void _general_LL_insert(struct _general_LL ***tracer, unsigned long new_ulong);
 struct _general_LL *yield_subgroup(struct _general_LL ***generator_channel, unsigned long index, group_OBJ group);
