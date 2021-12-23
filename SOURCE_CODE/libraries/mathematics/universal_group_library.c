@@ -1,3 +1,4 @@
+// See dev note at line 28. That is the only issue.
 #include "universal_group_library.h"
 
 enum GROUP_IDentity *STR_could_be_parsed_into_enum_GROUP_IDentity(char *STR, enum GROUP_IDentity *ID) {
@@ -18,14 +19,16 @@ char *BUFFER_OF_SIZE(unsigned int SIZE) {
     return return_value;
 }
 
-void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line) { fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", argv_ZERO, TO_BE_APPENDED_logbook_line); fflush(logbook_fs); }
-
-void OPEN_LOGBOOK_AND_SET_argv_ZERO(char *prog_NAME) {
-    if ( !(logbook_fs = fopen(LOGBOOK_PATH, "a"))) { fprintf(stderr, "Failed to open logbook!\n"); exit(-10); }
-    argv_ZERO = prog_NAME;
+void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line) {
+    fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", argv_ZERO, TO_BE_APPENDED_logbook_line);
+    fflush(logbook_fs);
 }
 
-void CLOSE_LOGBOOK() {
+void single_line_append_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line) {
+    /* Maybe this function won't work when "logbook_fs" has already been opened. */
+    if ( !(logbook_fs = fopen(LOGBOOK_PATH, "a"))) { fprintf(stderr, "Failed to open logbook!\n"); exit(-10); }
+    argv_ZERO = prog_NAME;
+    fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", argv_ZERO, TO_BE_APPENDED_logbook_line);
     fclose(logbook_fs);
 }
 
