@@ -18,7 +18,7 @@ int case_insensitive_strcmp(char *STR, char *STS);
 /* Returns an int containing the number of characters in the string pointed at by the char pointer 'string_pointer' */
 int str_len_int(char *string_pointer); // Almost the same functionality as the above function
 
-int match(char *INPUT, char *char_PTR_array[]); // <<< Inst the makes
+int match(char *INPUT, const char **char_PTR_array); // <<< Inst the makes
 int match_variadic(char *INPUT, int number_of_comparisons, ...); // Variadic function that can compare one string against a variable number of strings to compare it to
 
 char *copy_over(char *recipient_adress, const char *source_adress); // Copies over source onto recipient, terminating at the string terminating character 0 in the byte sequence pointed at by source_adress, then appends one onto the string pointed at by char *repicient_adress

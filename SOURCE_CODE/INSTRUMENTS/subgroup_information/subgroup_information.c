@@ -118,9 +118,9 @@ struct _general_LL *establish_LL(char **argv, group_OBJ group) {
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
-    struct _general_LL *ret_val = LL_from_CHANNEL(&element_CHANNEL_PTR_pair);
-    if (ret_val) return ret_val;
-    else { fprintf(stderr, "No group elements to be added from 'ARCHIVE/...' file. Returning '-10'.\n"); exit(-10); }
+    struct _general_LL *element_LL = LL_from_CHANNEL(&element_CHANNEL_PTR_pair);
+    if (element_LL) return element_LL;
+    else { fprintf(stderr, "No group elements to be could be interpreted a file within folder \"ARCHIVE/\". Returning '-10'.\n"); exit(-10); }
 }
 
 struct _general_LL *replace_LL_with_table(struct _general_LL *element_LL, group_OBJ group) {

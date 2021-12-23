@@ -36,7 +36,7 @@ int case_insensitive_strcmp(char *STR, char *STS) {
     if (i == STR_length) return 1;
 }
 
-int match(char *INPUT, char *char_PTR_array[]) {
+int match(char *INPUT, const char **char_PTR_array) {
     int length = 0; do {
 	if (strcmp(char_PTR_array[length], INPUT) == 0) return 1;
 	else length++;

@@ -14,7 +14,7 @@ struct _general_LL { struct _general_LL *next; unsigned long element; };
 struct content { unsigned long literal; char *ASCII_numerical; };
 typedef struct vertibrae { struct _general_LL *permutation; struct content unit; } array_piece;
 typedef array_piece *table_type;
-static char *help_queries[] = {"--help", "-h", "help", "instructions", "usage", "--instructions", "--usage", "syntax", "--syntax"};
+const char *help_queries[] = {"--help", "-h", "help", "instructions", "usage", "--instructions", "--usage", "syntax", "--syntax"};
 unsigned long cardinality;
 table_type LOOKUP_table;
 FILE *main_fs;
