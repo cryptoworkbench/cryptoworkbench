@@ -4,7 +4,6 @@
  *
  * Make a triple_ref_insert function for "struct permutation_piece".
  *
- * Then use this function in conjunction with "LL_from_CHANNEL()" in order to make "yield_subgroup()" return the appriopiate linked list.
  * */
 #include "group_information.h"
 
@@ -52,16 +51,6 @@ unsigned long index_lookup(unsigned long ul) {
     return 0;
 }
 
-struct permutation_piece *permutation_insert(unsigned long permutation_identifier, struct permutation_piece *previous_permutation_piece) {
-    struct permutation_piece *next_permutation_piece = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Fix existence of new permutation_piece
-    next_permutation_piece->unit = &LOOKUP_table[index_lookup(permutation_identifier)].unit; // Fix first sloth
-
-    // ###== Insert new linked list element ===>
-    next_permutation_piece->next = previous_permutation_piece->next;
-    previous_permutation_piece->next = next_permutation_piece;
-    return next_permutation_piece; // <=== Shift focus on new element ==###
-}
-
 void print_subgroup(struct permutation_piece *link) {
     fprintf(main_fs, "<%s> = {", link->next->unit->ASCII_numerical);
     for (unsigned long i = 0; i < shifts->X; i++) link = link->next;
@@ -72,6 +61,19 @@ void print_subgroup(struct permutation_piece *link) {
 	if (do_loop_iterator == link) break;
 	else fprintf(main_fs, ", ");
     } while (1); fprintf(main_fs, "}");
+}
+
+void triple_ref_permutation_insert(struct permutation_piece ***tracer_location, unsigned long permutation_identifier) {
+    struct permutation_piece *new_LL_element = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Fix existence of new element
+    new_LL_element->unit = &LOOKUP_table[index_lookup(permutation_identifier)].unit; new_LL_element->next = NULL;
+    /* Manifest new element for ulong ^^. */
+
+    while (**tracer_location) *tracer_location = &(***tracer_location).next;
+    **tracer_location = new_LL_element;
+    /* Add at the end ^^. */
+    
+    *tracer_location = (struct permutation_piece **) **tracer_location;
+    /* And move onto this newly added spot ^^. */
 }
 
 void triple_ref_LL_insert(struct _LL ***tracer_location, unsigned long new_ulong) {
@@ -87,28 +89,29 @@ void triple_ref_LL_insert(struct _LL ***tracer_location, unsigned long new_ulong
     /* And move onto this newly added spot ^^. */
 }
 
-// Returns a linked list which is in order of the permutation of the subgroup in question,
-// Think of a chain of shackles, this chain is returned at the shackle which points to the identity element unit's struct at a struct vertibrae data type
 struct permutation_piece *yield_subgroup(struct _LL ***generator_CHANNEL, unsigned long index, group_OBJ group) {
-    unsigned long start_element = LOOKUP_table[index].unit.literal;
-    struct permutation_piece *iterator = (struct permutation_piece *) malloc(sizeof(struct permutation_piece)); // Create element
-    iterator->unit = &LOOKUP_table->unit; // The identity value is always at the start of the lookup table
-    iterator->next = iterator; // Make it circular
-
-    unsigned long subgroup_cardinality = 1; // << For we have already inserted the first element
-    for (unsigned long generated_element = start_element; generated_element != boolean_from_ID_Sloth(group); generated_element = group_operation(generated_element, start_element, group->MOD)) {
-	iterator = permutation_insert(generated_element, iterator); // << Put the current power of g into the permutation data structure
-	subgroup_cardinality++; }
-
-    if (subgroup_cardinality == cardinality) triple_ref_LL_insert(generator_CHANNEL, LOOKUP_table[index].unit.literal);
-
-    return iterator->next;
+    unsigned long ID = boolean_from_ID_Sloth(group);
+    struct _CHANNEL_PTR_pair permutation_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair();
+    unsigned long subgroup_card = 0; unsigned long generated_element = ID; do {
+	triple_ref_permutation_insert((struct permutation_piece ***) &permutation_CHANNEL_PTR_pair.iterator, generated_element); subgroup_card++;
+	generated_element = group_operation(generated_element, LOOKUP_table[index].unit.literal, group->MOD);
+    } while (generated_element != ID); if (subgroup_card == cardinality) triple_ref_LL_insert(generator_CHANNEL, LOOKUP_table[index].unit.literal);
+    return anew_LL_from_CHANNEL(&permutation_CHANNEL_PTR_pair)->next;
 }
 
 struct _LL *LL_from_CHANNEL(struct _CHANNEL_PTR_pair *CHANNEL_PTR_pair) {
     struct _LL *first_shackle;
     if (first_shackle = (struct _LL *) _close_CHANNEL(CHANNEL_PTR_pair->head)) {
 	struct _LL *last_shackle = (struct _LL *) CHANNEL_PTR_pair->iterator;
+	last_shackle->next = first_shackle;
+	return last_shackle;
+    } else return NULL;
+}
+
+struct permutation_piece *anew_LL_from_CHANNEL(struct _CHANNEL_PTR_pair *CHANNEL_PTR_pair) {
+    struct permutation_piece *first_shackle;
+    if (first_shackle = (struct permutation_piece *) _close_CHANNEL(CHANNEL_PTR_pair->head)) {
+	struct permutation_piece *last_shackle = (struct permutation_piece *) CHANNEL_PTR_pair->iterator;
 	last_shackle->next = first_shackle;
 	return last_shackle;
     } else return NULL;
