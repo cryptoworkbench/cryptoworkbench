@@ -1,6 +1,10 @@
 /* Examplifies additive and multiplicative groups.
  *
- * I want to modify "permutation_insert()" so that it return's "void" and updates ...
+ * I want to modify "permutation_insert()" so that it return's "void" and updates a ref pointer instead.
+ *
+ * Make a triple_ref_insert function for "struct permutation_piece".
+ *
+ * Then use this function in conjunction with "LL_from_CHANNEL()" in order to make "yield_subgroup()" return the appriopiate linked list.
  * */
 #include "group_information.h"
 
@@ -98,8 +102,6 @@ struct permutation_piece *yield_subgroup(struct _LL ***generator_CHANNEL, unsign
 
     if (subgroup_cardinality == cardinality) triple_ref_LL_insert(generator_CHANNEL, LOOKUP_table[index].unit.literal);
 
-    // MAKE CIRCULAR LL FROM PERMUTATION CHANNEL
-    // RETURN THIS LL AT ITS NEXT
     return iterator->next;
 }
 
