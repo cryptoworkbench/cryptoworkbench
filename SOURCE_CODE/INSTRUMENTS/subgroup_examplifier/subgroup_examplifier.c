@@ -2,23 +2,6 @@
  */
 #include "subgroup_examplifier.h"
 
-struct VOID_ptr_ptr_PAIR element_LL_from_file(char **argv, group_OBJ group) {
-    cardinality = 0;
-    FILE *ELEMENT_database = open_group(argv[0], group, argv[1]);
-    // ^^^ Open filestream to element database and initialize cardinality counter. ^^
-
-    struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair();
-    // ^^^ Keep an eye of the head of the open linked list that "insert()" will create. ^^
-
-    unsigned long group_ELEMENT; while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { insert((struct _general_LL ***) &element_CHANNEL_PTR_pair.iterator, group_ELEMENT); cardinality++; }
-    // ^^^ Manifest open linked list consisting of all this "group"'s elements using "insert()" (this linked list can only be closed performing "circular_LL_from_CHAN(element_CHANNEL_PTR_pair.head)"). ^^
-
-    close_group(argv[1], operation_symbol_from_ID_Sloth(group), ELEMENT_database);
-    // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
-
-    return element_CHANNEL_PTR_pair;
-}
-
 int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     if (6 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));
     if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->MOD)) MOD_not_parsable_ERROR(argv[1]);
@@ -50,7 +33,7 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     } else fprintf(main_fs, "\nThis group does not contain any generators.\n");
     // ^^^ Print information about the generators and entirely free the linked list holding this information (if there was any in the first place 'padum thss')
 
-    for (unsigned long index = 0; index < cardinality; index++) { free_permutation_pieces(index); free(LOOKUP_table[index].ASCII); } free(LOOKUP_table);
+    for (unsigned long index = 0; index < cardinality; index++) { free(LOOKUP_table[index].permutation); free(LOOKUP_table[index].ASCII); } free(LOOKUP_table);
     // ^^^ Free all of the sloths of memory referred to (in)directly by the table
 
     return 0;
@@ -63,12 +46,28 @@ unsigned long index_lookup(unsigned long ul) {
     return 0;
 }
 
+struct VOID_ptr_ptr_PAIR element_LL_from_file(char **argv, group_OBJ group) {
+    cardinality = 0;
+    FILE *ELEMENT_database = open_group(argv[0], group, argv[1]);
+    // ^^^ Open filestream to element database and initialize cardinality counter. ^^
+
+    struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair();
+    // ^^^ Keep an eye of the head of the open linked list that "insert()" will create. ^^
+
+    unsigned long group_ELEMENT; while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { insert((struct _general_LL ***) &element_CHANNEL_PTR_pair.iterator, group_ELEMENT); cardinality++; }
+    // ^^^ Manifest open linked list consisting of all this "group"'s elements using "insert()" (this linked list can only be closed performing "circular_LL_from_CHAN(element_CHANNEL_PTR_pair.head)"). ^^
+
+    close_group(argv[1], operation_symbol_from_ID_Sloth(group), ELEMENT_database);
+    // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
+
+    return element_CHANNEL_PTR_pair;
+}
+
 void print_subgroup(unsigned long index) {
     fprintf(main_fs, "<%s> = {", LOOKUP_table[index].ASCII);
-    unsigned long perm_length = LOOKUP_table[index].perm_length;
     unsigned long i = 0; do {
-	fprintf(main_fs, "%s", LOOKUP_table[LOOKUP_table[index].permutation[(i + shifts->X) % perm_length]].ASCII); i++;
-	if (i == perm_length) break;
+	fprintf(main_fs, "%s", LOOKUP_table[LOOKUP_table[index].permutation[(i + shifts->X) % LOOKUP_table[index].perm_length]].ASCII); i++;
+	if (i == LOOKUP_table[index].perm_length) break;
 	else fprintf(main_fs, ", ");
     } while (1); fprintf(main_fs, "}");
 }
@@ -150,10 +149,6 @@ unsigned long process_generator_information(struct _general_LL *generator_list, 
 
     return generator_count;
 } // ^ This function also free()'s the entries of the linked list
-
-void free_permutation_pieces(unsigned long index) {
-    free(LOOKUP_table[index].permutation);
-}
 
 void ID_not_parsable_ERROR(char *argv_one, char *argv_two) {
     fprintf(stdout, STDOUT_ARGV_ONE_INSTRUCTION, argv_one, argv_one, argv_one, argv_two);
