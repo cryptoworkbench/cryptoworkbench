@@ -15,7 +15,7 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
 	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the mod value to shifts when dealing with additive groups (see "MATH_HINT_ONE")
     } // ^ Process offset values.
 
-    struct _general_LL *generator_list = second_MAIN(element_LL_from_file(argv, group), group); // << Check "subgroup_information.h" for elaboration concerning "second_MAIN()"
+    unsigned long *generator_array = second_MAIN(element_LL_from_file(argv, group), group); // << Check "subgroup_information.h" for elaboration concerning "second_MAIN()"
     for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++) { print_subgroup(i % cardinality); fprintf(main_fs, "\n"); } // << Print table to "main_fs"
 
     const char *adjective = adjective_from_ID_Sloth(group);
@@ -28,8 +28,8 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     fprintf(main_fs, "\n\u2115%s%s contains %lu elements a.k.a. |\u2115%s%s| = %lu\n", argv[1], symbol, cardinality, argv[1], symbol, cardinality);
     // ^^^ Print cardinality information about this group.
 
-    if (generator_list) {
-	fprintf(main_fs, "\nThese are the %lu generators present in \u2115%s%s \u2191\n", process_generator_information(generator_list->next, argv[1], symbol), argv[1], symbol);
+    if (generator_array) {
+	fprintf(main_fs, "\nThese are the %lu generators present in \u2115%s%s \u2191\n", process_generator_information(generator_array, argv[1], symbol), argv[1], symbol);
     } else fprintf(main_fs, "\nThis group does not contain any generators.\n");
     // ^^^ Print information about the generators and entirely free the linked list holding this information (if there was any in the first place 'padum thss')
 
@@ -44,23 +44,6 @@ unsigned long index_lookup(unsigned long ul) {
 	if (LOOKUP_table[index].ulong == ul) return index;
 
     return 0;
-}
-
-struct VOID_ptr_ptr_PAIR element_LL_from_file(char **argv, group_OBJ group) {
-    cardinality = 0;
-    FILE *ELEMENT_database = open_group(argv[0], group, argv[1]);
-    // ^^^ Open filestream to element database and initialize cardinality counter. ^^
-
-    struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair();
-    // ^^^ Keep an eye of the head of the open linked list that "insert()" will create. ^^
-
-    unsigned long group_ELEMENT; while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { insert((struct _general_LL ***) &element_CHANNEL_PTR_pair.iterator, group_ELEMENT); cardinality++; }
-    // ^^^ Manifest open linked list consisting of all this "group"'s elements using "insert()" (this linked list can only be closed performing "circular_LL_from_CHAN(element_CHANNEL_PTR_pair.head)"). ^^
-
-    close_group(argv[1], operation_symbol_from_ID_Sloth(group), ELEMENT_database);
-    // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
-
-    return element_CHANNEL_PTR_pair;
 }
 
 void print_subgroup(unsigned long index) {
@@ -85,6 +68,16 @@ void insert(struct _general_LL ***tracer_location, unsigned long new_ulong) {
     /* And move onto this newly added spot ^^. */
 }
 
+unsigned long *array_from_LL(struct _general_LL **head_TRACER, unsigned long *required_array_size) {
+    struct _general_LL *iter;
+    if (iter = (struct _general_LL *) _close_CHANNEL((void **) head_TRACER)) {
+	unsigned long *return_value = (unsigned long *) malloc(sizeof(unsigned long) * *required_array_size);
+	for (unsigned long i = 0; i < *required_array_size; i++) {
+	    struct _general_LL *process = iter; return_value[i] = process->element;
+	    iter = process->next; free(process);
+	} return return_value;
+    } else return NULL;
+}
 unsigned long *yield_subgroup(unsigned long index, group_OBJ group) {
     unsigned long ID = boolean_from_ID_Sloth(group);
     struct VOID_ptr_ptr_PAIR permutation_LL_pair = INITIALIZE_CHANNEL_PTR_pair();
@@ -96,27 +89,27 @@ unsigned long *yield_subgroup(unsigned long index, group_OBJ group) {
     } while (generated_element != ID); LOOKUP_table[index].perm_length = subgroup_card;
     // ^^ First we make a linked list of permutations
     
-    struct _general_LL *iter = _close_CHANNEL(permutation_LL_pair.head);
-    unsigned long *permutation_array = (unsigned long *) malloc(sizeof(unsigned long) * subgroup_card);
-    for (unsigned long i = 0; i < subgroup_card; i++) {
-	struct _general_LL *process = iter; permutation_array[i] = process->element;
-	iter = process->next; free(process); }
-    // ^^ Then we store this linked list as an array
-
-    return permutation_array;
+    return array_from_LL((struct _general_LL **) permutation_LL_pair.head, &subgroup_card);
 }
 
-struct _general_LL *circular_LL_from_CHAN(struct VOID_ptr_ptr_PAIR CHANNEL_PTR_pair) {
-    struct _general_LL *first_shackle;
-    if (first_shackle = (struct _general_LL *) _close_CHANNEL(CHANNEL_PTR_pair.head)) {
-	struct _general_LL *last_shackle = (struct _general_LL *) CHANNEL_PTR_pair.iterator;
-	last_shackle->next = first_shackle;
-	return last_shackle;
-    } else return NULL;
+struct VOID_ptr_ptr_PAIR element_LL_from_file(char **argv, group_OBJ group) {
+    cardinality = 0;
+    FILE *ELEMENT_database = open_group(argv[0], group, argv[1]);
+    // ^^^ Open filestream to element database and initialize cardinality counter. ^^
+
+    struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair();
+    // ^^^ Keep an eye of the head of the open linked list that "insert()" will create. ^^
+
+    unsigned long group_ELEMENT; while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { insert((struct _general_LL ***) &element_CHANNEL_PTR_pair.iterator, group_ELEMENT); cardinality++; }
+    // ^^^ Manifest open linked list consisting of all this "group"'s elements using "insert()" (this linked list can only be closed performing "circular_LL_from_CHAN(element_CHANNEL_PTR_pair.head)"). ^^
+
+    close_group(argv[1], operation_symbol_from_ID_Sloth(group), ELEMENT_database);
+    // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
+
+    return element_CHANNEL_PTR_pair;
 }
 
-
-struct _general_LL *second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair, group_OBJ group) {
+unsigned long *second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair, group_OBJ group) {
     struct _general_LL *LINEAR_element_LL;
     if (!(LINEAR_element_LL = (struct _general_LL *) _close_CHANNEL(element_CHANNEL_PTR_pair.head))) { fprintf(stderr, "Failed to add elements from 'ARCHIVE/' file. Exiting '-11'.\n"); exit(-11); }
     // ^^ No need to circle it by using "circular_LL_from_CHAN()"
@@ -130,21 +123,20 @@ struct _general_LL *second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pai
 	LINEAR_element_LL = process->next; free(process);
     } // << ^ Destroy the linear linked list "LINEAR_element_LL" whilst registering it's values into our "LOOKUP_table"
 
-    struct VOID_ptr_ptr_PAIR generator_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair(); // << Declare a new set of tracers, but this time to create a linked list of generators
+    struct VOID_ptr_ptr_PAIR generator_LL_pair = INITIALIZE_CHANNEL_PTR_pair(); // << Declare a new set of tracers, but this time to create a linked list of generators
     for (index = 0; index < cardinality; index++) {
 	LOOKUP_table[index].permutation = yield_subgroup(index, group); // << Loop over the array one more time
-	if (LOOKUP_table[index].perm_length == cardinality) insert((struct _general_LL ***) &generator_CHANNEL_PTR_pair.iterator, index);
+	if (LOOKUP_table[index].perm_length == cardinality) { insert((struct _general_LL ***) &generator_LL_pair.iterator, index); generator_count++; }
     }
 
-    return circular_LL_from_CHAN(generator_CHANNEL_PTR_pair);
+    return array_from_LL((struct _general_LL **) generator_LL_pair.head, &generator_count);
 }
 
-unsigned long process_generator_information(struct _general_LL *generator_list, char *modulus, const char *symbol) {
-    fprintf(main_fs, "\nGenerator count for \u2115%s%s:\n", modulus, symbol);
-    unsigned long generator_count = 0;
-    struct _general_LL *iter = generator_list; do { struct _general_LL *iter_next = iter->next; print_subgroup(iter->element); free(iter); iter = iter_next; generator_count++;
-	if (iter == generator_list) break;
-	else fprintf(main_fs, ", and\n");
+unsigned long process_generator_information(unsigned long *generator_array, char *modulus, const char *symbol) {
+    unsigned long i = 0; do {
+	print_subgroup(generator_array[i]);
+	if (i == generator_count - 1) break;
+	else { fprintf(main_fs, ", and\n"); i++; }
     } while (1); fprintf(main_fs, "\n");
 
     return generator_count;

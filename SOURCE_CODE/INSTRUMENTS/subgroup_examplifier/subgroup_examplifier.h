@@ -21,7 +21,7 @@ typedef struct vertibrae {
 typedef array_piece *table_type;
 // ^^ Declare variable types
 
-unsigned long cardinality;
+unsigned long cardinality, generator_count;
 table_type LOOKUP_table;
 FILE *main_fs;
 struct offset_values *shifts;
@@ -32,17 +32,16 @@ const char *help_queries[] = {"--help", "-h", "help", "instructions", "usage", "
 // ^^ I think that it is alrigh to put a variable initialization like this in this header file
 
 unsigned long index_lookup(unsigned long ul);
-struct _general_LL *circular_LL_from_CHAN(struct VOID_ptr_ptr_PAIR CHANNEL_PTR_pair);
 
 void print_subgroup(unsigned long index);
 void insert(struct _general_LL ***tracer, unsigned long new_ulong);
 unsigned long *yield_subgroup(unsigned long index, group_OBJ group);
 struct VOID_ptr_ptr_PAIR element_LL_from_file(char **argv, group_OBJ group);
 
-struct _general_LL *second_MAIN(struct VOID_ptr_ptr_PAIR, group_OBJ group);
+unsigned long *second_MAIN(struct VOID_ptr_ptr_PAIR, group_OBJ group);
 // ^^ Takes the "struct VOID_ptr_ptr_PAIR" containing the triple ref linked list pointers created by "circular_LL_from_CHAN()"
 
-unsigned long process_generator_information(struct _general_LL *generator_list, char *modulus, const char *symbol);
+unsigned long process_generator_information(unsigned long *generator_array, char *modulus, const char *symbol);
 void free_permutation_pieces(unsigned long index);
 void HELP_AND_QUIT(char *prog_NAME);
 void MOD_not_parsable_ERROR(char *argv_one);
