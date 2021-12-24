@@ -98,12 +98,12 @@ struct _general_LL *LL_from_CHANNEL(struct _CHANNEL_PTR_pair CHANNEL_PTR_pair) {
     } else return NULL;
 }
 
-struct _general_LL *element_LL_from_file(char **argv, group_OBJ group) {
+struct _CHANNEL_PTR_pair element_LL_from_file(char **argv, group_OBJ group) { cardinality = 0;
+    FILE *ELEMENT_database = open_group(argv[0], group, argv[1]);
+    // ^^^ Open filestream to element database and initialize cardinality counter. ^^
+
     struct _CHANNEL_PTR_pair element_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair();
     // ^^^ Keep an eye of the head of the open linked list that "_general_LL_insert()" will create. ^^
-
-    FILE *ELEMENT_database = open_group(argv[0], group, argv[1]); cardinality = 0;
-    // ^^^ Open filestream to element database and initialize cardinality counter. ^^
 
     unsigned long group_ELEMENT; while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { _general_LL_insert((struct _general_LL ***) &element_CHANNEL_PTR_pair.iterator, group_ELEMENT); cardinality++; }
     // ^^^ Manifest open linked list consisting of all this "group"'s elements using "_general_LL_insert()" (this linked list can only be closed performing "LL_from_CHANNEL(element_CHANNEL_PTR_pair.head)"). ^^
@@ -111,15 +111,14 @@ struct _general_LL *element_LL_from_file(char **argv, group_OBJ group) {
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
 
-    struct _general_LL *ret_VAL; 
-    if (ret_VAL = LL_from_CHANNEL(element_CHANNEL_PTR_pair)) return ret_VAL;
-    else {
-	open_and_append_to_LOGBOOK(argv[0], "No group elements could be interpreted from this file in 'ARCHIVE/'. Returning '-10'.\n"); close_logbook(); exit(-10);
-    }
+    return element_CHANNEL_PTR_pair;
 }
 
-struct _general_LL *element_LL_process(struct _general_LL *element_LL, group_OBJ group) {
-    unsigned long cell_width = char_in_val(element_LL->element); element_LL = element_LL->next;
+struct _general_LL *element_LL_process(struct _CHANNEL_PTR_pair element_CHANNEL_PTR_pair, group_OBJ group) {
+    struct _general_LL *element_LL; if (!(element_LL = (struct _general_LL *) _close_CHANNEL(element_CHANNEL_PTR_pair.head))) fprintf(stderr, "FATAL ERROR.\n");
+    // ^^ No need to circle it
+
+    unsigned long cell_width = char_in_val(((struct _general_LL *) element_CHANNEL_PTR_pair.iterator)->element);
     // ^^ First finish the handling of the previous triple ref trick we were doing
 
     struct _CHANNEL_PTR_pair generator_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair(); // << Declare new pointers and perform the same magic but this time in order to create a list of generators
