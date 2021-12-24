@@ -21,7 +21,7 @@ typedef struct group_STRUCT {
 static char *argv_ZERO;
 static FILE *logbook_fs;
 static char *path_to_FILE;
-/* ^^^ VARIABLE DEFINITIONS ^^^ */
+// ^^ Variable definitions
 
 static const char *additive_signs[] = {"0", "+", "addition", "additions", "additive"};
 static const char *multiplicative_signs[] = {"1", "*", "multiplication", "multiplications", "multiplicative"};

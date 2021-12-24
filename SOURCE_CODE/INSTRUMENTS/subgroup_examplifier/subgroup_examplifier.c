@@ -75,7 +75,7 @@ void insert(struct _general_LL ***tracer_location, unsigned long new_ulong) {
 
 struct _general_LL *yield_subgroup(unsigned long index, struct _general_LL ***generator_CHANNEL, group_OBJ group) {
     unsigned long ID = boolean_from_ID_Sloth(group);
-    struct _CHANNEL_PTR_pair permutation_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair();
+    struct VOID_ptr_ptr_PAIR permutation_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair();
     unsigned long subgroup_card = 0;
 
     unsigned long generated_element = ID; do {
@@ -88,7 +88,7 @@ struct _general_LL *yield_subgroup(unsigned long index, struct _general_LL ***ge
     return circular_LL_from_CHAN(permutation_CHANNEL_PTR_pair)->next;
 }
 
-struct _general_LL *circular_LL_from_CHAN(struct _CHANNEL_PTR_pair CHANNEL_PTR_pair) {
+struct _general_LL *circular_LL_from_CHAN(struct VOID_ptr_ptr_PAIR CHANNEL_PTR_pair) {
     struct _general_LL *first_shackle;
     if (first_shackle = (struct _general_LL *) _close_CHANNEL(CHANNEL_PTR_pair.head)) {
 	struct _general_LL *last_shackle = (struct _general_LL *) CHANNEL_PTR_pair.iterator;
@@ -97,11 +97,11 @@ struct _general_LL *circular_LL_from_CHAN(struct _CHANNEL_PTR_pair CHANNEL_PTR_p
     } else return NULL;
 }
 
-struct _CHANNEL_PTR_pair element_LL_from_file(char **argv, group_OBJ group) { cardinality = 0;
+struct VOID_ptr_ptr_PAIR element_LL_from_file(char **argv, group_OBJ group) { cardinality = 0;
     FILE *ELEMENT_database = open_group(argv[0], group, argv[1]);
     // ^^^ Open filestream to element database and initialize cardinality counter. ^^
 
-    struct _CHANNEL_PTR_pair element_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair();
+    struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair();
     // ^^^ Keep an eye of the head of the open linked list that "insert()" will create. ^^
 
     unsigned long group_ELEMENT; while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { insert((struct _general_LL ***) &element_CHANNEL_PTR_pair.iterator, group_ELEMENT); cardinality++; }
@@ -113,13 +113,13 @@ struct _CHANNEL_PTR_pair element_LL_from_file(char **argv, group_OBJ group) { ca
     return element_CHANNEL_PTR_pair;
 }
 
-struct _general_LL *second_MAIN(struct _CHANNEL_PTR_pair element_CHANNEL_PTR_pair, group_OBJ group) {
+struct _general_LL *second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair, group_OBJ group) {
     struct _general_LL *LINEAR_element_LL;
     if (!(LINEAR_element_LL = (struct _general_LL *) _close_CHANNEL(element_CHANNEL_PTR_pair.head))) { fprintf(stderr, "Failed to add elements from 'ARCHIVE/' file. Exiting '-11'.\n"); exit(-11); }
     // ^^ No need to circle it by using "circular_LL_from_CHAN()"
     
     unsigned long cell_width = char_in_val(((struct _general_LL *) element_CHANNEL_PTR_pair.iterator)->element); // << Determine required cell width
-    struct _CHANNEL_PTR_pair generator_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair(); // << Declare a new set of tracers, but this time to create a linked list of generators
+    struct VOID_ptr_ptr_PAIR generator_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair(); // << Declare a new set of tracers, but this time to create a linked list of generators
     LOOKUP_table = (array_piece *) malloc(sizeof(array_piece) * cardinality);
     unsigned long index; for (index = 0; index < cardinality; index++) { // << We use unsigned long "index" twice
 	struct _general_LL *process = LINEAR_element_LL;
