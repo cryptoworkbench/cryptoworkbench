@@ -1,4 +1,6 @@
 /* Examplifies additive and multiplicative groups.
+ *
+ * Works perfectly now. I am very content with it.
  */
 #include "subgroup_examplifier.h"
 
@@ -28,10 +30,9 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     fprintf(main_fs, "\n\u2115%s%s contains %lu elements a.k.a. |\u2115%s%s| = %lu\n\n", argv[1], symbol, cardinality, argv[1], symbol, cardinality);
     // ^^^ Print cardinality information about this group.
 
-    if (generator_array) {
-	fprintf(main_fs, "\n\u2191 those are the only %lu generators present in \u2115%s%s \u2191\n", process_generator_information(generator_array, argv[1], symbol), argv[1], symbol); free(generator_array);
-    } else fprintf(main_fs, "This group does not contain any generators.\n");
-    // ^^^ Print information about the generators and entirely free the linked list holding this information (if there was any in the first place 'padum thss')
+    if (generator_array) fprintf(main_fs, "\n\u2191 those are the only %lu generators present in \u2115%s%s \u2191\n", process_generator_array(generator_array, argv[1], symbol), argv[1], symbol);
+    else fprintf(main_fs, "This group does not contain any generators.\n");
+    // ^^^ Calls the amount of generators to the user and recounts it afterwards, horizontal "shifts->X" is used here, check that out. Also free()'s the array
 
     for (unsigned long index = 0; index < cardinality; index++) { free(LOOKUP_table[index].permutation); free(LOOKUP_table[index].ASCII); } free(LOOKUP_table);
     // ^^^ Free all of the sloths of memory referred to (in)directly by the table
@@ -130,16 +131,11 @@ unsigned long *second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair, gr
     return array_from_LL((struct _general_LL **) generator_LL_pair.head, &generator_count);
 }
 
-unsigned long process_generator_information(unsigned long *generator_array, char *modulus, const char *symbol) {
+unsigned long process_generator_array(unsigned long *generator_array, char *modulus, const char *symbol) {
     fprintf(main_fs, "GENERATOR COUNT FOR \u2115%s%s (%lu):\n", modulus, symbol, generator_count);
-    unsigned long i = shifts->Y % generator_count; do {
-	print_subgroup(generator_array[i % generator_count]);
-	if (i == shifts->Y + (generator_count - 1)) break;
-	fprintf(main_fs, ", and\n"); i++;
-    } while (1); fprintf(main_fs, "\n");
-
-    return generator_count;
-} // ^ This function also free()'s the entries of the linked list
+    unsigned long i = shifts->Y % generator_count; do { print_subgroup(generator_array[i % generator_count]); if (i < (generator_count + shifts->Y)) { fprintf(main_fs, ", and\n"); i++; } else break; } while (1);
+    fprintf(main_fs, "\n"); free(generator_array); return generator_count;
+}
 
 void ID_not_parsable_ERROR(char *argv_one, char *argv_two) {
     fprintf(stdout, STDOUT_ARGV_ONE_INSTRUCTION, argv_one, argv_one, argv_one, argv_two);

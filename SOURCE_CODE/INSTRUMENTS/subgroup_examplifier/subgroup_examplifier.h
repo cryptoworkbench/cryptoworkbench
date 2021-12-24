@@ -41,7 +41,7 @@ struct VOID_ptr_ptr_PAIR element_LL_from_file(char **argv, group_OBJ group);
 unsigned long *second_MAIN(struct VOID_ptr_ptr_PAIR, group_OBJ group);
 // ^^ Takes the "struct VOID_ptr_ptr_PAIR" containing the triple ref linked list pointers created by "circular_LL_from_CHAN()"
 
-unsigned long process_generator_information(unsigned long *generator_array, char *modulus, const char *symbol);
+unsigned long process_generator_array(unsigned long *generator_array, char *modulus, const char *symbol);
 void free_permutation_pieces(unsigned long index);
 void HELP_AND_QUIT(char *prog_NAME);
 void MOD_not_parsable_ERROR(char *argv_one);
