@@ -25,12 +25,12 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
 	fprintf(main_fs, "Horizontal offset used: %lu\nVertical offset used: %lu\n", shifts->X, shifts->Y); }
     // ^^^ Only the table is supposed to be written to the external file
 
-    fprintf(main_fs, "\n\u2115%s%s contains %lu elements a.k.a. |\u2115%s%s| = %lu\n", argv[1], symbol, cardinality, argv[1], symbol, cardinality);
+    fprintf(main_fs, "\n\u2115%s%s contains %lu elements a.k.a. |\u2115%s%s| = %lu\n\n", argv[1], symbol, cardinality, argv[1], symbol, cardinality);
     // ^^^ Print cardinality information about this group.
 
     if (generator_array) {
-	fprintf(main_fs, "\nThese are the %lu generators present in \u2115%s%s \u2191\n", process_generator_information(generator_array, argv[1], symbol), argv[1], symbol);
-    } else fprintf(main_fs, "\nThis group does not contain any generators.\n");
+	fprintf(main_fs, "\n\u2191 those are the only %lu generators present in \u2115%s%s \u2191\n", process_generator_information(generator_array, argv[1], symbol), argv[1], symbol); free(generator_array);
+    } else fprintf(main_fs, "This group does not contain any generators.\n");
     // ^^^ Print information about the generators and entirely free the linked list holding this information (if there was any in the first place 'padum thss')
 
     for (unsigned long index = 0; index < cardinality; index++) { free(LOOKUP_table[index].permutation); free(LOOKUP_table[index].ASCII); } free(LOOKUP_table);
@@ -69,14 +69,12 @@ void insert(struct _general_LL ***tracer_location, unsigned long new_ulong) {
 }
 
 unsigned long *array_from_LL(struct _general_LL **head_TRACER, unsigned long *required_array_size) {
-    struct _general_LL *iter;
-    if (iter = (struct _general_LL *) _close_CHANNEL((void **) head_TRACER)) {
-	unsigned long *return_value = (unsigned long *) malloc(sizeof(unsigned long) * *required_array_size);
-	for (unsigned long i = 0; i < *required_array_size; i++) {
-	    struct _general_LL *process = iter; return_value[i] = process->element;
-	    iter = process->next; free(process);
-	} return return_value;
-    } else return NULL;
+    struct _general_LL *iter; if (!(iter = (struct _general_LL *) _close_CHANNEL((void **) head_TRACER))) return NULL;
+    unsigned long *ulong_array = (unsigned long *) malloc(sizeof(unsigned long) * *required_array_size);
+    for (unsigned long i = 0; i < *required_array_size; i++) {
+	struct _general_LL *process = iter; ulong_array[i] = process->element;
+	iter = process->next; free(process);
+    } return ulong_array;
 }
 unsigned long *yield_subgroup(unsigned long index, group_OBJ group) {
     unsigned long ID = boolean_from_ID_Sloth(group);
@@ -133,10 +131,11 @@ unsigned long *second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair, gr
 }
 
 unsigned long process_generator_information(unsigned long *generator_array, char *modulus, const char *symbol) {
-    unsigned long i = 0; do {
-	print_subgroup(generator_array[i]);
-	if (i == generator_count - 1) break;
-	else { fprintf(main_fs, ", and\n"); i++; }
+    fprintf(main_fs, "GENERATOR COUNT FOR \u2115%s%s (%lu):\n", modulus, symbol, generator_count);
+    unsigned long i = shifts->Y % generator_count; do {
+	print_subgroup(generator_array[i % generator_count]);
+	if (i == shifts->Y + (generator_count - 1)) break;
+	fprintf(main_fs, ", and\n"); i++;
     } while (1); fprintf(main_fs, "\n");
 
     return generator_count;
