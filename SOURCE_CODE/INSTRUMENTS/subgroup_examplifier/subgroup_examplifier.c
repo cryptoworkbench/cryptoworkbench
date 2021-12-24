@@ -1,6 +1,6 @@
 /* Examplifies additive and multiplicative groups.
  */
-#include "subgroup_information.h"
+#include "subgroup_examplifier.h"
 
 const char *help_queries[] = {"--help", "-h", "help", "instructions", "usage", "--instructions", "--usage", "syntax", "--syntax"};
 int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;

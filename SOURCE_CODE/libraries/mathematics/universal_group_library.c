@@ -1,6 +1,10 @@
 // See dev note at line 28. That is the only issue.
 #include "universal_group_library.h"
 
+static const char *additive_signs[] = {"0", "+", "addition", "additions", "additive"};
+static const char *multiplicative_signs[] = {"1", "*", "multiplication", "multiplications", "multiplicative"};
+// ^^ I would've liked these better in "universal_group_library.h", but the internet advices me against it.
+
 enum GROUP_IDentity *STR_could_be_parsed_into_enum_GROUP_IDentity(char *STR, enum GROUP_IDentity *ID) {
     if (match(STR, additive_signs)) { *ID = ADDITIVE; return ID; }
     else if (match(STR, multiplicative_signs)) { *ID = MULTIPLICATIVE; return ID; }
@@ -41,8 +45,7 @@ FILE *open_group(char *prog_NAME, group_OBJ group, char *MOD) {
     const char *operation_symbol = operation_symbol_from_ID_Sloth(group);
     // ^^ Prepare the char pointers "open_group_as_INNER()" needs
 
-    FILE *opened_group = open_group_INNER(MOD, group_ID, adjective, operation_symbol, BUFFER_OF_SIZE(200));
-    return opened_group;
+    return open_group_INNER(MOD, group_ID, adjective, operation_symbol, BUFFER_OF_SIZE(200));
 }
 
 FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, const char *adjective, const char *symbol, char *LINE) {

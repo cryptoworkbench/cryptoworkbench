@@ -23,9 +23,6 @@ static FILE *logbook_fs;
 static char *path_to_FILE;
 /* ^^^ VARIABLE DEFINITIONS ^^^ */
 
-static const char *additive_signs[] = {"0", "+", "addition", "additions", "additive"};
-static const char *multiplicative_signs[] = {"1", "*", "multiplication", "multiplications", "multiplicative"};
-
 enum GROUP_IDentity *STR_could_be_parsed_into_enum_GROUP_IDentity(char *STR, enum GROUP_IDentity *ID);
 /* ^^ Returns "NULL" upon parsing failure, otherwise parses "0" or "1" into their respective ENUM equivalents (a.k.a. representations) within this struct that is abbreviated "group_OBJ" */
 

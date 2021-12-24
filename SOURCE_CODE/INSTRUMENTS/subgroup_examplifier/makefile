@@ -10,8 +10,8 @@
 ../../libraries/mathematics/.universal_group_library.o: ../../libraries/mathematics/universal_group_library.h ../../libraries/mathematics/universal_group_library.c
 	gcc -c ../../libraries/mathematics/universal_group_library.c -o ../../libraries/mathematics/.universal_group_library.o
 
-.subgroup_information.o: subgroup_information.c
-	gcc -c subgroup_information.c -o .subgroup_information.o
+.subgroup_examplifier.o: subgroup_examplifier.c
+	gcc -c subgroup_examplifier.c -o .subgroup_examplifier.o
 
-subgroup_information: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.universal_group_library.o .subgroup_information.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.universal_group_library.o .subgroup_information.o -o ../../../WORKBENCH/subgroup_information
+subgroup_examplifier: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.universal_group_library.o .subgroup_examplifier.o
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.universal_group_library.o .subgroup_examplifier.o -o ../../../WORKBENCH/subgroup_examplifier
