@@ -27,6 +27,9 @@ struct offset_values *shifts;
 _group_operation group_operation;
 // ^^ Declare variables
 
+const char *help_queries[] = {"--help", "-h", "help", "instructions", "usage", "--instructions", "--usage", "syntax", "--syntax"};
+// ^^ I think that it is alrigh to put a variable initialization like this in this header file
+
 unsigned long index_lookup(unsigned long ul);
 struct _general_LL *circular_LL_from_CHAN(struct _CHANNEL_PTR_pair CHANNEL_PTR_pair);
 
