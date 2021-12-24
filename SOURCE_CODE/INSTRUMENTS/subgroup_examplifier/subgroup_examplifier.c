@@ -1,12 +1,8 @@
 /* Examplifies additive and multiplicative groups.
- *
- * I want to modify "permutation_insert()" so that it return's "void" and updates a ref pointer instead.
- *
- * Make a triple_ref_insert function for "struct permutation_piece".
- *
- * */
+ */
 #include "subgroup_information.h"
 
+const char *help_queries[] = {"--help", "-h", "help", "instructions", "usage", "--instructions", "--usage", "syntax", "--syntax"};
 int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     if (6 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));
     if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->MOD)) MOD_not_parsable_ERROR(argv[1]);
@@ -23,8 +19,8 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     struct _general_LL *generator_list = element_LL_process(element_LL_from_file(argv, group), group); print_table();
     // ^^^ Substitute this circular linked list of group elements with an array-stored table of elements and free this linked list simultaneously.
 
-    char *adjective = adjective_from_ID_Sloth(group);
-    char *symbol = operation_symbol_from_ID_Sloth(group);
+    const char *adjective = adjective_from_ID_Sloth(group);
+    const char *symbol = operation_symbol_from_ID_Sloth(group);
     if (main_fs != stdout) { fclose(main_fs); main_fs = stdout;
 	fprintf(main_fs, "Wrote table for the %s group of integers modulo %s to the external file '%s'\n", adjective, argv[1], argv[5]);
 	fprintf(main_fs, "Vertical offset used: %s\nHorizontal offset used: %s\n", argv[3], argv[4]); }
@@ -144,7 +140,7 @@ struct _general_LL *element_LL_process(struct _general_LL *element_LL, group_OBJ
     return LL_from_CHANNEL(generator_CHANNEL_PTR_pair);
 }
 
-unsigned long process_generator_information(struct _general_LL *generator_list, char *modulus, char *symbol) {
+unsigned long process_generator_information(struct _general_LL *generator_list, char *modulus, const char *symbol) {
     fprintf(main_fs, "\nGenerator count for \u2115%s%s:\n", modulus, symbol);
     unsigned long generator_count = 0; struct _general_LL *iter = generator_list; do {
 	struct _general_LL *iter_next = iter->next;

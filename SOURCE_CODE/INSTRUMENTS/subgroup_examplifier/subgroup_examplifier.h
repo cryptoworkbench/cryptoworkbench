@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../libraries/functional/string.h" // <<< Needed for "match()", "STR_could_be_parsed_into_UL()", etc
+// #include "../../libraries/functional/string.h" // <<< Needed for "match()", "STR_could_be_parsed_into_UL()", etc
 #include "../../libraries/functional/triple_ref_pointers.h" // << Needed for "zoom_out()", "initialize_PTR_pair()", and "zoom_in()"
 #include "../../libraries/mathematics/universal_group_library.h" // <<< Needed for "group_OBJ"
 #define STDOUT_VERTICAL_OFFSET_ERROR "Failed to parse \"%s\" (the 4th argument) as vertical offset. Defaulting to not using a vertical offset.\n"
@@ -10,17 +10,24 @@
 #define HELP_INFORMATION "Program usage: %s <CAP> <ID> [horizontal offset] [vertical offset] [output filename]\n\n<MANDATORY ARGUMENTS> are denoted like this. The program won't run without these.\n\n[optional arguments] are denoted like this. They are not very necessary.\n"
 
 struct offset_values { unsigned long Y; unsigned long X; };
+
 struct _general_LL { struct _general_LL *next; unsigned long element; };
-struct content { unsigned long literal; char *ASCII_numerical; };
-typedef struct vertibrae { struct _general_LL *permutation; struct content unit; } array_piece;
+typedef struct vertibrae {
+    struct _general_LL *permutation;
+    struct {
+	unsigned long literal;
+	char *ASCII_numerical;
+    } unit;
+} array_piece;
 typedef array_piece *table_type;
-const char *help_queries[] = {"--help", "-h", "help", "instructions", "usage", "--instructions", "--usage", "syntax", "--syntax"};
+// ^^ Declare variable types
+
 unsigned long cardinality;
 table_type LOOKUP_table;
 FILE *main_fs;
 struct offset_values *shifts;
 _group_operation group_operation;
-// ^^^ Variable (type) declaration(s)
+// ^^ Declare variables
 
 unsigned long index_lookup(unsigned long ul);
 struct _general_LL *LL_from_CHANNEL(struct _CHANNEL_PTR_pair CHANNEL_PTR_pair);
@@ -30,7 +37,7 @@ struct _general_LL *yield_subgroup(struct _general_LL ***generator_channel, unsi
 struct _general_LL *zip(struct _general_LL **channel);
 struct _general_LL *element_LL_from_file(char **argv, group_OBJ group);
 struct _general_LL *element_LL_process(struct _general_LL *element_LL, group_OBJ group);
-unsigned long process_generator_information(struct _general_LL *generator_list, char *modulus, char *symbol);
+unsigned long process_generator_information(struct _general_LL *generator_list, char *modulus, const char *symbol);
 void free_permutation_pieces(unsigned long index);
 void print_table();
 void HELP_AND_QUIT(char *prog_NAME);

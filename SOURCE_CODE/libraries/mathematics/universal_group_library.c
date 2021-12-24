@@ -96,7 +96,7 @@ FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, cons
 	} } return group_fs;
 }
 
-void close_group(char *group_CAP, char *symbol_to_use, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
+void close_group(char *group_CAP, const char *symbol_to_use, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
     sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", group_CAP, symbol_to_use, path_to_FILE); append_to_LOGBOOK(BUFFER); fclose(opened_group);
     sprintf(BUFFER, "Closed '%s'", path_to_FILE); free(path_to_FILE); append_to_LOGBOOK(BUFFER); free(BUFFER); close_logbook();
 }

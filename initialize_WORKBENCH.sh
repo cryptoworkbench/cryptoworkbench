@@ -5,7 +5,7 @@ mkdir WORKBENCH/ARCHIVE
 clear && echo "########### ASSEMBLY LINE ROLLING ! #######=====>"
 cd SOURCE_CODE/INSTRUMENTS/modular_group_element_table_generator && make modular_group_element_table_generator && echo "#######===> The following instrument has been assemblied/linked: modular_group_element_table_generator
 "
-cd ../subgroup_information && make subgroup_information && echo "#######===> The following instrument has been assemblied/linked: subgroup_information
+cd ../subgroup_examplifier && make subgroup_examplifier && echo "#######===> The following instrument has been assemblied/linked: subgroup_examplifier
 "
 cd ../Diffie_Hellman_Key_Agreement && make Diffie_Hellman_Key_Agreement && echo "#######===> The following instrument has been assemblied/linked: Diffie_Hellman_Key_Agreement
 "
