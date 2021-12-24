@@ -60,7 +60,7 @@ void print_subgroup(unsigned long index) {
     } while (1); fprintf(main_fs, "}");
 }
 
-void _general_LL_insert(struct _general_LL ***tracer_location, unsigned long new_ulong) {
+void insert(struct _general_LL ***tracer_location, unsigned long new_ulong) {
     struct _general_LL *new_LL_element = (struct _general_LL *) malloc(sizeof(struct _general_LL)); // Fix existence of new element
     new_LL_element->element = new_ulong; new_LL_element->next = NULL;
     /* Manifest new element for ulong ^^. */
@@ -79,12 +79,12 @@ struct _general_LL *yield_subgroup(unsigned long index, struct _general_LL ***ge
     unsigned long subgroup_card = 0;
 
     unsigned long generated_element = ID; do {
-	_general_LL_insert((struct _general_LL ***) &permutation_CHANNEL_PTR_pair.iterator, index_lookup(generated_element));
+	insert((struct _general_LL ***) &permutation_CHANNEL_PTR_pair.iterator, index_lookup(generated_element));
 	subgroup_card++;
 	generated_element = group_operation(generated_element, LOOKUP_table[index].ulong, group->MOD);
     } while (generated_element != ID);
     
-    if (subgroup_card == cardinality) _general_LL_insert(generator_CHANNEL, index);
+    if (subgroup_card == cardinality) insert(generator_CHANNEL, index);
     return circular_LL_from_CHAN(permutation_CHANNEL_PTR_pair)->next;
 }
 
@@ -102,10 +102,10 @@ struct _CHANNEL_PTR_pair element_LL_from_file(char **argv, group_OBJ group) { ca
     // ^^^ Open filestream to element database and initialize cardinality counter. ^^
 
     struct _CHANNEL_PTR_pair element_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair();
-    // ^^^ Keep an eye of the head of the open linked list that "_general_LL_insert()" will create. ^^
+    // ^^^ Keep an eye of the head of the open linked list that "insert()" will create. ^^
 
-    unsigned long group_ELEMENT; while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { _general_LL_insert((struct _general_LL ***) &element_CHANNEL_PTR_pair.iterator, group_ELEMENT); cardinality++; }
-    // ^^^ Manifest open linked list consisting of all this "group"'s elements using "_general_LL_insert()" (this linked list can only be closed performing "circular_LL_from_CHAN(element_CHANNEL_PTR_pair.head)"). ^^
+    unsigned long group_ELEMENT; while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { insert((struct _general_LL ***) &element_CHANNEL_PTR_pair.iterator, group_ELEMENT); cardinality++; }
+    // ^^^ Manifest open linked list consisting of all this "group"'s elements using "insert()" (this linked list can only be closed performing "circular_LL_from_CHAN(element_CHANNEL_PTR_pair.head)"). ^^
 
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
