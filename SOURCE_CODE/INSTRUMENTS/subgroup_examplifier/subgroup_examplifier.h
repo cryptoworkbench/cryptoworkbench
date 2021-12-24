@@ -13,9 +13,10 @@ struct offset_values { unsigned long Y; unsigned long X; };
 
 struct _general_LL { struct _general_LL *next; unsigned long element; };
 typedef struct vertibrae {
-    struct _general_LL *permutation;
-    unsigned long ulong;
     char *ASCII;
+    unsigned long ulong;
+    unsigned long perm_length;
+    unsigned long *permutation;
 } array_piece;
 typedef array_piece *table_type;
 // ^^ Declare variable types
@@ -35,7 +36,7 @@ struct _general_LL *circular_LL_from_CHAN(struct VOID_ptr_ptr_PAIR CHANNEL_PTR_p
 
 void print_subgroup(unsigned long index);
 void insert(struct _general_LL ***tracer, unsigned long new_ulong);
-struct _general_LL *yield_subgroup(unsigned long index, struct _general_LL ***generator_CHANNEL, group_OBJ group);
+unsigned long *yield_subgroup(unsigned long index, group_OBJ group);
 struct VOID_ptr_ptr_PAIR element_LL_from_file(char **argv, group_OBJ group);
 
 struct _general_LL *second_MAIN(struct VOID_ptr_ptr_PAIR, group_OBJ group);
@@ -46,5 +47,4 @@ void free_permutation_pieces(unsigned long index);
 void HELP_AND_QUIT(char *prog_NAME);
 void MOD_not_parsable_ERROR(char *argv_one);
 void ID_not_parsable_ERROR(char *argv_one, char *argv_two);
-int main(int argc, char **argv);
 // ^^^ Function declarations
