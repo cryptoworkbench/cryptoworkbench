@@ -133,10 +133,8 @@ struct _general_LL *element_LL_process(struct _CHANNEL_PTR_pair element_CHANNEL_
 
 unsigned long process_generator_information(struct _general_LL *generator_list, char *modulus, const char *symbol) {
     fprintf(main_fs, "\nGenerator count for \u2115%s%s:\n", modulus, symbol);
-    unsigned long generator_count = 0; struct _general_LL *iter = generator_list; do {
-	struct _general_LL *iter_next = iter->next;
-	print_subgroup(iter->element);
-	free(iter); iter = iter_next; generator_count++;
+    unsigned long generator_count = 0;
+    struct _general_LL *iter = generator_list; do { struct _general_LL *iter_next = iter->next; print_subgroup(iter->element); free(iter); iter = iter_next; generator_count++;
 	if (iter == generator_list) break;
 	else fprintf(main_fs, ", and\n");
     } while (1); fprintf(main_fs, "\n");
@@ -152,8 +150,7 @@ void free_permutation_pieces(unsigned long index) {
 }
 
 void print_table() {
-    for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++)
-    { print_subgroup(i % cardinality); fprintf(main_fs, "\n"); }
+    for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++) { print_subgroup(i % cardinality); fprintf(main_fs, "\n"); }
 }
 
 void ID_not_parsable_ERROR(char *argv_one, char *argv_two) {
