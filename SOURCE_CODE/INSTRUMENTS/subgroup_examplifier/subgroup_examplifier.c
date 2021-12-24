@@ -74,7 +74,7 @@ void _general_LL_insert(struct _general_LL ***tracer_location, unsigned long new
     /* And move onto this newly added spot ^^. */
 }
 
-struct _general_LL *yield_subgroup(struct _general_LL ***generator_CHANNEL, unsigned long index, group_OBJ group) {
+struct _general_LL *yield_subgroup(unsigned long index, struct _general_LL ***generator_CHANNEL, group_OBJ group) {
     unsigned long ID = boolean_from_ID_Sloth(group);
     struct _CHANNEL_PTR_pair permutation_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair();
     unsigned long subgroup_card = 0;
@@ -86,10 +86,10 @@ struct _general_LL *yield_subgroup(struct _general_LL ***generator_CHANNEL, unsi
     } while (generated_element != ID);
     
     if (subgroup_card == cardinality) _general_LL_insert(generator_CHANNEL, index);
-    return LL_from_CHANNEL(permutation_CHANNEL_PTR_pair)->next;
+    return circular_LL_from_CHAN(permutation_CHANNEL_PTR_pair)->next;
 }
 
-struct _general_LL *LL_from_CHANNEL(struct _CHANNEL_PTR_pair CHANNEL_PTR_pair) {
+struct _general_LL *circular_LL_from_CHAN(struct _CHANNEL_PTR_pair CHANNEL_PTR_pair) {
     struct _general_LL *first_shackle;
     if (first_shackle = (struct _general_LL *) _close_CHANNEL(CHANNEL_PTR_pair.head)) {
 	struct _general_LL *last_shackle = (struct _general_LL *) CHANNEL_PTR_pair.iterator;
@@ -106,7 +106,7 @@ struct _CHANNEL_PTR_pair element_LL_from_file(char **argv, group_OBJ group) { ca
     // ^^^ Keep an eye of the head of the open linked list that "_general_LL_insert()" will create. ^^
 
     unsigned long group_ELEMENT; while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { _general_LL_insert((struct _general_LL ***) &element_CHANNEL_PTR_pair.iterator, group_ELEMENT); cardinality++; }
-    // ^^^ Manifest open linked list consisting of all this "group"'s elements using "_general_LL_insert()" (this linked list can only be closed performing "LL_from_CHANNEL(element_CHANNEL_PTR_pair.head)"). ^^
+    // ^^^ Manifest open linked list consisting of all this "group"'s elements using "_general_LL_insert()" (this linked list can only be closed performing "circular_LL_from_CHAN(element_CHANNEL_PTR_pair.head)"). ^^
 
     close_group(argv[1], operation_symbol_from_ID_Sloth(group), ELEMENT_database);
     // ^^^ After successfull interpretation from element_database, notify of the file's parsing in the logbook
@@ -115,28 +115,20 @@ struct _CHANNEL_PTR_pair element_LL_from_file(char **argv, group_OBJ group) { ca
 }
 
 struct _general_LL *element_LL_process(struct _CHANNEL_PTR_pair element_CHANNEL_PTR_pair, group_OBJ group) {
-    struct _general_LL *element_LL; if (!(element_LL = (struct _general_LL *) _close_CHANNEL(element_CHANNEL_PTR_pair.head))) fprintf(stderr, "FATAL ERROR.\n");
-    // ^^ No need to circle it
-
-    unsigned long cell_width = char_in_val(((struct _general_LL *) element_CHANNEL_PTR_pair.iterator)->element);
-    // ^^ First finish the handling of the previous triple ref trick we were doing
-
-    struct _CHANNEL_PTR_pair generator_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair(); // << Declare new pointers and perform the same magic but this time in order to create a list of generators
+    struct _general_LL *LINEAR_element_LL;
+    if (!(LINEAR_element_LL = (struct _general_LL *) _close_CHANNEL(element_CHANNEL_PTR_pair.head))) { fprintf(stderr, "Failed to add elements from 'ARCHIVE/' file. Exiting '-11'.\n"); exit(-11); }
+    // ^^ No need to circle it by using "circular_LL_from_CHAN()"
+    
+    unsigned long cell_width = char_in_val(((struct _general_LL *) element_CHANNEL_PTR_pair.iterator)->element); // << Determine required cell width
+    struct _CHANNEL_PTR_pair generator_CHANNEL_PTR_pair = INITIALIZE_CHANNEL_PTR_pair(); // << Declare a new set of tracers, but this time to create a linked list of generators
     LOOKUP_table = (array_piece *) malloc(sizeof(array_piece) * cardinality);
-    // ^^ Actually initialize the lookup table by allocating memory on the heap for it
-
-    unsigned long index; // << We will reuse unsigned long index at these 2 for loop's
-    for (index = 0; index < cardinality; index++) {
-	struct _general_LL *process = element_LL;
+    unsigned long index; for (index = 0; index < cardinality; index++) { // << We use unsigned long "index" twice
+	struct _general_LL *process = LINEAR_element_LL;
 	LOOKUP_table[index].unit.literal = process->element;
 	LOOKUP_table[index].unit.ASCII_numerical = str_from_ul(process->element, cell_width); // << Now with a little less pressure on memory is a good time to add the string representations
-	element_LL = process->next; free(process);
-    } // <<< Creates the table and destroys the entire linked list.
-
-    for (index = 0; index < cardinality; index++) LOOKUP_table[index].permutation = yield_subgroup((struct _general_LL ***) &generator_CHANNEL_PTR_pair.iterator, index, group);
-    // ^^ Loop over the array one more time and determine the permutations definitevely.
-
-    return LL_from_CHANNEL(generator_CHANNEL_PTR_pair);
+	LINEAR_element_LL = process->next; free(process); } // << ^ Destroy the linear linked list "LINEAR_element_LL" whilst registering it's values into our "LOOKUP_table"
+    for (index = 0; index < cardinality; index++) LOOKUP_table[index].permutation = yield_subgroup(index, (struct _general_LL ***) &generator_CHANNEL_PTR_pair.iterator, group); // << Loop over the array one more time
+    return circular_LL_from_CHAN(generator_CHANNEL_PTR_pair);
 }
 
 unsigned long process_generator_information(struct _general_LL *generator_list, char *modulus, const char *symbol) {
