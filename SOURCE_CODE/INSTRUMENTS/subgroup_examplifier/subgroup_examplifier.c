@@ -16,8 +16,8 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
 	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the mod value to shifts when dealing with additive groups (see "MATH_HINT_ONE")
     } // ^ Process offset values.
 
-    struct _general_LL *generator_list = element_LL_process(element_LL_from_file(argv, group), group); print_table();
-    // ^^^ Substitute this circular linked list of group elements with an array-stored table of elements and free this linked list simultaneously.
+    struct _general_LL *generator_list = second_MAIN(element_LL_from_file(argv, group), group); // << Check "subgroup_information.h" for elaboration concerning "second_MAIN()"
+    for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++) { print_subgroup(i % cardinality); fprintf(main_fs, "\n"); } // << Print table to "main_fs"
 
     const char *adjective = adjective_from_ID_Sloth(group);
     const char *symbol = operation_symbol_from_ID_Sloth(group);
@@ -114,7 +114,7 @@ struct _CHANNEL_PTR_pair element_LL_from_file(char **argv, group_OBJ group) { ca
     return element_CHANNEL_PTR_pair;
 }
 
-struct _general_LL *element_LL_process(struct _CHANNEL_PTR_pair element_CHANNEL_PTR_pair, group_OBJ group) {
+struct _general_LL *second_MAIN(struct _CHANNEL_PTR_pair element_CHANNEL_PTR_pair, group_OBJ group) {
     struct _general_LL *LINEAR_element_LL;
     if (!(LINEAR_element_LL = (struct _general_LL *) _close_CHANNEL(element_CHANNEL_PTR_pair.head))) { fprintf(stderr, "Failed to add elements from 'ARCHIVE/' file. Exiting '-11'.\n"); exit(-11); }
     // ^^ No need to circle it by using "circular_LL_from_CHAN()"
@@ -147,10 +147,6 @@ void free_permutation_pieces(unsigned long index) {
 	struct _general_LL *iter_next = iter->next;
 	free(iter); iter = iter_next;
     } while (iter != LOOKUP_table[index].permutation);
-}
-
-void print_table() {
-    for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++) { print_subgroup(i % cardinality); fprintf(main_fs, "\n"); }
 }
 
 void ID_not_parsable_ERROR(char *argv_one, char *argv_two) {

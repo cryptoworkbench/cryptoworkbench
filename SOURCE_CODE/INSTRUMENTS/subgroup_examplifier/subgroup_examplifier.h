@@ -31,14 +31,17 @@ _group_operation group_operation;
 
 unsigned long index_lookup(unsigned long ul);
 struct _general_LL *circular_LL_from_CHAN(struct _CHANNEL_PTR_pair CHANNEL_PTR_pair);
+
 void print_subgroup(unsigned long index);
 void _general_LL_insert(struct _general_LL ***tracer, unsigned long new_ulong);
 struct _general_LL *yield_subgroup(unsigned long index, struct _general_LL ***generator_CHANNEL, group_OBJ group);
 struct _CHANNEL_PTR_pair element_LL_from_file(char **argv, group_OBJ group);
-struct _general_LL *element_LL_process(struct _CHANNEL_PTR_pair, group_OBJ group);
+
+struct _general_LL *second_MAIN(struct _CHANNEL_PTR_pair, group_OBJ group);
+// ^^ Takes the "struct _CHANNEL_PTR_pair" containing the triple ref linked list pointers created by "circular_LL_from_CHAN()"
+
 unsigned long process_generator_information(struct _general_LL *generator_list, char *modulus, const char *symbol);
 void free_permutation_pieces(unsigned long index);
-void print_table();
 void HELP_AND_QUIT(char *prog_NAME);
 void MOD_not_parsable_ERROR(char *argv_one);
 void ID_not_parsable_ERROR(char *argv_one, char *argv_two);
