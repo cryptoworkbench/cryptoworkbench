@@ -14,10 +14,8 @@ struct offset_values { unsigned long Y; unsigned long X; };
 struct _general_LL { struct _general_LL *next; unsigned long element; };
 typedef struct vertibrae {
     struct _general_LL *permutation;
-    struct {
-	unsigned long literal;
-	char *ASCII_numerical;
-    } unit;
+    unsigned long ulong;
+    char *ASCII;
 } array_piece;
 typedef array_piece *table_type;
 // ^^ Declare variable types
