@@ -23,7 +23,7 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     const char *symbol = operation_symbol_from_ID_Sloth(group);
     if (main_fs != stdout) { fclose(main_fs); main_fs = stdout;
 	fprintf(main_fs, "Wrote table for the %s group of integers modulo %s to the external file '%s'\n", adjective, argv[1], argv[5]);
-	fprintf(main_fs, "Vertical offset used: %s\nHorizontal offset used: %s\n", argv[3], argv[4]); }
+	fprintf(main_fs, "Horizontal offset used: %lu\nVertical offset used: %lu\n", shifts->X, shifts->Y); }
     // ^^^ Only the table is supposed to be written to the external file
 
     fprintf(main_fs, "\n\u2115%s%s contains %lu elements a.k.a. |\u2115%s%s| = %lu\n", argv[1], symbol, cardinality, argv[1], symbol, cardinality);
