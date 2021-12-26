@@ -17,7 +17,13 @@
 
 struct offset_values { unsigned long Y; unsigned long X; };
 struct _general_LL { struct _general_LL *next; unsigned long element; };
-struct _order_COUNTER { struct _order_COUNTER *next; unsigned long subgroup_order; unsigned long order_quantity; };
+
+struct _order_COUNTER {
+    struct _order_COUNTER *next;
+    struct { unsigned long ULONG; char *STR; } perm_length;
+    struct { unsigned long ULONG; char *STR; } perm_length_occurences;
+};
+
 typedef struct vertibrae { char *ASCII; unsigned long ulong; unsigned long *permutation; unsigned long perm_length; } array_piece;
 typedef array_piece *table_type; // << Belongs to this one above
 // ^^ Declare variable types
@@ -30,6 +36,9 @@ struct offset_values *shifts;
 // ^^ Declare variables
 
 const char *help_queries[] = {"--help", "-h", "help", "instructions", "usage", "--instructions", "--usage", "syntax", "--syntax"};
+const char *_perm_length_header = "cardinality:";
+const char *_frequency_header = "frequency:";
+const char *_percentage_header = "percentage within group:";
 // ^^ I think that it is alrigh to put a variable initialization like this in this header file
 
 void HELP_AND_QUIT(char *prog_NAME) {
@@ -62,11 +71,21 @@ void insert(struct _general_LL ***tracer_location, unsigned long new_ulong) {
     /* And move onto this newly added spot ^^. */
 }
 
-void subgroup_insert(struct _order_COUNTER **iterator, unsigned long subgroup_order) {
-    while (*iterator != NULL && (*iterator)->subgroup_order != subgroup_order) iterator = &(*iterator)->next;
-    if (*iterator == NULL) { struct _order_COUNTER *new_subgroup_order = (struct _order_COUNTER *) malloc(sizeof(struct _order_COUNTER)); // Create the new order counter
-	new_subgroup_order->subgroup_order = subgroup_order; new_subgroup_order->order_quantity = 1; new_subgroup_order->next = *iterator; *iterator = new_subgroup_order; } // << Do triple ref magic
-    else if ((*iterator)->subgroup_order == subgroup_order) (*iterator)->order_quantity++;
+void subgroup_insert(struct _order_COUNTER **iterator, unsigned long perm_length) {
+    while (*iterator != NULL && (*iterator)->perm_length.ULONG != perm_length) iterator = &(*iterator)->next;
+    if (*iterator == NULL) {
+	struct _order_COUNTER *new_subgroup_order = (struct _order_COUNTER *) malloc(sizeof(struct _order_COUNTER)); // Create the new order counter
+	// ^^ Create new element
+
+	new_subgroup_order->perm_length.ULONG = perm_length; new_subgroup_order->perm_length.STR = str_from_ul(perm_length, str_len(_perm_length_header));
+	// ^^ Set new element's "perm_length" struct
+
+	new_subgroup_order->perm_length_occurences.ULONG = 1;
+	// ^^ Set new element's "perm_length_occurences" struct
+
+	new_subgroup_order->next = *iterator; *iterator = new_subgroup_order;
+    } // << Do triple ref magic
+    else if ((*iterator)->perm_length.ULONG == perm_length) (*iterator)->perm_length_occurences.ULONG++;
 }
 
 struct VOID_ptr_ptr_PAIR element_LL_from_file(char **argv, group_OBJ group) {
@@ -151,6 +170,7 @@ void print_subgroup(unsigned long index) {
     } while (1); fprintf(main_fs, "}");
 }
 
+
 int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     if (6 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));
     if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->MOD)) MOD_not_parsable_ERROR(argv[1]);
@@ -175,11 +195,13 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
 	fprintf(main_fs, "Horizontal offset used: %lu\nVertical offset used: %lu\n", shifts->X, shifts->Y); }
     // ^^^ Only the table is supposed to be written to the external file
 
-    unsigned long total = 0; do {tree = tree->next;
-	if (1 < tree->order_quantity / 2) { total += tree->order_quantity / 2;
-	    fprintf(main_fs, "\nRegarding lists consisting of %lu elements: %lu distinct permutations suggested by \u2115%s%s", tree->subgroup_order, tree->order_quantity / 2, argv[1], symbol); }
-	if (tree->subgroup_order == cardinality) fprintf(main_fs, " (which means there are %lu generators)", tree->order_quantity);
-    } while (tree->next->next != NULL); printf("\n\nIn total that's %lu distinct permutations.\n", total);
+    fprintf(main_fs, "\n| \u2115%s%s's kinds of subgroups:\n| %s | %s | %s\n", argv[1], symbol, _perm_length_header, _percentage_header, _frequency_header);
+    float perc; do {
+	tree->perm_length_occurences.STR = str_from_ul(tree->perm_length_occurences.ULONG, str_len(_frequency_header) - 3);
+	perc = (float) tree->perm_length_occurences.ULONG / cardinality; perc *= 100;
+	fprintf(main_fs, "| %s | %.21f | %lu / %lu", tree->perm_length.STR, perc, tree->perm_length_occurences.ULONG, cardinality);
+	tree = tree->next; printf("\n");
+    } while (tree);
 
     fprintf(main_fs, "\n"); if (generator_array) {
 	fprintf(main_fs, "Generator's in \u2115%s%s:\n", argv[1], symbol);
