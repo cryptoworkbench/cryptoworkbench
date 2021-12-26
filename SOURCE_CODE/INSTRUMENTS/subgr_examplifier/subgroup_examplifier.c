@@ -3,7 +3,7 @@
 // New version.
 //
 // DEV. notes:
-// For some reasom does not work properly with 49 1: gives not the entire generator list
+// Basically what I want to do here now is make the program display a calculation of the amount of mappings that can be derived for the specified group, per mapping length (a.k.a. per permutation/subgroup length)
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../libraries/functional/string.h" // <<< Needed for "match()", "STR_could_be_parsed_into_UL()", etc
@@ -175,18 +175,11 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
 	fprintf(main_fs, "Horizontal offset used: %lu\nVertical offset used: %lu\n", shifts->X, shifts->Y); }
     // ^^^ Only the table is supposed to be written to the external file
 
-    fprintf(main_fs, "\nCounting \u2115%s%s's number of distinct permutations;\n", argv[1], symbol, (cardinality / 2) - 1); // << Print cardinality information about this group.
-    do {tree = tree->next;
-	if (1 < tree->order_quantity / 2)
-	    fprintf(main_fs, "%lu from those %lu pairs of inverses that produced those %lu subgroups with %lu elements", tree->order_quantity / 2, tree->order_quantity / 2, tree->order_quantity, tree->subgroup_order);
-	else
-	    fprintf(main_fs, "1 from that pair of inverses that produced those 2 subgroups with %lu elements", tree->subgroup_order);
-
-	if (tree->subgroup_order == cardinality)
-	    fprintf(main_fs, " (|\u2115%s%s| = %lu -> \u2115%s%s contains %lu generators)", argv[1], symbol, cardinality, argv[1], symbol, tree->order_quantity);
-
-	fprintf(main_fs, ",\n");
-    } while (tree->next->next != NULL); printf("\nThat's %lu distinct permutations is total.\n", (cardinality / 2) - 1);
+    unsigned long total = 0; do {tree = tree->next;
+	if (1 < tree->order_quantity / 2) { total += tree->order_quantity / 2;
+	    fprintf(main_fs, "\nRegarding lists consisting of %lu elements: %lu distinct permutations suggested by \u2115%s%s", tree->subgroup_order, tree->order_quantity / 2, argv[1], symbol); }
+	if (tree->subgroup_order == cardinality) fprintf(main_fs, " (which means there are %lu generators)", tree->order_quantity);
+    } while (tree->next->next != NULL); printf("\n\nIn total that's %lu distinct permutations.\n", total);
 
     fprintf(main_fs, "\n"); if (generator_array) {
 	fprintf(main_fs, "Generator's in \u2115%s%s:\n", argv[1], symbol);
