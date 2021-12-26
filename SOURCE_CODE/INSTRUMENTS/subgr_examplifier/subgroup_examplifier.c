@@ -175,13 +175,21 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
 	fprintf(main_fs, "Horizontal offset used: %lu\nVertical offset used: %lu\n", shifts->X, shifts->Y); }
     // ^^^ Only the table is supposed to be written to the external file
 
-    fprintf(main_fs, "\n\u2115%s%s has %lu distinct permutions:", argv[1], symbol, (cardinality - 2) / 2); // << Print cardinality information about this group.
-    do {tree = tree->next; fprintf(main_fs, "\n");
-	fprintf(main_fs, "%lu distinct permutations of %lu elements long", tree->order_quantity / 2, tree->subgroup_order); if (tree->subgroup_order == cardinality) printf(" (from the %lu generators listed below)", tree->order_quantity);
-    } while (tree->next->next != NULL); printf("\n");
+    fprintf(main_fs, "\nCounting \u2115%s%s's number of distinct permutations;\n", argv[1], symbol, (cardinality / 2) - 1); // << Print cardinality information about this group.
+    do {tree = tree->next;
+	if (1 < tree->order_quantity / 2)
+	    fprintf(main_fs, "%lu from those %lu pairs of inverses that produced those %lu subgroups with %lu elements", tree->order_quantity / 2, tree->order_quantity / 2, tree->order_quantity, tree->subgroup_order);
+	else
+	    fprintf(main_fs, "1 from that pair of inverses that produced those 2 subgroups with %lu elements", tree->subgroup_order);
+
+	if (tree->subgroup_order == cardinality)
+	    fprintf(main_fs, " (|\u2115%s%s| = %lu -> \u2115%s%s contains %lu generators)", argv[1], symbol, cardinality, argv[1], symbol, tree->order_quantity);
+
+	fprintf(main_fs, ",\n");
+    } while (tree->next->next != NULL); printf("\nThat's %lu distinct permutations is total.\n", (cardinality / 2) - 1);
 
     fprintf(main_fs, "\n"); if (generator_array) {
-	fprintf(main_fs, "GENERATOR COUNT FOR \u2115%s%s:\n", argv[1], symbol);
+	fprintf(main_fs, "Generator's in \u2115%s%s:\n", argv[1], symbol);
 	unsigned long i = shifts->Y % generator_count; do { print_subgroup(generator_array[i % generator_count]);
 	    if (i % generator_count != (shifts->Y - 1) % generator_count) { fprintf(main_fs, ", and\n"); i++; } else break; } while (1); free(generator_array);
     } else fprintf(main_fs, "This group does not contain any generators."); printf("\n");
