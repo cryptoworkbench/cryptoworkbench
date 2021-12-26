@@ -1,4 +1,9 @@
 // Examplifies additive and multiplicative groups and lists their generators.
+//
+// New version.
+//
+// DEV. notes:
+// For some reasom does not work properly with 49 1: gives not the entire generator list
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../libraries/functional/string.h" // <<< Needed for "match()", "STR_could_be_parsed_into_UL()", etc
@@ -146,14 +151,6 @@ void print_subgroup(unsigned long index) {
     } while (1); fprintf(main_fs, "}");
 }
 
-unsigned long process_generator_array(unsigned long *generator_array, char *modulus, const char *symbol) {
-    fprintf(main_fs, "GENERATOR COUNT FOR \u2115%s%s (%lu):\n", modulus, symbol, generator_count);
-    unsigned long i = shifts->Y % generator_count; do {
-	print_subgroup(generator_array[i % generator_count]);
-	if (i % generator_count != (shifts->Y - 1) % generator_count) { fprintf(main_fs, ", and\n"); i++; } else break; } while (1);
-    fprintf(main_fs, "\n"); free(generator_array); return generator_count;
-}
-
 int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     if (6 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));
     if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->MOD)) MOD_not_parsable_ERROR(argv[1]);
@@ -178,17 +175,13 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
 	fprintf(main_fs, "Horizontal offset used: %lu\nVertical offset used: %lu\n", shifts->X, shifts->Y); }
     // ^^^ Only the table is supposed to be written to the external file
 
-    fprintf(main_fs, "\n\u2115%s%s contains %lu elements a.k.a. |\u2115%s%s| = %lu\n", argv[1], symbol, cardinality, argv[1], symbol, cardinality);
-    // ^^^ Print cardinality information about this group.
-
-    printf("\nVARIATION OF PERMUTATION LENGTHS:\n");
-    printf("1 permutation of 1 element\n"); do { tree = tree->next;
-	printf("%lu permutations of %lu elements", tree->order_quantity, tree->subgroup_order); if (tree->subgroup_order == cardinality) printf(" (the %lu generators listed below)", tree->order_quantity);
-	printf("\n");
-    } while (tree->next != NULL);
+    fprintf(main_fs, "\n\u2115%s%s has %lu distinct permutions:", argv[1], symbol, (cardinality - 2) / 2); // << Print cardinality information about this group.
+    do {tree = tree->next; fprintf(main_fs, "\n");
+	fprintf(main_fs, "%lu distinct permutations of %lu elements long", tree->order_quantity / 2, tree->subgroup_order); if (tree->subgroup_order == cardinality) printf(" (from the %lu generators listed below)", tree->order_quantity);
+    } while (tree->next->next != NULL); printf("\n");
 
     fprintf(main_fs, "\n"); if (generator_array) {
-	fprintf(main_fs, "GENERATOR COUNT FOR \u2115%s%s (%lu):\n", argv[1], symbol, generator_count);
+	fprintf(main_fs, "GENERATOR COUNT FOR \u2115%s%s:\n", argv[1], symbol);
 	unsigned long i = shifts->Y % generator_count; do { print_subgroup(generator_array[i % generator_count]);
 	    if (i % generator_count != (shifts->Y - 1) % generator_count) { fprintf(main_fs, ", and\n"); i++; } else break; } while (1); free(generator_array);
     } else fprintf(main_fs, "This group does not contain any generators."); printf("\n");
