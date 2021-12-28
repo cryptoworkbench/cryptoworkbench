@@ -47,6 +47,8 @@ struct linear_equation linear_equation_add(struct linear_equation equation_one, 
 
 void C_reduce() { if (c >= m) { c%=m; printf("The secret has been reduced by mod %lu into the congruent secret %lu.\n\n", m, c); } }
 
+unsigned long modular_division(unsigned long numerator, unsigned long denominator) { while (numerator % denominator != 0) numerator += m; return numerator / denominator; }
+
 int main(int argc, char **argv) {
     if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &m)) { printf("%s is not m!\n", argv[1]); exit(-1); }
     if (3 > argc || !STR_could_be_parsed_into_UL(argv[2], &a)) { printf("%s is not a!\n", argv[2]); exit(-2); } a%=m;
@@ -80,17 +82,12 @@ int main(int argc, char **argv) {
     struct linear_equation final_linear_equation = linear_equation_add(modified_two_and_one, modified_two_and_three);
     // ^^ Prepare all the required linear equations
 
-    // ... continuation of program :
-    unsigned division_intermediary;
-
-    division_intermediary = final_linear_equation.result; while (division_intermediary % final_linear_equation.coefficient_a != 0) division_intermediary += m;
-    unsigned long retrieved_a = division_intermediary / final_linear_equation.coefficient_a; retrieved_a %= m; // << Check if may be ommited
+    unsigned long retrieved_a = (modular_division(final_linear_equation.result, final_linear_equation.coefficient_a) % m); // << This last mod may be omitted I think
     if (retrieved_a != a) // return -5 if the quadratic formula parameter 'a' had been incorrectly inferred from the 3 coordinate points (the 3-N in this k = 3 3-N Shamir Secret Sharing Sceme)
     { fprintf(stderr, "\nThe value that I inferred from coordinate points for variable 'a' did not correspond to the variable 'a' that was used to plot the points. %lu != %lu. Exiting.\n", retrieved_a, a); return -5; }
     // ^^ Prove that a can be successfully derived from these linear equations by not returning here
 
-    division_intermediary = (equation_two_and_one.result+(m-((equation_two_and_one.coefficient_a*retrieved_a)%m)))%m; while (division_intermediary % equation_two_and_one.coefficient_b != 0) division_intermediary += m;
-    unsigned long retrieved_b = division_intermediary / equation_two_and_one.coefficient_b; retrieved_b %= m;
+    unsigned long retrieved_b = (modular_division((equation_two_and_one.result+(m-((equation_two_and_one.coefficient_a*retrieved_a)%m)))%m, equation_two_and_one.coefficient_b) % m);
     if (retrieved_b != b) // return -6 is the quadratic formula parameter 'b' had been incorrectly inferred from the 3 coordinate points
     { fprintf(stderr, "The value that I inferred from coordinate points for variable 'b' did not correspond to the variable 'b' that was used to plot the points. %lu != %lu. Exiting.\n", retrieved_b, b); return -6; }
     // ^^ Prove that b can be successfully derived from these linear equations by not returning here either
