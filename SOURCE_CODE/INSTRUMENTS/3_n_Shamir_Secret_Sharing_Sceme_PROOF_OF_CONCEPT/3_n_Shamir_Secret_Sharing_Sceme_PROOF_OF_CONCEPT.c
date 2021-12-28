@@ -59,7 +59,7 @@ int main(int argc, char **argv) {
     } else { fprintf(stdout, "Please put in the secret number such that 'secret number' < %lu: ", m); fscanf(stdin, "%lu", &c); C_reduce(); }
     // ^^ Gather starting information
 
-    fprintf(stdout, "[x,y] cartesian coordinates from a parabola over GF(%lu):\n", a, b, m);
+    fprintf(stdout, "[x,y] coordinate pairs belonging to a second-degree polynomial over GF(%lu):\n", m);
     for (unsigned long x = 0; x < m; x++) {
 	struct cartesian_coordinates point_on_graph = {x, 0};
 	unsigned long y = (((((((x * x) % m) * a) % m) + ((x * b) % m)) % m) + c) % m;
@@ -67,9 +67,9 @@ int main(int argc, char **argv) {
     } fprintf(stdout, "\n"); // << ^ Calculate all coordinates for this parabola over this finite field
 
     struct cartesian_coordinates point_one, point_two, point_three;
-    fprintf(stdout, "Point one   : ["); fscanf(stdin, "%lu,%lu]", &point_one.x, &point_one.y);
-    fprintf(stdout, "Point two   : ["); fscanf(stdin, " %lu,%lu]", &point_two.x, &point_two.y);
-    fprintf(stdout, "Point three : ["); fscanf(stdin, " %lu,%lu]", &point_three.x, &point_three.y); fprintf(stdout, "\n");
+    fprintf(stdout, "Point one  : ["); fscanf(stdin, "%lu,%lu]", &point_one.x, &point_one.y);
+    fprintf(stdout, "Point two  : ["); fscanf(stdin, " %lu,%lu]", &point_two.x, &point_two.y);
+    fprintf(stdout, "Point three: ["); fscanf(stdin, " %lu,%lu]", &point_three.x, &point_three.y); fprintf(stdout, "\n");
 
     struct linear_equation equation_one = {(point_one.x*point_one.x)%m, point_one.x, point_one.y};
     struct linear_equation equation_two = {(point_two.x*point_two.x)%m, point_two.x, point_two.y};
@@ -94,5 +94,7 @@ int main(int argc, char **argv) {
 
     unsigned long retrieved_C = (equation_one.result + (m - (((retrieved_b * point_one.x) % m ) + ((((point_one.x * point_one.x) % m ) * a) % m )) % m )) % m;
     if (c != retrieved_C) { fprintf(stderr, "%lu != %lu\n", retrieved_C, c); return -7; }
-    else fprintf(stdout, "Successfully derived formula for this parabola over GF(%lu):\ny - %lu \u2261 %luX^2 + %luX\n\nDerived secret value: %lu\n", m, c, a, b, c); return 0;
+    else fprintf(stdout, "Inferred from points one, two, and three, that the second-degree polynomial that generated the above table must have had 'a = %lu', 'b = %lu' and 'c = %lu'. ", a, b, c, m);
+    fprintf(stdout, "y \u2261 %luX^2 + %luX + %lu (mod %lu) \u21D2	y - %lu \u2261 %lux^2 + %lux (mod %lu) \u21D2\nRESULT: the shared secret was %lu\n", a, b, c, m, c, a, b, m, c);
+    return 0;
 }
