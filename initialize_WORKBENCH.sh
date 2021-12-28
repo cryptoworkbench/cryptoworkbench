@@ -7,6 +7,8 @@ cd SOURCE_CODE/INSTRUMENTS/modular_group_element_table_generator && make modular
 "
 cd ../subgroup_examplifier && make subgroup_examplifier && echo "#######===> The following instrument has been assemblied/linked: subgroup_examplifier
 "
+cd ../3_n_Shamir_Secret_Sharing_Sceme_PROOF_OF_CONCEPT && make 3_n_Shamir_Secret_Sharing_Sceme_PROOF_OF_CONCEPT && echo "#######===> The following proof of concept application has been assembled: 3_n_Shamir_Secret_Sharing_Sceme_PROOF_OF_CONCEPT
+"
 cd ../Diffie_Hellman_Key_Agreement && make Diffie_Hellman_Key_Agreement && echo "#######===> The following instrument has been assemblied/linked: Diffie_Hellman_Key_Agreement
 "
 cd ../cayley_table_generator && make cayley_table_generator && echo "#######===> The following instrument has been assemblied/linked: cayley_table_generator
