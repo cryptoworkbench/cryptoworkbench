@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include "../../libraries/functional/string.h"
 
-unsigned long Mod, A, B, _secret_C;
+unsigned long Mod, A, B, C;
 
 struct linear_equation {
     unsigned long coefficient_a;
@@ -46,22 +46,22 @@ struct linear_equation linear_equation_add(struct linear_equation equation_one, 
 }
 
 unsigned long md(unsigned long IN) { return IN % Mod; }
-void secret_reduce() { if (_secret_C >= Mod) { md(_secret_C); printf("The secret has been reduced by mod %lu into the congruent secret %lu.\n\n", Mod, _secret_C); } }
+void C_reduce() { if (C >= Mod) { md(C); printf("The secret has been reduced by mod %lu into the congruent secret %lu.\n\n", Mod, C); } }
 
 int main(int argc, char **argv) {
     if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &Mod)) { printf("%s is not Mod!\n", argv[1]); exit(-1); }
     if (3 > argc || !STR_could_be_parsed_into_UL(argv[2], &A)) { printf("%s is not A!\n", argv[2]); exit(-2); } md(A);
     if (4 > argc || !STR_could_be_parsed_into_UL(argv[3], &B)) { printf("%s is not B!\n", argv[3]); exit(-3); } md(B);
     if (4 < argc) {
-	if (STR_could_be_parsed_into_UL(argv[4], &_secret_C)) secret_reduce();
+	if (STR_could_be_parsed_into_UL(argv[4], &C)) C_reduce();
 	else { printf("The secret '%s' has not yet been transformed into numerical form!\n", argv[4]); exit(-4); }
-    } else { printf("Now please put in your secret less than %lu: ", Mod); fscanf(stdin, "%lu", &_secret_C); secret_reduce(); }
+    } else { printf("Please put in the secret number such that 'secret number' < %lu: ", Mod); fscanf(stdin, "%lu", &C); C_reduce(); }
     // ^^ Gather starting information
 
-    fprintf(stdout, "Solutions for 'f(x) \u2261 %lux^2 + %lux + %lu (mod %lu)', in format [x, f(x)]:\n", A, B, _secret_C, Mod);
+    fprintf(stdout, "[x,y] points on 'y \u2261 %lux^2 + %lux + %lu (mod %lu)': (complete)\n", A, B, C, Mod);
     for (unsigned long x = 0; x < Mod; x++) {
 	struct cartesian_coordinates point_on_graph = {x, 0};
-	unsigned long y = (md(md((md(A * (md(x * x)))) + (md(x * B)))) + _secret_C);
+	unsigned long y = (md(md((md(A * (md(x * x)))) + (md(x * B)))) + C);
 	printf("[%lu,%lu]\n", x, y);
     } fprintf(stdout, "\n"); // << ^ Calculate all coordinates for this parabola over this finite field
 
@@ -95,6 +95,6 @@ int main(int argc, char **argv) {
     // ^^ Prove that B can be successfully derived from these linear equations by not returning here either
 
     unsigned long retrieved_C = md(equation_one.result + (Mod - md(md(md(A * (md(point_one.x * point_one.x)))) + (md(retrieved_B * point_one.x)))));
-    if (_secret_C != retrieved_C) { fprintf(stderr, "%lu != %lu\n", retrieved_C, _secret_C); return -7; }
+    if (C != retrieved_C) { fprintf(stderr, "%lu != %lu\n", retrieved_C, C); return -7; }
     else fprintf(stdout, "\nSecret curve parameter value: %lu.\n", retrieved_C); return 0;
 }
