@@ -1,11 +1,4 @@
-/* Works with:
- *./parabola_finite_field_plot 11 2 3 9
- *
- * Also works with:
- * 17 2 3 4
- *
- * Lacks exit() test like the linear one does. But maybe that is good.
- */
+/* Works. */
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../libraries/functional/string.h"
@@ -31,9 +24,9 @@ unsigned long least_common_multiple(unsigned long a, unsigned long b) {
 
 struct linear_equation multiply_values_by(struct linear_equation INP, unsigned long multiplier) {
     struct linear_equation return_value;
-    return_value.coefficient_a = (INP.coefficient_a * multiplier) % m;
-    return_value.coefficient_b = (INP.coefficient_b * multiplier) % m;
-    return_value.result = (INP.result * multiplier) % m;
+    return_value.coefficient_a = (multiplier * INP.coefficient_a) % m;
+    return_value.coefficient_b = (multiplier * INP.coefficient_b) % m;
+    return_value.result = (multiplier * INP.result) % m;
     return return_value;
 }
 
@@ -49,10 +42,23 @@ unsigned long modular_division(unsigned long numerator, unsigned long denominato
 
 void C_reduce() { if (c >= m) { c%=m; fprintf(stdout, "The secret has been reduced by mod %lu into the congruent secret %lu.\n\n", m, c); } }
 
+char *one = "%s is not a suitable value for the field modulus!\n\nExiting '-%lu'.\n";
+char *two = "%s is not a suitable value for the second-degree polynomial parameter 'a'!\n\nExiting '-%lu'.\n";
+char *three = "%s is not a suitable value for the second-degree polynomial parameter 'b'!\n\nExiting '-%lu'.\n";
+
+void argv_ERROR(unsigned long index, char **argv) {
+    char *error; switch (index) {
+	case 1: error = one; break;
+	case 2: error = two; break;
+	case 3: error = three;
+    }; fprintf(stderr, error, argv[index], index);
+    exit(-index);
+}
+
 int main(int argc, char **argv) {
-    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &m)) { fprintf(stdout, "%s is not a suitable value for the field modulus!\n\nExiting '-1'.\n", argv[1]); exit(-1); }
-    if (3 > argc || !STR_could_be_parsed_into_UL(argv[2], &a)) { fprintf(stdout, "%s is not a suitable value for the second-degree polynomial parameter 'a'!\n\nExiting '-2'.\n", argv[2]); exit(-2); } a%=m;
-    if (4 > argc || !STR_could_be_parsed_into_UL(argv[3], &b)) { fprintf(stdout, "%s is not a suitable value for the second-degree polynomial parameter 'b'!\n\nExiting '-3'.\n", argv[3]); exit(-3); } b%=m;
+    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &m)) argv_ERROR(1, argv);
+    if (3 > argc || !STR_could_be_parsed_into_UL(argv[2], &a)) argv_ERROR(2, argv); else a%=m;
+    if (4 > argc || !STR_could_be_parsed_into_UL(argv[3], &b)) argv_ERROR(3, argv); else b%=m;
     if (4 < argc) {
 	if (STR_could_be_parsed_into_UL(argv[4], &c)) C_reduce();
 	else { fprintf(stdout, "The secret '%s' has not yet been transformed into numerical form!\n", argv[4]); exit(-4); }
@@ -90,8 +96,8 @@ int main(int argc, char **argv) {
     { fprintf(stderr, "The value that I inferred from coordinate points for variable 'b' did not correspond to the variable 'b' that was used to plot the points. %lu != %lu. Exiting '-6'.\n", retrieved_b, b); return -6; }
     // ^^ Prove that b can be successfully derived from these linear equations by not returning here either
 
-    unsigned long retrieved_C = (equation_one.result + (m - (((retrieved_b * point_one.x) % m ) + ((((point_one.x * point_one.x) % m ) * a) % m )) % m )) % m;
-    if (c != retrieved_C) { fprintf(stderr, "%lu != %lu\n", retrieved_C, c); return -7; }
+    unsigned long retrieved_c = (equation_one.result + (m - (((retrieved_b * point_one.x) % m ) + ((((point_one.x * point_one.x) % m ) * a) % m )) % m )) % m;
+    if (c != retrieved_c) { fprintf(stderr, "%lu != %lu\n", retrieved_c, c); return -7; }
     else fprintf(stdout, "Inferred from points one, two, and three, that the second-degree polynomial that generated the above table must have had 'a = %lu', 'b = %lu' and 'c = %lu'. ", a, b, c, m);
     fprintf(stdout, "y \u2261 %luX^2 + %luX + %lu (mod %lu) \u21D2	y - %lu \u2261 %lux^2 + %lux (mod %lu) \u21D2\nRESULT: the shared secret was %lu.\n\n", a, b, c, m, c, a, b, m, c);
     fprintf(stdout, "Proof of concept successful for the 3-n Shamir Secret Key Sharing Sceme based on 2nd degree polynomials. For these specific variables at least.\n");
