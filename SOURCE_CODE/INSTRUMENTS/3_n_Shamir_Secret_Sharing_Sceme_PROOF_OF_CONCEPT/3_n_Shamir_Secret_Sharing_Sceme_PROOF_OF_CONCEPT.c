@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
     } else { fprintf(stdout, "Please put in the secret number such that 'secret number' < %lu: ", m); fscanf(stdin, "%lu", &c); C_reduce(); }
     // ^^ Gather starting information
 
-    fprintf(stdout, "[x,y] coordinate pairs belonging to a second-degree polynomial over GF(%lu):\n", m);
+    fprintf(stdout, "[x,y] parabola plot over GF(%lu):\n", m);
     for (unsigned long x = 0; x < m; x++) {
 	struct cartesian_coordinates point_on_graph = {x, 0};
 	unsigned long y = (((((((x * x) % m) * a) % m) + ((x * b) % m)) % m) + c) % m;
