@@ -5,4 +5,4 @@
 	gcc -c EC_DH_KAP.c -o .EC_DH_KAP.o
 
 EC_DH_KAP: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .EC_DH_KAP.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .EC_DH_KAP.o -o ../../../crypto_lab/instruments/EC_DH_KAP
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .EC_DH_KAP.o -o ../../../WORKBENCH/EC_DH_KAP
