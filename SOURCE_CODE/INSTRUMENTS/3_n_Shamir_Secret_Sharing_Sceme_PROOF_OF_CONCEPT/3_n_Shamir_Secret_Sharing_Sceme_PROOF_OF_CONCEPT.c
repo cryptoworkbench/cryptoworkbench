@@ -68,8 +68,8 @@ void algebra_check_for_supposed_variable_against(char variable_symbol, unsigned 
 
 int main(int argc, char **argv) {
     if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &m)) argv_ERROR(1, argv);
-    if (3 > argc || !STR_could_be_parsed_into_UL(argv[2], &a)) argv_ERROR(2, argv); else a%=m;
-    if (4 > argc || !STR_could_be_parsed_into_UL(argv[3], &b)) argv_ERROR(3, argv); else b%=m;
+    if (3 > argc || !STR_could_be_parsed_into_UL(argv[2], &a)) argv_ERROR(2, argv); else a %= m;
+    if (4 > argc || !STR_could_be_parsed_into_UL(argv[3], &b)) argv_ERROR(3, argv); else b %= m;
     if (4 < argc) {
 	if (STR_could_be_parsed_into_UL(argv[4], &c)) C_reduce();
 	else { fprintf(stdout, "The secret '%s' has not yet been transformed into numerical form!\n", argv[4]); exit(-4); }
