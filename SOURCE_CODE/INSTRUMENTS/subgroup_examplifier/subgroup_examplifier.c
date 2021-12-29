@@ -26,21 +26,6 @@ struct offset_values *shifts;
 const char *help_queries[] = {"--help", "-h", "help", "instructions", "usage", "--instructions", "--usage", "syntax", "--syntax"};
 // ^^ I think that it is alrigh to put a variable initialization like this in this header file
 
-/*
-unsigned long index_lookup(unsigned long ul);
-void print_subgroup(unsigned long index);
-void insert(struct _general_LL ***tracer, unsigned long new_ulong);
-unsigned long *array_from_LL(struct _general_LL **head_TRACER, unsigned long *required_array_size);
-unsigned long *yield_subgroup(unsigned long index, group_OBJ group);
-struct VOID_ptr_ptr_PAIR element_LL_from_file(char **argv, group_OBJ group);
-unsigned long *second_MAIN(struct VOID_ptr_ptr_PAIR, group_OBJ group);
-unsigned long process_generator_array(unsigned long *generator_array, char *modulus, const char *symbol);
-void MOD_not_parsable_ERROR(char *argv_one);
-void ID_not_parsable_ERROR(char *argv_one, char *argv_two);
-void HELP_AND_QUIT(char *prog_NAME);
-*/
-// ^^ Function declarations
-
 void HELP_AND_QUIT(char *prog_NAME) {
     fprintf(stderr, HELP_INFORMATION, prog_NAME);
     exit(0);
