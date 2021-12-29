@@ -56,7 +56,7 @@ void argv_ERROR(unsigned long index, char **argv) {
     exit(-index);
 }
 
-void check_intermediate(char variable_symbol, unsigned long original, unsigned long new) {
+void algebra_check_for_supposed_variable_against(char variable_symbol, unsigned long new, unsigned long original) {
     if (new != original) {
 	switch (variable_symbol) {
 	    case 'a': fprintf(stderr, intermediate_error, variable_symbol, variable_symbol, new, original, 5); exit(-5);
@@ -97,9 +97,9 @@ int main(int argc, char **argv) {
     struct linear_equation final_linear_equation = linear_equation_add(multiply_values_by(equation_two_and_one, coefficient_b_lcm / equation_two_and_one.coefficient_b), multiply_values_by(equation_two_and_three, coefficient_b_lcm / equation_two_and_three.coefficient_b));
     // ^^ Prepare all the required linear equations
 
-    check_intermediate('a', a, modular_division(final_linear_equation.result, final_linear_equation.coefficient_a) % m);
-    check_intermediate('b', b, modular_division((equation_two_and_one.result + (m - ((equation_two_and_one.coefficient_a * a) % m))) % m, equation_two_and_one.coefficient_b) % m);
-    check_intermediate('c', c, (equation_one.result + (m - (((b * point_one.x) % m ) + ((((point_one.x * point_one.x) % m ) * a) % m )) % m )) % m);
+    algebra_check_for_supposed_variable_against('a', modular_division(final_linear_equation.result, final_linear_equation.coefficient_a) % m, a);
+    algebra_check_for_supposed_variable_against('b', modular_division((equation_two_and_one.result + (m - ((equation_two_and_one.coefficient_a * a) % m))) % m, equation_two_and_one.coefficient_b) % m, b);
+    algebra_check_for_supposed_variable_against('c', (equation_one.result + (m - (((b * point_one.x) % m ) + ((((point_one.x * point_one.x) % m ) * a) % m )) % m )) % m, c);
     fprintf(stdout, "Inferred from points one, two, and three, that the second-degree polynomial that generated the above table must have had 'a = %lu', 'b = %lu' and 'c = %lu' a.k.a. ", a, b, c);
     fprintf(stdout, "y \u2261 %luX^2 + %luX + %lu (mod %lu) \u21D2	y - %lu \u2261 %lux^2 + %lux (mod %lu) \u21D2\nRESULT: the shared secret was %lu.\n\n", a, b, c, m, c, a, b, m, c);
     fprintf(stdout, "Proof of concept successful for the 3-n Shamir Secret Key Sharing Sceme based on 2nd-degree polynomials. For these specific variables at least.\n");
