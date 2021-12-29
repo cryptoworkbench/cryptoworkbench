@@ -45,6 +45,7 @@ void C_reduce() { if (c >= m) { c%=m; fprintf(stdout, "The secret has been reduc
 char *one = "%s is not a suitable value for the field modulus!\n\nExiting '-%lu'.\n";
 char *two = "%s is not a suitable value for the second-degree polynomial parameter 'a'!\n\nExiting '-%lu'.\n";
 char *three = "%s is not a suitable value for the second-degree polynomial parameter 'b'!\n\nExiting '-%lu'.\n";
+char *intermediate_error = "The value that I inferred from coordinate points for variable '%c' did not correspond to the variable '%c' that was used to plot the points. %lu != %lu. Exiting '-%lu'.\n";
 
 void argv_ERROR(unsigned long index, char **argv) {
     char *error; switch (index) {
@@ -53,6 +54,16 @@ void argv_ERROR(unsigned long index, char **argv) {
 	case 3: error = three;
     }; fprintf(stderr, error, argv[index], index);
     exit(-index);
+}
+
+void check_intermediate(char variable_symbol, unsigned long original, unsigned long new) {
+    if (new != original) {
+	switch (variable_symbol) {
+	    case 'a': fprintf(stderr, intermediate_error, variable_symbol, variable_symbol, new, original, 5); exit(-5);
+	    case 'b': fprintf(stderr, intermediate_error, variable_symbol, variable_symbol, new, original, 6); exit(-6);
+	    case 'c': fprintf(stderr, intermediate_error, variable_symbol, variable_symbol, new, original, 7); exit(-7);
+	};
+    }
 }
 
 int main(int argc, char **argv) {
@@ -86,20 +97,11 @@ int main(int argc, char **argv) {
     struct linear_equation final_linear_equation = linear_equation_add(multiply_values_by(equation_two_and_one, coefficient_b_lcm / equation_two_and_one.coefficient_b), multiply_values_by(equation_two_and_three, coefficient_b_lcm / equation_two_and_three.coefficient_b));
     // ^^ Prepare all the required linear equations
 
-    unsigned long retrieved_a = (modular_division(final_linear_equation.result, final_linear_equation.coefficient_a) % m); // << This last mod may be omitted I think
-    if (retrieved_a != a) // return -5 if the quadratic formula parameter 'a' had been incorrectly inferred from the 3 coordinate points (the 3-N in this k = 3 3-N Shamir Secret Sharing Sceme)
-    { fprintf(stderr, "The value that I inferred from coordinate points for variable 'a' did not correspond to the variable 'a' that was used to plot the points. %lu != %lu. Exiting '-5'.\n", retrieved_a, a); return -5; }
-    // ^^ Prove that a can be successfully derived from these linear equations by not returning here
-
-    unsigned long retrieved_b = (modular_division((equation_two_and_one.result + (m - ((equation_two_and_one.coefficient_a*retrieved_a) % m))) % m, equation_two_and_one.coefficient_b) % m);
-    if (retrieved_b != b) // return -6 is the quadratic formula parameter 'b' had been incorrectly inferred from the 3 coordinate points
-    { fprintf(stderr, "The value that I inferred from coordinate points for variable 'b' did not correspond to the variable 'b' that was used to plot the points. %lu != %lu. Exiting '-6'.\n", retrieved_b, b); return -6; }
-    // ^^ Prove that b can be successfully derived from these linear equations by not returning here either
-
-    unsigned long retrieved_c = (equation_one.result + (m - (((retrieved_b * point_one.x) % m ) + ((((point_one.x * point_one.x) % m ) * a) % m )) % m )) % m;
-    if (c != retrieved_c) { fprintf(stderr, "%lu != %lu\n", retrieved_c, c); return -7; }
-    else fprintf(stdout, "Inferred from points one, two, and three, that the second-degree polynomial that generated the above table must have had 'a = %lu', 'b = %lu' and 'c = %lu'. ", a, b, c, m);
+    check_intermediate('a', a, modular_division(final_linear_equation.result, final_linear_equation.coefficient_a) % m);
+    check_intermediate('b', b, modular_division((equation_two_and_one.result + (m - ((equation_two_and_one.coefficient_a * a) % m))) % m, equation_two_and_one.coefficient_b) % m);
+    check_intermediate('c', c, (equation_one.result + (m - (((b * point_one.x) % m ) + ((((point_one.x * point_one.x) % m ) * a) % m )) % m )) % m);
+    fprintf(stdout, "Inferred from points one, two, and three, that the second-degree polynomial that generated the above table must have had 'a = %lu', 'b = %lu' and 'c = %lu' a.k.a. ", a, b, c);
     fprintf(stdout, "y \u2261 %luX^2 + %luX + %lu (mod %lu) \u21D2	y - %lu \u2261 %lux^2 + %lux (mod %lu) \u21D2\nRESULT: the shared secret was %lu.\n\n", a, b, c, m, c, a, b, m, c);
-    fprintf(stdout, "Proof of concept successful for the 3-n Shamir Secret Key Sharing Sceme based on 2nd degree polynomials. For these specific variables at least.\n");
+    fprintf(stdout, "Proof of concept successful for the 3-n Shamir Secret Key Sharing Sceme based on 2nd-degree polynomials. For these specific variables at least.\n");
     return 0;
 }
