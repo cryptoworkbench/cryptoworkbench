@@ -93,9 +93,9 @@ int main(int argc, char **argv) {
 
     fprintf(stdout, "\nLooping multiplier:\n");
     unsigned long multiplier = 0;
-    struct coordinates *result = point_multiplication(multiplier, &result);
-    do { print_multiple_of_ECC_point(multiplier, result); multiplier++; }
-    while (point_multiplication(multiplier, &result)); print_multiple_of_ECC_point(multiplier, result);
+    struct coordinates *result; point_multiplication(multiplier, &result);
+    do { print_multiple_of_ECC_point(multiplier, result); multiplier++; point_multiplication(multiplier, &result); }
+    while (result); print_multiple_of_ECC_point(multiplier, result);
     // ^^ Use scalar multiplication to figure out subgroup of base point
 
     return 0;
