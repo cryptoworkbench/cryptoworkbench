@@ -49,7 +49,7 @@ void take_in_point(char symbol, struct coordinates **point) {
     }; free(inp);
 }
 
-struct coordinates *point_multiplication(unsigned long multiplier, /* struct coordinates *base, */ struct coordinates **result) {
+void point_multiplication(unsigned long multiplier, /* struct coordinates *base, */ struct coordinates **result) {
     *result = NULL; // << First set the return value to the identity element (which is the point at infinity, which this program understand as a "NULL" pointer where a "struct coordinates" pointer was expected)
     if (multiplier != 0) {
 	unsigned long least_base_two_logarithm = down_rounded_BASE_2_logarithm(multiplier);
@@ -58,7 +58,7 @@ struct coordinates *point_multiplication(unsigned long multiplier, /* struct coo
 	    multiplier -= N_exponentiation(2, least_base_two_logarithm);
 	    least_base_two_logarithm = down_rounded_BASE_2_logarithm(multiplier);
 	}
-    } return *result;
+    }
 }
 
 void print_multiple_of_ECC_point(unsigned long multiplier, struct coordinates *result) { fprintf(stdout, "%luG = ", multiplier); FORMAL_print_point(result); }
@@ -92,10 +92,8 @@ int main(int argc, char **argv) {
     // ^^ Display table
 
     fprintf(stdout, "\nLooping multiplier:\n");
-    unsigned long multiplier = 0;
-    struct coordinates *result; point_multiplication(multiplier, &result);
-    do { print_multiple_of_ECC_point(multiplier, result); multiplier++; point_multiplication(multiplier, &result); }
-    while (result); print_multiple_of_ECC_point(multiplier, result);
+    unsigned long multiplier = 0; struct coordinates *result; point_multiplication(multiplier, &result);
+    do { print_multiple_of_ECC_point(multiplier, result); multiplier++; point_multiplication(multiplier, &result); } while (result); print_multiple_of_ECC_point(multiplier, result);
     // ^^ Use scalar multiplication to figure out subgroup of base point
 
     return 0;
