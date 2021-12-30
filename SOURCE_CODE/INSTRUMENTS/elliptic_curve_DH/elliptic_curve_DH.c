@@ -1,14 +1,4 @@
-/* DEV NOTES:
- * This is my second attempt at implementing Elliptic Curve DH.
- *
- * Remember y^2 = x^3 + ax + b (mod %)
- *
- * When run with 17 2 2 19 5 1 the result should be:
- * (5, 1)
- * (6, 3)
- * (3, 1)
- * Etc
- * */
+/* Inspired by: https://www.youtube.com/watch?v=F3zzNa42-tQ */
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h"
