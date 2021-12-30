@@ -11,6 +11,7 @@
 
 // *** Global variables:
 unsigned long m, a, b, cardinality;
+const char *identity_significations[] = {"0", "O", "o", "pointatinfinity", "ID"};
 char *symbol[] = {"m", "a", "b", "cardinality of field", "_base_Point.x", "_base_Point.y"};
 struct coordinates { unsigned long x; unsigned long y; };
 struct coordinates _base_Point;
@@ -20,7 +21,7 @@ unsigned long modular_division(unsigned long numerator, unsigned long denominato
 unsigned long m_inv(unsigned long inv_of_inv) { return modular_division(1, inv_of_inv); } // << dependend upon ^^
 unsigned long inv(unsigned long inv_of_inv) { return m - (inv_of_inv % m); }
 
-struct coordinates *point_addition(struct coordinates *P_one, struct coordinates *P_two) { if (P_one->x == P_two->x) return NULL; else {
+struct coordinates *point_addition(struct coordinates *P_one, struct coordinates *P_two) { if (!P_one || !P_two || P_one->x == P_two->x) return NULL; else {
     struct coordinates *ret = (struct coordinates *) malloc(sizeof(struct coordinates));
     unsigned long s = modular_division(((P_one->y + (m - P_two->y)) % m), ((P_one->x + (m - P_two->x)) % m));
     ret->x = (((s * s) % m) + inv((P_one->x + P_two->x) % m)) % m;
@@ -50,12 +51,26 @@ void initialize_scalar_array(unsigned long least_base_two_logarithm) {
     // ^^^ Initialize array
 }
 
+void print_point(struct coordinates *point) { fprintf(stdout, "(%lu,%lu)", point->x, point->y); }
+
 void print_point_at_(struct coordinates *pair) {
-    if (pair) fprintf(stdout, "[%lu,%lu]\n", pair->x, pair->y);
-    else fprintf(stdout, "'o' (POINT AT INFINITY)\n");
+    if (pair) { print_point(pair); fprintf(stdout, "\n"); }
+    else fprintf(stdout, "%c	(the point at infinity)\n", **identity_significations);
 }
 
 void argv_ERROR(unsigned long index, char **argv) { fprintf(stderr, "'%s' not interpretable as %s.\n", argv[index], symbol[index - 1]); exit(-index); }
+
+void take_in_point(char symbol, struct coordinates **point) {
+    while (1) { fprintf(stdout, "point %c = ", symbol);
+	char *inp = (char *) malloc(sizeof(char) * 30); fscanf(stdin, "%s", inp); if (match(inp, identity_significations)) { free(inp); break; }
+	// ^^ See if a mention of the point at infinity is there
+
+	unsigned long new_x, new_y; if (sscanf(inp, "%lu,%lu", &new_x, &new_y) == 2)
+	{ free(inp); *point = (struct coordinates *) malloc(sizeof(struct coordinates)); (**point).x = new_x; (**point).y = new_y; break; }
+	// ^^ If the input could also not otherwise be translated, demand another input looping through
+    };
+}
+
 
 int main(int argc, char **argv) {
     if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &m)) argv_ERROR(1, argv);
@@ -70,23 +85,28 @@ int main(int argc, char **argv) {
     fprintf(stdout, "m: %lu\n", m);
     fprintf(stdout, "a: %lu\n", a);
     fprintf(stdout, "b: %lu\n", b);
-    fprintf(stdout, "Cardinality of group: %lu\n", cardinality);
-    fprintf(stdout, "Generator (G) [x,y]: [%lu, %lu]\n\n", _base_Point.x, _base_Point.y);
+    fprintf(stdout, "cardinality of group: %lu\n", cardinality);
+    fprintf(stdout, "generator (abbreviated G) (x,y): (%lu,%lu)\n\n", _base_Point.x, _base_Point.y);
     // ^^ Display success
 
     unsigned long least_base_two_logarithm = down_rounded_BASE_2_logarithm(cardinality);
     initialize_scalar_array(least_base_two_logarithm);
 
     fprintf(stdout, "SCALAR-MULTIPLICATION LOOKUP TABLE (back-bone):\n");
-    fprintf(stdout, "Point #0: "); print_point_at_(*array);
-    for (unsigned long index = 1; index < least_base_two_logarithm + 2; index++) { fprintf(stdout, "Point #%lu: ", N_exponentiation(2, index - 1)); print_point_at_(array[index]); }
+    fprintf(stdout, "0G: "); print_point_at_(*array);
+    for (unsigned long index = 1; index < least_base_two_logarithm + 2; index++) { fprintf(stdout, "%luG: ", N_exponentiation(2, index - 1)); print_point_at_(array[index]); }
 
-    fprintf(stdout, "\nPoint addition operation:\n");
-    struct coordinates *P_one = (struct coordinates *) malloc(sizeof(struct coordinates)); fprintf(stdout, "Point #1.x: "); scanf("%lu", &P_one->x); fprintf(stdout, "Point #1.y: "); scanf("%lu", &P_one->y);
-    struct coordinates *P_two = (struct coordinates *) malloc(sizeof(struct coordinates)); fprintf(stdout, "Point #2.x: "); scanf("%lu", &P_two->x); fprintf(stdout, "Point #2.y: "); scanf("%lu", &P_two->y);
-    struct coordinates *result = point_addition(P_one, P_two);
-    fprintf(stdout, "[%lu,%lu] + [%lu,%lu] = ", P_one->x, P_one->y, P_two->x, P_two->y); print_point_at_(result); free(result);
-    return 0;
+    struct coordinates *p, *q; p = q = NULL;
+
+    fprintf(stdout, "\nPOINT ADDITION (p + q = r):\n");
+    take_in_point('p', &p);
+    take_in_point('q', &q);
+
+    struct coordinates *result = point_addition(p, q);
+    fprintf(stdout, "point r = ");
+    if (p) print_point(p); else fprintf(stdout, "%c", **identity_significations); fprintf(stdout, " + ");
+    if (q) print_point(q); else fprintf(stdout, "%c", **identity_significations);
+    fprintf(stdout, " = "); print_point_at_(result); free(result); return 0;
 }
 /* MATH NOTES:
  * 1). A.k.a. "s = M(M(M(3 * M(POINT.x * POINT.x)) + a) * m_inv(M(2 * POINT.y)));"

@@ -13,11 +13,12 @@ unsigned long str_len(const char *string_pointer); // Just like in the standard 
 
 /* Returns 1 if A and B are the same character, even when they are different in case. If either one of the characters are not from the alphabet, returns 0. */
 int case_insensitive_cmp(char A, char B);
-int case_insensitive_strcmp(char *STR, char *STS);
+int case_insensitive_strcmp(const char *STR, char *STS);
 
 /* Returns an int containing the number of characters in the string pointed at by the char pointer 'string_pointer' */
 int str_len_int(char *string_pointer); // Almost the same functionality as the above function
 
+int match_case_insensitive(char *INPUT, const char *char_PTR_array[], unsigned long length);
 int match(char *INPUT, const char *char_PTR_array[]); // <<< Inst the makes
 int match_variadic(char *INPUT, int number_of_comparisons, ...); // Variadic function that can compare one string against a variable number of strings to compare it to
 

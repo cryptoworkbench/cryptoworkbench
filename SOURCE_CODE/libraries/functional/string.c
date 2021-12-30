@@ -16,7 +16,7 @@ unsigned long str_len(const char *string_pointer) {
 int case_insensitive_cmp(char a, char b) {
     // First we need to check if both characters are even from the alphabet
     if (!((64 < a && a < 91) || (96 < a && a < 123)) || !((64 < b && b < 91) || ( 96 < b && b < 123)))
-	return 0; // << ^^^ If either one of the characters are not even from the alphabet
+	return 1; // << ^^^ If either one of the characters are not even from the alphabet
 
     /* Now we should be able to know for sure both "a" and "b" are from the alphabet */
     if (a == b) return 1; // <<< First we just check if the characters are the same:
@@ -25,7 +25,7 @@ int case_insensitive_cmp(char a, char b) {
     else return 0; // ^^^ << This function also works with "@" and "`"
 } // <<^^^ Only returns 1 if "a" and "b" are both from the alphabet and one is another case variant of the other
 
-int case_insensitive_strcmp(char *STR, char *STS) {
+int case_insensitive_strcmp(const char *STR, char *STS) {
     unsigned long STR_length = str_len(STR);
     if (str_len(STS) != STR_length) return 0;
     // ^^ If the strings are not even of the same length, they could never be the same independent of case
@@ -33,7 +33,17 @@ int case_insensitive_strcmp(char *STR, char *STS) {
     int i = 0; for (; i < STR_length; i++) if (case_insensitive_cmp(STR[i], STS[i]) == 0) return 0;
     // ^^ Check to see if any of the characters are not each other's variants
 
-    if (i == STR_length) return 1;
+    return 1;
+    // ^^ redundant
+}
+
+int match_case_insensitive(char *INPUT, const char *char_PTR_array[], unsigned long length) {
+    unsigned long i = 0; do {
+	if (case_insensitive_strcmp(char_PTR_array[length], INPUT) == 0) return 1;
+	else length++;
+    } while (i < length);
+
+    return 0;
 }
 
 int match(char *INPUT, const char *char_PTR_array[]) {
