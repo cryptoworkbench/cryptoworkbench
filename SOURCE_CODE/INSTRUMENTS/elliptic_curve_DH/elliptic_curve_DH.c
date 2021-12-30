@@ -28,22 +28,22 @@ unsigned long inv(unsigned long inv_of_inv) { return m - (inv_of_inv % m); }
 unsigned long y_calculate(unsigned long slope, unsigned long previous_x, unsigned long new_x, unsigned long previous_y) { return (((slope * ((previous_x + inv(new_x)) % m)) % m) + inv(previous_y)) % m; }
 unsigned long x_calculate(unsigned long slope, unsigned long Xp, unsigned long Xq) { return (((slope * slope) % m) + inv((Xp + Xq) % m)) % m; }
 
+void print_point(struct coordinates *point) { fprintf(stdout, "(%lu,%lu)", point->x, point->y); }
+
+void FORMAL_print_point(struct coordinates *point) {
+    if (point) { print_point(point); fprintf(stdout, "\n"); }
+    else fprintf(stdout, "%s	(Point At Infinity)\n", *point_at_infinity_strings);
+}
+
 // * Performs both point doubling and point addition
 void point_addition(struct coordinates *p, struct coordinates *q, struct coordinates **r) {
-    if (!(p && q)) { if (p) *r = p; else if (q) *r = q; else { *r = NULL; return; } } // < return point when combining with ID
-    else if ((p->y != q->y || p->x == 0) && p->x == q->x) { *r = NULL; return; } // < returns ID upon adding inverses and upon doubling points with x = 0
+    if (!(p && q)) { if (p) *r = p; else if (q) *r = q; else *r = NULL; return; } // < return point when combining with ID
+    else if ((p->y != q->y || p->x == 0) && p->x == q->x) { *r = NULL; return; } // < return ID upon adding inverses and upon doubling points with x = 0
     *r = (struct coordinates *) malloc(sizeof(struct coordinates)); unsigned long s;
     if (p->x == q->x && p->y == q->y) s = modular_division(((3 * ((p->x * p->x) % m) % m) + a) % m, (2 * p->y) % m); // See math note "#2"
     else s = modular_division(((p->y + (m - q->y)) % m), ((p->x + (m - q->x)) % m));
     (*r)->x = (((s * s) % m) + inv((p->x + q->x) % m)) % m;
     (*r)->y = (((s * ((p->x + inv((*r)->x)) % m)) % m) + inv(p->y)) % m;
-}
-
-void print_point(struct coordinates *point) { fprintf(stdout, "(%lu,%lu)", point->x, point->y); }
-
-void print_point_at_(struct coordinates *point) {
-    if (point) { print_point(point); fprintf(stdout, "\n"); }
-    else fprintf(stdout, "%s	(Point At Infinity)\n", *point_at_infinity_strings);
 }
 
 void argv_ERROR(unsigned long index, char **argv) { fprintf(stderr, "'%s' not interpretable as %s.\n", argv[index], symbol[index - 1]); exit(-index); }
@@ -59,10 +59,19 @@ void take_in_point(char symbol, struct coordinates **point) {
     }; free(inp);
 }
 
-struct coordinates poimt_multiplication(unsigned long multiplier) {
-    // Here implement a function that takes apart the 'power-of-2' additive partitions of 'multiplier'
-    // and use
+struct coordinates *point_multiplication(unsigned long multiplier, /* struct coordinates *base, */ struct coordinates **result) {
+    *result = NULL; // << First set the return value to the identity element (which is the point at infinity, which this program understand as a "NULL" pointer where a "struct coordinates" pointer was expected)
+    if (multiplier != 0) {
+	unsigned long least_base_two_logarithm = down_rounded_BASE_2_logarithm(multiplier);
+	while (multiplier != 0) {
+	    point_addition(array[least_base_two_logarithm], *result, result);
+	    multiplier -= N_exponentiation(2, least_base_two_logarithm);
+	    least_base_two_logarithm = down_rounded_BASE_2_logarithm(multiplier);
+	}
+    } return *result;
 }
+
+void print_multiple_of_ECC_point(unsigned long multiplier, struct coordinates *result) { fprintf(stdout, "%luG = ", multiplier); FORMAL_print_point(result); }
 
 int main(int argc, char **argv) {
     if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &m)) argv_ERROR(1, argv);
@@ -84,24 +93,22 @@ int main(int argc, char **argv) {
     unsigned long least_base_two_logarithm = down_rounded_BASE_2_logarithm(cardinality);
     array = (struct coordinates **) malloc(sizeof(struct coordinates *) * (least_base_two_logarithm + 1));
     *array = (struct coordinates *) malloc(sizeof(struct coordinates)); *array = &_base_Point;
-    unsigned long index = 0; do { point_addition(array[index], array[index], &array[index + 1]); index++; } while (index < least_base_two_logarithm + 1);
+    unsigned long index = 0; do { point_addition(array[index], array[index], &array[index + 1]); index++; } while (index < least_base_two_logarithm);
     // ^^ Initialize array
 
     fprintf(stdout, "SCALAR-MULTIPLICATION LOOKUP TABLE (back-bone):\n");
-    fprintf(stdout, "0G: "); print_point_at_(NULL);
-    for (unsigned long index = 0; index < least_base_two_logarithm + 1; index++) { fprintf(stdout, "%luG: ", N_exponentiation(2, index)); print_point_at_(array[index]); }
+    fprintf(stdout, "0G: "); FORMAL_print_point(NULL);
+    for (unsigned long index = 0; index < least_base_two_logarithm + 1; index++) { fprintf(stdout, "%luG: ", N_exponentiation(2, index)); FORMAL_print_point(array[index]); }
+    // ^^ Display table
 
-    struct coordinates *p, *q; p = q = NULL;
+    fprintf(stdout, "\nLooping multiplier:\n");
+    unsigned long multiplier = 0;
+    struct coordinates *result = point_multiplication(multiplier, &result);
+    do { print_multiple_of_ECC_point(multiplier, result); multiplier++; }
+    while (point_multiplication(multiplier, &result)); print_multiple_of_ECC_point(multiplier, result);
+    // ^^ Use scalar multiplication to figure out subgroup of base point
 
-    fprintf(stdout, "\nPOINT ADDITION (p + q = r):\n");
-    take_in_point('p', &p);
-    take_in_point('q', &q);
-
-    struct coordinates *r; point_addition(p, q, &r);
-    fprintf(stdout, "point r = ");
-    if (p) print_point(p); else fprintf(stdout, "%s", *point_at_infinity_strings); fprintf(stdout, " + ");
-    if (q) print_point(q); else fprintf(stdout, "%s", *point_at_infinity_strings);
-    fprintf(stdout, " = "); print_point_at_(r); free(r); return 0;
+    return 0;
 }
 /* MATH NOTES:
  * 1). This is the case where p and q are inverses, so here I return the identity element
