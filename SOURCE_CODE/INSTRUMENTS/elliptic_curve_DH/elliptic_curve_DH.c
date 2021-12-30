@@ -21,34 +21,25 @@ unsigned long modular_division(unsigned long numerator, unsigned long denominato
 unsigned long m_inv(unsigned long inv_of_inv) { return modular_division(1, inv_of_inv); } // << dependend upon ^^
 unsigned long inv(unsigned long inv_of_inv) { return m - (inv_of_inv % m); }
 
-struct coordinates *point_addition(struct coordinates *P_one, struct coordinates *P_two) { if (!P_one || !P_two || P_one->x == P_two->x) return NULL; else {
+unsigned long y_calculate(unsigned long slope, unsigned long x_coordinate_from_previous_point, unsigned long x_coordinate_of_new_point, unsigned long y_coordinate_of_previous_point) {
+    return (((slope * ((x_coordinate_from_previous_point + inv(x_coordinate_of_new_point)) % m)) % m) + inv(y_coordinate_of_previous_point)) % m;
+}
+
+struct coordinates *point_addition(struct coordinates *P_one, struct coordinates *P_two) { if (!(P_one && P_two) || P_one->x == P_two->x) return NULL; else {
     struct coordinates *ret = (struct coordinates *) malloc(sizeof(struct coordinates));
     unsigned long s = modular_division(((P_one->y + (m - P_two->y)) % m), ((P_one->x + (m - P_two->x)) % m));
     ret->x = (((s * s) % m) + inv((P_one->x + P_two->x) % m)) % m;
-    ret->y = (((s * ((P_one->x + inv(ret->x)) % m)) % m) + inv(P_one->y)) % m;
+    ret->y = y_calculate(s, P_one->x, ret->x, P_one->y);
     return ret; }
 }
 
 // * Point doubling
-struct coordinates *point_doubling(unsigned long index) {
+struct coordinates *point_doubling(struct coordinates *p) { if (!p || p->x == 0) return NULL;
     struct coordinates *point = (struct coordinates *) malloc(sizeof(struct coordinates));
-    unsigned long s = modular_division(((3 * ((array[index]->x * array[index]->x) % m) % m) + a) % m, (2 * array[index]->y) % m); // See math note "#1"
-    point->x = (((s * s) % m) + (inv((2 * array[index]->x) % m))) % m; // << For some reason I need to do it like this
-    point->y = (((s * ((array[index]->x + inv(point->x)) % m)) % m) + inv(array[index]->y)) % m; // << Write values into the next struct (in this array of type "struct coordinates")
+    unsigned long s = modular_division(((3 * ((p->x * p->x) % m) % m) + a) % m, (2 * p->y) % m); // See math note "#1"
+    point->x = (((s * s) % m) + (inv((2 * p->x) % m))) % m; // << For some reason I need to do it like this
+    point->y = y_calculate(s, p->x, point->x, p->y);
     return point;
-}
-
-void initialize_scalar_array(unsigned long least_base_two_logarithm) {
-    array = (struct coordinates **) malloc(sizeof(struct coordinates *) * (least_base_two_logarithm + 2));
-    *array = NULL;
-    // ^^ Prepare necessary variables
-
-    unsigned long index = 1;
-    array[index] = (struct coordinates *) malloc(sizeof(struct coordinates)); array[index] = &_base_Point;
-    do {
-	array[index + 1] = point_doubling(index); index++;
-    } while (index < least_base_two_logarithm + 1);
-    // ^^^ Initialize array
 }
 
 void print_point(struct coordinates *point) { fprintf(stdout, "(%lu,%lu)", point->x, point->y); }
@@ -71,6 +62,10 @@ void take_in_point(char symbol, struct coordinates **point) {
     };
 }
 
+struct coordinates scalar_multiplication(unsigned long multiplier) {
+    // Here implement a function that takes apart the 'power-of-2' additive partitions of 'multiplier'
+    // and use
+}
 
 int main(int argc, char **argv) {
     if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &m)) argv_ERROR(1, argv);
@@ -90,7 +85,10 @@ int main(int argc, char **argv) {
     // ^^ Display success
 
     unsigned long least_base_two_logarithm = down_rounded_BASE_2_logarithm(cardinality);
-    initialize_scalar_array(least_base_two_logarithm);
+    array = (struct coordinates **) malloc(sizeof(struct coordinates *) * (least_base_two_logarithm + 2)); *array = NULL;
+    unsigned long index = 1; array[index] = (struct coordinates *) malloc(sizeof(struct coordinates)); array[index] = &_base_Point;
+    do {array[index + 1] = point_doubling(array[index]); index++;} while (index < least_base_two_logarithm + 1);
+    // ^^ Initialize array
 
     fprintf(stdout, "SCALAR-MULTIPLICATION LOOKUP TABLE (back-bone):\n");
     fprintf(stdout, "0G: "); print_point_at_(*array);
