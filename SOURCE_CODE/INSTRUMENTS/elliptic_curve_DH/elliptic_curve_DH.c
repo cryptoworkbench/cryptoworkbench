@@ -28,26 +28,15 @@ unsigned long inv(unsigned long inv_of_inv) { return m - (inv_of_inv % m); }
 unsigned long y_calculate(unsigned long slope, unsigned long previous_x, unsigned long new_x, unsigned long previous_y) { return (((slope * ((previous_x + inv(new_x)) % m)) % m) + inv(previous_y)) % m; }
 unsigned long x_calculate(unsigned long slope, unsigned long Xp, unsigned long Xq) { return (((slope * slope) % m) + inv((Xp + Xq) % m)) % m; }
 
-// * Point doubling (technically redundant but quicker to make a scalar multiplication table with because it has not as much to check before it proceeds on to actually permforming point doubling
-void point_doubling(struct coordinates *p, struct coordinates **r) {
-    if (!p || p->x == 0) *r = NULL;
-    else {
-	*r = (struct coordinates *) malloc(sizeof(struct coordinates));
-	unsigned long s = modular_division(((3 * ((p->x * p->x) % m) % m) + a) % m, (2 * p->y) % m); // See math note "#1"
-	(*r)->x = (((s * s) % m) + (inv((2 * p->x) % m))) % m; // << For some reason I need to do it like this
-	(*r)->y = y_calculate(s, p->x, (*r)->x, p->y);
-    }
-}
-
 // * Performs both point doubling and point addition
-void point_combination(struct coordinates *p, struct coordinates *q, struct coordinates **r) {
+void point_addition(struct coordinates *p, struct coordinates *q, struct coordinates **r) {
     if (!(p && q)) { if (p) *r = p; else if (q) *r = q; else { *r = NULL; return; } } // < return point when combining with ID
     else if ((p->y != q->y || p->x == 0) && p->x == q->x) { *r = NULL; return; } // < returns ID upon adding inverses and upon doubling points with x = 0
     *r = (struct coordinates *) malloc(sizeof(struct coordinates)); unsigned long s;
     if (p->x == q->x && p->y == q->y) s = modular_division(((3 * ((p->x * p->x) % m) % m) + a) % m, (2 * p->y) % m); // See math note "#2"
     else s = modular_division(((p->y + (m - q->y)) % m), ((p->x + (m - q->x)) % m));
     (*r)->x = (((s * s) % m) + inv((p->x + q->x) % m)) % m;
-    (*r)->y = y_calculate(s, p->x, q->x, p->y); // Could also set it directly equal to '(((s * ((p->x + inv((*r)->x)) % m)) % m) + inv(p->y)) % m;' here on this line and got rid of 'point_doubling' entirely
+    (*r)->y = (((s * ((p->x + inv((*r)->x)) % m)) % m) + inv(p->y)) % m;
 }
 
 void print_point(struct coordinates *point) { fprintf(stdout, "(%lu,%lu)", point->x, point->y); }
@@ -72,7 +61,7 @@ void take_in_point(char symbol, struct coordinates **point) {
     };
 }
 
-struct coordinates scalar_multiplication(unsigned long multiplier) {
+struct coordinates poimt_multiplication(unsigned long multiplier) {
     // Here implement a function that takes apart the 'power-of-2' additive partitions of 'multiplier'
     // and use
 }
@@ -95,14 +84,14 @@ int main(int argc, char **argv) {
     // ^^ Display success
 
     unsigned long least_base_two_logarithm = down_rounded_BASE_2_logarithm(cardinality);
-    array = (struct coordinates **) malloc(sizeof(struct coordinates *) * (least_base_two_logarithm + 2)); *array = NULL;
-    unsigned long index = 1; array[index] = (struct coordinates *) malloc(sizeof(struct coordinates)); array[index] = &_base_Point;
-    do {point_doubling(array[index], array + index + 1); index++;} while (index < least_base_two_logarithm + 1);
+    array = (struct coordinates **) malloc(sizeof(struct coordinates *) * (least_base_two_logarithm + 1));
+    *array = (struct coordinates *) malloc(sizeof(struct coordinates)); *array = &_base_Point;
+    unsigned long index = 0; do { point_addition(array[index], array[index], &array[index + 1]); index++; } while (index < least_base_two_logarithm + 1);
     // ^^ Initialize array
 
     fprintf(stdout, "SCALAR-MULTIPLICATION LOOKUP TABLE (back-bone):\n");
-    fprintf(stdout, "0G: "); print_point_at_(*array);
-    for (unsigned long index = 1; index < least_base_two_logarithm + 2; index++) { fprintf(stdout, "%luG: ", N_exponentiation(2, index - 1)); print_point_at_(array[index]); }
+    fprintf(stdout, "0G: "); print_point_at_(NULL);
+    for (unsigned long index = 0; index < least_base_two_logarithm + 1; index++) { fprintf(stdout, "%luG: ", N_exponentiation(2, index)); print_point_at_(array[index]); }
 
     struct coordinates *p, *q; p = q = NULL;
 
@@ -110,7 +99,7 @@ int main(int argc, char **argv) {
     take_in_point('p', &p);
     take_in_point('q', &q);
 
-    struct coordinates *r; point_combination(p, q, &r);
+    struct coordinates *r; point_addition(p, q, &r);
     fprintf(stdout, "point r = ");
     if (p) print_point(p); else fprintf(stdout, "%c", **identity_significations); fprintf(stdout, " + ");
     if (q) print_point(q); else fprintf(stdout, "%c", **identity_significations);
