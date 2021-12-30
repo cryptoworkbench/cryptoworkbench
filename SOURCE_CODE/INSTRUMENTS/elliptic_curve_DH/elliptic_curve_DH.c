@@ -1,9 +1,13 @@
-/* This is my second attempt at implementing Elliptic Curve DH.
+/* DEV NOTES:
+ * This is my second attempt at implementing Elliptic Curve DH.
  *
  * Remember y^2 = x^3 + ax + b (mod %)
  *
  * When run with 17 2 2 19 5 1 the result should be:
+ * (5, 1)
  * (6, 3)
+ * (3, 1)
+ * Etc
  * */
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
@@ -11,7 +15,7 @@
 
 // *** Global variables:
 unsigned long m, a, b, cardinality;
-const char *identity_significations[] = {"0", "O", "o", "pointatinfinity", "ID"};
+const char *identity_significations[] = {"O", "0", "o", "pointatinfinity", "ID"};
 char *symbol[] = {"m", "a", "b", "cardinality of field", "_base_Point.x", "_base_Point.y"};
 struct coordinates { unsigned long x; unsigned long y; };
 struct coordinates _base_Point;
@@ -25,13 +29,19 @@ unsigned long y_calculate(unsigned long slope, unsigned long x_coordinate_from_p
     return (((slope * ((x_coordinate_from_previous_point + inv(x_coordinate_of_new_point)) % m)) % m) + inv(y_coordinate_of_previous_point)) % m;
 }
 
-struct coordinates *point_addition(struct coordinates *P_one, struct coordinates *P_two) { if (!P_one || !P_two || P_one->x == P_two->x) return NULL; else {
+struct coordinates *point_addition(struct coordinates *P_one, struct coordinates *P_two) { if (P_one->x == P_two->x) return NULL; else {
     struct coordinates *ret = (struct coordinates *) malloc(sizeof(struct coordinates));
     unsigned long s = modular_division(((P_one->y + (m - P_two->y)) % m), ((P_one->x + (m - P_two->x)) % m));
     ret->x = (((s * s) % m) + inv((P_one->x + P_two->x) % m)) % m;
     ret->y = y_calculate(s, P_one->x, ret->x, P_one->y);
     return ret; }
 }
+
+void POINT_ADDITION(struct coordinates *p, struct coordinates *q, struct coordinates **r) {
+    if (!(p && q)) { if (p) *r = p; else if (q) *r = q; else *r = NULL; }
+    else *r = point_addition(p, q);
+}
+
 
 // * Point doubling
 struct coordinates *point_doubling(struct coordinates *p) { if (!p || p->x == 0) return NULL;
@@ -44,20 +54,22 @@ struct coordinates *point_doubling(struct coordinates *p) { if (!p || p->x == 0)
 
 void print_point(struct coordinates *point) { fprintf(stdout, "(%lu,%lu)", point->x, point->y); }
 
-void print_point_at_(struct coordinates *pair) {
-    if (pair) { print_point(pair); fprintf(stdout, "\n"); }
+void print_point_at_(struct coordinates *point) {
+    if (point) { print_point(point); fprintf(stdout, "\n"); }
     else fprintf(stdout, "%c	(the point at infinity)\n", **identity_significations);
 }
 
 void argv_ERROR(unsigned long index, char **argv) { fprintf(stderr, "'%s' not interpretable as %s.\n", argv[index], symbol[index - 1]); exit(-index); }
 
 void take_in_point(char symbol, struct coordinates **point) {
+    char *inp = (char *) malloc(sizeof(char) * 25);
     while (1) { fprintf(stdout, "point %c = ", symbol);
-	char *inp = (char *) malloc(sizeof(char) * 30); fscanf(stdin, "%s", inp); if (match(inp, identity_significations)) { free(inp); break; }
+	fscanf(stdin, "%s", inp); if (match(inp, identity_significations)) break;
 	// ^^ See if a mention of the point at infinity is there
 
-	unsigned long new_x, new_y; if (sscanf(inp, "%lu,%lu", &new_x, &new_y) == 2)
-	{ free(inp); *point = (struct coordinates *) malloc(sizeof(struct coordinates)); (**point).x = new_x; (**point).y = new_y; break; }
+	unsigned long new_x, new_y;
+	if (sscanf(inp, "%lu,%lu", &new_x, &new_y) != 2) { fprintf(stderr, "'%s' is neither coordinates formatted like 'x,y', nor 'O' for the identity element, which is the point at infinity.\n", inp);}
+	else { *point = (struct coordinates *) malloc(sizeof(struct coordinates)); (**point).x = new_x; (**point).y = new_y; break; }
 	// ^^ If the input could also not otherwise be translated, demand another input looping through
     };
 }
@@ -100,11 +112,11 @@ int main(int argc, char **argv) {
     take_in_point('p', &p);
     take_in_point('q', &q);
 
-    struct coordinates *result = point_addition(p, q);
+    struct coordinates *r; POINT_ADDITION(p, q, &r);
     fprintf(stdout, "point r = ");
     if (p) print_point(p); else fprintf(stdout, "%c", **identity_significations); fprintf(stdout, " + ");
     if (q) print_point(q); else fprintf(stdout, "%c", **identity_significations);
-    fprintf(stdout, " = "); print_point_at_(result); free(result); return 0;
+    fprintf(stdout, " = "); print_point_at_(r); free(r); return 0;
 }
 /* MATH NOTES:
  * 1). A.k.a. "s = M(M(M(3 * M(POINT.x * POINT.x)) + a) * m_inv(M(2 * POINT.y)));"
