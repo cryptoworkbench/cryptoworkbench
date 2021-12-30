@@ -25,7 +25,7 @@ unsigned long y_calculate(unsigned long slope, unsigned long x_coordinate_from_p
     return (((slope * ((x_coordinate_from_previous_point + inv(x_coordinate_of_new_point)) % m)) % m) + inv(y_coordinate_of_previous_point)) % m;
 }
 
-struct coordinates *point_addition(struct coordinates *P_one, struct coordinates *P_two) { if (!(P_one && P_two) || P_one->x == P_two->x) return NULL; else {
+struct coordinates *point_addition(struct coordinates *P_one, struct coordinates *P_two) { if (!P_one || !P_two || P_one->x == P_two->x) return NULL; else {
     struct coordinates *ret = (struct coordinates *) malloc(sizeof(struct coordinates));
     unsigned long s = modular_division(((P_one->y + (m - P_two->y)) % m), ((P_one->x + (m - P_two->x)) % m));
     ret->x = (((s * s) % m) + inv((P_one->x + P_two->x) % m)) % m;
