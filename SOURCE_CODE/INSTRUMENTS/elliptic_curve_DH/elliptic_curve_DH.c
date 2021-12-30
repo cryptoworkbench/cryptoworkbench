@@ -15,7 +15,7 @@
 
 // *** Global variables:
 unsigned long m, a, b, cardinality;
-const char *identity_significations[] = {"O", "0", "o", "pointatinfinity", "ID"};
+const char *point_at_infinity_strings[] = {"PAI", "0", "O", "o", "pointatinfinity", "ID"};
 char *symbol[] = {"m", "a", "b", "cardinality of field", "_base_Point.x", "_base_Point.y"};
 struct coordinates { unsigned long x; unsigned long y; };
 struct coordinates _base_Point;
@@ -43,7 +43,7 @@ void print_point(struct coordinates *point) { fprintf(stdout, "(%lu,%lu)", point
 
 void print_point_at_(struct coordinates *point) {
     if (point) { print_point(point); fprintf(stdout, "\n"); }
-    else fprintf(stdout, "%c	(the point at infinity)\n", **identity_significations);
+    else fprintf(stdout, "%s	(Point At Infinity)\n", *point_at_infinity_strings);
 }
 
 void argv_ERROR(unsigned long index, char **argv) { fprintf(stderr, "'%s' not interpretable as %s.\n", argv[index], symbol[index - 1]); exit(-index); }
@@ -51,14 +51,12 @@ void argv_ERROR(unsigned long index, char **argv) { fprintf(stderr, "'%s' not in
 void take_in_point(char symbol, struct coordinates **point) {
     char *inp = (char *) malloc(sizeof(char) * 25);
     while (1) { fprintf(stdout, "point %c = ", symbol);
-	fscanf(stdin, "%s", inp); if (match(inp, identity_significations)) break;
+	fscanf(stdin, "%s", inp); if (match(inp, point_at_infinity_strings)) break;
 	// ^^ See if a mention of the point at infinity is there
 
-	unsigned long new_x, new_y;
-	if (sscanf(inp, "%lu,%lu", &new_x, &new_y) != 2) { fprintf(stderr, "'%s' is neither coordinates formatted like 'x,y', nor 'O' for the identity element, which is the point at infinity.\n", inp);}
-	else { *point = (struct coordinates *) malloc(sizeof(struct coordinates)); (**point).x = new_x; (**point).y = new_y; break; }
-	// ^^ If the input could also not otherwise be translated, demand another input looping through
-    };
+	unsigned long new_x, new_y; if (sscanf(inp, "%lu,%lu", &new_x, &new_y) != 2) // I want to replace "PAI" with "pai", "P" with an underscored "p", "A" with an underscored "a", "I" with an underscored "i"
+	{ fprintf(stderr, "'%s' is neither coordinates formatted like 'x,y'; nor '%s' or '%s' to signify the Point At Infinity (a.k.a. the identity element). Please try again:\n\n", inp, point_at_infinity_strings[0], point_at_infinity_strings[1]); } else { *point = (struct coordinates *) malloc(sizeof(struct coordinates)); (**point).x = new_x; (**point).y = new_y; break; }
+    }; free(inp);
 }
 
 struct coordinates poimt_multiplication(unsigned long multiplier) {
@@ -101,8 +99,8 @@ int main(int argc, char **argv) {
 
     struct coordinates *r; point_addition(p, q, &r);
     fprintf(stdout, "point r = ");
-    if (p) print_point(p); else fprintf(stdout, "%c", **identity_significations); fprintf(stdout, " + ");
-    if (q) print_point(q); else fprintf(stdout, "%c", **identity_significations);
+    if (p) print_point(p); else fprintf(stdout, "%s", *point_at_infinity_strings); fprintf(stdout, " + ");
+    if (q) print_point(q); else fprintf(stdout, "%s", *point_at_infinity_strings);
     fprintf(stdout, " = "); print_point_at_(r); free(r); return 0;
 }
 /* MATH NOTES:
