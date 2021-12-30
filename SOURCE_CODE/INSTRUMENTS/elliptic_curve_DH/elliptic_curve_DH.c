@@ -9,7 +9,6 @@ const char *point_at_infinity_strings[] = {"PAI", "0", "O", "o", "pointatinfinit
 char *symbol[] = {"m", "a", "b", "cardinality of field", "_base_Point.x", "_base_Point.y"};
 struct coordinates { unsigned long x; unsigned long y; };
 struct coordinates _base_Point;
-struct coordinates **array;
 
 unsigned long modular_division(unsigned long numerator, unsigned long denominator) { while (numerator % denominator != 0) numerator += m; return (numerator / denominator) % m; }
 unsigned long m_inv(unsigned long inv_of_inv) { return modular_division(1, inv_of_inv); } // << dependend upon ^^
@@ -49,7 +48,19 @@ void take_in_point(char symbol, struct coordinates **point) {
     }; free(inp);
 }
 
-void point_multiplication(unsigned long multiplier, /* struct coordinates *base, */ struct coordinates **result) {
+void point_multiplication(unsigned long multiplier, struct coordinates *base, struct coordinates **result) {
+    unsigned long least_base_two_logarithm = down_rounded_BASE_2_logarithm(cardinality);
+    struct coordinates **array = (struct coordinates **) malloc(sizeof(struct coordinates *) * (least_base_two_logarithm + 1));
+    *array = (struct coordinates *) malloc(sizeof(struct coordinates)); *array = base;
+    unsigned long index = 0; do { point_addition(array[index], array[index], &array[index + 1]); index++; } while (index < least_base_two_logarithm);
+    // ^^ Initialize array
+
+    /*
+    fprintf(stdout, "SCALAR-MULTIPLICATION LOOKUP TABLE (back-bone):\n");
+    fprintf(stdout, "0G: "); FORMAL_print_point(NULL);
+    for (unsigned long index = 0; index < least_base_two_logarithm + 1; index++) { fprintf(stdout, "%luG: ", N_exponentiation(2, index)); FORMAL_print_point(array[index]); }
+      ^^ Display table */
+
     *result = NULL; // << First set the return value to the identity element (which is the point at infinity, which this program understand as a "NULL" pointer where a "struct coordinates" pointer was expected)
     if (multiplier != 0) {
 	unsigned long least_base_two_logarithm = down_rounded_BASE_2_logarithm(multiplier);
@@ -58,7 +69,7 @@ void point_multiplication(unsigned long multiplier, /* struct coordinates *base,
 	    multiplier -= N_exponentiation(2, least_base_two_logarithm);
 	    least_base_two_logarithm = down_rounded_BASE_2_logarithm(multiplier);
 	}
-    }
+    } free(array);
 }
 
 void print_multiple_of_ECC_point(unsigned long multiplier, struct coordinates *result) { fprintf(stdout, "%luG = ", multiplier); FORMAL_print_point(result); }
@@ -77,23 +88,31 @@ int main(int argc, char **argv) {
     fprintf(stdout, "a: %lu\n", a);
     fprintf(stdout, "b: %lu\n", b);
     fprintf(stdout, "cardinality of group: %lu\n", cardinality);
-    fprintf(stdout, "generator (abbreviated G) (x,y): (%lu,%lu)\n\n", _base_Point.x, _base_Point.y);
+    fprintf(stdout, "base point (a.k.a. 'G') (x,y): (%lu,%lu)\n\n", _base_Point.x, _base_Point.y);
     // ^^ Display success
 
-    unsigned long least_base_two_logarithm = down_rounded_BASE_2_logarithm(cardinality);
-    array = (struct coordinates **) malloc(sizeof(struct coordinates *) * (least_base_two_logarithm + 1));
-    *array = (struct coordinates *) malloc(sizeof(struct coordinates)); *array = &_base_Point;
-    unsigned long index = 0; do { point_addition(array[index], array[index], &array[index + 1]); index++; } while (index < least_base_two_logarithm);
-    // ^^ Initialize array
+    unsigned long multiplier_Bob;
+    fprintf(stdout, "\nBob's secret value: "); fscanf(stdin, "%lu", &multiplier_Bob);
+    struct coordinates *public_Bob; point_multiplication(multiplier_Bob, &_base_Point, &public_Bob);
+    fprintf(stdout, "Bob's calculation: "); print_multiple_of_ECC_point(multiplier_Bob, public_Bob);
 
-    fprintf(stdout, "SCALAR-MULTIPLICATION LOOKUP TABLE (back-bone):\n");
-    fprintf(stdout, "0G: "); FORMAL_print_point(NULL);
-    for (unsigned long index = 0; index < least_base_two_logarithm + 1; index++) { fprintf(stdout, "%luG: ", N_exponentiation(2, index)); FORMAL_print_point(array[index]); }
-    // ^^ Display table
+    unsigned long multiplier_Alice;
+    fprintf(stdout, "\nAlice's secret value: "); fscanf(stdin, "%lu", &multiplier_Alice);
+    struct coordinates *public_Alice; point_multiplication(multiplier_Alice, &_base_Point, &public_Alice);
+    fprintf(stdout, "Alice's calculation: "); print_multiple_of_ECC_point(multiplier_Alice, public_Alice);
+
+    fprintf(stdout, "\nValue Alice received from Bob: "); FORMAL_print_point(public_Bob);
+    fprintf(stdout, "\nValue Bob received from Alice: "); FORMAL_print_point(public_Alice);
+
+    struct coordinates *alice_RESULT; point_multiplication(multiplier_Alice, public_Bob, &alice_RESULT);
+    fprintf(stdout, "\nValue Alice calculates from what she received: "); FORMAL_print_point(alice_RESULT);
+
+    struct coordinates *bob_RESULT; point_multiplication(multiplier_Alice, public_Bob, &bob_RESULT);
+    fprintf(stdout, "\nValue Bob calculates from what he received: "); FORMAL_print_point(bob_RESULT);
 
     fprintf(stdout, "\nLooping multiplier:\n");
-    unsigned long multiplier = 0; struct coordinates *result; point_multiplication(multiplier, &result);
-    do { print_multiple_of_ECC_point(multiplier, result); multiplier++; point_multiplication(multiplier, &result); } while (result); print_multiple_of_ECC_point(multiplier, result);
+    unsigned long multiplier = 0; struct coordinates *result; point_multiplication(multiplier, &_base_Point, &result);
+    do { print_multiple_of_ECC_point(multiplier, result); multiplier++; point_multiplication(multiplier, &_base_Point, &result); } while (result); print_multiple_of_ECC_point(multiplier, result);
     // ^^ Use scalar multiplication to figure out subgroup of base point
 
     return 0;
