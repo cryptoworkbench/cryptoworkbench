@@ -49,27 +49,21 @@ void take_in_point(char symbol, struct coordinates **point) {
 }
 
 void point_multiplication(unsigned long multiplier, struct coordinates *base, struct coordinates **result) {
-    unsigned long least_base_two_logarithm = down_rounded_BASE_2_logarithm(cardinality);
-    struct coordinates **array = (struct coordinates **) malloc(sizeof(struct coordinates *) * (least_base_two_logarithm + 1));
-    *array = (struct coordinates *) malloc(sizeof(struct coordinates)); *array = base;
-    unsigned long index = 0; do { point_addition(array[index], array[index], &array[index + 1]); index++; } while (index < least_base_two_logarithm);
-    // ^^ Initialize array
-
-    /*
-    fprintf(stdout, "SCALAR-MULTIPLICATION LOOKUP TABLE (back-bone):\n");
-    fprintf(stdout, "0G: "); FORMAL_print_point(NULL);
-    for (unsigned long index = 0; index < least_base_two_logarithm + 1; index++) { fprintf(stdout, "%luG: ", N_exponentiation(2, index)); FORMAL_print_point(array[index]); }
-      ^^ Display table */
+    unsigned long down_rounded_base_two_log = down_rounded_BASE_2_logarithm(multiplier);
+    struct coordinates **scalar_multiplication_backbone = (struct coordinates **) malloc(sizeof(struct coordinates *) * (down_rounded_base_two_log + 1));
+    *scalar_multiplication_backbone = (struct coordinates *) malloc(sizeof(struct coordinates)); *scalar_multiplication_backbone = base;
+    unsigned long index = 0; do { point_addition(scalar_multiplication_backbone[index], scalar_multiplication_backbone[index], &scalar_multiplication_backbone[index + 1]); index++; } while (index < down_rounded_base_two_log);
+    // ^^ Initialize "scalar_multiplication_backbone"
 
     *result = NULL; // << First set the return value to the identity element (which is the point at infinity, which this program understand as a "NULL" pointer where a "struct coordinates" pointer was expected)
     if (multiplier != 0) {
-	unsigned long least_base_two_logarithm = down_rounded_BASE_2_logarithm(multiplier);
+	unsigned long down_rounded_base_two_log = down_rounded_BASE_2_logarithm(multiplier);
 	while (multiplier != 0) {
-	    point_addition(array[least_base_two_logarithm], *result, result);
-	    multiplier -= N_exponentiation(2, least_base_two_logarithm);
-	    least_base_two_logarithm = down_rounded_BASE_2_logarithm(multiplier);
+	    point_addition(scalar_multiplication_backbone[down_rounded_base_two_log], *result, result);
+	    multiplier -= N_exponentiation(2, down_rounded_base_two_log);
+	    down_rounded_base_two_log = down_rounded_BASE_2_logarithm(multiplier);
 	}
-    } free(array);
+    } free(scalar_multiplication_backbone);
 }
 
 void print_multiple_of_ECC_point(unsigned long multiplier, struct coordinates *result) { fprintf(stdout, "%luG = ", multiplier); FORMAL_print_point(result); }
@@ -109,11 +103,6 @@ int main(int argc, char **argv) {
 
     struct coordinates *bob_RESULT; point_multiplication(multiplier_Alice, public_Bob, &bob_RESULT);
     fprintf(stdout, "\nValue Bob calculates from what he received: "); FORMAL_print_point(bob_RESULT);
-
-    fprintf(stdout, "\nLooping multiplier:\n");
-    unsigned long multiplier = 0; struct coordinates *result; point_multiplication(multiplier, &_base_Point, &result);
-    do { print_multiple_of_ECC_point(multiplier, result); multiplier++; point_multiplication(multiplier, &_base_Point, &result); } while (result); print_multiple_of_ECC_point(multiplier, result);
-    // ^^ Use scalar multiplication to figure out subgroup of base point
 
     return 0;
 }
