@@ -1,4 +1,11 @@
 // Examplifies additive and multiplicative groups and lists their generators.
+//
+// New version.
+//
+// DEV. notes:
+// Compare the results of 13, 26, and 39,
+// Of 17, 34, and 51,
+// Of 29, 58, and 87.
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../libraries/functional/string.h" // <<< Needed for "match()", "STR_could_be_parsed_into_UL()", etc
@@ -12,11 +19,17 @@
 
 struct offset_values { unsigned long Y; unsigned long X; };
 struct _general_LL { struct _general_LL *next; unsigned long element; };
-typedef struct vertibrae { char *ASCII; unsigned long ulong; unsigned long perm_length; unsigned long *permutation; } array_piece;
+
+struct _order_COUNTER {
+    struct _order_COUNTER *next;
+    struct { unsigned long ULONG; char *STR; } perm_length;
+    struct { unsigned long ULONG; char *STR; } perm_length_occurences;
+};
+
+typedef struct vertibrae { char *ASCII; unsigned long ulong; unsigned long *permutation; unsigned long perm_length; } array_piece;
 typedef array_piece *table_type; // << Belongs to this one above
 // ^^ Declare variable types
 
-unsigned long MODULUS; // << Needed because "../../libraries/mathematics/maths.h" declares an ternal unsigned long named "MODULUS"
 unsigned long cardinality, generator_count;
 _group_operation group_operation;
 table_type LOOKUP_table;
@@ -25,6 +38,9 @@ struct offset_values *shifts;
 // ^^ Declare variables
 
 const char *help_queries[] = {"--help", "-h", "help", "instructions", "usage", "--instructions", "--usage", "syntax", "--syntax"};
+const char *_perm_length_header = "cardinality:";
+const char *_frequency_header = "frequency:";
+const char *_percentage_header = "percentage within group:";
 // ^^ I think that it is alrigh to put a variable initialization like this in this header file
 
 void HELP_AND_QUIT(char *prog_NAME) {
@@ -55,6 +71,23 @@ void insert(struct _general_LL ***tracer_location, unsigned long new_ulong) {
     
     *tracer_location = (struct _general_LL **) **tracer_location;
     /* And move onto this newly added spot ^^. */
+}
+
+void subgroup_insert(struct _order_COUNTER **iterator, unsigned long perm_length) {
+    while (*iterator != NULL && (*iterator)->perm_length.ULONG != perm_length) iterator = &(*iterator)->next;
+    if (*iterator == NULL) {
+	struct _order_COUNTER *new_subgroup_order = (struct _order_COUNTER *) malloc(sizeof(struct _order_COUNTER)); // Create the new order counter
+	// ^^ Create new element
+
+	new_subgroup_order->perm_length.ULONG = perm_length; new_subgroup_order->perm_length.STR = str_from_ul(perm_length, str_len(_perm_length_header));
+	// ^^ Set new element's "perm_length" struct
+
+	new_subgroup_order->perm_length_occurences.ULONG = 1;
+	// ^^ Set new element's "perm_length_occurences" struct
+
+	new_subgroup_order->next = *iterator; *iterator = new_subgroup_order;
+    } // << Do triple ref magic
+    else if ((*iterator)->perm_length.ULONG == perm_length) (*iterator)->perm_length_occurences.ULONG++;
 }
 
 struct VOID_ptr_ptr_PAIR element_LL_from_file(char **argv, group_OBJ group) {
@@ -104,7 +137,7 @@ unsigned long *yield_subgroup(unsigned long index, group_OBJ group) {
     return array_from_LL((struct _general_LL **) permutation_LL_pair.head, &subgroup_card);
 }
 
-unsigned long *second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair, group_OBJ group) {
+struct _order_COUNTER *second_MAIN(unsigned long **generator_array, struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair, group_OBJ group) {
     struct _general_LL *LINEAR_element_LL;
     if (!(LINEAR_element_LL = (struct _general_LL *) _close_CHANNEL(element_CHANNEL_PTR_pair.head))) { fprintf(stderr, "Failed to add elements from 'ARCHIVE/' file. Exiting '-11'.\n"); exit(-11); }
     // ^^ No need to circle it by using "circular_LL_from_CHAN()"
@@ -118,13 +151,16 @@ unsigned long *second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair, gr
 	LINEAR_element_LL = process->next; free(process);
     } // << ^ Destroy the linear linked list "LINEAR_element_LL" whilst registering it's values into our "LOOKUP_table"
 
-    struct VOID_ptr_ptr_PAIR generator_LL_pair = INITIALIZE_CHANNEL_PTR_pair(); // << Declare a new set of tracers, but this time to create a linked list of generators
+    struct VOID_ptr_ptr_PAIR generator_pair = INITIALIZE_CHANNEL_PTR_pair(); // << Declare a new set of tracers, but this time to create a linked list of generators
+    struct VOID_ptr_ptr_PAIR subgroup_pair = INITIALIZE_CHANNEL_PTR_pair(); // << Declare a new set of tracers, but this time to create a linked list of generators
     for (index = 0; index < cardinality; index++) {
 	LOOKUP_table[index].permutation = yield_subgroup(index, group); // << Loop over the array one more time
-	if (LOOKUP_table[index].perm_length == cardinality) { insert((struct _general_LL ***) &generator_LL_pair.iterator, index); generator_count++; }
+	if (LOOKUP_table[index].perm_length == cardinality) { insert((struct _general_LL ***) &generator_pair.iterator, index); generator_count++; }
+	subgroup_insert((struct _order_COUNTER **) subgroup_pair.iterator, LOOKUP_table[index].perm_length);
     }
 
-    return array_from_LL((struct _general_LL **) generator_LL_pair.head, &generator_count);
+    *generator_array = array_from_LL((struct _general_LL **) generator_pair.head, &generator_count);
+    return ((struct _order_COUNTER *) _close_CHANNEL(subgroup_pair.head));
 }
 
 void print_subgroup(unsigned long index) {
@@ -136,13 +172,21 @@ void print_subgroup(unsigned long index) {
     } while (1); fprintf(main_fs, "}");
 }
 
-unsigned long process_generator_array(unsigned long *generator_array, char *modulus, const char *symbol) {
-    fprintf(main_fs, "GENERATOR COUNT FOR \u2115%s%s (%lu):\n", modulus, symbol, generator_count);
-    unsigned long i = shifts->Y % generator_count; do {
-	print_subgroup(generator_array[i % generator_count]);
-	if (i % generator_count != (shifts->Y - 1) % generator_count) { fprintf(main_fs, ", and\n"); i++; } else break; } while (1);
-    fprintf(main_fs, "\n"); free(generator_array); return generator_count;
-}
+/* About this group information output format:
+ * ~ Contains G_0 (the first character (before ";")
+ * ~ Contains half of the base G_0 logarithms needed to arrive at other generators
+ * ~ Contains the one specific modulus that can be combined with these exponents in order to be able to access ALL of the available generators (noone is out of reach with this 'half exponent collection' and
+ * this number present) */
+void group_spitter(unsigned long first_generator, struct group_STRUCT *group) {
+    unsigned long largest_subgroup_card = totient(group->MOD);
+    printf("\nGroup string: %lu; ", first_generator); unsigned long generator_unit_number = 1;
+    for (unsigned long i = 2; i < largest_subgroup_card / 2; i++)
+	if (GCD(i, largest_subgroup_card) == 1) { printf("%lu, ", i);
+	    // printf("(G_%lu) / 1 = %lu\n", generator_unit_number, FINITE_N_exponentiation(first_generator, i + 1, group->MOD));
+	    // printf("(G_%lu) \\ 1 = %lu\n", generator_unit_number, FINITE_N_exponentiation(first_generator, largest_subgroup_card - (i + 1), group->MOD)); generator_unit_number++;
+	}
+    printf("%lu | %lu\n", largest_subgroup_card, largest_subgroup_card / cardinality);
+} // Here it would have worked if "largest_subgroup_card" would always be the cardinality of the largest subgroup(s);
 
 int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     if (6 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));
@@ -157,8 +201,9 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
 	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the modulus value to shifts when dealing with additive groups
     } // ^ Process offset values.
 
-    unsigned long *generator_array = second_MAIN(element_LL_from_file(argv, group), group); // << Check "subgroup_information.h" for elaboration concerning "second_MAIN()"
-    for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++) { print_subgroup(i % cardinality); fprintf(main_fs, "\n"); } // << Print table to "main_fs"
+    unsigned long *generator_array;
+    struct _order_COUNTER *tree = second_MAIN(&generator_array, element_LL_from_file(argv, group), group); // << Check "subgroup_information.h" for elaboration concerning "second_MAIN()"
+    for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++) { print_subgroup(i % cardinality); fprintf(main_fs, "\n"); } // << Print table to "main_fs" (whilst applying vertical offset!)
 
     const char *adjective = adjective_from_ID_Sloth(group);
     const char *symbol = operation_symbol_from_ID_Sloth(group);
@@ -167,11 +212,22 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
 	fprintf(main_fs, "Horizontal offset used: %lu\nVertical offset used: %lu\n", shifts->X, shifts->Y); }
     // ^^^ Only the table is supposed to be written to the external file
 
-    fprintf(main_fs, "\n\u2115%s%s contains %lu elements a.k.a. |\u2115%s%s| = %lu\n\n", argv[1], symbol, cardinality, argv[1], symbol, cardinality);
-    // ^^^ Print cardinality information about this group.
+    fprintf(main_fs, "\n| \u2115%s%s's kinds of subgroups:\n| %s | %s | %s\n", argv[1], symbol, _perm_length_header, _percentage_header, _frequency_header);
+    float perc; do {
+	tree->perm_length_occurences.STR = str_from_ul(tree->perm_length_occurences.ULONG, str_len(_frequency_header) - 3);
+	perc = ((float) tree->perm_length_occurences.ULONG / cardinality) * 100;
+	fprintf(main_fs, "| %s | %.21f | %lu / %lu", tree->perm_length.STR, perc, tree->perm_length_occurences.ULONG, cardinality);
+	tree = tree->next; printf("\n");
+    } while (tree);
 
-    if (generator_array) fprintf(main_fs, "\n\u2191 those are the only %lu generators present in \u2115%s%s \u2191\n", process_generator_array(generator_array, argv[1], symbol), argv[1], symbol);
-    else fprintf(main_fs, "This group does not contain any generators.\n");
+    if (generator_array) group_spitter(LOOKUP_table[generator_array[0]].ulong, group);
+    // ^^ Efficient calculation of generators (should make this work for this biggest subgroup within the group [GENERALIZED]).
+
+    fprintf(main_fs, "\n"); if (generator_array) {
+	fprintf(main_fs, "Generator's in \u2115%s%s:\n", argv[1], symbol);
+	unsigned long i = shifts->Y % generator_count; do { print_subgroup(generator_array[i % generator_count]);
+	    if (i % generator_count != (shifts->Y - 1) % generator_count) { fprintf(main_fs, ", and\n"); i++; } else break; } while (1); free(generator_array);
+    } else fprintf(main_fs, "This group does not contain any generators."); printf("\n");
     // ^^^ Calls the amount of generators to the user and recounts it afterwards, horizontal "shifts->X" is used here, check that out. Also free()'s the array
 
     for (unsigned long index = 0; index < cardinality; index++) { free(LOOKUP_table[index].permutation); free(LOOKUP_table[index].ASCII); } free(LOOKUP_table);

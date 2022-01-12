@@ -16,51 +16,52 @@
  * The user then will choose what two points (which are obviously never "f(0)" (!) ) this proof of concept program should proceed to work with.
  *
  * The program then:
- * #1). Determines A from these two specified points
- * #2). Determines "f(0)" using the Mod value and this set of coordinates (if I'm correct "f(0)" should be the value of the secret, and that should be it).
+ * #1). Determines 'A' again (verifies* 'A') from these two specified points [* verification by program termination: if 'A' calculated again is not the same, the program terminates; THIS PROOF CONCEPT]
+ * #2). Determines "f(0)" using the Mod value and this set of coordinates. This equates to the calculation of the linear equation (first degree polynomial) parameter 'B'
  */
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
 
-unsigned long Mod, A, _secret_B;
+unsigned long m, a, _secret_B;
 
 struct cartesian_coordinates {
     unsigned long x_coordinate;
     unsigned long y_coordinate;
 };
 
-void secret_reduce() { if (_secret_B >= Mod) { _secret_B %= Mod; printf("The secret has been reduced by mod %lu into the congruent secret %lu.\n\n", Mod, _secret_B); } }
+unsigned long y_calculate(unsigned long x) { return (((x * a) % m) + _secret_B) % m; }
+void secret_reduce() { if (_secret_B >= m) { _secret_B %= m; printf("The secret has been reduced by mod %lu into the congruent secret %lu.\n\n", m, _secret_B); } }
 
 int main(int argc, char **argv) {
-    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &Mod)) { printf("%s is not Mod!\n", argv[1]); exit(-1); }
-    if (3 > argc || !STR_could_be_parsed_into_UL(argv[2], &A)) { printf("%s is not A!\n", argv[2]); exit(-2); } A %= Mod;
+    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &m)) { printf("%s is not m!\n", argv[1]); exit(-1); }
+    if (3 > argc || !STR_could_be_parsed_into_UL(argv[2], &a)) { printf("%s is not a!\n", argv[2]); exit(-2); } a %= m;
     if (3 < argc) {
 	if (STR_could_be_parsed_into_UL(argv[3], &_secret_B)) secret_reduce();
 	else { printf("The secret '%s' has not yet been transformed into numerical form!\n", argv[3]); exit(-3); }
-    } else { printf("Now please put in your secret less than %lu: ", Mod); fscanf(stdin, "%lu", &_secret_B); secret_reduce(); }
-    fprintf(stdout, "Using coordinate format: [x, f(x)]\n\nPlot for the linear function 'f(x) \u2261 %lux + %lu':\n", A, _secret_B, A, _secret_B);
-    for (unsigned long x_coordinate = 0; x_coordinate < Mod; x_coordinate++) {
+    } else { printf("Now please put in your secret less than %lu: ", m); fscanf(stdin, "%lu", &_secret_B); secret_reduce(); }
+    fprintf(stdout, "Using coordinate format: [x, f(x)]\n\nPlot for the linear function 'f(x) \u2261 %lux + %lu':\n", a, _secret_B);
+    for (unsigned long x_coordinate = 0; x_coordinate < m; x_coordinate++) {
 	struct cartesian_coordinates point_on_graph = {x_coordinate, 0};
-	point_on_graph.y_coordinate += (((x_coordinate * A) % Mod) + _secret_B % Mod) % Mod;
-	printf("[%lu, %lu]\n", x_coordinate, point_on_graph.x_coordinate, point_on_graph.y_coordinate);
+	point_on_graph.y_coordinate += y_calculate(x_coordinate);
+	printf("[%lu, %lu]\n", x_coordinate, y_calculate(x_coordinate));
     } // << ^ Calculate all the possible coordinates for a linear curve over a finite field
 
     unsigned long x_one, x_two;
     printf("\nDO NOT CHOOSE POINT 0 SINCE IT CONTAINS YOUR SECRET!\n");
-    printf("Specification of first point by x coordinate: "); fscanf(stdin, "%lu", &x_one); unsigned long y_one = ((((x_one * A) % Mod) + _secret_B % Mod) % Mod);
-    printf("Specification of second point by x coordinate: "); fscanf(stdin, "%lu", &x_two); unsigned long y_two = ((((x_two * A) % Mod) + _secret_B % Mod) % Mod);
-    // ^^ Get 'random' coordinates
+    printf("Specification of first point by x coordinate: "); fscanf(stdin, "%lu", &x_one); unsigned long y_one = ((((x_one * a) % m) + _secret_B % m) % m);
+    printf("Specification of second point by x coordinate: "); fscanf(stdin, "%lu", &x_two); unsigned long y_two = ((((x_two * a) % m) + _secret_B % m) % m);
+    // ^^ Get 'random' (a.k.a. chosen) coordinates
 
-    unsigned long Y_difference = y_one + (Mod - y_two); Y_difference %= Mod;
-    unsigned long X_difference = x_one + (Mod - x_two); X_difference %= Mod;
-    while (Y_difference % X_difference != 0) Y_difference += Mod;
+    unsigned long Y_difference = y_one + (m - y_two); Y_difference %= m;
+    unsigned long X_difference = x_one + (m - x_two); X_difference %= m;
+    while (Y_difference % X_difference != 0) Y_difference += m;
     // ^^ We need to make the numerator divisible by the denominator given this specific field's conditions before we should divide in this modular arithmetic. "#MODULARARITHMETICRULES"
 
-    if (Y_difference / X_difference != A) { fprintf(stderr, "This proof of concept failed!, \"Y_difference / X_difference\" is not A!\n"); exit(-4); }
-    else fprintf(stdout, "A = %lu / %lu = %lu\n", Y_difference, X_difference, A);
+    if (Y_difference / X_difference != a) { fprintf(stderr, "This proof of concept failed!, \"Y_difference / X_difference\" is not a!\n"); exit(-4); }
+    else fprintf(stdout, "a = %lu / %lu = %lu\n", Y_difference, X_difference, a);
     // ^^ Exit when this proof of concept already failed
 
-    if (_secret_B == (y_one + (Mod - (x_one * A) % Mod)) % Mod) fprintf(stdout, "Calculation of B succeeded: %lu\n", _secret_B);
+    if (_secret_B == (y_one + (m - (x_one * a) % m)) % m) fprintf(stdout, "Calculation of B succeeded: %lu\n", _secret_B);
     else { fprintf(stderr, "Calculation of B failed!, so this proof of concept failed!\n"); exit(-5); }
     return 0;
 }

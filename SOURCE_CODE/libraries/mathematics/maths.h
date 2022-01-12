@@ -4,37 +4,39 @@
 #define MULTIPLICATIVE_IDENTITY 1
 #define SET_DEVOID_OF_UNITS 0
 #define SET_DEVOID_OF_PRIME_FACTORS 1
+typedef unsigned long UL;
+extern UL MODULUS;
 enum GROUP_IDentity { ADDITIVE, MULTIPLICATIVE, EXPONENTIAL }; typedef enum GROUP_IDentity enum_GROUP_IDentity;
 
-typedef unsigned long UL;
 typedef UL* UL_ptr;
 
 unsigned long N_addition(unsigned long A, unsigned long B);
-unsigned long FINITE_N_addition(unsigned long A, unsigned long B, unsigned long Limit);
+unsigned long FINITE_N_addition(unsigned long A, unsigned long B);
 // ^^^ Define the addition operation for finite and non-finite arithmetic, with other words: --===>
 // ^>> Define the addition operation for "modular" and "regular" arithmetic
 
 unsigned long N_multiplication(unsigned long A, unsigned long B);
-unsigned long FINITE_N_multiplication(unsigned long A, unsigned long B, unsigned long Limit);
+unsigned long FINITE_N_multiplication(unsigned long A, unsigned long B);
 // ^^^ Define the multiplication operation for finite and non-finite arithmetic, with other words: --===>
 // ^>> Define the multiplication operation for "modular" and "regular" arithmetic
 
 unsigned long N_exponentiation(unsigned long BASE, unsigned long Exponent);
-unsigned long FINITE_N_exponentiation(unsigned long BASE, unsigned long Exponent, unsigned long CAP);
+unsigned long FINITE_N_exponentiation(unsigned long BASE, unsigned long Exponent);
 // ^^^ Define the exponentiation operation for finite and non-finite arithmetic, with other words: --===>
 // ^>> Define the exponentiation operation for "modular" and "regular" arithmetic
 
-typedef unsigned long (*_group_operation) (unsigned long, unsigned long, unsigned long); // << Declare a variable type for #23 & #18
+typedef unsigned long (*_group_operation) (unsigned long, unsigned long); // << Declare a variable type for #23 & #18
 _group_operation operation_from_ID(enum GROUP_IDentity ID); // << Returns "FINITE_n_multiplication()" or "FINITE_N_multiplication()"
-unsigned long N_combine(unsigned long N_quotient, unsigned long A, unsigned long B, enum GROUP_IDentity Operation);
+unsigned long N_combine(unsigned long A, unsigned long B, enum GROUP_IDentity Operation);
 // ^^^ Combine them all
 
 /* ### OLD FUNCTIONS: */
 unsigned long GCD(unsigned long a, unsigned long b);
+unsigned long totient(unsigned long a);
 // ^^^ Calculates the GCD using a procedural implementation of the euclidean algorithm: ^^ Order of inputs does not matter.
 
 unsigned long extended_gcd(unsigned long a, unsigned long b, unsigned long *x, unsigned long *y);
-unsigned long multiplicative_inverse(unsigned long a, unsigned long mod);
+unsigned long multiplicative_inverse(unsigned long a);
 
 /* A simple exponentiation function which raises base to exponent.
  * 
@@ -49,3 +51,4 @@ unsigned long multiplicative_inverse(unsigned long a, unsigned long mod);
 
 /* Two functions for modular exponentiation */
 unsigned long down_rounded_BASE_2_logarithm(unsigned long base_exponent);
+unsigned long modular_division(unsigned long member_from_equivalence_class_representing_the_numerator, unsigned long denominator);

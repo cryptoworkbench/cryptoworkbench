@@ -39,8 +39,8 @@ unsigned long N_multiplication(unsigned long A, unsigned long B) {
     return multiplication_RESULT;
 }
 
-unsigned long FINITE_N_addition(unsigned long A, unsigned long B, unsigned long Limit) { return N_addition(A, B) % Limit; }
-unsigned long FINITE_N_multiplication(unsigned long A, unsigned long B, unsigned long Limit) { return N_multiplication(A, B) % Limit; }
+unsigned long FINITE_N_addition(unsigned long A, unsigned long B) { return N_addition(A, B) % MODULUS; }
+unsigned long FINITE_N_multiplication(unsigned long A, unsigned long B) { return N_multiplication(A, B) % MODULUS; }
 _group_operation operation_from_ID(enum GROUP_IDentity ID) { return (ID == ADDITIVE) ? FINITE_N_addition : FINITE_N_multiplication; }
 // ^^^ The finite (modular) ones
 
@@ -49,7 +49,7 @@ unsigned long N_exponentiation(unsigned long BASE, unsigned long Exponent) {
     return ans;
 }
 
-unsigned long FINITE_N_exponentiation(unsigned long BASE, unsigned long Exponent, unsigned long Limit) {
+unsigned long FINITE_N_exponentiation(unsigned long BASE, unsigned long Exponent) { printf("Hit finite n exponentiation!\n");
     unsigned long least_BASE_two_logarihm = down_rounded_BASE_2_logarithm(Exponent);
     unsigned long *residue_list = (unsigned long *) malloc(sizeof(unsigned long) * least_BASE_two_logarihm);
     // ^^ Prepare obvious variables (variables you'd think about)
@@ -57,15 +57,15 @@ unsigned long FINITE_N_exponentiation(unsigned long BASE, unsigned long Exponent
     UL iter = ADDITIVE_IDENTITY; UL exponentiation_RESULT = MULTIPLICATIVE_IDENTITY;
     // ^^ Prepare less obvious variables (variables you come to realize you need once you start writting this function)
 
-    residue_list[iter] = FINITE_N_addition(ADDITIVE_IDENTITY, BASE, Limit);
+    residue_list[iter] = FINITE_N_addition(ADDITIVE_IDENTITY, BASE);
     // ^^ Start with a first mod calculation of "BASE^1 % Limit"
 
-    do {residue_list[iter + 1] = FINITE_N_multiplication(residue_list[iter], residue_list[iter], Limit); iter++; }
+    do {residue_list[iter + 1] = FINITE_N_multiplication(residue_list[iter], residue_list[iter]); iter++; }
     while (iter < least_BASE_two_logarihm);
     // ^^ Continue the square and multiply method
 
     while (Exponent != 0) {
-	exponentiation_RESULT = (exponentiation_RESULT * residue_list[least_BASE_two_logarihm]) % Limit;
+	exponentiation_RESULT = (exponentiation_RESULT * residue_list[least_BASE_two_logarihm]) % MODULUS;
 	Exponent -= N_exponentiation(2, least_BASE_two_logarihm);
 	least_BASE_two_logarihm = down_rounded_BASE_2_logarithm(Exponent); }
     // ^^ Collect the pieces
@@ -76,27 +76,43 @@ unsigned long FINITE_N_exponentiation(unsigned long BASE, unsigned long Exponent
     return exponentiation_RESULT;
 }
 
-unsigned long N_combine(unsigned long N_quotient, unsigned long A, unsigned long B, enum GROUP_IDentity Operation) {
-    if (N_quotient != ADDITIVE_IDENTITY) {
-       switch (Operation) {
-	    case ADDITIVE: return FINITE_N_addition(A, B, N_quotient);
-	    case MULTIPLICATIVE: return FINITE_N_multiplication(A, B, N_quotient);
-	    case EXPONENTIAL: return FINITE_N_exponentiation(A, B, N_quotient);
-       }; }
-  // ^^ Modular operations
-   else
-       switch (Operation) {
-	   case ADDITIVE: return N_addition(A, B);
-	   case MULTIPLICATIVE: return N_multiplication(A, B);
-	   case EXPONENTIAL: return N_exponentiation(A, B);
-       };
-  // ^^ Regular operations
+unsigned long N_combine(unsigned long A, unsigned long B, enum GROUP_IDentity Operation) {
+    if (MODULUS) {
+	switch (Operation) {
+	    case ADDITIVE: return FINITE_N_addition(A, B);
+	    case MULTIPLICATIVE: return FINITE_N_multiplication(A, B);
+	    case EXPONENTIAL: return FINITE_N_exponentiation(A, B);
+	};
+    } // ^ Modular operations
+
+    else {
+	switch (Operation) {
+	    case ADDITIVE: return N_addition(A, B);
+	    case MULTIPLICATIVE: return N_multiplication(A, B);
+	    case EXPONENTIAL: return N_exponentiation(A, B);
+	};
+   } // ^ Regular operations
 }
 
 unsigned long GCD(unsigned long a, unsigned long b) {
     unsigned long remainder = a % b;
-    while (remainder != 0) { a = b; b = remainder; remainder = a % b; } return b; }
-/* ^^^ Calculates the GCD using a procedural implementation of the euclidean algorithm ^^^ */
+    while (remainder != 0) {
+	a = b;
+	b = remainder;
+	remainder = a % b;
+    }
+
+    return b;
+} /* ^ Calculates the GCD using a procedural implementation of the euclidean algorithm ^^^ */
+
+unsigned long totient(unsigned long a) {
+    unsigned long totient = 0;
+
+    for (unsigned long i = 1; i < a; i++)
+	if (GCD(i, a) == 1) totient++;
+
+    return totient;
+}
 
 unsigned long extended_gcd(unsigned long a, unsigned long b, unsigned long *x, unsigned long *y) {
     if (a == 0) {
@@ -114,7 +130,16 @@ unsigned long extended_gcd(unsigned long a, unsigned long b, unsigned long *x, u
     return gcd;
 }
 
-unsigned long multiplicative_inverse(unsigned long a, unsigned long mod) { // Yield a^-1 mod b
-    unsigned long x, y; extended_gcd(a, mod, &x, &y);
-    return mod + x;
+unsigned long multiplicative_inverse(unsigned long a) { // Yield a^-1 mod b
+    unsigned long x, y;
+    extended_gcd(a, MODULUS, &x, &y);
+
+    return MODULUS + x;
+}
+
+unsigned long modular_division(unsigned long member_from_equivalence_class_representing_the_numerator, unsigned long denominator) {
+    while (member_from_equivalence_class_representing_the_numerator % denominator != 0)
+	member_from_equivalence_class_representing_the_numerator += MODULUS;
+
+    return member_from_equivalence_class_representing_the_numerator / denominator;
 }

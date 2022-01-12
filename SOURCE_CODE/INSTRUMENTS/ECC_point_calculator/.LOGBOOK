@@ -1,0 +1,6 @@
+./ECC_point_calculator: Could not to open 'ARCHIVE/multiplicative_group_of_integers_modulus_25'
+./ECC_point_calculator: Assuming the 'ARCHIVE/' folder was there and it wasn't a permission thing, I will try to use 'modular_group_element_table_generator' to autonomously archive ℕ25*
+./ECC_point_calculator using modular_group_element_table_generator: Exported ℕ25*
+./ECC_point_calculator: Could not to open 'ARCHIVE/multiplicative_group_of_integers_modulus_25'
+./ECC_point_calculator: Assuming the 'ARCHIVE/' folder was there and it wasn't a permission thing, I will try to use 'modular_group_element_table_generator' to autonomously archive ℕ25*
+./ECC_point_calculator using modular_group_element_table_generator: Exported ℕ25*

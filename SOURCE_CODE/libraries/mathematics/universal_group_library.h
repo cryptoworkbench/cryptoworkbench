@@ -15,7 +15,6 @@
 typedef struct group_STRUCT {
     enum GROUP_IDentity ID;
     unsigned long MOD;
-    unsigned long generator_count;
 } group; typedef group *group_OBJ;
 
 static char *argv_ZERO;

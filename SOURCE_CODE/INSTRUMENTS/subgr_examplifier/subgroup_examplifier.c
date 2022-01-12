@@ -170,6 +170,57 @@ void print_subgroup(unsigned long index) {
     } while (1); fprintf(main_fs, "}");
 }
 
+void interesting_function_one_old(unsigned long *generator_array, struct group_STRUCT *group, unsigned long offset) {
+    unsigned long INDEX = offset % generator_count;
+    unsigned long factor_accumulator = 1;
+    do {unsigned long v = 1; unsigned long additive = 0;
+	do {v *= LOOKUP_table[generator_array[INDEX]].ulong; v %= group->MOD; additive++;
+	} while (v != LOOKUP_table[generator_array[(INDEX + 1) % generator_count]].ulong);
+	printf("%lu^%lu = %lu", LOOKUP_table[generator_array[INDEX]].ulong, additive, LOOKUP_table[generator_array[(INDEX + 1) % generator_count]].ulong);
+	factor_accumulator *= additive; factor_accumulator %= totient(group->MOD); INDEX++; INDEX %= generator_count;
+	if (factor_accumulator == 1) break;
+	else printf("\n");
+    } while (1); printf("^1\n"); // replace << using "} while (INDEX != offset % generator_count);" if failure is found
+} // ^ Functions perfectly now
+
+void interesting_function_one(unsigned long passed_generator, struct group_STRUCT *group) {
+    unsigned long passed_generator_ORDER = cardinality / GCD(cardinality, 1);
+    printf("Passed generator: %lu\n", passed_generator);
+    printf("Order of passed generator: %lu\n", passed_generator_ORDER);
+
+    unsigned long factor_accumulator = 1;
+    unsigned long *array = (unsigned long *) malloc(sizeof(unsigned long) * (cardinality / 2));
+    for (unsigned long i = 0; i < cardinality / 2; i++) if (GCD(i + 1, cardinality) == 1) array[i] = 1;
+    do {unsigned long v = passed_generator; unsigned long log = 1;
+	do {v *= passed_generator; v %= group->MOD; log++;
+	} while (cardinality / GCD(cardinality, log) != passed_generator_ORDER);
+	printf("%lu^%lu = %lu", passed_generator, log, v);
+	passed_generator = v;
+	factor_accumulator *= log; factor_accumulator %= cardinality;
+	if (factor_accumulator == 1) break;
+	else printf("\n");
+    } while (1); printf("^1\n");
+}
+
+void interesting_function_two(unsigned long *generator_array, struct group_STRUCT *group) {
+    unsigned long FOCUS = 1;
+    do {unsigned long v = 1; unsigned long additive = 0;
+	do {v *= LOOKUP_table[generator_array[0]].ulong; v %= group->MOD; additive++;
+	} while (v != LOOKUP_table[generator_array[FOCUS]].ulong);
+	printf("%lu^%lu = %lu\n", LOOKUP_table[generator_array[0]].ulong, additive, LOOKUP_table[generator_array[FOCUS]].ulong); FOCUS++;
+    } while (FOCUS < generator_count);
+}
+
+void group_spitter(unsigned long *generator_array, struct group_STRUCT *group) {
+    printf("%lu", LOOKUP_table[generator_array[0]].ulong);
+    unsigned long FOCUS = 1;
+    do {unsigned long v = 1; unsigned long additive = 0;
+	do {v *= LOOKUP_table[generator_array[0]].ulong; v %= group->MOD; additive++;
+	} while (v != LOOKUP_table[generator_array[FOCUS]].ulong);
+	printf(", %lu", additive); FOCUS++;
+    } while (FOCUS < generator_count);
+    printf(", %lu", cardinality - 1);
+}
 
 int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     if (6 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));
@@ -186,7 +237,7 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
 
     unsigned long *generator_array;
     struct _order_COUNTER *tree = second_MAIN(&generator_array, element_LL_from_file(argv, group), group); // << Check "subgroup_information.h" for elaboration concerning "second_MAIN()"
-    for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++) { print_subgroup(i % cardinality); fprintf(main_fs, "\n"); } // << Print table to "main_fs"
+    for (unsigned long i = shifts->Y; i < cardinality + shifts->Y; i++) { print_subgroup(i % cardinality); fprintf(main_fs, "\n"); } // << Print table to "main_fs" (whilst applying vertical offset!)
 
     const char *adjective = adjective_from_ID_Sloth(group);
     const char *symbol = operation_symbol_from_ID_Sloth(group);
@@ -198,10 +249,25 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     fprintf(main_fs, "\n| \u2115%s%s's kinds of subgroups:\n| %s | %s | %s\n", argv[1], symbol, _perm_length_header, _percentage_header, _frequency_header);
     float perc; do {
 	tree->perm_length_occurences.STR = str_from_ul(tree->perm_length_occurences.ULONG, str_len(_frequency_header) - 3);
-	perc = (float) tree->perm_length_occurences.ULONG / cardinality; perc *= 100;
+	perc = ((float) tree->perm_length_occurences.ULONG / cardinality) * 100;
 	fprintf(main_fs, "| %s | %.21f | %lu / %lu", tree->perm_length.STR, perc, tree->perm_length_occurences.ULONG, cardinality);
 	tree = tree->next; printf("\n");
     } while (tree);
+
+    fprintf(main_fs, "\nInteresting function #1:\n");
+    if (generator_array) {
+	interesting_function_one(LOOKUP_table[generator_array[0]].ulong, group); printf("\n");
+	unsigned long tot = totient(group->MOD);
+	unsigned long *array = (unsigned long *) malloc(sizeof(unsigned long) * (tot / 2));
+	for (unsigned long i = 0; i < (tot / 2); i++) if (GCD(i + 1, tot) == 1) array[i] = 1;
+	printf("The generators:\n"); unsigned long generator_unit_number = 1;
+	for (unsigned long i = 0; i < tot / 2; i++) {
+	    if (array[i] == 1) {
+		printf("(G_%lu) / 1 = %lu\n", generator_unit_number, FINITE_N_exponentiation(LOOKUP_table[generator_array[0]].ulong, i + 1, group->MOD));
+		printf("(G_%lu) \\ 1 = %lu\n", generator_unit_number, FINITE_N_exponentiation(LOOKUP_table[generator_array[0]].ulong, tot - (i + 1), group->MOD)); generator_unit_number++;
+	    }
+	}
+    }
 
     fprintf(main_fs, "\n"); if (generator_array) {
 	fprintf(main_fs, "Generator's in \u2115%s%s:\n", argv[1], symbol);
