@@ -1,18 +1,17 @@
 // See dev note at line 28. That is the only issue.
 #include "universal_group_library.h"
 
-enum GROUP_IDentity *STR_could_be_parsed_into_enum_GROUP_IDentity(char *STR, enum GROUP_IDentity *ID) {
-    if (match(STR, additive_signs)) { *ID = ADDITIVE; return ID; }
-    else if (match(STR, multiplicative_signs)) { *ID = MULTIPLICATIVE; return ID; }
+unsigned long *STR_could_be_parsed_into_id(char *STR, unsigned long *id) {
+    if (match(STR, additive_signs)) { *id = 0; return id; }
+    else if (match(STR, multiplicative_signs)) { *id = 1; return id; }
     else return NULL;
 }
 
-const char *numerical_denomination_from_ID_Sloth(group_OBJ group) { return (group->ID == ADDITIVE) ? additive_signs[0] : multiplicative_signs[0]; }
-const char *operation_symbol_from_ID_Sloth(group_OBJ group) { return (group->ID == ADDITIVE) ? additive_signs[1] : multiplicative_signs[1]; }
-const char *noun_from_ID_Sloth(group_OBJ group) { return (group->ID == ADDITIVE) ? additive_signs[2] : multiplicative_signs[2]; }
-const char *multiple_from_ID_Sloth(group_OBJ group) { return (group->ID == ADDITIVE) ? additive_signs[3] : multiplicative_signs[3]; }
-const char *adjective_from_ID_Sloth(group_OBJ group) { return (group->ID == ADDITIVE) ? additive_signs[4] : multiplicative_signs[4]; }
-int boolean_from_ID_Sloth(group_OBJ group) { return (group->ID == ADDITIVE) ? 0 : 1; }
+const char *ID_denoted_numerically(UL id) { return (id) ? multiplicative_signs[0] : additive_signs[0]; }
+const char *ID_denoted_by_operation_symbol(UL id) { return (id) ? multiplicative_signs[1] : additive_signs[1]; }
+const char *ID_proNOUNced(UL id) { return (id) ? multiplicative_signs[2] : additive_signs[2]; }
+const char *ID_proNOUNSed(UL id) { return (id) ? multiplicative_signs[3] : additive_signs[3]; }
+const char *operation_ADJECTIVE_from_ID(UL id) { return (id) ? multiplicative_signs[4] : additive_signs[4]; }
 
 char *BUFFER_OF_SIZE(unsigned int SIZE) {
     char *return_value = (char *) malloc(sizeof(char) * SIZE);
@@ -29,19 +28,19 @@ void open_and_append_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_li
     fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", prog_NAME, TO_BE_APPENDED_logbook_line); fflush(logbook_fs);
 }
 
-FILE *open_group(char *prog_NAME, group_OBJ group, char *MOD) {
+FILE *open_group(char *prog_NAME, char *mod, unsigned long id) {
     argv_ZERO = prog_NAME;
     // ^^ Set the gobal variable "argv_ZERO" based on what was passed on to this function as "argv[0]"
 
     if ( !(logbook_fs = fopen(LOGBOOK_PATH, "a"))) { fprintf(stderr, "Failed to open logbook!\n"); exit(-10); }
     // ^^ Exit when the logbook won't open
 
-    const char *group_ID = numerical_denomination_from_ID_Sloth(group);
-    const char *adjective = adjective_from_ID_Sloth(group);
-    const char *operation_symbol = operation_symbol_from_ID_Sloth(group);
+    const char *group_ID = ID_denoted_numerically(id);
+    const char *adjective = operation_ADJECTIVE_from_ID(id);
+    const char *operation_symbol = ID_denoted_by_operation_symbol(id);
     // ^^ Prepare the char pointers "open_group_as_INNER()" needs
 
-    return open_group_INNER(MOD, group_ID, adjective, operation_symbol, BUFFER_OF_SIZE(200));
+    return open_group_INNER(mod, group_ID, adjective, operation_symbol, BUFFER_OF_SIZE(200));
 }
 
 FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, const char *adjective, const char *symbol, char *LINE) {

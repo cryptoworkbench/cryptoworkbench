@@ -21,7 +21,8 @@
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
-// ^^^ LIBRARY INCLUSIONS
+UL MODULUS;
+// ^^ Handle library inclusions
 
 #define RESET "\033[0m"
 #define RED "\033[31m"

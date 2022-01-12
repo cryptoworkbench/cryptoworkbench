@@ -5,29 +5,16 @@
 #define SET_DEVOID_OF_UNITS 0
 #define SET_DEVOID_OF_PRIME_FACTORS 1
 typedef unsigned long UL;
-extern UL MODULUS;
-enum GROUP_IDentity { ADDITIVE, MULTIPLICATIVE, EXPONENTIAL }; typedef enum GROUP_IDentity enum_GROUP_IDentity;
+extern UL MOD; // < "MODULUS" is too long. Has got to be in capital to signify that to include this in the source file is necessary when using this library (in-)directly.
 
 typedef UL* UL_ptr;
 
 unsigned long N_addition(unsigned long A, unsigned long B);
-unsigned long FINITE_N_addition(unsigned long A, unsigned long B);
-// ^^^ Define the addition operation for finite and non-finite arithmetic, with other words: --===>
-// ^>> Define the addition operation for "modular" and "regular" arithmetic
-
 unsigned long N_multiplication(unsigned long A, unsigned long B);
-unsigned long FINITE_N_multiplication(unsigned long A, unsigned long B);
-// ^^^ Define the multiplication operation for finite and non-finite arithmetic, with other words: --===>
-// ^>> Define the multiplication operation for "modular" and "regular" arithmetic
-
 unsigned long N_exponentiation(unsigned long BASE, unsigned long Exponent);
-unsigned long FINITE_N_exponentiation(unsigned long BASE, unsigned long Exponent);
-// ^^^ Define the exponentiation operation for finite and non-finite arithmetic, with other words: --===>
-// ^>> Define the exponentiation operation for "modular" and "regular" arithmetic
-
 typedef unsigned long (*_group_operation) (unsigned long, unsigned long); // << Declare a variable type for #23 & #18
-_group_operation operation_from_ID(enum GROUP_IDentity ID); // << Returns "FINITE_n_multiplication()" or "FINITE_N_multiplication()"
-unsigned long N_combine(unsigned long A, unsigned long B, enum GROUP_IDentity Operation);
+_group_operation operation_from_ID(unsigned long ID); // << Returns "FINITE_n_multiplication()" or "FINITE_N_multiplication()"
+unsigned long N_combine(unsigned long A, unsigned long B, unsigned long ID);
 // ^^^ Combine them all
 
 /* ### OLD FUNCTIONS: */

@@ -22,8 +22,18 @@
  * https://www.youtube.com/watch?v=ESPT_36pUFc (supplementary video in this list about Diffie-Hellman) */
 #include "modular_group_element_table_generator.h"
 
+void QUIT_ON_ARGV_ONE_ERROR(char *argv_one) { fprintf(stderr, ARGV_ONE_INSTRUCTION);
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP: to attempt to open from registry the group '<\u2124/%s\u2124>' makes no sense to me. Returning '-1'.\n", argv_one);
+    exit(-1);
+} // << ^^ Works in conjunction with the definition of ARGV_ONE_INSTRUCTION
+
+void QUIT_ON_ARGV_TWO_ERROR(char *argv_two) { fprintf(stderr, ARGV_TWO_INSTRUCTION);
+    fprintf(stderr, "\nFATAL ERROR: cannot grasp group ID: '%s' is neither '0' nor '1'. Returning '-2'.\n", argv_two);
+    exit(-2);
+} // << ^^ Works in conjunction with the definition of ARGV_TWO_INSTRUCTION
+
 int main(int argc, char **argv) {
-    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &_group.MOD)) QUIT_ON_ARGV_ONE_ERROR(argv[1]);
+    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &MOD)) QUIT_ON_ARGV_ONE_ERROR(argv[1]);
     if (3 > argc || !STR_could_be_parsed_into_enum_GROUP_IDentity(argv[2], &_group.ID)) QUIT_ON_ARGV_TWO_ERROR(argv[2]);
     // ^^ Parse the infinite field CAP and group ID
 
@@ -43,13 +53,3 @@ int main(int argc, char **argv) {
     if (4 > argc) return 1; else execvp(*(argv + 3), (argv + 3));
     // ^^ Pass on the command string which begins at argv[3], or quit if appropiate
 }
-
-void QUIT_ON_ARGV_ONE_ERROR(char *argv_one) { fprintf(stderr, ARGV_ONE_INSTRUCTION);
-    fprintf(stderr, "\nFATAL ERROR: cannot grasp infinite field CAP: to attempt to open from registry the group '<\u2124/%s\u2124>' makes no sense to me. Returning '-1'.\n", argv_one);
-    exit(-1);
-} // << ^^ Works in conjunction with the definition of ARGV_ONE_INSTRUCTION
-
-void QUIT_ON_ARGV_TWO_ERROR(char *argv_two) { fprintf(stderr, ARGV_TWO_INSTRUCTION);
-    fprintf(stderr, "\nFATAL ERROR: cannot grasp group ID: '%s' is neither '0' nor '1'. Returning '-2'.\n", argv_two);
-    exit(-2);
-} // << ^^ Works in conjunction with the definition of ARGV_TWO_INSTRUCTION

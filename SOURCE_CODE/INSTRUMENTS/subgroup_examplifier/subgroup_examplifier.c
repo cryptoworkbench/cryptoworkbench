@@ -4,6 +4,9 @@
 #include "../../libraries/functional/string.h" // <<< Needed for "match()", "STR_could_be_parsed_into_UL()", etc
 #include "../../libraries/functional/triple_ref_pointers.h" // << Needed for "zoom_out()", "initialize_PTR_pair()", and "zoom_in()"
 #include "../../libraries/mathematics/universal_group_library.h" // <<< Needed for "group_OBJ"
+UL MOD; // << Needed because "../../libraries/mathematics/maths.h" declares an ternal unsigned long named "MODULUS"
+// ^ Handle library inclusions
+
 #define STDOUT_VERTICAL_OFFSET_ERROR "Failed to parse \"%s\" (the 4th argument) as vertical offset. Defaulting to not using a vertical offset.\n"
 #define STDERR_HORIZONTAL_OFFSET_ERROR "Failed to parse \"%s\" (the 3th argument) as horizontal offset. Defaulting to not using a horizontal offset.\n"
 #define STDOUT_ARGV_TWO_INSTRUCTION "Please provide as first argument the modulus of the group in decimal notation.\n"
@@ -16,7 +19,6 @@ typedef struct vertibrae { char *ASCII; unsigned long ulong; unsigned long perm_
 typedef array_piece *table_type; // << Belongs to this one above
 // ^^ Declare variable types
 
-unsigned long MODULUS; // << Needed because "../../libraries/mathematics/maths.h" declares an ternal unsigned long named "MODULUS"
 unsigned long cardinality, generator_count;
 _group_operation group_operation;
 table_type LOOKUP_table;
@@ -146,7 +148,7 @@ unsigned long process_generator_array(unsigned long *generator_array, char *modu
 
 int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     if (6 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));
-    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->MOD)) MOD_not_parsable_ERROR(argv[1]);
+    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &MOD)) MOD_not_parsable_ERROR(argv[1]);
     if (3 > argc || !STR_could_be_parsed_into_enum_GROUP_IDentity(argv[2], &group->ID)) ID_not_parsable_ERROR(argv[1], argv[2]);
     else group_operation = operation_from_ID(group->ID); // <^^^ Parses and processes everything that has to do with CMD args, also deals with the "help_queries"
 
