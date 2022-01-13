@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
+#include "../mathematics/maths.h"
 // ^^^ Necessary library inclusions that are needed in "string.c"
 
 #define STRING_TERMINATING_CHARACTER 0

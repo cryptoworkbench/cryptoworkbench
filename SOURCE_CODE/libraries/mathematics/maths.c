@@ -3,86 +3,80 @@
  * See the header file for function descriptions. */
 #include "maths.h"
 
-/* Two functions for modular exponentiation */
-unsigned long down_rounded_BASE_2_logarithm(unsigned long base_exponent) {
-    unsigned long return_value = ADDITIVE_IDENTITY; // Initialize the logarithm of the base 2 exponentiation
-    unsigned long power_of_two = MULTIPLICATIVE_IDENTITY; // Initialize the variable on which we will perform base 2 exponentiation
+unsigned long conditional_field_cap(unsigned long result) { return (MOD) ? result % MOD : result; } // < Return result if there is no N_quotient, otherwise apply modular arithmetic
+unsigned long addition(unsigned long a, unsigned long b) { return conditional_field_cap(a + b); }
+unsigned long multiplication(unsigned long a, unsigned long b) { return conditional_field_cap(a * b); }
+_group_operation operation_from_ID(unsigned long ID) { return (ID) ? multiplication : addition; }
+// .^^^ All of the functions needed for "operation_from_ID"
 
-    /* Find the first power of 2 which is not smaller than the base_exponent */
-    while (!(power_of_two >= base_exponent)) {
-	power_of_two *= 2;
+unsigned long subtraction(unsigned long a, unsigned long b) { return conditional_field_cap(a + (MOD - b)); }
+unsigned long additive_inverse(unsigned long element_of_additive_group) { return subtraction(0, element_of_additive_group); }
+unsigned long modular_division(unsigned long numerator, unsigned long denominator) { while (numerator % denominator != 0) numerator += MOD; return numerator / denominator; }
+// ^^^ Useful functions for (infinite) field arithmetic
+
+unsigned long exponentiate_UNRESTRICTEDLY(unsigned long base, unsigned long exponent) {
+    unsigned long exponentiation_RESULT = (0 < base);
+    for (unsigned long iter = 0; iter < exponent; iter++)
+	exponentiation_RESULT *= base;
+
+    return exponentiation_RESULT;
+} // ^ Used by "exponentiate_using_backbone()", "exponentiation()"
+
+unsigned long *square_and_multiply_backbone(unsigned long base, unsigned long required_base_two_log) {
+    UL *backbone = (unsigned long *) malloc(sizeof(unsigned long) * (required_base_two_log + 1));
+    UL iterator = ADDITIVE_IDENTITY; 
+
+    backbone[iterator] = base % MOD;
+    while (iterator < required_base_two_log) { backbone[iterator + 1] = (backbone[iterator] * backbone[iterator]) % MOD; iterator++; }
+    // ^^ Regarding this second line:
+    // In the case where the variable "exponent" was 0, this function would not be called
+    // In the case where the variable "exponent" is 1, the while loop will not run
+    // In the other cases (where 1 < "exponent"), it will run just the appriopiate amount of times
+
+    return backbone;
+} // ^ Used by "exponentiation()", "polynomial_over_finite_field()"
+
+unsigned long least_base_TWO_log(unsigned long power_of_TWO) {
+    if (power_of_TWO == 0) return 0;
+    unsigned long return_value = ADDITIVE_IDENTITY; // Initialize the logarithm of the base 2 exponentiation (the additive correspondence in the isomorphish)
+    unsigned long multiplicative_accumulator = MULTIPLICATIVE_IDENTITY; // Initialize the variable on which we will perform base 2 exponentiation (the multiplicative corrspondence in the isomorphish)
+
+    // Find the first power of 2 which is not smaller than power_of_TWO
+    while (multiplicative_accumulator < power_of_TWO) {
+	multiplicative_accumulator *= 2;
 	return_value++;
     }
 
-    /* If the first power of 2 which is not smaller than the base_exponent, is equal to the base_exponent, then the base_exponent is a power of two, and all is set and done.
-     *
-     * If however, as will be in most cases, the first power of two which is not smaller than 'base_exponent' is actually greater than 'base_exponent', we over-estimated.
-     *
-     * In this case 'power_of_two' over 2 ('power_of_two / 2' in code) will be less than base_exponent, but also the greatest power of two which still fits base_exponent. */
-    if (power_of_two > base_exponent)
+    // If the first power of 2 which is not smaller than "power_of_TWO", is equal to the power_of_TWO, then the power_of_TWO is a power of two, and all is set and done.
+    //
+    // If however, as will be in most cases, the first power of two which is not smaller than 'power_of_TWO' is actually greater than 'power_of_TWO', we over-estimated.
+    //
+    // In this case 'multiplicative_accumulator' over 2 ('multiplicative_accumulator / 2' in code) will be less than power_of_TWO, but also the greatest power of two which still fits power_of_TWO.
+    if (multiplicative_accumulator > power_of_TWO)
 	return_value--;
 
     return return_value;
-}
+} // ^ Used by "exponentiation_using_backbone()", "exponentiation()"
 
-unsigned long N_addition(unsigned long A, unsigned long B) { return (A + B) % MOD; }
-unsigned long N_multiplication(unsigned long A, unsigned long B) {
-    unsigned long multiplication_RESULT = ADDITIVE_IDENTITY;
-    // ^^ Start with an empty set
+unsigned long exponentiation_using_backbone(unsigned long *residue_list, unsigned long index, unsigned long exponent) {
+    UL return_value = MULTIPLICATIVE_IDENTITY;
+    while (exponent != 0) {
+	return_value *= residue_list[index]; return_value %= MOD;
+	exponent -= exponentiate_UNRESTRICTEDLY(2, index);
+	index = least_base_TWO_log(exponent);
+    } return return_value;
+} // ^ Used by "exponentiation()"
 
-    UL iterator = ADDITIVE_IDENTITY;
-    do { multiplication_RESULT = N_addition(multiplication_RESULT, A);
-	iterator++; } while (iterator < B);
-    // ^^ And prove multiplicication is repeated addition
+unsigned long exponentiation(unsigned long base, unsigned long exponent) { if (MOD == 0) return exponentiate_UNRESTRICTEDLY(base, exponent);
+    if (base == 0) return 0;
+    unsigned long mininum_log = least_base_TWO_log(exponent);
+    unsigned long *backbone = square_and_multiply_backbone(base, mininum_log);
+    UL exponentiation_RESULT = exponentiation_using_backbone(backbone, mininum_log, exponent);
+    free(backbone); return exponentiation_RESULT;
+} // ^ Used by N_operation
 
-    return multiplication_RESULT % MOD;
-}
-
-_group_operation operation_from_ID(unsigned long ID) { return (ID) ? N_multiplication : N_addition; }
-// ^^^ The finite (modular) ones
-
-unsigned long N_exponentiation(unsigned long BASE, unsigned long Exponent) {
-    if (MOD) {
-	unsigned long least_BASE_two_logarihm = down_rounded_BASE_2_logarithm(Exponent);
-	unsigned long *residue_list = (unsigned long *) malloc(sizeof(unsigned long) * least_BASE_two_logarihm);
-	// ^^ Prepare obvious variables (variables you'd think about)
-
-	UL iter = ADDITIVE_IDENTITY; UL exponentiation_RESULT = MULTIPLICATIVE_IDENTITY;
-	// ^^ Prepare less obvious variables (variables you come to realize you need once you start writting this function)
-
-	residue_list[iter] = N_addition(ADDITIVE_IDENTITY, BASE);
-	// ^^ Start with a first mod calculation of "BASE^1 % Limit"
-
-	do {residue_list[iter + 1] = N_multiplication(residue_list[iter], residue_list[iter]); iter++; }
-	while (iter < least_BASE_two_logarihm);
-	// ^^ Continue the square and multiply method
-
-	while (Exponent != 0) {
-	    exponentiation_RESULT = (exponentiation_RESULT * residue_list[least_BASE_two_logarihm]) % MOD;
-	    Exponent -= N_exponentiation(2, least_BASE_two_logarihm);
-	    least_BASE_two_logarihm = down_rounded_BASE_2_logarithm(Exponent); }
-	// ^^ Collect the pieces
-	
-	free(residue_list);
-	// ^^ Free residue_list
-
-	return exponentiation_RESULT;
-    } else {
-	unsigned long ans = (0 < BASE);
-	for (unsigned long iter = 0; iter < Exponent; iter++)
-	    ans = N_multiplication(ans, BASE);
-
-	return ans;
-    }
-}
-
-unsigned long N_combine(unsigned long A, unsigned long B, unsigned long ID) {
-    switch (ID) {
-	case 0: return N_addition(A, B);
-	case 1: return N_multiplication(A, B);
-	case 2: return N_exponentiation(A, B);
-    };
-}
+unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return addition(a, b); case 1: return multiplication(a, b); case 2: return exponentiation(a, b); }; }
+// ^ When 
 
 unsigned long GCD(unsigned long a, unsigned long b) {
     unsigned long remainder = a % b;
@@ -127,9 +121,30 @@ unsigned long multiplicative_inverse(unsigned long a) { // Yield a^-1 mod b
     return MOD + x;
 }
 
-unsigned long modular_division(unsigned long member_from_equivalence_class_representing_the_numerator, unsigned long denominator) {
-    while (member_from_equivalence_class_representing_the_numerator % denominator != 0)
-	member_from_equivalence_class_representing_the_numerator += MOD;
+unsigned long polynomial_over_finite_field(unsigned long **coefficients, unsigned long array_length, unsigned long x) {
+    printf("Arrived in \"polynomial_over_finite_field()\".\n");
 
-    return member_from_equivalence_class_representing_the_numerator / denominator;
+    unsigned long highest_X_term = array_length - 1;
+    printf("Highest X term: %lu\n", highest_X_term);
+
+    unsigned long DOWN_ROUNDED_base_two_log = least_base_TWO_log(highest_X_term);
+    printf("Down rounded base 2 log for this X term: %lu\n", DOWN_ROUNDED_base_two_log);
+
+    unsigned long *multiplication_backbone = square_and_multiply_backbone(x, DOWN_ROUNDED_base_two_log);
+    // ^ Get a multiplication backbone of appropiate size
+
+    UL return_value = ADDITIVE_IDENTITY;
+    // ^ We will be returning this
+
+    UL current_EXPONENT = highest_X_term;
+    UL coefficient_SELECTOR = 0;
+    do {UL current_X_TERM = exponentiation_using_backbone(multiplication_backbone, DOWN_ROUNDED_base_two_log, current_EXPONENT); // < Calculate current X term
+	UL current_TERM = (*coefficients[coefficient_SELECTOR] * current_X_TERM) % MOD; // < Calculate current term
+	return_value += current_TERM; return_value %= MOD; // < Update the return value cumutively
+
+	while (*coefficients[coefficient_SELECTOR] = 0 && coefficient_SELECTOR < array_length) coefficient_SELECTOR++;
+	// ^ Update "coefficient_SELECTOR" for the next iteration
+    } while (coefficient_SELECTOR < array_length);
+
+    return return_value;
 }

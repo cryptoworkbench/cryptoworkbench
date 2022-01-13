@@ -9,12 +9,16 @@ extern UL MOD; // < "MODULUS" is too long. Has got to be in capital to signify t
 
 typedef UL* UL_ptr;
 
-unsigned long N_addition(unsigned long A, unsigned long B);
-unsigned long N_multiplication(unsigned long A, unsigned long B);
-unsigned long N_exponentiation(unsigned long BASE, unsigned long Exponent);
+unsigned long conditional_field_cap(unsigned long result);
+unsigned long addition(unsigned long a, unsigned long b);
+unsigned long subtraction(unsigned long a, unsigned long b);
+unsigned long additive_inverse(unsigned long element_of_additive_group);
+unsigned long multiplication(unsigned long a, unsigned long b);
 typedef unsigned long (*_group_operation) (unsigned long, unsigned long); // << Declare a variable type for #23 & #18
-_group_operation operation_from_ID(unsigned long ID); // << Returns "FINITE_n_multiplication()" or "FINITE_N_multiplication()"
-unsigned long N_combine(unsigned long A, unsigned long B, unsigned long ID);
+_group_operation operation_from_ID(unsigned long ID);
+unsigned long exponentiation(unsigned long base, unsigned long exponent);
+unsigned long exponentiate_UNRESTRICTEDLY(unsigned long base, unsigned long exponent); // << normal finite field exponentiation depends upon this ):
+unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID);
 // ^^^ Combine them all
 
 /* ### OLD FUNCTIONS: */
@@ -37,5 +41,6 @@ unsigned long multiplicative_inverse(unsigned long a);
  * Returns the multiplicative identity when the exponent is 0.*/
 
 /* Two functions for modular exponentiation */
-unsigned long down_rounded_BASE_2_logarithm(unsigned long base_exponent);
+unsigned long least_base_TWO_log(unsigned long power_of_TWO);
 unsigned long modular_division(unsigned long member_from_equivalence_class_representing_the_numerator, unsigned long denominator);
+unsigned long polynomial_over_finite_field(unsigned long **coefficients, unsigned long array_length, unsigned long x);

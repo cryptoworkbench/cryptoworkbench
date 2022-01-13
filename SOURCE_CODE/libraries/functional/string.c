@@ -2,9 +2,10 @@
  *
  * See the header file for function descriptions.
  *
- * The warning for an implicit declaration of "N_exponentiation" during "gcc -c string.c -o .string.o" can be ignored. Just include .maths.o in the linking process.
+ * The warning for an implicit declaration of "exponentiation" during "gcc -c string.c -o .string.o" can be ignored. Just include .maths.o in the linking process.
  * */
 #include "string.h"
+#include <stdio.h>
 
 /* Returns an unsigned long containing the number of characters in the string pointed at by the constant char pointer 'string_pointer' */
 unsigned long str_len(const char *string_pointer) {
@@ -79,31 +80,17 @@ char *copy_over(char *recipient_adress, const char *source_adress) {
     } return recipient_adress;
 }
 
-unsigned long ul_from_str(char *string) {
-    unsigned long iteration_count, string_as_integer, length_of_string; // Declare needed variables
-    iteration_count = string_as_integer = 0; length_of_string = str_len(string); // Initialize variables
-
-    char *current_character = (string + (length_of_string - 1));
-    while (current_character != string) {
-	string_as_integer += (*current_character - ASCII_BASE) * N_exponentiation(NUMERIC_BASE, iteration_count);
-
-	iteration_count++; // Update the iteration count
-	current_character = (current_character - 1); // Move back one character
-    } string_as_integer += (*current_character - ASCII_BASE) * (N_exponentiation(NUMERIC_BASE, length_of_string - 1));
-    return string_as_integer;
-}
-
 int string_to_int(char *string) {
     int iteration_count, string_as_integer, length_of_string; // Declare needed variables
     iteration_count = string_as_integer = 0; length_of_string = str_len_int(string); // Initialize variables
 
     char *current_character = (string + (length_of_string - 1));
     while (current_character != string) {
-	string_as_integer += (*current_character - ASCII_BASE) * N_exponentiation(NUMERIC_BASE, iteration_count);
+	string_as_integer += (*current_character - ASCII_BASE) * exponentiation(NUMERIC_BASE, iteration_count);
 
 	iteration_count++; // Update the iteration count
 	current_character = (current_character - 1); // Move back one character
-    } string_as_integer += (*current_character - ASCII_BASE) * (N_exponentiation(NUMERIC_BASE, length_of_string - 1));
+    } string_as_integer += (*current_character - ASCII_BASE) * (exponentiation(NUMERIC_BASE, length_of_string - 1));
     return string_as_integer;
 }
 
@@ -112,10 +99,10 @@ unsigned long char_in_val(unsigned long a) {
 	return 1;
 
     unsigned long char_index, intermediate_value;
-    char_index = 0; intermediate_value = N_exponentiation(NUMERIC_BASE, char_index);
+    char_index = 0; intermediate_value = exponentiation(NUMERIC_BASE, char_index);
 
     while (!(intermediate_value >= a)) /* Calculate the first power of NUMERIC_BASE which is greater than or equal to a */
-    { char_index++; intermediate_value = N_exponentiation(NUMERIC_BASE, char_index); }
+    { char_index++; intermediate_value = exponentiation(NUMERIC_BASE, char_index); }
 
     if (intermediate_value == a)
 	char_index++;
@@ -145,24 +132,32 @@ char *str_from_ul(unsigned long a, unsigned long min_out_length) { // Works!
     } return unsigned_long_as_string;
 }
 
-unsigned long *STR_could_be_parsed_into_UL(char *STRING, unsigned long *UL_PTR) { // Alternative to "ul_from_str()"
+unsigned long INFINITE_exponentiation(unsigned long base, unsigned long logarithm) {
+    unsigned long exponentiation_RESULT = (0 < base);
+    for (unsigned long iter = 0; iter < logarithm; iter++)
+	exponentiation_RESULT *= base;
+
+    return exponentiation_RESULT;
+}
+
+unsigned long *STR_could_be_parsed_into_UL(char *str, unsigned long *UL_PTR) {
     unsigned long length_of_string = 0; do {
-	if (STRING[length_of_string] >= ASCII_BASE && STRING[length_of_string] < ASCII_BASE + 10) length_of_string++;
+	if (str[length_of_string] >= ASCII_BASE && str[length_of_string] < ASCII_BASE + 10) length_of_string++;
 	else return NULL;
-    } while (STRING[length_of_string] != STRING_TERMINATING_CHARACTER);
+    } while (str[length_of_string] != STRING_TERMINATING_CHARACTER);
     // ^^^ Checks to see if the proposed char array at index is even parsable as an unsigned long, returns NULL if not
 
-    unsigned long iteration_count, string_as_integer; // Declare needed variables
-    iteration_count = string_as_integer = 0; // Initialize variables
+    unsigned long iteration_count, str_as_UL; // Declare needed variables
+    iteration_count = str_as_UL = 0; // Initialize variables
 
-    char *current_character = (STRING + (length_of_string - 1));
-    while (current_character != STRING) {
-	string_as_integer += (*current_character - ASCII_BASE) * N_exponentiation(NUMERIC_BASE, iteration_count);
-
-	iteration_count++; // Update the iteration count
+    // char *current_character = &(str[length_of_string - 1]);
+    char *current_character = (str + (length_of_string - 1));
+    while (current_character != str) {
+	str_as_UL += ((unsigned int) *current_character - ASCII_BASE) * INFINITE_exponentiation(NUMERIC_BASE, iteration_count);
+	iteration_count++; // Update the iteration count (appriopiate log)
 	current_character = (current_character - 1); // Move back one character
-    } string_as_integer += (*current_character - ASCII_BASE) * (N_exponentiation(NUMERIC_BASE, length_of_string - 1));
+    } str_as_UL += (*current_character - ASCII_BASE) * (INFINITE_exponentiation(NUMERIC_BASE, length_of_string - 1));
 
-    *UL_PTR = string_as_integer; // <<< Inserts the parsed variable into the INSERTMENT_SLOTH (see header file "string.h")
+    *UL_PTR = str_as_UL; // <<< Inserts the parsed variable into the INSERTMENT_SLOTH (see header file "string.h")
     return UL_PTR;
 }
