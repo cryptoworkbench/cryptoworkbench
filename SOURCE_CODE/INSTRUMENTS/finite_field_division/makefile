@@ -4,8 +4,8 @@
 ../../libraries/mathematics/.maths.o: ../../libraries/mathematics/maths.h ../../libraries/mathematics/maths.c
 	gcc -c ../../libraries/mathematics/maths.c -o ../../libraries/mathematics/.maths.o
 
-.modular_division.o: modular_division.c
-	gcc -c modular_division.c -o .modular_division.o
+.finite_field_division.o: finite_field_division.c
+	gcc -c finite_field_division.c -o .finite_field_division.o
 
-modular_division: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .modular_division.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .modular_division.o -o ../../../WORKBENCH/modular_division
+finite_field_division: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .finite_field_division.o
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .finite_field_division.o -o ../../../WORKBENCH/finite_field_division
