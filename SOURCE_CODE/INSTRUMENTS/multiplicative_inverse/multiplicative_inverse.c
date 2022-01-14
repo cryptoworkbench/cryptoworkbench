@@ -20,7 +20,9 @@ int main(int argc, char **argv) { // 'UL MOD' is at line 4
     if (GCD_of_arguments != 1) { fprintf(stderr, "%lu shares a factor of %lu with %lu.\n\nTerminating with exit status '-3'.\n", number_coprime_to_MOD, GCD_of_arguments, MOD); exit(-3); }
     // ^ exit if the number to calculate the multiplicative inverse of is not coprime to the modulus
 
-    fprintf(stdout, "%lu^(-1) \u2261 %lu^(-1) \u2261 %lu (mod %lu)\n", number_coprime_to_MOD, number_coprime_to_MOD % MOD, modular_division(1, number_coprime_to_MOD), MOD);
+    fprintf(stdout, "%lu^(-1) \u2261 ", number_coprime_to_MOD);
+    if (number_coprime_to_MOD != number_coprime_to_MOD % MOD) fprintf(stdout, "%lu^(-1) \u2261 ", number_coprime_to_MOD % MOD);
+    fprintf(stdout, "%lu (mod %lu)\n", modular_division(1, number_coprime_to_MOD), MOD);
     // ^ display result
 
     return 0;

@@ -27,6 +27,11 @@ void argv_ERROR(char **argv, int index) { const char *error_specific_message;
 int main(int argc, char **argv) {
     if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &MOD)) argv_ERROR(argv, 1); UL inv_of_additive_inv;
     if (3 > argc || !STR_could_be_parsed_into_UL(argv[2], &inv_of_additive_inv)) argv_ERROR(argv, 2);
-    fprintf(stdout, "The additive inverse of %lu is %lu mod %lu.\n", inv_of_additive_inv, additive_inverse(inv_of_additive_inv), MOD);
+
+    fprintf(stdout, "x - %lu \u2261 x ", inv_of_additive_inv);
+    if (inv_of_additive_inv % MOD != inv_of_additive_inv) fprintf(stdout, "- %lu \u2261 x ", inv_of_additive_inv % MOD);
+    // ^^ Display program outcome
+
+    fprintf(stdout, "+ %lu (mod %lu)\n", additive_inverse(inv_of_additive_inv % MOD), MOD);
     return 0;
 }
