@@ -140,7 +140,7 @@ unsigned long INFINITE_exponentiation(unsigned long base, unsigned long logarith
     return exponentiation_RESULT;
 }
 
-unsigned long *STR_could_be_parsed_into_UL(char *str, unsigned long *UL_PTR) {
+unsigned long *str_represents_ul(char *str, unsigned long *UL_PTR) {
     unsigned long length_of_string = 0; do {
 	if (str[length_of_string] >= ASCII_BASE && str[length_of_string] < ASCII_BASE + 10) length_of_string++;
 	else return NULL;

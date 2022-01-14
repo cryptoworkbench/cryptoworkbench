@@ -7,7 +7,14 @@ cd SOURCE_CODE/INSTRUMENTS/additive_inverse && make additive_inverse && echo "##
 "
 cd ../finite_field_division && make finite_field_division && echo "#######===> The following instrument has been assemblied/linked: finite_field_division
 "
-cd ,,/modular_group_element_table_generator && make modular_group_element_table_generator && echo "#######===> The following instrument has been assemblied/linked: modular_group_element_table_generator
+cd ../multiplicative_inverse && make multiplicative_inverse && echo "#######===> The following instrument has been assemblied/linked: multiplicative_inverse
+"
+echo "#######===> THE FOLLOWING BASIC INSTRUMENTS HAVE BEEN ASSEMBLED/LINKED: -> <===#######
+~ additive_inverse
+~ finite_field_division
+~ multiplicative_inverse
+"
+cd ../modular_group_element_table_generator && make modular_group_element_table_generator && echo "#######===> The following instrument has been assemblied/linked: modular_group_element_table_generator
 "
 cd ../subgroup_examplifier && make subgroup_examplifier && echo "#######===> The following instrument has been assemblied/linked: subgroup_examplifier
 "
