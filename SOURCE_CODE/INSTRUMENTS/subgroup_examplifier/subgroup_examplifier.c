@@ -148,14 +148,14 @@ unsigned long process_generator_array(unsigned long *generator_array, char *modu
 
 int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     if (6 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));
-    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &MOD)) MOD_not_parsable_ERROR(argv[1]);
-    if (3 > argc || !STR_could_be_parsed_into_enum_GROUP_IDentity(argv[2], &group->ID)) ID_not_parsable_ERROR(argv[1], argv[2]);
+    if (2 > argc || !str_represents_ul(argv[1], &MOD)) MOD_not_parsable_ERROR(argv[1]); UL ID;
+    if (3 > argc || !str_represents_ul(argv[2], &group->ID)) ID_not_parsable_ERROR(argv[1], argv[2]);
     else group_operation = operation_from_ID(group->ID); // <^^^ Parses and processes everything that has to do with CMD args, also deals with the "help_queries"
 
     shifts = (struct offset_values *) malloc(sizeof(struct offset_values)); shifts->Y = shifts->X = 0;
     if (argc != 3) { switch (argc) { case 6: main_fs = fopen(argv[5], "w");
-	    case 5: if (!STR_could_be_parsed_into_UL(argv[4], &shifts->Y)) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
-	    case 4: if (!STR_could_be_parsed_into_UL(argv[3], &shifts->X)) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
+	    case 5: if (!str_represents_ul(argv[4], &shifts->Y)) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
+	    case 4: if (!str_represents_ul(argv[3], &shifts->X)) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
 	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the modulus value to shifts when dealing with additive groups
     } // ^ Process offset values.
 

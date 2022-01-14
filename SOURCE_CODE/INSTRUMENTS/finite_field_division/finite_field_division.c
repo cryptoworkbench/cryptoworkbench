@@ -12,7 +12,7 @@
 #include <stdio.h>
 #include "../../libraries/functional/string.h" // needed for 'str_represents_ul()'
 #include "../../libraries/mathematics/maths.h" // needed for 'additive_inverse()'
-UL MOD; // < handle library inclusions ^^
+ul MOD; // < handle library inclusions ^^
 
 const char *argv_ONE[] = {"first", "modulus"};
 const char *argv_TWO[] = {"second", "numerator"};
@@ -27,9 +27,9 @@ void arg_not_parsable(char **argv, int index) {
     exit(-index);
 }
 
-int main(int argc, char **argv) { // 'UL MOD' is at line 7
-    if (2 > argc || !str_represents_ul(argv[1], &MOD)) arg_not_parsable(argv, 1); UL numerator;
-    if (3 > argc || !str_represents_ul(argv[2], &numerator)) arg_not_parsable(argv, 2); UL denominator;
+int main(int argc, char **argv) { // 'ul MOD' is at line 7
+    if (2 > argc || !str_represents_ul(argv[1], &MOD)) arg_not_parsable(argv, 1); ul numerator;
+    if (3 > argc || !str_represents_ul(argv[2], &numerator)) arg_not_parsable(argv, 2); ul denominator;
     if (4 > argc || !str_represents_ul(argv[3], &denominator)) arg_not_parsable(argv, 3);
     fprintf(stdout, "%lu / %lu \u2261 %lu * %lu^(-%u) \u2261 %lu (mod %lu).\n", numerator, denominator, numerator, denominator, MULTIPLICATIVE_IDENTITY, modular_division(numerator, denominator), MOD);
     return 0;

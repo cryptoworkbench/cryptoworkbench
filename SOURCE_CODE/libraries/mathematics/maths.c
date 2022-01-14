@@ -23,8 +23,8 @@ unsigned long exponentiate_UNRESTRICTEDLY(unsigned long base, unsigned long expo
 } // ^ Used by "exponentiate_using_backbone()", "exponentiation()"
 
 unsigned long *square_and_multiply_backbone(unsigned long base, unsigned long required_base_two_log) {
-    UL *backbone = (unsigned long *) malloc(sizeof(unsigned long) * (required_base_two_log + 1));
-    UL iterator = ADDITIVE_IDENTITY; 
+    ul *backbone = (unsigned long *) malloc(sizeof(unsigned long) * (required_base_two_log + 1));
+    ul iterator = ADDITIVE_IDENTITY; 
 
     backbone[iterator] = base % MOD;
     while (iterator < required_base_two_log) { backbone[iterator + 1] = (backbone[iterator] * backbone[iterator]) % MOD; iterator++; }
@@ -59,7 +59,7 @@ unsigned long least_base_TWO_log(unsigned long power_of_TWO) {
 } // ^ Used by "exponentiation_using_backbone()", "exponentiation()"
 
 unsigned long exponentiation_using_backbone(unsigned long *residue_list, unsigned long index, unsigned long exponent) {
-    UL return_value = MULTIPLICATIVE_IDENTITY;
+    ul return_value = MULTIPLICATIVE_IDENTITY;
     while (exponent != 0) {
 	return_value *= residue_list[index]; return_value %= MOD;
 	exponent -= exponentiate_UNRESTRICTEDLY(2, index);
@@ -71,7 +71,7 @@ unsigned long exponentiation(unsigned long base, unsigned long exponent) { if (M
     if (base == 0) return 0;
     unsigned long mininum_log = least_base_TWO_log(exponent);
     unsigned long *backbone = square_and_multiply_backbone(base, mininum_log);
-    UL exponentiation_RESULT = exponentiation_using_backbone(backbone, mininum_log, exponent);
+    ul exponentiation_RESULT = exponentiation_using_backbone(backbone, mininum_log, exponent);
     free(backbone); return exponentiation_RESULT;
 } // ^ Used by N_operation
 
@@ -133,13 +133,13 @@ unsigned long polynomial_over_finite_field(unsigned long **coefficients, unsigne
     unsigned long *multiplication_backbone = square_and_multiply_backbone(x, DOWN_ROUNDED_base_two_log);
     // ^ Get a multiplication backbone of appropiate size
 
-    UL return_value = ADDITIVE_IDENTITY;
+    ul return_value = ADDITIVE_IDENTITY;
     // ^ We will be returning this
 
-    UL current_EXPONENT = highest_X_term;
-    UL coefficient_SELECTOR = 0;
-    do {UL current_X_TERM = exponentiation_using_backbone(multiplication_backbone, DOWN_ROUNDED_base_two_log, current_EXPONENT); // < Calculate current X term
-	UL current_TERM = (*coefficients[coefficient_SELECTOR] * current_X_TERM) % MOD; // < Calculate current term
+    ul current_EXPONENT = highest_X_term;
+    ul coefficient_SELECTOR = 0;
+    do {ul current_X_TERM = exponentiation_using_backbone(multiplication_backbone, DOWN_ROUNDED_base_two_log, current_EXPONENT); // < Calculate current X term
+	ul current_TERM = (*coefficients[coefficient_SELECTOR] * current_X_TERM) % MOD; // < Calculate current term
 	return_value += current_TERM; return_value %= MOD; // < Update the return value cumutively
 
 	while (*coefficients[coefficient_SELECTOR] = 0 && coefficient_SELECTOR < array_length) coefficient_SELECTOR++;

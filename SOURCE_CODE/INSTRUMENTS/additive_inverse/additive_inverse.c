@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include "../../libraries/functional/string.h" // needed for 'str_represents_ul()'
 #include "../../libraries/mathematics/maths.h" // needed for 'additive_inverse()'
-UL MOD; // < handle library inclusions ^^
+ul MOD; // < handle library inclusions ^^
 
 const char *GENERIC_parsing_error = "%s is not something I am able to understand as a number:\n";
 const char *MOD_parsing_error = "Please provide as first argument the modulus.";
@@ -25,7 +25,7 @@ void arg_not_parsable(char **argv, int index) { const char *error_specific_messa
 }
 
 int main(int argc, char **argv) {
-    if (2 > argc || !str_represents_ul(argv[1], &MOD)) arg_not_parsable(argv, 1); UL inv_of_additive_inv;
+    if (2 > argc || !str_represents_ul(argv[1], &MOD)) arg_not_parsable(argv, 1); ul inv_of_additive_inv;
     if (3 > argc || !str_represents_ul(argv[2], &inv_of_additive_inv)) arg_not_parsable(argv, 2);
 
     fprintf(stdout, "x - %lu \u2261 x ", inv_of_additive_inv);

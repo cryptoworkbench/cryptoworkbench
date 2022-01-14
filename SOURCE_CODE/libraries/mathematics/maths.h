@@ -4,10 +4,10 @@
 #define MULTIPLICATIVE_IDENTITY 1
 #define SET_DEVOID_OF_UNITS 0
 #define SET_DEVOID_OF_PRIME_FACTORS 1
-typedef unsigned long UL;
-extern UL MOD; // < "MODULUS" is too long. Has got to be in capital to signify that to include this in the source file is necessary when using this library (in-)directly.
+typedef unsigned long ul;
+extern ul MOD; // < "MODULUS" is too long. Has got to be in capital to signify that to include this in the source file is necessary when using this library (in-)directly.
 
-typedef UL* UL_ptr;
+typedef ul* UL_ptr;
 
 unsigned long conditional_field_cap(unsigned long result);
 unsigned long addition(unsigned long a, unsigned long b);
