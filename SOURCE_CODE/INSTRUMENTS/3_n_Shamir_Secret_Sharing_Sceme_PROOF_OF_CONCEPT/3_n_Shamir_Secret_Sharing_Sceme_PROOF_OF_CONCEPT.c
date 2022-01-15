@@ -8,8 +8,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../libraries/functional/string.h"
+ul MOD = 0;
 
-unsigned long m, a, b, c;
+unsigned long a, b, c;
 
 struct linear_equation {
     unsigned long coefficient_a;
@@ -30,23 +31,21 @@ unsigned long least_common_multiple(unsigned long a, unsigned long b) {
 
 struct linear_equation multiply_values_by(struct linear_equation INP, unsigned long multiplier) {
     struct linear_equation return_value;
-    return_value.coefficient_a = (multiplier * INP.coefficient_a) % m;
-    return_value.coefficient_b = (multiplier * INP.coefficient_b) % m;
-    return_value.result = (multiplier * INP.result) % m;
+    return_value.coefficient_a = (multiplier * INP.coefficient_a) % MOD;
+    return_value.coefficient_b = (multiplier * INP.coefficient_b) % MOD;
+    return_value.result = (multiplier * INP.result) % MOD;
     return return_value;
 }
 
 struct linear_equation linear_equation_add(struct linear_equation equation_one, struct linear_equation equation_two) {
     struct linear_equation ret;
-    ret.coefficient_a = (equation_one.coefficient_a + (m - equation_two.coefficient_a)) % m;
-    ret.coefficient_b = (equation_one.coefficient_b + (m - equation_two.coefficient_b)) % m;
-    ret.result = (equation_one.result + (m - equation_two.result)) % m;
+    ret.coefficient_a = (equation_one.coefficient_a + (MOD - equation_two.coefficient_a)) % MOD;
+    ret.coefficient_b = (equation_one.coefficient_b + (MOD - equation_two.coefficient_b)) % MOD;
+    ret.result = (equation_one.result + (MOD - equation_two.result)) % MOD;
     return ret;
 }
 
-unsigned long modular_division(unsigned long numerator, unsigned long denominator) { while (numerator % denominator != 0) numerator += m; return numerator / denominator; }
-
-void C_reduce() { if (c >= m) { c%=m; fprintf(stdout, "The secret has been reduced by mod %lu into the congruent secret %lu.\n\n", m, c); } }
+void C_reduce() { if (c >= MOD) { c%=MOD; fprintf(stdout, "The secret has been reduced by mod %lu into the congruent secret %lu.\n\n", MOD, c); } }
 
 char *one = "%s is not a suitable value for the field modulus!\n\nExiting '-%lu'.\n";
 char *two = "%s is not a suitable value for the second-degree polynomial parameter 'a'!\n\nExiting '-%lu'.\n";
@@ -72,20 +71,38 @@ void algebra_check_for_supposed_variable_against(char variable_symbol, unsigned 
     }
 }
 
+const char *prog_name = "polynomials_over_finite_fields";
+
 int main(int argc, char **argv) {
-    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &m)) argv_ERROR(1, argv);
-    if (3 > argc || !STR_could_be_parsed_into_UL(argv[2], &a)) argv_ERROR(2, argv); else a %= m;
-    if (4 > argc || !STR_could_be_parsed_into_UL(argv[3], &b)) argv_ERROR(3, argv); else b %= m;
+    if (2 > argc || !str_represents_ul(argv[1], &MOD)) argv_ERROR(1, argv);
+    if (3 > argc || !str_represents_ul(argv[2], &a)) argv_ERROR(2, argv); else a %= MOD;
+    if (4 > argc || !str_represents_ul(argv[3], &b)) argv_ERROR(3, argv); else b %= MOD;
     if (4 < argc) {
-	if (STR_could_be_parsed_into_UL(argv[4], &c)) C_reduce();
+	if (str_represents_ul(argv[4], &c)) C_reduce();
 	else { fprintf(stdout, "The secret '%s' has not yet been transformed into numerical form!\n", argv[4]); exit(-4); }
-    } else { fprintf(stdout, "Please put in the secret number such that 'secret number' < %lu: ", m); fscanf(stdin, "%lu", &c); C_reduce(); }
+    } else { fprintf(stdout, "Please put in the secret number such that 'secret number' < %lu: ", MOD); fscanf(stdin, "%lu", &c); C_reduce(); }
     // ^^ Gather starting information
 
-    fprintf(stdout, "[x,y] parabola plot over GF(%lu):\n", m);
-    for (unsigned long x = 0; x < m; x++) {
+    fprintf(stdout, "[x,y] parabola plot over GF(%lu):\n", MOD);
+    /*
+    char **arguments = (char **) malloc(sizeof(char *) * (1 + 3 + 1));
+    arguments[0] = prog_name;
+    arguments[1] = str_from_ul(MOD);
+    arguments[1] = str_from_ul(MOD);
+    for (ul i = 1; i <= 3; i++) {
+    }
+
+    char *arguments[] = {"polynomials_over_finite_fields", "31", "2", "1", "2", "3", "4", 0};
+    pid_t polynomial_over_finite_field_PID = fork(); if (polynomial_over_finite_field_PID == -1) { exit(-11); } // < Fork
+    if (!polynomial_over_finite_field_PID) { execvp("polynomials_over_finite_fields", arguments); }
+    int polynomial_over_GF_exit_status_RAW; waitpid(polynomial_over_finite_field_PID, &polynomial_over_GF_exit_status_RAW, 0); // < wait for the child process to finish
+
+    int polynomial_over_GF_exit_status = WEXITSTATUS(polynomial_over_GF_exit_status_RAW);
+    if (!polynomial_over_GF_exit_status) printf("It's okay.\n");
+    */
+    for (unsigned long x = 0; x < MOD; x++) {
 	struct cartesian_coordinates point_on_graph = {x, 0};
-	unsigned long y = (((((((x * x) % m) * a) % m) + ((x * b) % m)) % m) + c) % m;
+	unsigned long y = (((((((x * x) % MOD) * a) % MOD) + ((x * b) % MOD)) % MOD) + c) % MOD;
 	fprintf(stdout, "[%lu,%lu]\n", x, y);
     } fprintf(stdout, "\n"); // << ^ Calculate all coordinates for this parabola over this finite field
 
@@ -94,20 +111,20 @@ int main(int argc, char **argv) {
     fprintf(stdout, "Point two  : ["); fscanf(stdin, " %lu,%lu]", &point_two.x, &point_two.y);
     fprintf(stdout, "Point three: ["); fscanf(stdin, " %lu,%lu]", &point_three.x, &point_three.y); fprintf(stdout, "\n");
 
-    struct linear_equation equation_one = {(point_one.x*point_one.x)%m, point_one.x, point_one.y};
-    struct linear_equation equation_two = {(point_two.x*point_two.x)%m, point_two.x, point_two.y};
-    struct linear_equation equation_three = {(point_three.x*point_three.x)%m, point_three.x, point_three.y};
+    struct linear_equation equation_one = {(point_one.x*point_one.x)%MOD, point_one.x, point_one.y};
+    struct linear_equation equation_two = {(point_two.x*point_two.x)%MOD, point_two.x, point_two.y};
+    struct linear_equation equation_three = {(point_three.x*point_three.x)%MOD, point_three.x, point_three.y};
     struct linear_equation equation_two_and_one = linear_equation_add(equation_two, equation_one);
     struct linear_equation equation_two_and_three = linear_equation_add(equation_two, equation_three);
     unsigned long coefficient_b_lcm = least_common_multiple(equation_two_and_one.coefficient_b, equation_two_and_three.coefficient_b);
     struct linear_equation final_linear_equation = linear_equation_add(multiply_values_by(equation_two_and_one, coefficient_b_lcm / equation_two_and_one.coefficient_b), multiply_values_by(equation_two_and_three, coefficient_b_lcm / equation_two_and_three.coefficient_b));
     // ^^ Prepare all the required linear equations
 
-    algebra_check_for_supposed_variable_against('a', modular_division(final_linear_equation.result, final_linear_equation.coefficient_a) % m, a);
-    algebra_check_for_supposed_variable_against('b', modular_division((equation_two_and_one.result + (m - ((equation_two_and_one.coefficient_a * a) % m))) % m, equation_two_and_one.coefficient_b) % m, b);
-    algebra_check_for_supposed_variable_against('c', (equation_one.result + (m - (((b * point_one.x) % m ) + ((((point_one.x * point_one.x) % m ) * a) % m )) % m )) % m, c);
+    algebra_check_for_supposed_variable_against('a', modular_division(final_linear_equation.result, final_linear_equation.coefficient_a) % MOD, a);
+    algebra_check_for_supposed_variable_against('b', modular_division((equation_two_and_one.result + (MOD - ((equation_two_and_one.coefficient_a * a) % MOD))) % MOD, equation_two_and_one.coefficient_b) % MOD, b);
+    algebra_check_for_supposed_variable_against('c', (equation_one.result + (MOD - (((b * point_one.x) % MOD ) + ((((point_one.x * point_one.x) % MOD ) * a) % MOD )) % MOD )) % MOD, c);
     fprintf(stdout, "Inferred from points one, two, and three, that the second-degree polynomial that generated the above table must have had 'a = %lu', 'b = %lu' and 'c = %lu' a.k.a. ", a, b, c);
-    fprintf(stdout, "y \u2261 %luX^2 + %luX + %lu (mod %lu) \u21D2	y - %lu \u2261 %lux^2 + %lux (mod %lu) \u21D2\nRESULT: the shared secret was %lu.\n\n", a, b, c, m, c, a, b, m, c);
+    fprintf(stdout, "y \u2261 %luX^2 + %luX + %lu (mod %lu) \u21D2	y - %lu \u2261 %lux^2 + %lux (mod %lu) \u21D2\nRESULT: the shared secret was %lu.\n\n", a, b, c, MOD, c, a, b, MOD, c);
     fprintf(stdout, "Proof of concept successful for the 3-n Shamir Secret Key Sharing Sceme based on 2nd-degree polynomials. For these specific variables at least.\n");
     return 0;
 }

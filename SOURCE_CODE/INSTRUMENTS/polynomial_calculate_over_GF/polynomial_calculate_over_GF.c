@@ -8,18 +8,17 @@ ul MOD = 0;
 
 int main(int argc, char **argv) { // 'ul MOD' is at line 4
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) { fprintf(stderr, "%s is not MOD!\n", argv[1]); exit(-1); } ul x;
-    if (3 > argc || !str_represents_ul(argv[2], &x)) { fprintf(stderr, "%s is not x!\n", argv[2]); exit(-2); }
     // ^^ Process mandatory variables
 
-    ul number_of_coefficients = argc - 3;
+    ul number_of_coefficients = argc - 2;
     if (number_of_coefficients) {
 	unsigned long **coefficients = (unsigned long **) malloc(sizeof(unsigned long *) * (number_of_coefficients + 1));
 	for (ul i = 0; i < number_of_coefficients; i++) coefficients[i] = (unsigned long *) malloc(sizeof(unsigned long)); coefficients[number_of_coefficients] = 0;
 	// ^ Prepare array of appriopiate size
 
 	// fprintf(stdout, "Coefficients given by arguments:\n"); char symbol = 'a';
-	for (ul i = 0; i + 3 < argc; i++) {
-	    if (!str_represents_ul(argv[i + 3], coefficients[number_of_coefficients - 1 - i])) { fprintf(stderr, "%s is not interpretable.\n", argv[i + 3]); return -3; }
+	for (ul i = 0; i + 2 < argc; i++) {
+	    if (!str_represents_ul(argv[i + 2], coefficients[number_of_coefficients - 1 - i])) { fprintf(stderr, "%s is not interpretable.\n", argv[i + 2]); return -2; }
 	    // fprintf(stdout, "%c: %lu\n", symbol, *coefficients[number_of_coefficients - 1 - i]); symbol++;
 	} // fprintf(stdout, "\n");
 
