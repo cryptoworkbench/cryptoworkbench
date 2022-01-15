@@ -77,9 +77,9 @@ unsigned long exponentiation(unsigned long base, unsigned long exponent) { if (M
 
 unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return addition(a, b); case 1: return multiplication(a, b); case 2: return exponentiation(a, b); }; }
 
-unsigned long polynomial_over_finite_field(unsigned long **coefficients, unsigned long _X) { ul LOG_OF_power_of_X = ADDITIVE_IDENTITY; ul power_of_X = MULTIPLICATIVE_IDENTITY;
-    ul ret_val = ADDITIVE_IDENTITY; while (coefficients[LOG_OF_power_of_X]) { ret_val += (power_of_X * *coefficients[LOG_OF_power_of_X]); ret_val %= MOD; power_of_X *= _X; power_of_X %= MOD; LOG_OF_power_of_X++; }
-    return ret_val;
+unsigned long polynomial_over_finite_field(unsigned long **coefficient_ar, unsigned long _x) { ul terms_added, term_accumulator; terms_added = term_accumulator = ADDITIVE_IDENTITY; ul power_of_x = MULTIPLICATIVE_IDENTITY;
+    while (coefficient_ar[terms_added]) { term_accumulator += (power_of_x * *coefficient_ar[terms_added]); term_accumulator %= MOD; power_of_x *= _x; power_of_x %= MOD; terms_added++; }
+    return term_accumulator;
 }
 
 unsigned long GCD(unsigned long a, unsigned long b) {
