@@ -73,7 +73,7 @@ void algebra_check_for_supposed_variable_against(char variable_symbol, unsigned 
     }
 }
 
-const char *prog_name = "polynomial_calculate_over_GF";
+const char *prog_name = "polynomial_function_map_over_GF";
 
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) argv_ERROR(1, argv);
