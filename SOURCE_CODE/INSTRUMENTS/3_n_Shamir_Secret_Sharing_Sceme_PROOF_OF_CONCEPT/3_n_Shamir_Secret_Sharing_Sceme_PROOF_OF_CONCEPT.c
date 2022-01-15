@@ -6,7 +6,9 @@
  * 3). https://www.youtube.com/watch?v=ohc1futhFYM	"Equation of Parabola Given 3 Points (System of Equations)" (yt channel "Mario's Math Tutoring")
  */
 #include <stdio.h>
-#include <stdlib.h>
+#include <stdlib.h> // 'exit()'
+#include <unistd.h> // < 'execvp()'
+#include <sys/wait.h> // <<< Needed for "waitpid()"
 #include "../../libraries/functional/string.h"
 ul MOD = 0;
 
@@ -71,7 +73,7 @@ void algebra_check_for_supposed_variable_against(char variable_symbol, unsigned 
     }
 }
 
-const char *prog_name = "polynomials_over_finite_fields";
+const char *prog_name = "polynomial_calculate_over_GF";
 
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) argv_ERROR(1, argv);
@@ -83,28 +85,15 @@ int main(int argc, char **argv) {
     } else { fprintf(stdout, "Please put in the secret number such that 'secret number' < %lu: ", MOD); fscanf(stdin, "%lu", &c); C_reduce(); }
     // ^^ Gather starting information
 
-    fprintf(stdout, "[x,y] parabola plot over GF(%lu):\n", MOD);
-    /*
-    char **arguments = (char **) malloc(sizeof(char *) * (1 + 3 + 1));
-    arguments[0] = prog_name;
-    arguments[1] = str_from_ul(MOD);
-    arguments[1] = str_from_ul(MOD);
-    for (ul i = 1; i <= 3; i++) {
-    }
+    fprintf(stdout, "Parabola plot of second-degree polynomial over \U0001D53D %lu:\n", MOD);
+    char *sure_c = str_from_ul(c, 0);
+    char *arguments[] = {(char *) prog_name, argv[1], argv[2], argv[3], sure_c, 0};
+    pid_t polynomial_calculate_over_GF_PID = fork(); if (polynomial_calculate_over_GF_PID == -1) { exit(-11); } // < Fork
+    if (!polynomial_calculate_over_GF_PID) execvp(arguments[0], arguments);
+    int polynomial_calculate_over_GF_exit_status_RAW; waitpid(polynomial_calculate_over_GF_PID, &polynomial_calculate_over_GF_exit_status_RAW, 0); // < wait for the child process to finish
 
-    char *arguments[] = {"polynomials_over_finite_fields", "31", "2", "1", "2", "3", "4", 0};
-    pid_t polynomial_over_finite_field_PID = fork(); if (polynomial_over_finite_field_PID == -1) { exit(-11); } // < Fork
-    if (!polynomial_over_finite_field_PID) { execvp("polynomials_over_finite_fields", arguments); }
-    int polynomial_over_GF_exit_status_RAW; waitpid(polynomial_over_finite_field_PID, &polynomial_over_GF_exit_status_RAW, 0); // < wait for the child process to finish
-
-    int polynomial_over_GF_exit_status = WEXITSTATUS(polynomial_over_GF_exit_status_RAW);
-    if (!polynomial_over_GF_exit_status) printf("It's okay.\n");
-    */
-    for (unsigned long x = 0; x < MOD; x++) {
-	struct cartesian_coordinates point_on_graph = {x, 0};
-	unsigned long y = (((((((x * x) % MOD) * a) % MOD) + ((x * b) % MOD)) % MOD) + c) % MOD;
-	fprintf(stdout, "[%lu,%lu]\n", x, y);
-    } fprintf(stdout, "\n"); // << ^ Calculate all coordinates for this parabola over this finite field
+    int polynomial_calculate_over_GF_exit_status = WEXITSTATUS(polynomial_calculate_over_GF_exit_status_RAW);
+    if (!polynomial_calculate_over_GF_exit_status) fprintf(stdout, "\n"); free(sure_c);
 
     struct cartesian_coordinates point_one, point_two, point_three;
     fprintf(stdout, "Point one  : ["); fscanf(stdin, "%lu,%lu]", &point_one.x, &point_one.y);
