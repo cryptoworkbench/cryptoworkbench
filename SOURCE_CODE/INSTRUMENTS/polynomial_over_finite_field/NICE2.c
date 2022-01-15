@@ -77,9 +77,22 @@ unsigned long exponentiation(unsigned long base, unsigned long exponent) { if (M
 
 unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return addition(a, b); case 1: return multiplication(a, b); case 2: return exponentiation(a, b); }; }
 
-unsigned long polynomial_over_finite_field(unsigned long **coefficients, unsigned long _X) { ul LOG_OF_power_of_X = ADDITIVE_IDENTITY; ul power_of_X = MULTIPLICATIVE_IDENTITY;
-    ul ret_val = ADDITIVE_IDENTITY; while (coefficients[LOG_OF_power_of_X]) { ret_val += (power_of_X * *coefficients[LOG_OF_power_of_X]); ret_val %= MOD; power_of_X *= _X; power_of_X %= MOD; LOG_OF_power_of_X++; }
+unsigned long polynomial_over_finite_field(unsigned long **coefficients, unsigned long _x) { ul ret_val, x_multiplications;
+    ret_val = x_multiplications = ADDITIVE_IDENTITY;
+    ul exponentiation_of_x = MULTIPLICATIVE_IDENTITY;
+    while (coefficients[x_multiplications]) {
+	ret_val += (exponentiation_of_x * *coefficients[x_multiplications]); ret_val %= MOD;
+	exponentiation_of_x *= _x; exponentiation_of_x %= MOD; x_multiplications++;
+    }
+
     return ret_val;
+    /*
+    fprintf(stdout, "Polynomial over (\U0001D53D%lu):\nf(x) \u2261	", MOD);
+    while (coefficients[A]) { fprintf(stdout, "(%lu * x^%lu)", *coefficients[A], A); if (coefficients[A + 1]) fprintf(stdout, " + "); A++; } A = 0; fprintf(stdout, "\nx was %lu\n\nSo\nf(%lu) \u2261	", X, X);
+    while (coefficients[A]) { fprintf(stdout, "(%lu * (%lu)^%lu)", *coefficients[A], X, A); if (coefficients[A + 1]) fprintf(stdout, " + "); A++; } fprintf(stdout, "	(mod %lu)\n", MOD); A = 0;
+    fprintf(stdout, "\nCalculation of congruence:\n");
+    ul M = 1;
+    */
 }
 
 unsigned long GCD(unsigned long a, unsigned long b) {

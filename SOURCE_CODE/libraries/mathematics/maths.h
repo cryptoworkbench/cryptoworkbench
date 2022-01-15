@@ -43,4 +43,4 @@ unsigned long multiplicative_inverse(unsigned long a);
 /* Two functions for modular exponentiation */
 unsigned long least_base_TWO_log(unsigned long power_of_TWO);
 unsigned long modular_division(unsigned long member_from_equivalence_class_representing_the_numerator, unsigned long denominator);
-unsigned long polynomial_over_finite_field(unsigned long **coefficients, unsigned long array_length, unsigned long x);
+unsigned long polynomial_over_finite_field(unsigned long **coefficients, unsigned long x);
