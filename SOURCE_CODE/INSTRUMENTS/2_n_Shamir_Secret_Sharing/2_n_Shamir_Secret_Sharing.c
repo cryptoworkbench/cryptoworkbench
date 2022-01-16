@@ -41,22 +41,7 @@ void secret_reduce() { if (_secret_B >= MOD) { _secret_B %= MOD; printf("The sec
 
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) { printf("%s is not MOD!\n", argv[1]); exit(-1); }
-    if (3 > argc || !str_represents_ul(argv[2], &a)) { printf("%s is not a!\n", argv[2]); exit(-2); } a %= MOD;
-    if (3 < argc) {
-	if (str_represents_ul(argv[3], &_secret_B)) secret_reduce();
-	else { printf("The secret '%s' has not yet been transformed into numerical form!\n", argv[3]); exit(-3); }
-    } else { printf("Now please put in your secret less than %lu: ", MOD); fscanf(stdin, "%lu", &_secret_B); secret_reduce(); }
-    fprintf(stdout, "Plot for the linear function 'f(x) \u2261 %lux + %lu':\n", a, _secret_B);
-
-    char *sure_b = str_from_ul(_secret_B, 0);
-    char *call_to_EXTERNAL_PROGRAM[] = {EXTERNAL_PROGRAM, argv[1], argv[2], sure_b, 0};
-    pid_t EXTERNAL_PROGRAM_PID = fork(); if (EXTERNAL_PROGRAM_PID == -1) { exit(-11); } // < Fork
-    if (!EXTERNAL_PROGRAM_PID) execvp(call_to_EXTERNAL_PROGRAM[0], call_to_EXTERNAL_PROGRAM);
-    int EXTERNAL_PROGRAM_exit_status_RAW; waitpid(EXTERNAL_PROGRAM_PID, &EXTERNAL_PROGRAM_exit_status_RAW, 0); // < wait for the child process to finish
-    int EXTERNAL_PROGRAM_exit_status = WEXITSTATUS(EXTERNAL_PROGRAM_exit_status_RAW); if (!EXTERNAL_PROGRAM_exit_status) free(sure_b);
-    // ^^^ ^^^ Execute external program in order to plot function in STDOUT
-
-    fprintf(stdout, "\nGive me two function inputs and outputs:\n"); struct cartesian_coordinates point_one, point_two;
+    fprintf(stdout, "Give me two function inputs and outputs:\n"); struct cartesian_coordinates point_one, point_two;
     fprintf(stdout, "f(x): "); fscanf(stdin, "%lu", &point_one.y); fprintf(stdout, "x   : "); fscanf(stdin, "%lu", &point_one.x);
     fprintf(stdout, "\nf(y): "); fscanf(stdin, "%lu", &point_two.y); fprintf(stdout, "y   : "); fscanf(stdin, "%lu", &point_two.x);
     // ^^ Get 'random' (a.k.a. chosen) coordinates
@@ -66,11 +51,9 @@ int main(int argc, char **argv) {
     while (Y_difference % X_difference != 0) Y_difference += MOD;
     // ^^ We need to make the numerator divisible by the denominator given this specific field's conditions before we should divide in this modular arithmetic. "#MODULARARITHMETICRULES"
 
-    if (Y_difference / X_difference != a) { fprintf(stderr, "This proof of concept failed!, \"Y_difference / X_difference\" is not a!\n"); exit(-4); }
-    // else fprintf(stdout, "a = %lu / %lu = %lu\n", Y_difference, X_difference, a);
-    // ^^ Exit when this proof of concept already failed
-
-    if (_secret_B == (point_one.y + (MOD - (point_one.x * a) % MOD)) % MOD) fprintf(stdout, "Calculation of B succeeded: %lu\n", _secret_B);
-    else { fprintf(stderr, "\nCalculation of B failed!, so this proof of concept failed!\n"); exit(-5); }
+    ul a = Y_difference / X_difference;
+    ul b = (point_one.y + (MOD - (point_one.x * a) % MOD)) % MOD;
+    fprintf(stdout, "\nThe linear equation which generated the specified points:\n");
+    fprintf(stdout, "f(x) \u2261 (%lu * x^1) + (%lu * x^0)	(%% %lu)\n", a, b, MOD);
     return 0;
 }
