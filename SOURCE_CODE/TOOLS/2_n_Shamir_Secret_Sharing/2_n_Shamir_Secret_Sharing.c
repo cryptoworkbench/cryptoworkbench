@@ -42,8 +42,8 @@ void secret_reduce() { if (_secret_B >= MOD) { _secret_B %= MOD; printf("The sec
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) { printf("%s is not MOD!\n", argv[1]); exit(-1); }
     fprintf(stdout, "Give me two function inputs and outputs:\n"); struct cartesian_coordinates point_one, point_two;
-    fprintf(stdout, "f(x): "); fscanf(stdin, "%lu", &point_one.y); fprintf(stdout, "x   : "); fscanf(stdin, "%lu", &point_one.x);
-    fprintf(stdout, "\nf(y): "); fscanf(stdin, "%lu", &point_two.y); fprintf(stdout, "y   : "); fscanf(stdin, "%lu", &point_two.x);
+    fprintf(stdout, "f(a): "); fscanf(stdin, "%lu", &point_one.y); fprintf(stdout, "a   : "); fscanf(stdin, "%lu", &point_one.x);
+    fprintf(stdout, "\nf(b): "); fscanf(stdin, "%lu", &point_two.y); fprintf(stdout, "b   : "); fscanf(stdin, "%lu", &point_two.x);
     // ^^ Get 'random' (a.k.a. chosen) coordinates
 
     unsigned long Y_difference = point_one.y + (MOD - point_two.y); Y_difference %= MOD;
@@ -53,7 +53,8 @@ int main(int argc, char **argv) {
 
     ul a = Y_difference / X_difference;
     ul b = (point_one.y + (MOD - (point_one.x * a) % MOD)) % MOD;
-    fprintf(stdout, "\nThe linear equation which generated the specified points:\n");
-    fprintf(stdout, "f(x) \u2261 (%lu * x^1) + (%lu * x^0)	(%% %lu)\n", a, b, MOD);
+    fprintf(stdout, "\nThe first-degree polynomial function that generated the specified points (assuming \U0001D53D%lu):\n", MOD);
+    fprintf(stdout, "f(x) \u2261 %lu * x^1 + %lu	(%% %lu)\n\n", a, b, MOD);
+    fprintf(stdout, "The shared secret was '%lu'.\n", b);
     return 0;
 }

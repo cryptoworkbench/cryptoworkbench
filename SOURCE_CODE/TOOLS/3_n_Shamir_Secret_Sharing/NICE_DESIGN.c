@@ -98,9 +98,6 @@ int main(int argc, char **argv) {
     ul b = modular_division((equation_two_and_one.result + (MOD - ((equation_two_and_one.coefficient_a * a) % MOD))) % MOD, equation_two_and_one.coefficient_b) % MOD;
     ul c = (equation_one.result + (MOD - (((b * point_one.x) % MOD ) + ((((point_one.x * point_one.x) % MOD ) * a) % MOD )) % MOD )) % MOD;
 
-    // fprintf(stdout, "\nf(x) \u2261 %lu * x^2 + %lu * x + %lu	(%% %lu)		\u21D2 THE SHARED SECRET WAS %lu.\n", a, b, c, MOD, c);
-    fprintf(stdout, "\nThe second-degree polynomial function that generated the specified points (assuming \U0001D53D%lu):\n", MOD);
-    fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x^1 + %lu	(%% %lu)\n\n", a, b, c, MOD);
-    fprintf(stdout, "The shared secret was '%lu'.\n", c);
+    fprintf(stdout, "\nf(x) \u2261 %lu * x^2 + %lu * x + %lu	(%% %lu)		\u21D2 THE SHARED SECRET WAS %lu.\n", a, b, c, MOD, c);
     return 0;
 }
