@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include <unistd.h> // < 'execvp()'
+#include <sys/wait.h> // 'waitpid()'
 #include "../../libraries/functional/string.h" // 'str_represents_ul()'
 #include "../../libraries/mathematics/maths.h" // 'GCD()'
 ul MOD; // < Handle library inclusions ^^
@@ -13,6 +15,8 @@ void argv_ERROR(char **argv, int index) {
     exit(-index);
 } // ^ used by 'main()'
 
+const char *prog_name = "finite_field_division";
+
 int main(int argc, char **argv) { // 'ul MOD' is at line 4
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) argv_ERROR(argv, 1); ul number_coprime_to_MOD;
     if (3 > argc || !str_represents_ul(argv[2], &number_coprime_to_MOD)) argv_ERROR(argv, 2); ul GCD_of_arguments = GCD(number_coprime_to_MOD, MOD);
@@ -21,10 +25,13 @@ int main(int argc, char **argv) { // 'ul MOD' is at line 4
     if (GCD_of_arguments != 1) { fprintf(stderr, "%lu shares a factor of %lu with %lu.\n\nTerminating with exit status '-3'.\n", number_coprime_to_MOD, GCD_of_arguments, MOD); exit(-3); }
     // ^ exit if the number to calculate the multiplicative inverse of is not coprime to the modulus
 
-    fprintf(stdout, "%lu^(-1) \u2261 ", number_coprime_to_MOD);
-    if (number_coprime_to_MOD != number_coprime_to_MOD % MOD) fprintf(stdout, "%lu^(-1) \u2261 ", number_coprime_to_MOD % MOD);
-    fprintf(stdout, "%lu (mod %lu)\n", modular_division(1, number_coprime_to_MOD), MOD);
-    // ^ display result
+    fprintf(stdout, "Executing external tool '%s':\n", prog_name);
+    char *call_to_modular_division[] = {(char *) prog_name, argv[1], "1", argv[2], 0};
+    pid_t modular_division_PID = fork(); if (modular_division_PID == -1) { exit(-11); } // < Fork
+    if (!modular_division_PID) execvp(call_to_modular_division[0], call_to_modular_division);
+    int modular_division_exit_status_RAW; waitpid(modular_division_PID, &modular_division_exit_status_RAW, 0); // < wait for the child process to finish
 
+    int modular_division_exit_status = WEXITSTATUS(modular_division_exit_status_RAW);
+    if (modular_division_exit_status) fprintf(stdout, "%s returned with exit status '%i': something went wrong.\n");
     return 0;
 }

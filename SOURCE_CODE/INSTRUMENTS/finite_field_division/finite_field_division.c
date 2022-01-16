@@ -31,6 +31,9 @@ int main(int argc, char **argv) { // 'ul MOD' is at line 7
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) arg_not_parsable(argv, 1); ul numerator;
     if (3 > argc || !str_represents_ul(argv[2], &numerator)) arg_not_parsable(argv, 2); ul denominator;
     if (4 > argc || !str_represents_ul(argv[3], &denominator)) arg_not_parsable(argv, 3);
-    fprintf(stdout, "%lu / %lu \u2261 %lu * %lu^(-%u) \u2261 %lu (mod %lu).\n", numerator, denominator, numerator, denominator, MULTIPLICATIVE_IDENTITY, modular_division(numerator, denominator), MOD);
+
+    fprintf(stdout, "%lu / %lu \u2261 ", numerator, denominator);
+    if (numerator != numerator % MOD || denominator != denominator % MOD) fprintf(stdout, "%lu / %lu \u2261 ", numerator % MOD, denominator % MOD);
+    fprintf(stdout, "%lu * %lu^(-%u) \u2261 %lu (mod %lu).\n", numerator % MOD, denominator % MOD, MULTIPLICATIVE_IDENTITY, modular_division(numerator % MOD, denominator % MOD), MOD);
     return 0;
 }
