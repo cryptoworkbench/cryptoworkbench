@@ -21,16 +21,20 @@
  */
 
 #include <stdio.h>
+#include <unistd.h> // 'execvp()'
+#include <sys/wait.h> // 'waitpid()'
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h"
 ul MOD;
 // ^^ Handle library inclusions
 
+#define EXTERNAL_PROGRAM "polynomial_function_map_over_GF"
+
 unsigned long a, _secret_B;
 
 struct cartesian_coordinates {
-    unsigned long x_coordinate;
-    unsigned long y_coordinate;
+    unsigned long x;
+    unsigned long y;
 };
 
 unsigned long y_calculate(unsigned long x) { return (((x * a) % MOD) + _secret_B) % MOD; }
@@ -43,29 +47,31 @@ int main(int argc, char **argv) {
 	if (str_represents_ul(argv[3], &_secret_B)) secret_reduce();
 	else { printf("The secret '%s' has not yet been transformed into numerical form!\n", argv[3]); exit(-3); }
     } else { printf("Now please put in your secret less than %lu: ", MOD); fscanf(stdin, "%lu", &_secret_B); secret_reduce(); }
-    fprintf(stdout, "Using coordinate format: [x, f(x)]\n\nPlot for the linear function 'f(x) \u2261 %lux + %lu':\n", a, _secret_B);
-    for (unsigned long x_coordinate = 0; x_coordinate < MOD; x_coordinate++) {
-	struct cartesian_coordinates point_on_graph = {x_coordinate, 0};
-	point_on_graph.y_coordinate += y_calculate(x_coordinate);
-	printf("[%lu, %lu]\n", x_coordinate, y_calculate(x_coordinate));
-    } // << ^ Calculate all the possible coordinates for a linear curve over a finite field
+    fprintf(stdout, "Plot for the linear function 'f(x) \u2261 %lux + %lu':\n", a, _secret_B);
 
-    unsigned long x_one, x_two;
-    printf("\nDO NOT CHOOSE POINT 0 SINCE IT CONTAINS YOUR SECRET!\n");
-    printf("Specification of first point by x coordinate: "); fscanf(stdin, "%lu", &x_one); unsigned long y_one = ((((x_one * a) % MOD) + _secret_B % MOD) % MOD);
-    printf("Specification of second point by x coordinate: "); fscanf(stdin, "%lu", &x_two); unsigned long y_two = ((((x_two * a) % MOD) + _secret_B % MOD) % MOD);
+    char *sure_b = str_from_ul(_secret_B, 0);
+    char *call_to_EXTERNAL_PROGRAM[] = {EXTERNAL_PROGRAM, argv[1], argv[2], sure_b, 0};
+    pid_t EXTERNAL_PROGRAM_PID = fork(); if (EXTERNAL_PROGRAM_PID == -1) { exit(-11); } // < Fork
+    if (!EXTERNAL_PROGRAM_PID) execvp(call_to_EXTERNAL_PROGRAM[0], call_to_EXTERNAL_PROGRAM);
+    int EXTERNAL_PROGRAM_exit_status_RAW; waitpid(EXTERNAL_PROGRAM_PID, &EXTERNAL_PROGRAM_exit_status_RAW, 0); // < wait for the child process to finish
+    int EXTERNAL_PROGRAM_exit_status = WEXITSTATUS(EXTERNAL_PROGRAM_exit_status_RAW); if (!EXTERNAL_PROGRAM_exit_status) free(sure_b);
+    // ^^^ ^^^ Execute external program in order to plot function in STDOUT
+
+    fprintf(stdout, "\nGive me two function inputs and outputs:\n"); struct cartesian_coordinates point_one, point_two;
+    fprintf(stdout, "f(x): "); fscanf(stdin, "%lu", &point_one.y); fprintf(stdout, "x   : "); fscanf(stdin, "%lu", &point_one.x);
+    fprintf(stdout, "\nf(y): "); fscanf(stdin, "%lu", &point_two.y); fprintf(stdout, "y   : "); fscanf(stdin, "%lu", &point_two.x);
     // ^^ Get 'random' (a.k.a. chosen) coordinates
 
-    unsigned long Y_difference = y_one + (MOD - y_two); Y_difference %= MOD;
-    unsigned long X_difference = x_one + (MOD - x_two); X_difference %= MOD;
+    unsigned long Y_difference = point_one.y + (MOD - point_two.y); Y_difference %= MOD;
+    unsigned long X_difference = point_one.x + (MOD - point_two.x); X_difference %= MOD;
     while (Y_difference % X_difference != 0) Y_difference += MOD;
     // ^^ We need to make the numerator divisible by the denominator given this specific field's conditions before we should divide in this modular arithmetic. "#MODULARARITHMETICRULES"
 
     if (Y_difference / X_difference != a) { fprintf(stderr, "This proof of concept failed!, \"Y_difference / X_difference\" is not a!\n"); exit(-4); }
-    else fprintf(stdout, "a = %lu / %lu = %lu\n", Y_difference, X_difference, a);
+    // else fprintf(stdout, "a = %lu / %lu = %lu\n", Y_difference, X_difference, a);
     // ^^ Exit when this proof of concept already failed
 
-    if (_secret_B == (y_one + (MOD - (x_one * a) % MOD)) % MOD) fprintf(stdout, "Calculation of B succeeded: %lu\n", _secret_B);
-    else { fprintf(stderr, "Calculation of B failed!, so this proof of concept failed!\n"); exit(-5); }
+    if (_secret_B == (point_one.y + (MOD - (point_one.x * a) % MOD)) % MOD) fprintf(stdout, "Calculation of B succeeded: %lu\n", _secret_B);
+    else { fprintf(stderr, "\nCalculation of B failed!, so this proof of concept failed!\n"); exit(-5); }
     return 0;
 }
