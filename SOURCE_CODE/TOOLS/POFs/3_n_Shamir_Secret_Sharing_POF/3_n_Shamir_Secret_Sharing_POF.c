@@ -7,9 +7,10 @@
  */
 #include <stdio.h>
 #include <stdlib.h> // 'exit()'
-#include <unistd.h> // < 'execvp()'
-#include <sys/wait.h> // <<< Needed for "waitpid()"
-#include "../../libraries/functional/string.h"
+#include <unistd.h> // 'execvp()'
+#include <sys/wait.h> // 'waitpid()'
+#include "../../../libraries/functional/string.h"
+#define EXTERNAL_PROGRAM "polynomial_function_over_a_GF"
 ul MOD = 0;
 
 unsigned long a, b, c;
@@ -85,9 +86,8 @@ int main(int argc, char **argv) {
     } else { fprintf(stdout, "Please put in the secret number such that 'secret number' < %lu: ", MOD); fscanf(stdin, "%lu", &c); C_reduce(); }
     // ^^ Gather starting information
 
-    fprintf(stdout, "Parabola plot of second-degree polynomial over \U0001D53D %lu:\n", MOD);
     char *sure_c = str_from_ul(c, 0);
-    char *arguments[] = {(char *) prog_name, argv[1], argv[2], argv[3], sure_c, 0};
+    char *arguments[] = {EXTERNAL_PROGRAM, argv[1], argv[2], argv[3], sure_c, 0};
     pid_t polynomial_calculate_over_GF_PID = fork(); if (polynomial_calculate_over_GF_PID == -1) { exit(-11); } // < Fork
     if (!polynomial_calculate_over_GF_PID) execvp(arguments[0], arguments);
     int polynomial_calculate_over_GF_exit_status_RAW; waitpid(polynomial_calculate_over_GF_PID, &polynomial_calculate_over_GF_exit_status_RAW, 0); // < wait for the child process to finish

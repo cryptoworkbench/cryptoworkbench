@@ -23,12 +23,12 @@
 #include <stdio.h>
 #include <unistd.h> // 'execvp()'
 #include <sys/wait.h> // 'waitpid()'
-#include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/maths.h"
+#include "../../../libraries/functional/string.h"
+#include "../../../libraries/mathematics/maths.h"
 ul MOD;
 // ^^ Handle library inclusions
 
-#define EXTERNAL_PROGRAM "polynomial_function_map_over_GF"
+#define EXTERNAL_PROGRAM "polynomial_function_over_a_GF"
 
 unsigned long a, _secret_B;
 
