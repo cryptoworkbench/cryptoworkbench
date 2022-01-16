@@ -16,11 +16,9 @@ int main(int argc, char **argv) { // 'ul MOD' is at line 4
 	for (ul i = 0; i < number_of_coefficients; i++) coefficients[i] = (unsigned long *) malloc(sizeof(unsigned long)); coefficients[number_of_coefficients] = 0;
 	// ^ Prepare array of appriopiate size
 
-	// fprintf(stdout, "Coefficients given by arguments:\n"); char symbol = 'a';
 	for (ul i = 0; i + 2 < argc; i++) {
 	    if (!str_represents_ul(argv[i + 2], coefficients[number_of_coefficients - 1 - i])) { fprintf(stderr, "%s is not interpretable.\n", argv[i + 2]); return -2; }
-	    // fprintf(stdout, "%c: %lu\n", symbol, *coefficients[number_of_coefficients - 1 - i]); symbol++;
-	} // fprintf(stdout, "\n");
+	}
 
 	for (ul x = 0; x < MOD; x++) fprintf(stdout, "f(%lu) = %lu\n", x, polynomial_over_finite_field(coefficients, x)); return 0;
     } else { fprintf(stderr, "Please fill out the remainder of the arguments with coefficients.\n\nTerminating with exit status '-4'.\n"); return -4; }
