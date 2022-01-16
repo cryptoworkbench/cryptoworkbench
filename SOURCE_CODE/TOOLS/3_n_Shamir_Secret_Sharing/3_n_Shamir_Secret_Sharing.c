@@ -79,12 +79,13 @@ int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) argv_ERROR(1, argv);
     // ^^ Gather starting information
 
-    fprintf(stdout, "Give me three function inputs and outputs:\n"); struct cartesian_coordinates point_one, point_two, point_three;
-    fprintf(stdout, "f(a): "); fscanf(stdin, "%lu", &point_one.y); fprintf(stdout, "a   : "); fscanf(stdin, "%lu", &point_one.x);
-    fprintf(stdout, "\nf(b): "); fscanf(stdin, "%lu", &point_two.y); fprintf(stdout, "b   : "); fscanf(stdin, "%lu", &point_two.x);
-    fprintf(stdout, "\nf(c): "); fscanf(stdin, "%lu", &point_three.y); fprintf(stdout, "c   : "); fscanf(stdin, "%lu", &point_three.x);
+    fprintf(stdout, "Give me three (x, y)\n\n");
+    fprintf(stdout, "Such that 'y \u2261 a * x^2 + b * x^1 + c (mod %lu)' (a, b, c \u2208 N)\n\n", MOD); // \u2208
+    struct cartesian_coordinates point_one, point_two, point_three;
+    fprintf(stdout, "y_1 \u2261 "); fscanf(stdin, "%lu", &point_one.y);   fprintf(stdout, "x_1 \u2261 "); fscanf(stdin, "%lu", &point_one.x); fprintf(stdout, "\n");
+    fprintf(stdout, "y_2 \u2261 "); fscanf(stdin, "%lu", &point_two.y);   fprintf(stdout, "x_2 \u2261 "); fscanf(stdin, "%lu", &point_two.x); fprintf(stdout, "\n");
+    fprintf(stdout, "y_3 \u2261 "); fscanf(stdin, "%lu", &point_three.y); fprintf(stdout, "x_3 \u2261 "); fscanf(stdin, "%lu", &point_three.x); fprintf(stdout, "\n");
 
-    // fprintf(stdout, "Parabola plot of second-degree polynomial over \U0001D53D %lu:\n", MOD);
     struct linear_equation equation_one = {(point_one.x*point_one.x)%MOD, point_one.x, point_one.y};
     struct linear_equation equation_two = {(point_two.x*point_two.x)%MOD, point_two.x, point_two.y};
     struct linear_equation equation_three = {(point_three.x*point_three.x)%MOD, point_three.x, point_three.y};
@@ -98,9 +99,14 @@ int main(int argc, char **argv) {
     ul b = modular_division((equation_two_and_one.result + (MOD - ((equation_two_and_one.coefficient_a * a) % MOD))) % MOD, equation_two_and_one.coefficient_b) % MOD;
     ul c = (equation_one.result + (MOD - (((b * point_one.x) % MOD ) + ((((point_one.x * point_one.x) % MOD ) * a) % MOD )) % MOD )) % MOD;
 
-    // fprintf(stdout, "\nf(x) \u2261 %lu * x^2 + %lu * x + %lu	(%% %lu)		\u21D2 THE SHARED SECRET WAS %lu.\n", a, b, c, MOD, c);
-    fprintf(stdout, "\nThe second-degree polynomial function that generated the specified points (assuming \U0001D53D%lu):\n", MOD);
-    fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x^1 + %lu	(%% %lu)\n\n", a, b, c, MOD);
-    fprintf(stdout, "The shared secret was '%lu'.\n", c);
+    fprintf(stdout, "Solutions force:\na = %lu\nb = %lu\nc = %lu\n\nThen:\n", a, b, c);
+    fprintf(stdout, "%lu * %lu^2 + %lu * %lu + %lu \u2261 %lu\n", a, point_one.x, b, point_one.x, c, point_one.y);
+    fprintf(stdout, "%lu * %lu^2 + %lu * %lu + %lu \u2261 %lu\n", a, point_two.x, b, point_two.x, c, point_two.y);
+    fprintf(stdout, "%lu * %lu^2 + %lu * %lu + %lu \u2261 %lu\n\n", a, point_three.x, b, point_three.x, c, point_three.y);
+    fprintf(stdout, "Second degree polynomial function over \U0001D53D%lu that maps %lu to %lu, %lu to %lu and %lu to %lu:\n", MOD, point_one.x, point_one.y, point_two.x, point_two.y, point_three.x, point_three.y);
+    fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x^1 + %lu	(%% %lu)\n", a, b, c, MOD);
+    fprintf(stdout, "\nSolution:\n");
+    fprintf(stdout, "f(0) \u2261 %lu * (0)^2 + %lu * (0)^1 + %lu \u2261 %lu * 0 + %lu * 0 + %lu \u2261 0 + 0 + %lu \u2261 %lu (%% %lu)\n\n", a, b, c, a, b, c, c, c, MOD);
+    fprintf(stdout, "The secret  split / shared \\ encoded  is always the constant term in the polynomial, 'c' in this case; so the secret is (represented by) the numeric value '%lu'.\n", c);
     return 0;
 }

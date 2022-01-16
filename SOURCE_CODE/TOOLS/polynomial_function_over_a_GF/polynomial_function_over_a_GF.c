@@ -20,11 +20,13 @@ int main(int argc, char **argv) { // 'ul MOD' is at line 4
 	    if (!str_represents_ul(argv[i + 2], coefficients[number_of_coefficients - 1 - i])) { fprintf(stderr, "%s is not interpretable.\n", argv[i + 2]); return -2; }
 	}
 
-	fprintf(stdout, "Function map of 'f()' over GF(%lu) when f(x) \u2261 ", MOD);
+	// fprintf(stdout, "Function map of 'f()' over GF(%lu) when f(x) \u2261 ", MOD);
+	// fprintf(stdout, "Members of {(x, y) : y \u2261 ");
+	fprintf(stdout, "{(x, y) : x, y \u2208 \U0001D53D%lu & y \u2261 ", MOD);
 	ul i = 0; while (1) {
 	    fprintf(stdout, "%lu", *coefficients[number_of_coefficients - 1 - i]);
 	    if (!coefficients[i + 1]) break; fprintf(stdout, " * x^%lu + ", number_of_coefficients - 1 - i); i++;
-	} fprintf(stdout, "\n");
+	} fprintf(stdout, "	(mod %lu)} =\n", MOD); // \u21E8 \u2794 \u279C \u279F \u27A0
 	
 	/*
 	ul i = 0;
@@ -34,6 +36,6 @@ int main(int argc, char **argv) { // 'ul MOD' is at line 4
 	} while (1); fprintf(stdout, "%lu\n", *coefficients[number_of_coefficients - 1]);
 	*/
 
-	for (ul x = 0; x < MOD; x++) fprintf(stdout, "f(%lu) = %lu\n", x, polynomial_over_finite_field(coefficients, x)); return 0;
+	for (ul x = 0; x < MOD; x++) fprintf(stdout, "(%lu, %lu)\n", x, polynomial_over_finite_field(coefficients, x)); return 0;
     } else { fprintf(stderr, "Please fill out the remainder of the arguments with coefficients.\n\nTerminating with exit status '-4'.\n"); return -4; }
 }
