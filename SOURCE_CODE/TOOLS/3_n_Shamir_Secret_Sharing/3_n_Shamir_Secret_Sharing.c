@@ -74,12 +74,8 @@ void argv_ERROR(unsigned long index, char **argv) {
 
 // Returns the multiplier needed to multiply 'first_equation' by, in order to have the coefficient that was passed to this program,
 // become the additive inverse of the coefficient passed to this program as "coefficient_from_second_equation". VERY USEFUL.
-unsigned long mod_LCM(unsigned long coefficient_from_first_equation, unsigned long coefficient_from_second_equation) {
-    ul compounds = 1;
-    ul compounded = coefficient_from_first_equation;
-    while (compounded != additive_inverse(coefficient_from_second_equation)) {
-	compounded = (compounded + coefficient_from_first_equation) % MOD; compounds++;
-    }
+unsigned long mod_LCM(unsigned long coefficient_from_first_equation, unsigned long coefficient_from_second_equation) { ul compounds = 1;
+    ul compounded; for (compounded = coefficient_from_first_equation; compounded != additive_inverse(coefficient_from_second_equation); compounded = (compounded + coefficient_from_first_equation) % MOD) compounds++;
     return compounds;
 }
 
