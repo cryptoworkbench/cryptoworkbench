@@ -41,16 +41,17 @@ struct linear_equation INV(struct linear_equation EQUATION) {
     return ret;
 }
 
-struct linear_equation linear_equation_ADD(struct linear_equation equation_one, struct linear_equation equation_two) {
+struct linear_equation ADD_equation(struct linear_equation equation_one, struct linear_equation equation_two) {
     struct linear_equation ret;
     ret.coefficient_a = equation_one.coefficient_a + equation_two.coefficient_a;
-    ret.coefficient_a %= MOD;
-
     ret.coefficient_b = equation_one.coefficient_b + equation_two.coefficient_b;
-    ret.coefficient_b %= MOD;
-
     ret.result = equation_one.result + equation_two.result;
+    // ^^ Add equations
+
+    ret.coefficient_a %= MOD;
+    ret.coefficient_b %= MOD;
     ret.result %= MOD;
+    // ^^ But do not forget we are doing algebra in a finite field
 
     return ret;
 }
@@ -70,24 +71,16 @@ void argv_ERROR(unsigned long index, char **argv) {
     exit(-index);
 }
 
-/* ul mod_LCM(ul a, ul b) {
-    ul multiplications = ADDITIVE_IDENTITY;
-    ul exponentiated = 0;
-    do { exponentiated += a; exponentiated %= MOD; multiplications++; }
-    while (exponentiated != additive_inverse(b));
-    return multiplications;
-} */
 
-ul mod_LCM(ul a, ul b) {
-    ul multiplier = 1;
-    ul exponentiated = a;
-    while (exponentiated != additive_inverse(b)) {
-	exponentiated += a;
-	exponentiated %= MOD;
-	multiplier++;
+// Returns the multiplier needed to multiply 'first_equation' by, in order to have the coefficient that was passed to this program,
+// become the additive inverse of the coefficient passed to this program as "coefficient_from_second_equation". VERY USEFUL.
+unsigned long mod_LCM(unsigned long coefficient_from_first_equation, unsigned long coefficient_from_second_equation) {
+    ul compounds = 1;
+    ul compounded = coefficient_from_first_equation;
+    while (compounded != additive_inverse(coefficient_from_second_equation)) {
+	compounded = (compounded + coefficient_from_first_equation) % MOD; compounds++;
     }
-
-    return multiplier;
+    return compounds;
 }
 
 int main(int argc, char **argv) {
@@ -103,25 +96,17 @@ int main(int argc, char **argv) {
     struct linear_equation equation_a = { exponentiation(point_one.x, 2), exponentiation(point_one.x, 1), point_one.y};
     struct linear_equation equation_b = { exponentiation(point_two.x, 2), exponentiation(point_two.x, 1), point_two.y};
     struct linear_equation equation_c = { exponentiation(point_three.x, 2), exponentiation(point_three.x, 1), point_three.y};
-    fprintf(stdout, "\nEquation a:\n%lu = %lua + %lub\n", equation_a.result, equation_a.coefficient_a, equation_a.coefficient_b);
-    fprintf(stdout, "\nEquation b:\n%lu = %lua + %lub\n", equation_b.result, equation_b.coefficient_a, equation_b.coefficient_b);
-    fprintf(stdout, "\nEquation c:\n%lu = %lua + %lub\n", equation_c.result, equation_c.coefficient_a, equation_c.coefficient_b);
-    // ^^^ Reminicent of "y = ax^2 + bx"?
+    // fprintf(stdout, "\nEquation a:\n%lu = %lua + %lub\n", equation_a.result, equation_a.coefficient_a, equation_a.coefficient_b);
+    // fprintf(stdout, "\nEquation b:\n%lu = %lua + %lub\n", equation_b.result, equation_b.coefficient_a, equation_b.coefficient_b);
+    // fprintf(stdout, "\nEquation c:\n%lu = %lua + %lub\n", equation_c.result, equation_c.coefficient_a, equation_c.coefficient_b);
 
-    struct linear_equation equation_a_and_b = linear_equation_ADD(equation_a, INV(equation_b));
-    struct linear_equation equation_b_and_c = linear_equation_ADD(equation_b, INV(equation_c));
+    struct linear_equation equation_a_and_b = ADD_equation(equation_a, INV(equation_b));
+    struct linear_equation equation_b_and_c = ADD_equation(equation_b, INV(equation_c));
     // ^^ 
 
     unsigned long required_multiplier = mod_LCM(equation_a_and_b.coefficient_b, equation_b_and_c.coefficient_b);
-    fprintf(stdout, "\nEquation d [a.k.a. 'a + (- b)']:\n%lu = %lua + %lub\n", equation_a_and_b.result, equation_a_and_b.coefficient_a, equation_a_and_b.coefficient_b);
-    fprintf(stdout, "\nEquation e [a.k.a. 'b + (- c)']:\n%lu = %lua + %lub\n", equation_b_and_c.result, equation_b_and_c.coefficient_a, equation_b_and_c.coefficient_b);
-    fprintf(stdout, "\nAdditive inverse multiplier: %lu\n", required_multiplier);
-
     struct linear_equation INV_equation_a_and_b = multiply_values_by(equation_a_and_b, required_multiplier);
-    fprintf(stdout, "\nd INV:\n%lu = %lua + %lub\n", INV_equation_a_and_b.result, INV_equation_a_and_b.coefficient_a, INV_equation_a_and_b.coefficient_b);
-    // ^ Poa
-
-    struct linear_equation final_linear_equation = linear_equation_ADD(INV_equation_a_and_b, equation_b_and_c);
+    struct linear_equation final_linear_equation = ADD_equation(INV_equation_a_and_b, equation_b_and_c);
     fprintf(stdout, "\nFinal linear equation:\n%lu = %lua + %lub\n", final_linear_equation.result, final_linear_equation.coefficient_a, final_linear_equation.coefficient_b);
     // ^^ Prepare all the required linear equations
 
