@@ -4,9 +4,9 @@
 #include "maths.h"
 
 unsigned long conditional_field_cap(unsigned long result) { return (MOD) ? result % MOD : result; } // < Return result if there is no N_quotient, otherwise apply modular arithmetic
-unsigned long addition(unsigned long a, unsigned long b) { return conditional_field_cap(a + b); }
-unsigned long multiplication(unsigned long a, unsigned long b) { return conditional_field_cap(a * b); }
-_group_operation operation_from_ID(unsigned long ID) { return (ID) ? multiplication : addition; }
+unsigned long add(unsigned long a, unsigned long b) { return conditional_field_cap(a + b); }
+unsigned long multiply(unsigned long a, unsigned long b) { return conditional_field_cap(a * b); }
+_group_operation operation_from_ID(unsigned long ID) { return (ID) ? multiply : add; }
 // .^^^ All of the functions needed for "operation_from_ID"
 
 unsigned long subtraction(unsigned long a, unsigned long b) { return conditional_field_cap(a + (MOD - b)); }
@@ -75,7 +75,7 @@ unsigned long exponentiation(unsigned long base, unsigned long exponent) { if (M
     free(backbone); return exponentiation_RESULT;
 } // ^ Used by N_operation
 
-unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return addition(a, b); case 1: return multiplication(a, b); case 2: return exponentiation(a, b); }; }
+unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return add(a, b); case 1: return multiply(a, b); default: return exponentiation(a, b); }; }
 
 unsigned long polynomial_over_finite_field(unsigned long **coefficient, unsigned long _x) { ul additions, Res; additions = Res = ADDITIVE_IDENTITY; ul term_factor = MULTIPLICATIVE_IDENTITY;
     while (coefficient[additions]) { Res += (term_factor * *coefficient[additions]); Res %= MOD; term_factor *= _x; term_factor %= MOD; additions++; }
