@@ -161,3 +161,13 @@ unsigned long *str_represents_ul(char *str, unsigned long *UL_PTR) {
     *UL_PTR = str_as_UL; // <<< Inserts the parsed variable into the INSERTMENT_SLOTH (see header file "string.h")
     return UL_PTR;
 }
+
+void ignored_arguments(int used_arguments, int argc, char **argv) {
+    fprintf(stderr, "Ignored argument(s): ");
+    do {fprintf(stderr, "%s", argv[used_arguments + 1]);
+	used_arguments++; if (used_arguments + 1 == argc) break;
+	fprintf(stderr, ", ");
+    } while (1);
+    fprintf(stdout, "\n"); // Need one newline in the output anyways
+    fprintf(stderr, "\n"); // Also need one newline in the (potential) error file
+}

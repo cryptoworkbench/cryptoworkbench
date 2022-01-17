@@ -77,6 +77,7 @@ const char *prog_name = "polynomial_function_map_over_GF";
 
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) argv_ERROR(1, argv);
+    if (2 < argc) ignored_arguments(1, argc, argv);
     // ^^ Gather starting information
 
     fprintf(stdout, "Give me three (x, y)\n\n");
@@ -99,12 +100,12 @@ int main(int argc, char **argv) {
     ul b = modular_division((equation_two_and_one.result + (MOD - ((equation_two_and_one.coefficient_a * a) % MOD))) % MOD, equation_two_and_one.coefficient_b) % MOD;
     ul c = (equation_one.result + (MOD - (((b * point_one.x) % MOD ) + ((((point_one.x * point_one.x) % MOD ) * a) % MOD )) % MOD )) % MOD;
 
-    fprintf(stdout, "Solutions force:\na = %lu\nb = %lu\nc = %lu\n\nThen:\n", a, b, c);
+    fprintf(stdout, "Solutions:\n");
     fprintf(stdout, "%lu * %lu^2 + %lu * %lu + %lu \u2261 %lu\n", a, point_one.x, b, point_one.x, c, point_one.y);
     fprintf(stdout, "%lu * %lu^2 + %lu * %lu + %lu \u2261 %lu\n", a, point_two.x, b, point_two.x, c, point_two.y);
     fprintf(stdout, "%lu * %lu^2 + %lu * %lu + %lu \u2261 %lu\n\n", a, point_three.x, b, point_three.x, c, point_three.y);
     fprintf(stdout, "Second degree polynomial function over \U0001D53D%lu that maps %lu to %lu, %lu to %lu and %lu to %lu:\n", MOD, point_one.x, point_one.y, point_two.x, point_two.y, point_three.x, point_three.y);
-    fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x^1 + %lu	(%% %lu)\n", a, b, c, MOD);
+    fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(%% %lu)\n", a, b, c, MOD);
     fprintf(stdout, "\nSolution:\n");
     fprintf(stdout, "f(0) \u2261 %lu * (0)^2 + %lu * (0)^1 + %lu \u2261 %lu * 0 + %lu * 0 + %lu \u2261 0 + 0 + %lu \u2261 %lu (%% %lu)\n\n", a, b, c, a, b, c, c, c, MOD);
     fprintf(stdout, "The secret  split / shared \\ encoded  is always the constant term in the polynomial, 'c' in this case; so the secret is (represented by) the numeric value '%lu'.\n", c);

@@ -24,9 +24,8 @@
 #include <unistd.h> // 'execvp()'
 #include <sys/wait.h> // 'waitpid()'
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/maths.h"
-ul MOD;
-// ^^ Handle library inclusions
+#include "../../libraries/mathematics/maths.h" // 'ignored_arguments()'
+ul MOD; // < handle library inclusions ^^
 
 #define EXTERNAL_PROGRAM "polynomial_function_map_over_GF"
 
@@ -41,6 +40,8 @@ void secret_reduce() { if (_secret_B >= MOD) { _secret_B %= MOD; printf("The sec
 
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) { printf("%s is not MOD!\n", argv[1]); exit(-1); }
+    if (2 < argc) ignored_arguments(1, argc, argv); // < Abstract out th^s line.
+
     fprintf(stdout, "Give me two function inputs and outputs:\n"); struct cartesian_coordinates point_one, point_two;
     fprintf(stdout, "f(a): "); fscanf(stdin, "%lu", &point_one.y); fprintf(stdout, "a   : "); fscanf(stdin, "%lu", &point_one.x);
     fprintf(stdout, "\nf(b): "); fscanf(stdin, "%lu", &point_two.y); fprintf(stdout, "b   : "); fscanf(stdin, "%lu", &point_two.x);
