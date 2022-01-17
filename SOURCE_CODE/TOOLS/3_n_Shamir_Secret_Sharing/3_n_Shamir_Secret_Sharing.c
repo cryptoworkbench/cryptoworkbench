@@ -33,14 +33,27 @@ struct linear_equation multiply_values_by(struct linear_equation INP, unsigned l
     return return_value;
 }
 
-struct linear_equation linear_equation_add(struct linear_equation equation_one, struct linear_equation equation_two) {
+struct linear_equation INV(struct linear_equation EQUATION) {
     struct linear_equation ret;
-    ret.coefficient_a = (equation_one.coefficient_a + (MOD - equation_two.coefficient_a)) % MOD;
-    ret.coefficient_b = (equation_one.coefficient_b + (MOD - equation_two.coefficient_b)) % MOD;
-    ret.result = (equation_one.result + (MOD - equation_two.result)) % MOD;
+    ret.coefficient_a = additive_inverse(EQUATION.coefficient_a);
+    ret.coefficient_b = additive_inverse(EQUATION.coefficient_b);
+    ret.result = additive_inverse(EQUATION.result);
     return ret;
 }
 
+struct linear_equation linear_equation_ADD(struct linear_equation equation_one, struct linear_equation equation_two) {
+    struct linear_equation ret;
+    ret.coefficient_a = equation_one.coefficient_a + equation_two.coefficient_a;
+    ret.coefficient_a %= MOD;
+
+    ret.coefficient_b = equation_one.coefficient_b + equation_two.coefficient_b;
+    ret.coefficient_b %= MOD;
+
+    ret.result = equation_one.result + equation_two.result;
+    ret.result %= MOD;
+
+    return ret;
+}
 void C_reduce() { if (c >= MOD) { c%=MOD; fprintf(stdout, "The secret has been reduced by mod %lu into the congruent secret %lu.\n\n", MOD, c); } }
 
 char *one = "%s is not a suitable value for the field modulus!\n\nExiting '-%lu'.\n";
@@ -57,31 +70,64 @@ void argv_ERROR(unsigned long index, char **argv) {
     exit(-index);
 }
 
-int main(int argc, char **argv) {
-    if (2 > argc || !str_represents_ul(argv[1], &MOD)) argv_ERROR(1, argv);
-    ignored_arguments(argc, argv, 1);
-    // ^^ Gather starting information
+/* ul mod_LCM(ul a, ul b) {
+    ul multiplications = ADDITIVE_IDENTITY;
+    ul exponentiated = 0;
+    do { exponentiated += a; exponentiated %= MOD; multiplications++; }
+    while (exponentiated != additive_inverse(b));
+    return multiplications;
+} */
 
-    fprintf(stdout, "Give me three (x, y)\n\n");
-    fprintf(stdout, "Such that 'y \u2261 a * x^2 + b * x^1 + c (mod %lu)' (a, b, c \u2208 N)\n\n", MOD); // \u2208
+ul mod_LCM(ul a, ul b) {
+    ul multiplier = 1;
+    ul exponentiated = a;
+    while (exponentiated != additive_inverse(b)) {
+	exponentiated += a;
+	exponentiated %= MOD;
+	multiplier++;
+    }
+
+    return multiplier;
+}
+
+int main(int argc, char **argv) {
+    if (2 > argc || !str_represents_ul(argv[1], &MOD)) argv_ERROR(1, argv); ignored_arguments(argc, argv, 1);
+    fprintf(stdout, "Give me three (x, y)\n\nSuch that 'y \u2261 a * x^2 + b * x^1 + c (mod %lu)' (a, b, c \u2208 N)\n\n", MOD);
+
     struct cartesian_coordinates point_one, point_two, point_three;
     fprintf(stdout, "y_1 \u2261 "); fscanf(stdin, "%lu", &point_one.y);   fprintf(stdout, "x_1 \u2261 "); fscanf(stdin, "%lu", &point_one.x); fprintf(stdout, "\n");
     fprintf(stdout, "y_2 \u2261 "); fscanf(stdin, "%lu", &point_two.y);   fprintf(stdout, "x_2 \u2261 "); fscanf(stdin, "%lu", &point_two.x); fprintf(stdout, "\n");
     fprintf(stdout, "y_3 \u2261 "); fscanf(stdin, "%lu", &point_three.y); fprintf(stdout, "x_3 \u2261 "); fscanf(stdin, "%lu", &point_three.x); fprintf(stdout, "\n");
+    // ^ Take in information
 
-    struct linear_equation equation_one = { (point_one.x * point_one.x) % MOD, point_one.x, point_one.y};
-    struct linear_equation equation_two = { (point_two.x * point_two.x) % MOD, point_two.x, point_two.y};
-    struct linear_equation equation_three = { (point_three.x * point_three.x) % MOD, point_three.x, point_three.y};
+    struct linear_equation equation_a = { exponentiation(point_one.x, 2), exponentiation(point_one.x, 1), point_one.y};
+    struct linear_equation equation_b = { exponentiation(point_two.x, 2), exponentiation(point_two.x, 1), point_two.y};
+    struct linear_equation equation_c = { exponentiation(point_three.x, 2), exponentiation(point_three.x, 1), point_three.y};
+    fprintf(stdout, "\nEquation a:\n%lu = %lua + %lub\n", equation_a.result, equation_a.coefficient_a, equation_a.coefficient_b);
+    fprintf(stdout, "\nEquation b:\n%lu = %lua + %lub\n", equation_b.result, equation_b.coefficient_a, equation_b.coefficient_b);
+    fprintf(stdout, "\nEquation c:\n%lu = %lua + %lub\n", equation_c.result, equation_c.coefficient_a, equation_c.coefficient_b);
+    // ^^^ Reminicent of "y = ax^2 + bx"?
 
-    struct linear_equation equation_two_and_one = linear_equation_add(equation_two, equation_one);
-    struct linear_equation equation_two_and_three = linear_equation_add(equation_two, equation_three);
-    unsigned long coefficient_b_lcm = least_common_multiple(equation_two_and_one.coefficient_b, equation_two_and_three.coefficient_b);
-    struct linear_equation final_linear_equation = linear_equation_add(multiply_values_by(equation_two_and_one, coefficient_b_lcm / equation_two_and_one.coefficient_b), multiply_values_by(equation_two_and_three, coefficient_b_lcm / equation_two_and_three.coefficient_b));
+    struct linear_equation equation_a_and_b = linear_equation_ADD(equation_a, INV(equation_b));
+    struct linear_equation equation_b_and_c = linear_equation_ADD(equation_b, INV(equation_c));
+    // ^^ 
+
+    unsigned long required_multiplier = mod_LCM(equation_a_and_b.coefficient_b, equation_b_and_c.coefficient_b);
+    fprintf(stdout, "\nEquation d [a.k.a. 'a + (- b)']:\n%lu = %lua + %lub\n", equation_a_and_b.result, equation_a_and_b.coefficient_a, equation_a_and_b.coefficient_b);
+    fprintf(stdout, "\nEquation e [a.k.a. 'b + (- c)']:\n%lu = %lua + %lub\n", equation_b_and_c.result, equation_b_and_c.coefficient_a, equation_b_and_c.coefficient_b);
+    fprintf(stdout, "\nAdditive inverse multiplier: %lu\n", required_multiplier);
+
+    struct linear_equation INV_equation_a_and_b = multiply_values_by(equation_a_and_b, required_multiplier);
+    fprintf(stdout, "\nd INV:\n%lu = %lua + %lub\n", INV_equation_a_and_b.result, INV_equation_a_and_b.coefficient_a, INV_equation_a_and_b.coefficient_b);
+    // ^ Poa
+
+    struct linear_equation final_linear_equation = linear_equation_ADD(INV_equation_a_and_b, equation_b_and_c);
+    fprintf(stdout, "\nFinal linear equation:\n%lu = %lua + %lub\n", final_linear_equation.result, final_linear_equation.coefficient_a, final_linear_equation.coefficient_b);
     // ^^ Prepare all the required linear equations
 
     ul a = modular_division(final_linear_equation.result, final_linear_equation.coefficient_a) % MOD;
-    ul b = modular_division((equation_two_and_one.result + (MOD - ((equation_two_and_one.coefficient_a * a) % MOD))) % MOD, equation_two_and_one.coefficient_b) % MOD;
-    ul c = (equation_one.result + (MOD - (((b * point_one.x) % MOD ) + ((((point_one.x * point_one.x) % MOD ) * a) % MOD )) % MOD )) % MOD;
+    ul b = modular_division((equation_a_and_b.result + (MOD - ((equation_a_and_b.coefficient_a * a) % MOD))) % MOD, equation_a_and_b.coefficient_b) % MOD;
+    ul c = (equation_a.result + (MOD - (((b * point_one.x) % MOD ) + ((((point_one.x * point_one.x) % MOD ) * a) % MOD )) % MOD )) % MOD;
 
     fprintf(stdout, "Solutions:\n");
     fprintf(stdout, "%lu * %lu^2 + %lu * %lu + %lu \u2261 %lu\n", a, point_one.x, b, point_one.x, c, point_one.y);
