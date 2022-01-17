@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include "../../libraries/functional/string.h" // needed for 'str_represents_ul()'
-#include "../../libraries/mathematics/maths.h" // needed for 'additive_inverse()'
+#include "../../libraries/mathematics/maths.h" // needed for 'inverse()'
 ul MOD; // < handle library inclusions ^^
 
 const char *GENERIC_parsing_error = "%s is not something I am able to understand as a number:\n";
@@ -32,6 +32,6 @@ int main(int argc, char **argv) {
     if (inv_of_additive_inv % MOD != inv_of_additive_inv) fprintf(stdout, "- %lu \u2261 x ", inv_of_additive_inv % MOD);
     // ^^ Display program outcome
 
-    fprintf(stdout, "+ %lu (mod %lu)\n", additive_inverse(inv_of_additive_inv % MOD), MOD);
+    fprintf(stdout, "+ %lu (mod %lu)\n", inverse(inv_of_additive_inv % MOD), MOD);
     return 0;
 }

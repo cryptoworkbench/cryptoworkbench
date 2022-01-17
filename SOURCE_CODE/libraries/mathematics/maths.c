@@ -10,7 +10,7 @@ _group_operation operation_from_ID(unsigned long ID) { return (ID) ? multiply : 
 // .^^^ All of the functions needed for "operation_from_ID"
 
 unsigned long subtraction(unsigned long a, unsigned long b) { return conditional_field_cap(a + (MOD - b)); }
-unsigned long additive_inverse(unsigned long element_of_additive_group) { return subtraction(0, element_of_additive_group); }
+unsigned long inverse(unsigned long element_of_additive_group) { return subtraction(0, element_of_additive_group); }
 unsigned long modular_division(unsigned long numerator, unsigned long denominator) { while (numerator % denominator != 0) numerator += MOD; return numerator / denominator; }
 // ^^^ Useful functions for (infinite) field arithmetic
 

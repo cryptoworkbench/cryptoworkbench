@@ -12,7 +12,7 @@ typedef ul* UL_ptr;
 unsigned long conditional_field_cap(unsigned long result);
 unsigned long add(unsigned long a, unsigned long b);
 unsigned long subtraction(unsigned long a, unsigned long b);
-unsigned long additive_inverse(unsigned long element_of_additive_group);
+unsigned long inverse(unsigned long element_of_additive_group); // yields the additive inverse of ul 'element_of_additive_group'
 unsigned long multiply(unsigned long a, unsigned long b);
 typedef unsigned long (*_group_operation) (unsigned long, unsigned long); // << Declare a variable type for #23 & #18
 _group_operation operation_from_ID(unsigned long ID);

@@ -35,9 +35,9 @@ struct linear_equation MULTIPLY(struct linear_equation INP, unsigned long multip
 
 struct linear_equation INV(struct linear_equation EQUATION) {
     struct linear_equation ret;
-    ret.coefficient_a = additive_inverse(EQUATION.coefficient_a);
-    ret.coefficient_b = additive_inverse(EQUATION.coefficient_b);
-    ret.result = additive_inverse(EQUATION.result);
+    ret.coefficient_a = inverse(EQUATION.coefficient_a);
+    ret.coefficient_b = inverse(EQUATION.coefficient_b);
+    ret.result = inverse(EQUATION.result);
     return ret;
 }
 
@@ -85,11 +85,11 @@ int main(int argc, char **argv) {
     struct linear_equation equation_c = { exponentiation(point_three.x, 2), exponentiation(point_three.x, 1), point_three.y};
     struct linear_equation equation_a_and_b = ADD(equation_a, INV(equation_b));
     struct linear_equation equation_b_and_c = ADD(equation_b, INV(equation_c));
-    struct linear_equation final_linear_equation = ADD(equation_b_and_c, MULTIPLY(equation_a_and_b, modular_division(equation_a_and_b.coefficient_b, additive_inverse(equation_b_and_c.coefficient_b))));
+    struct linear_equation final_linear_equation = ADD(equation_b_and_c, MULTIPLY(equation_a_and_b, modular_division(equation_a_and_b.coefficient_b, inverse(equation_b_and_c.coefficient_b))));
 
     ul a = modular_division(final_linear_equation.result, final_linear_equation.coefficient_a) % MOD;
-    ul b = modular_division(add(equation_a_and_b.result, additive_inverse(multiply(equation_a_and_b.coefficient_a, a))), equation_a_and_b.coefficient_b) % MOD;
-    ul c = add(equation_a.result, additive_inverse((add(multiply(b, point_one.x), (multiply(exponentiation(point_one.x, 2), a))))));
+    ul b = modular_division(add(equation_a_and_b.result, inverse(multiply(equation_a_and_b.coefficient_a, a))), equation_a_and_b.coefficient_b) % MOD;
+    ul c = add(equation_a.result, inverse((add(multiply(b, point_one.x), (multiply(a, exponentiation(point_one.x, 2)))))));
 
     fprintf(stdout, "Solutions:\n");
     fprintf(stdout, "%lu * %lu^2 + %lu * %lu + %lu \u2261 %lu\n", a, point_one.x, b, point_one.x, c, point_one.y);
