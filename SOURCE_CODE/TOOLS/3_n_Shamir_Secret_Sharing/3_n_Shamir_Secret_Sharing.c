@@ -25,12 +25,6 @@ struct cartesian_coordinates {
     unsigned long y;
 };
 
-unsigned long least_common_multiple(unsigned long a, unsigned long b) {
-    unsigned long least_common_multiple = a; if (a < b) least_common_multiple = b;
-    while (least_common_multiple % a != 0 || least_common_multiple % b != 0) least_common_multiple++;
-    return least_common_multiple;
-}
-
 struct linear_equation multiply_values_by(struct linear_equation INP, unsigned long multiplier) {
     struct linear_equation return_value;
     return_value.coefficient_a = (multiplier * INP.coefficient_a) % MOD;

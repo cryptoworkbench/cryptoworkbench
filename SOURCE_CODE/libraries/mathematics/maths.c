@@ -124,3 +124,9 @@ unsigned long multiplicative_inverse(unsigned long a) { // Yield a^-1 mod b
 
     return MOD + x;
 }
+
+unsigned long least_common_multiple(unsigned long a, unsigned long b) {
+    unsigned long least_common_multiple = a; if (a < b) least_common_multiple = b;
+    while (least_common_multiple % a != 0 || least_common_multiple % b != 0) least_common_multiple++;
+    return least_common_multiple;
+}
