@@ -96,8 +96,8 @@ int main(int argc, char **argv) {
     struct linear_equation final_linear_equation = ADD(equation_b_and_c, multiply_values_by(equation_a_and_b, mod_LCM(equation_a_and_b.coefficient_b, equation_b_and_c.coefficient_b)));
 
     ul a = modular_division(final_linear_equation.result, final_linear_equation.coefficient_a) % MOD;
-    ul b = modular_division((equation_a_and_b.result + (MOD - ((equation_a_and_b.coefficient_a * a) % MOD))) % MOD, equation_a_and_b.coefficient_b) % MOD;
-    ul c = (equation_a.result + (MOD - (((b * point_one.x) % MOD ) + ((((point_one.x * point_one.x) % MOD ) * a) % MOD )) % MOD )) % MOD;
+    ul b = modular_division(addition(equation_a_and_b.result, additive_inverse(multiplication(equation_a_and_b.coefficient_a, a))), equation_a_and_b.coefficient_b) % MOD;
+    ul c = addition(equation_a.result, additive_inverse((addition(multiplication(b, point_one.x), (multiplication(exponentiation(point_one.x, 2), a))))));
 
     fprintf(stdout, "Solutions:\n");
     fprintf(stdout, "%lu * %lu^2 + %lu * %lu + %lu \u2261 %lu\n", a, point_one.x, b, point_one.x, c, point_one.y);
