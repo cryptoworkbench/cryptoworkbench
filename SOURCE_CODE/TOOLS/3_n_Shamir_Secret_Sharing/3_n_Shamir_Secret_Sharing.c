@@ -25,7 +25,7 @@ struct cartesian_coordinates {
     unsigned long y;
 };
 
-struct linear_equation multiply_values_by(struct linear_equation INP, unsigned long multiplier) {
+struct linear_equation MULTIPLY(struct linear_equation INP, unsigned long multiplier) {
     struct linear_equation return_value;
     return_value.coefficient_a = (multiplier * INP.coefficient_a) % MOD;
     return_value.coefficient_b = (multiplier * INP.coefficient_b) % MOD;
@@ -93,7 +93,7 @@ int main(int argc, char **argv) {
     struct linear_equation equation_c = { exponentiation(point_three.x, 2), exponentiation(point_three.x, 1), point_three.y};
     struct linear_equation equation_a_and_b = ADD(equation_a, INV(equation_b));
     struct linear_equation equation_b_and_c = ADD(equation_b, INV(equation_c));
-    struct linear_equation final_linear_equation = ADD(equation_b_and_c, multiply_values_by(equation_a_and_b, mod_LCM(equation_a_and_b.coefficient_b, equation_b_and_c.coefficient_b)));
+    struct linear_equation final_linear_equation = ADD(equation_b_and_c, MULTIPLY(equation_a_and_b, modular_division(equation_a_and_b.coefficient_b, additive_inverse(equation_b_and_c.coefficient_b))));
 
     ul a = modular_division(final_linear_equation.result, final_linear_equation.coefficient_a) % MOD;
     ul b = modular_division(addition(equation_a_and_b.result, additive_inverse(multiplication(equation_a_and_b.coefficient_a, a))), equation_a_and_b.coefficient_b) % MOD;
