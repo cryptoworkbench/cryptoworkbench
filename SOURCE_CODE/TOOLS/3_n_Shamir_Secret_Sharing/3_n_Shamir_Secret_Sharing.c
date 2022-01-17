@@ -57,21 +57,9 @@ void argv_ERROR(unsigned long index, char **argv) {
     exit(-index);
 }
 
-void algebra_check_for_supposed_variable_against(char variable_symbol, unsigned long new, unsigned long original) {
-    if (new != original) {
-	switch (variable_symbol) {
-	    case 'a': fprintf(stderr, intermediate_error, variable_symbol, variable_symbol, new, original, 5); exit(-5);
-	    case 'b': fprintf(stderr, intermediate_error, variable_symbol, variable_symbol, new, original, 6); exit(-6);
-	    case 'c': fprintf(stderr, intermediate_error, variable_symbol, variable_symbol, new, original, 7); exit(-7);
-	};
-    }
-}
-
-const char *prog_name = "polynomial_function_map_over_GF";
-
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) argv_ERROR(1, argv);
-    if (2 < argc) ignored_arguments(1, argc, argv);
+    ignored_arguments(argc, argv, 1);
     // ^^ Gather starting information
 
     fprintf(stdout, "Give me three (x, y)\n\n");
@@ -81,9 +69,10 @@ int main(int argc, char **argv) {
     fprintf(stdout, "y_2 \u2261 "); fscanf(stdin, "%lu", &point_two.y);   fprintf(stdout, "x_2 \u2261 "); fscanf(stdin, "%lu", &point_two.x); fprintf(stdout, "\n");
     fprintf(stdout, "y_3 \u2261 "); fscanf(stdin, "%lu", &point_three.y); fprintf(stdout, "x_3 \u2261 "); fscanf(stdin, "%lu", &point_three.x); fprintf(stdout, "\n");
 
-    struct linear_equation equation_one = {(point_one.x*point_one.x)%MOD, point_one.x, point_one.y};
-    struct linear_equation equation_two = {(point_two.x*point_two.x)%MOD, point_two.x, point_two.y};
-    struct linear_equation equation_three = {(point_three.x*point_three.x)%MOD, point_three.x, point_three.y};
+    struct linear_equation equation_one = { (point_one.x * point_one.x) % MOD, point_one.x, point_one.y};
+    struct linear_equation equation_two = { (point_two.x * point_two.x) % MOD, point_two.x, point_two.y};
+    struct linear_equation equation_three = { (point_three.x * point_three.x) % MOD, point_three.x, point_three.y};
+
     struct linear_equation equation_two_and_one = linear_equation_add(equation_two, equation_one);
     struct linear_equation equation_two_and_three = linear_equation_add(equation_two, equation_three);
     unsigned long coefficient_b_lcm = least_common_multiple(equation_two_and_one.coefficient_b, equation_two_and_three.coefficient_b);

@@ -39,8 +39,7 @@ struct cartesian_coordinates {
 void secret_reduce() { if (_secret_B >= MOD) { _secret_B %= MOD; printf("The secret has been reduced by mod %lu into the congruent secret %lu.\n\n", MOD, _secret_B); } }
 
 int main(int argc, char **argv) {
-    if (2 > argc || !str_represents_ul(argv[1], &MOD)) { printf("%s is not MOD!\n", argv[1]); exit(-1); }
-    if (2 < argc) ignored_arguments(1, argc, argv); // < Abstract out th^s line.
+    if (2 > argc || !str_represents_ul(argv[1], &MOD)) { printf("%s is not MOD!\n", argv[1]); exit(-1); } ignored_arguments(argc, argv, 1);
 
     fprintf(stdout, "Give me two function inputs and outputs:\n"); struct cartesian_coordinates point_one, point_two;
     fprintf(stdout, "f(a): "); fscanf(stdin, "%lu", &point_one.y); fprintf(stdout, "a   : "); fscanf(stdin, "%lu", &point_one.x);
