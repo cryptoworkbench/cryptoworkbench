@@ -70,14 +70,6 @@ void argv_ERROR(unsigned long index, char **argv) {
     exit(-index);
 }
 
-
-// Returns the multiplier needed to multiply 'first_equation' by, in order to have the coefficient that was passed to this program,
-// become the additive inverse of the coefficient passed to this program as "coefficient_from_second_equation". VERY USEFUL.
-unsigned long mod_LCM(unsigned long coefficient_from_first_equation, unsigned long coefficient_from_second_equation) { ul compounds = 1;
-    ul compounded; for (compounded = coefficient_from_first_equation; compounded != additive_inverse(coefficient_from_second_equation); compounded = (compounded + coefficient_from_first_equation) % MOD) compounds++;
-    return compounds;
-}
-
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) argv_ERROR(1, argv); ignored_arguments(argc, argv, 1);
     fprintf(stdout, "Give me three (x, y)\n\nSuch that 'y \u2261 a * x^2 + b * x^1 + c (mod %lu)' (a, b, c \u2208 \u2115)\n\n", MOD);
