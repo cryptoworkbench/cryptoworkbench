@@ -23,8 +23,8 @@
 #include <stdio.h>
 #include <unistd.h> // 'execvp()'
 #include <sys/wait.h> // 'waitpid()'
-#include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/maths.h" // 'ignored_arguments()'
+#include "../../libraries/functional/string.h" // 'ignored_arguments()'
+#include "../../libraries/mathematics/maths.h"
 ul MOD; // < handle library inclusions ^^
 
 #define EXTERNAL_PROGRAM "polynomial_function_map_over_GF"
