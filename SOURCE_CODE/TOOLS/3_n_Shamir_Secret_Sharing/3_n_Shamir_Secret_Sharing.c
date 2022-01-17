@@ -41,20 +41,19 @@ struct linear_equation INV(struct linear_equation EQUATION) {
     return ret;
 }
 
-struct linear_equation ADD_equation(struct linear_equation equation_one, struct linear_equation equation_two) {
+struct linear_equation ADD(struct linear_equation equation_one, struct linear_equation equation_two) {
     struct linear_equation ret;
     ret.coefficient_a = equation_one.coefficient_a + equation_two.coefficient_a;
     ret.coefficient_b = equation_one.coefficient_b + equation_two.coefficient_b;
     ret.result = equation_one.result + equation_two.result;
     // ^^ Add equations
 
-    ret.coefficient_a %= MOD;
-    ret.coefficient_b %= MOD;
-    ret.result %= MOD;
-    // ^^ But do not forget we are doing algebra in a finite field
+    ret.coefficient_a %= MOD; ret.coefficient_b %= MOD; ret.result %= MOD;
+    // ^^ But do not forget we are supposed to be doing this algebra in a finite field
 
     return ret;
 }
+
 void C_reduce() { if (c >= MOD) { c%=MOD; fprintf(stdout, "The secret has been reduced by mod %lu into the congruent secret %lu.\n\n", MOD, c); } }
 
 char *one = "%s is not a suitable value for the field modulus!\n\nExiting '-%lu'.\n";
@@ -81,7 +80,7 @@ unsigned long mod_LCM(unsigned long coefficient_from_first_equation, unsigned lo
 
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) argv_ERROR(1, argv); ignored_arguments(argc, argv, 1);
-    fprintf(stdout, "Give me three (x, y)\n\nSuch that 'y \u2261 a * x^2 + b * x^1 + c (mod %lu)' (a, b, c \u2208 N)\n\n", MOD);
+    fprintf(stdout, "Give me three (x, y)\n\nSuch that 'y \u2261 a * x^2 + b * x^1 + c (mod %lu)' (a, b, c \u2208 \u2115)\n\n", MOD);
 
     struct cartesian_coordinates point_one, point_two, point_three;
     fprintf(stdout, "y_1 \u2261 "); fscanf(stdin, "%lu", &point_one.y);   fprintf(stdout, "x_1 \u2261 "); fscanf(stdin, "%lu", &point_one.x); fprintf(stdout, "\n");
@@ -92,19 +91,9 @@ int main(int argc, char **argv) {
     struct linear_equation equation_a = { exponentiation(point_one.x, 2), exponentiation(point_one.x, 1), point_one.y};
     struct linear_equation equation_b = { exponentiation(point_two.x, 2), exponentiation(point_two.x, 1), point_two.y};
     struct linear_equation equation_c = { exponentiation(point_three.x, 2), exponentiation(point_three.x, 1), point_three.y};
-    // fprintf(stdout, "\nEquation a:\n%lu = %lua + %lub\n", equation_a.result, equation_a.coefficient_a, equation_a.coefficient_b);
-    // fprintf(stdout, "\nEquation b:\n%lu = %lua + %lub\n", equation_b.result, equation_b.coefficient_a, equation_b.coefficient_b);
-    // fprintf(stdout, "\nEquation c:\n%lu = %lua + %lub\n", equation_c.result, equation_c.coefficient_a, equation_c.coefficient_b);
-
-    struct linear_equation equation_a_and_b = ADD_equation(equation_a, INV(equation_b));
-    struct linear_equation equation_b_and_c = ADD_equation(equation_b, INV(equation_c));
-    // ^^ 
-
-    unsigned long required_multiplier = mod_LCM(equation_a_and_b.coefficient_b, equation_b_and_c.coefficient_b);
-    struct linear_equation INV_equation_a_and_b = multiply_values_by(equation_a_and_b, required_multiplier);
-    struct linear_equation final_linear_equation = ADD_equation(INV_equation_a_and_b, equation_b_and_c);
-    fprintf(stdout, "\nFinal linear equation:\n%lu = %lua + %lub\n", final_linear_equation.result, final_linear_equation.coefficient_a, final_linear_equation.coefficient_b);
-    // ^^ Prepare all the required linear equations
+    struct linear_equation equation_a_and_b = ADD(equation_a, INV(equation_b));
+    struct linear_equation equation_b_and_c = ADD(equation_b, INV(equation_c));
+    struct linear_equation final_linear_equation = ADD(equation_b_and_c, multiply_values_by(equation_a_and_b, mod_LCM(equation_a_and_b.coefficient_b, equation_b_and_c.coefficient_b)));
 
     ul a = modular_division(final_linear_equation.result, final_linear_equation.coefficient_a) % MOD;
     ul b = modular_division((equation_a_and_b.result + (MOD - ((equation_a_and_b.coefficient_a * a) % MOD))) % MOD, equation_a_and_b.coefficient_b) % MOD;
@@ -117,7 +106,7 @@ int main(int argc, char **argv) {
     fprintf(stdout, "Second degree polynomial function over \U0001D53D%lu that maps %lu to %lu, %lu to %lu and %lu to %lu:\n", MOD, point_one.x, point_one.y, point_two.x, point_two.y, point_three.x, point_three.y);
     fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(%% %lu)\n", a, b, c, MOD);
     fprintf(stdout, "\nSolution:\n");
-    fprintf(stdout, "f(0) \u2261 %lu * (0)^2 + %lu * (0)^1 + %lu \u2261 %lu * 0 + %lu * 0 + %lu \u2261 0 + 0 + %lu \u2261 %lu (%% %lu)\n\n", a, b, c, a, b, c, c, c, MOD);
+    fprintf(stdout, "f(0) \u2261 %lu * 0^2 + %lu * 0^1 + %lu \u2261 %lu * 0 + %lu * 0 + %lu \u2261 0 + 0 + %lu \u2261 %lu	(%% %lu)\n\n", a, b, c, a, b, c, c, c, MOD);
     fprintf(stdout, "The secret  split / shared \\ encoded  is always the constant term in the polynomial, 'c' in this case; so the secret is (represented by) the numeric value '%lu'.\n", c);
     return 0;
 }
