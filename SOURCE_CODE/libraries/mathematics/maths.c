@@ -136,21 +136,13 @@ unsigned long least_common_multiple(unsigned long a, unsigned long b) {
 // We will use member "ul one" for the roots
 // We will use member "ul two" for the squares
 void update(struct N_pair *to_be_updated, unsigned long least) { while (to_be_updated->two < least) { to_be_updated->two += to_be_updated->one; to_be_updated->one++; to_be_updated->two += to_be_updated->one; } }
-// ^ dependency of 'fermat_factorization()'
+// ^ dependency of 'fermat_factorize()'
 
-struct N_pair fermat_factorization(unsigned long odd_composite) {
+struct N_pair fermat_factorize(unsigned long odd_composite) {
     struct N_pair square_BIG = {0, 0}; // Declare the struct we will use for the 'BIG' square
     struct N_pair square_SMALL = {0, 0}; // Declare the struct we will use for the 'SMALL' square
-
     while (square_BIG.two != odd_composite + square_SMALL.two) {
 	update(&square_BIG, odd_composite + square_SMALL.two);
 	update(&square_SMALL, square_BIG.two - odd_composite);
-    }
-    /*
-    do {update(&square_BIG, odd_composite + square_SMALL.two);
-	if (square_BIG.two == odd_composite + square_SMALL.two) break;
-	update(&square_SMALL, square_BIG.two - odd_composite);
-    } while (square_BIG.two != odd_composite + square_SMALL.two);
-    */
-    return (struct N_pair) { square_BIG.one + square_SMALL.one, square_BIG.one - square_SMALL.one};
+    } return (struct N_pair) { square_BIG.one + square_SMALL.one, square_BIG.one - square_SMALL.one};
 }

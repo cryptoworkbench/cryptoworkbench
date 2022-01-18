@@ -53,4 +53,4 @@ unsigned long least_common_multiple(unsigned long a, unsigned long b);
 
 // TWO FUNCTIONS FOR FERMAT FACTORIZATION (only works for odd primes): ->
 void update(struct N_pair *updated, unsigned long least);
-struct N_pair fermat_factorization(unsigned long odd_composite);
+struct N_pair fermat_factorize(unsigned long odd_composite);
