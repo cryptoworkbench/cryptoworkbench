@@ -71,32 +71,78 @@ void argv_ERROR(unsigned long index, char **argv) {
 }
 
 int main(int argc, char **argv) {
-    if (2 > argc || !str_represents_ul(argv[1], &MOD)) argv_ERROR(1, argv); ignored_arguments(argc, argv, 1);
-    fprintf(stdout, "Give me three (x, y)\n\nSuch that 'y \u2261 a * x^2 + b * x^1 + c (mod %lu)' (a, b, c \u2208 \u2115)\n\n", MOD);
+    if (2 > argc || !str_represents_ul(argv[1], &MOD)) argv_ERROR(1, argv);
+    if (8 < argc) { ignored_arguments(argc, argv, 7); argc = 8; } // < complain about unneccesary arguments and forget about them once and for all
+    struct cartesian_coordinates first_sample_mapping, second_sample_mapping, third_sample_mapping;
+    switch (argc) {
+	case 8:
+	    if (!str_represents_ul(argv[7], &third_sample_mapping.y)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[7]); }
+	case 7:
+	    if (!str_represents_ul(argv[6], &third_sample_mapping.x)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[6]); }
+	case 6:
+	    if (!str_represents_ul(argv[5], &second_sample_mapping.y)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[5]); }
+	case 5:
+	    if (!str_represents_ul(argv[4], &second_sample_mapping.x)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[4]); }
+	case 4:
+	    if (!str_represents_ul(argv[3], &first_sample_mapping.y)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[3]); }
+	case 3:
+	    if (!str_represents_ul(argv[2], &first_sample_mapping.x)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[2]); }
+	    break;
+    }; // ^ Interpret interpretable information
+    fprintf(stdout, "y \u2261 a * x^2 + b * x + c	(%% %lu)		fix a, b, and c from GF(%lu)	a.k.a. \U0001D53D%lu\n\n", MOD, MOD, MOD); // \U0001D53D%lu doesn't look nice
+    fprintf(stdout, "SAMPLE MAPPING ONE:\n");
+    fprintf(stdout, "x \u2261 ");
+    if (2 < argc) fprintf(stdout, "%lu\n", first_sample_mapping.x);
+    else fscanf(stdin, " %lu", &first_sample_mapping.x);
 
-    struct cartesian_coordinates point_one, point_two, point_three;
-    fprintf(stdout, "y_1 \u2261 "); fscanf(stdin, "%lu", &point_one.y);   fprintf(stdout, "x_1 \u2261 "); fscanf(stdin, "%lu", &point_one.x); fprintf(stdout, "\n");
-    fprintf(stdout, "y_2 \u2261 "); fscanf(stdin, "%lu", &point_two.y);   fprintf(stdout, "x_2 \u2261 "); fscanf(stdin, "%lu", &point_two.x); fprintf(stdout, "\n");
-    fprintf(stdout, "y_3 \u2261 "); fscanf(stdin, "%lu", &point_three.y); fprintf(stdout, "x_3 \u2261 "); fscanf(stdin, "%lu", &point_three.x); fprintf(stdout, "\n");
+    fprintf(stdout, "y \u2261 ");
+    if (3 < argc) fprintf(stdout, "%lu\n", first_sample_mapping.y);
+    else fscanf(stdin, " %lu", &first_sample_mapping.y); fprintf(stdout, "\n");
+
+    fprintf(stdout, "SAMPLE MAPPING TWO:\n");
+    fprintf(stdout, "x \u2261 ");
+    if (4 < argc) fprintf(stdout, "%lu\n", second_sample_mapping.x);
+    else fscanf(stdin, " %lu", &second_sample_mapping.x);
+
+    fprintf(stdout, "y \u2261 ");
+    if (5 < argc) fprintf(stdout, "%lu\n", second_sample_mapping.y);
+    else fscanf(stdin, " %lu", &second_sample_mapping.y); fprintf(stdout, "\n");
+
+    fprintf(stdout, "SAMPLE MAPPING THREE:\n");
+    fprintf(stdout, "x \u2261 ");
+    if (4 < argc) fprintf(stdout, "%lu\n", third_sample_mapping.x);
+    else fscanf(stdin, " %lu", &third_sample_mapping.x);
+
+    fprintf(stdout, "y \u2261 ");
+    if (5 < argc) fprintf(stdout, "%lu\n", third_sample_mapping.y);
+    else fscanf(stdin, " %lu", &third_sample_mapping.y); fprintf(stdout, "\n");
     // ^ Take in information
 
-    struct linear_equation equation_a = { exponentiation(point_one.x, 2), exponentiation(point_one.x, 1), point_one.y};
-    struct linear_equation equation_b = { exponentiation(point_two.x, 2), exponentiation(point_two.x, 1), point_two.y};
-    struct linear_equation equation_c = { exponentiation(point_three.x, 2), exponentiation(point_three.x, 1), point_three.y};
+    fprintf(stdout, "Received mappings:\n");
+    fprintf(stdout, "%lu -> %lu\n", first_sample_mapping.x, first_sample_mapping.y);
+    fprintf(stdout, "%lu -> %lu\n", second_sample_mapping.x, second_sample_mapping.y);
+    fprintf(stdout, "%lu -> %lu\n\n", third_sample_mapping.x, third_sample_mapping.y);
+    // ^ Display information abstractly
+
+    struct linear_equation equation_a = { exponentiation(first_sample_mapping.x, 2), exponentiation(first_sample_mapping.x, 1), first_sample_mapping.y};
+    struct linear_equation equation_b = { exponentiation(second_sample_mapping.x, 2), exponentiation(second_sample_mapping.x, 1), second_sample_mapping.y};
+    struct linear_equation equation_c = { exponentiation(third_sample_mapping.x, 2), exponentiation(third_sample_mapping.x, 1), third_sample_mapping.y};
     struct linear_equation equation_a_and_b = ADD(equation_a, INV(equation_b));
     struct linear_equation equation_b_and_c = ADD(equation_b, INV(equation_c));
     struct linear_equation final_linear_equation = ADD(equation_b_and_c, MULTIPLY(equation_a_and_b, modular_division(equation_a_and_b.coefficient_b, inverse(equation_b_and_c.coefficient_b))));
 
     ul a = modular_division(final_linear_equation.result, final_linear_equation.coefficient_a) % MOD;
     ul b = modular_division(add(equation_a_and_b.result, inverse(multiply(equation_a_and_b.coefficient_a, a))), equation_a_and_b.coefficient_b) % MOD;
-    ul c = add(equation_a.result, inverse((add(multiply(b, point_one.x), (multiply(a, exponentiation(point_one.x, 2)))))));
+    ul c = add(equation_a.result, inverse((add(multiply(b, first_sample_mapping.x), (multiply(a, exponentiation(first_sample_mapping.x, 2)))))));
 
-    fprintf(stdout, "Solutions:\n");
-    fprintf(stdout, "%lu * %lu^2 + %lu * %lu + %lu \u2261 %lu\n", a, point_one.x, b, point_one.x, c, point_one.y);
-    fprintf(stdout, "%lu * %lu^2 + %lu * %lu + %lu \u2261 %lu\n", a, point_two.x, b, point_two.x, c, point_two.y);
-    fprintf(stdout, "%lu * %lu^2 + %lu * %lu + %lu \u2261 %lu\n\n", a, point_three.x, b, point_three.x, c, point_three.y);
-    fprintf(stdout, "Second degree polynomial function over \U0001D53D%lu that maps %lu to %lu, %lu to %lu and %lu to %lu:\n", MOD, point_one.x, point_one.y, point_two.x, point_two.y, point_three.x, point_three.y);
-    fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(%% %lu)\n", a, b, c, MOD);
+    fprintf(stdout, "Derived from sample mappings under \U0001D53D%lu that the polynomial function responsible must have been:\n", MOD);
+    fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(%% %lu)\n\n\n", a, b, c, MOD);
+
+    fprintf(stdout, "Then the solutions become:\n");
+    fprintf(stdout, "%lu * %lu^2 + %lu * %lu + %lu \u2261 %lu\n", a, first_sample_mapping.x, b, first_sample_mapping.x, c, first_sample_mapping.y);
+    fprintf(stdout, "%lu * %lu^2 + %lu * %lu + %lu \u2261 %lu\n", a, second_sample_mapping.x, b, second_sample_mapping.x, c, second_sample_mapping.y);
+    fprintf(stdout, "%lu * %lu^2 + %lu * %lu + %lu \u2261 %lu\n\n", a, third_sample_mapping.x, b, third_sample_mapping.x, c, third_sample_mapping.y);
+
     fprintf(stdout, "\nSolution:\n");
     fprintf(stdout, "f(0) \u2261 %lu * 0^2 + %lu * 0^1 + %lu \u2261 %lu * 0 + %lu * 0 + %lu \u2261 0 + 0 + %lu \u2261 %lu	(%% %lu)\n\n", a, b, c, a, b, c, c, c, MOD);
     fprintf(stdout, "The secret  split / shared \\ encoded  is always the constant term in the polynomial, 'c' in this case; so the secret is (represented by) the numeric value '%lu'.\n", c);
