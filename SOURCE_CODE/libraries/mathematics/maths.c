@@ -130,3 +130,22 @@ unsigned long least_common_multiple(unsigned long a, unsigned long b) {
     while (least_common_multiple % a != 0 || least_common_multiple % b != 0) least_common_multiple++;
     return least_common_multiple;
 }
+
+// Now some functions to achieve Fermat factorization for odd primes:
+// We will use "struct N_pair"
+// We will use member "ul one" for the roots
+// We will use member "ul two" for the squares
+void update(struct N_pair *to_be_updated, unsigned long least) { while (to_be_updated->two < least) { to_be_updated->two += to_be_updated->one; to_be_updated->one++; to_be_updated->two += to_be_updated->one; } }
+// ^ dependency of 'fermat_factorization()'
+
+struct N_pair fermat_factorization(unsigned long odd_composite) {
+    struct N_pair square_BIG = {0, 0}; // Declare the struct we will use for the 'BIG' square
+    struct N_pair square_SMALL = {0, 0}; // Declare the struct we will use for the 'SMALL' square
+
+    do {update(&square_BIG, odd_composite);
+	if (square_BIG.two - square_SMALL.two == odd_composite) break;
+	update(&square_SMALL, square_BIG.two - odd_composite);
+    } while (square_BIG.two - square_SMALL.two != odd_composite);
+
+    return (struct N_pair) { square_BIG.one + square_SMALL.one, square_BIG.one - square_SMALL.one};
+}
