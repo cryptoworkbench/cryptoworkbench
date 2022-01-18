@@ -142,10 +142,15 @@ struct N_pair fermat_factorization(unsigned long odd_composite) {
     struct N_pair square_BIG = {0, 0}; // Declare the struct we will use for the 'BIG' square
     struct N_pair square_SMALL = {0, 0}; // Declare the struct we will use for the 'SMALL' square
 
-    do {update(&square_BIG, odd_composite + square_SMALL.two);
-	if (square_BIG.two - square_SMALL.two == odd_composite) break;
+    while (square_BIG.two != odd_composite + square_SMALL.two) {
+	update(&square_BIG, odd_composite + square_SMALL.two);
 	update(&square_SMALL, square_BIG.two - odd_composite);
-    } while (square_BIG.two - square_SMALL.two != odd_composite);
-
+    }
+    /*
+    do {update(&square_BIG, odd_composite + square_SMALL.two);
+	if (square_BIG.two == odd_composite + square_SMALL.two) break;
+	update(&square_SMALL, square_BIG.two - odd_composite);
+    } while (square_BIG.two != odd_composite + square_SMALL.two);
+    */
     return (struct N_pair) { square_BIG.one + square_SMALL.one, square_BIG.one - square_SMALL.one};
 }
