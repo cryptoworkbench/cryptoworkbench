@@ -82,6 +82,17 @@ unsigned long polynomial_over_finite_field(unsigned long **coefficient, unsigned
     return Res;
 }
 
+unsigned long polynomial_over_finite_field_VARIADIC(unsigned long x, int number_of_coefficients, ...) {
+    ul additions, Res; additions = Res = ADDITIVE_IDENTITY; ul term_factor = MULTIPLICATIVE_IDENTITY;
+    va_list ap;
+    va_start (ap, number_of_coefficients);
+    for (ul i = 0; i < number_of_coefficients; i++) {
+	Res += (va_arg(ap, unsigned long)); Res %= MOD; term_factor *= x; term_factor %= MOD; additions++;
+    } va_end(ap);
+
+    return Res;
+}
+
 unsigned long GCD(unsigned long a, unsigned long b) {
     unsigned long remainder = a % b;
     while (remainder != 0) {

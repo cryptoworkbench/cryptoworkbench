@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
     ul a = modular_division(Y_difference, X_difference);
     ul b = add(first_sample_mapping.y, inverse(multiply(first_sample_mapping.x, a)));
     fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", MOD);
-    fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n\n", a, b, MOD);
-    fprintf(stdout, "The shared secret was '%lu'.\n", b);
+    fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", a, b, MOD);
+    fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_finite_field_VARIADIC(0, 2, a, b));
     return 0;
 }
