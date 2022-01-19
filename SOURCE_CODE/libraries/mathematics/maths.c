@@ -149,8 +149,13 @@ unsigned long DOWN_ROUNDED_second_root(unsigned long number) {
     else return pair.a - 1;
 }
 
-struct ordered_pair naive_factorization_approach(unsigned long composite) {
+struct ordered_pair most_naive_factorization_approach(unsigned long composite) {
     for (ul i = 2; i < composite; i++) if (composite % i == 0) return (struct ordered_pair) { composite / i, i };
+    return (struct ordered_pair) { composite, 1 };
+}
+
+struct ordered_pair less_naive_factorization_approach(unsigned long composite) {
+    for (ul i = 2; i < (composite - (composite % 2)) / 2; i++) if (composite % i == 0) return (struct ordered_pair) { composite / i, i };
     return (struct ordered_pair) { composite, 1 };
 }
 

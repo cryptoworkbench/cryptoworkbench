@@ -53,7 +53,8 @@ unsigned long least_common_multiple(unsigned long a, unsigned long b);
 
 unsigned long DOWN_ROUNDED_second_root(unsigned long number);
 
-struct ordered_pair naive_factorization_approach(unsigned long any_composite);
+struct ordered_pair most_naive_factorization_approach(unsigned long any_composite);
+struct ordered_pair less_naive_factorization_approach(unsigned long any_composite);
 struct ordered_pair least_naive_factorization_approach(unsigned long any_composite);
 
 void update(struct ordered_pair *updated, unsigned long least);
