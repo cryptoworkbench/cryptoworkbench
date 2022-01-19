@@ -76,45 +76,48 @@ int main(int argc, char **argv) {
     struct cartesian_coordinates first_sample_mapping, second_sample_mapping, third_sample_mapping;
     switch (argc) {
 	case 8:
-	    if (!str_represents_ul(argv[7], &third_sample_mapping.y)) { fprintf(stderr, "Failed to interpret argument '%s' as a y variable.\n", argv[7]); }
+	    if (!str_represents_ul(argv[7], &third_sample_mapping.y)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[7]); }
 	case 7:
-	    if (!str_represents_ul(argv[6], &third_sample_mapping.x)) { fprintf(stderr, "Failed to interpret argument '%s' as a x variable.\n", argv[6]); }
+	    if (!str_represents_ul(argv[6], &third_sample_mapping.x)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[6]); }
 	case 6:
-	    if (!str_represents_ul(argv[5], &second_sample_mapping.y)) { fprintf(stderr, "Failed to interpret argument '%s' as a y coordinate.\n", argv[5]); }
+	    if (!str_represents_ul(argv[5], &second_sample_mapping.y)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[5]); }
 	case 5:
-	    if (!str_represents_ul(argv[4], &second_sample_mapping.x)) { fprintf(stderr, "Failed to interpret argument '%s' as a x coordinate.\n", argv[4]); }
+	    if (!str_represents_ul(argv[4], &second_sample_mapping.x)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[4]); }
 	case 4:
-	    if (!str_represents_ul(argv[3], &first_sample_mapping.y)) { fprintf(stderr, "Failed to interpret argument '%s' as a y coordinate.\n", argv[3]); }
+	    if (!str_represents_ul(argv[3], &first_sample_mapping.y)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[3]); }
 	case 3:
-	    if (!str_represents_ul(argv[2], &first_sample_mapping.x)) { fprintf(stderr, "Failed to interpret argument '%s' as a x coordinate.\n", argv[2]); }
+	    if (!str_represents_ul(argv[2], &first_sample_mapping.x)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[2]); }
 	    break;
     }; // ^ Interpret interpretable information
-    fprintf(stdout, "x_1 \u2261 ");
+    fprintf(stdout, "Imagine a function under the specified finite field \U0001D53D%lu:\n", MOD); // \U0001D53D%lu doesn't look nice
+    fprintf(stdout, "f(x) \u2261 a * x^2 + b * x + c	(%% %lu)\n\n", MOD);
+    fprintf(stdout, "With a, b and c from \U0001D53D%lu or N%lu. But do not tell me.\n\n", MOD, MOD);
+    fprintf(stdout, "first input \u2261 ");
     if (2 < argc) fprintf(stdout, "%lu\n", first_sample_mapping.x);
     else fscanf(stdin, " %lu", &first_sample_mapping.x);
 
-    fprintf(stdout, "y_1 \u2261 ");
+    fprintf(stdout, "first output \u2261 ");
     if (3 < argc) fprintf(stdout, "%lu\n", first_sample_mapping.y);
     else fscanf(stdin, " %lu", &first_sample_mapping.y); fprintf(stdout, "\n");
 
-    fprintf(stdout, "x_2 \u2261 ");
+    fprintf(stdout, "second input \u2261 ");
     if (4 < argc) fprintf(stdout, "%lu\n", second_sample_mapping.x);
     else fscanf(stdin, " %lu", &second_sample_mapping.x);
 
-    fprintf(stdout, "y_2 \u2261 ");
+    fprintf(stdout, "second output \u2261 ");
     if (5 < argc) fprintf(stdout, "%lu\n", second_sample_mapping.y);
     else fscanf(stdin, " %lu", &second_sample_mapping.y); fprintf(stdout, "\n");
 
-    fprintf(stdout, "x_3 \u2261 ");
+    fprintf(stdout, "third input \u2261 ");
     if (4 < argc) fprintf(stdout, "%lu\n", third_sample_mapping.x);
     else fscanf(stdin, " %lu", &third_sample_mapping.x);
 
-    fprintf(stdout, "y_3 \u2261 ");
+    fprintf(stdout, "third output \u2261 ");
     if (5 < argc) fprintf(stdout, "%lu\n", third_sample_mapping.y);
     else fscanf(stdin, " %lu", &third_sample_mapping.y); fprintf(stdout, "\n");
     // ^ Take in information
 
-    fprintf(stdout, "Sample mappings of second-degree polynomial function over \U0001D53D%lu:\n", MOD);
+    fprintf(stdout, "Three samples of your function's mapping behaviour:\n");
     fprintf(stdout, "%lu -> %lu\n", first_sample_mapping.x, first_sample_mapping.y);
     fprintf(stdout, "%lu -> %lu\n", second_sample_mapping.x, second_sample_mapping.y);
     fprintf(stdout, "%lu -> %lu\n\n", third_sample_mapping.x, third_sample_mapping.y);
@@ -131,12 +134,16 @@ int main(int argc, char **argv) {
     ul b = modular_division(add(equation_a_and_b.result, inverse(multiply(equation_a_and_b.coefficient_a, a))), equation_a_and_b.coefficient_b) % MOD;
     ul c = add(equation_a.result, inverse((add(multiply(b, first_sample_mapping.x), (multiply(a, exponentiation(first_sample_mapping.x, 2)))))));
 
+    fprintf(stdout, "Is sufficient to figure out a, b, and c:\n");
+    fprintf(stdout, "%lu \u2261 %lu * %lu^2 + %lu * %lu + %lu		(1st sample of f()'s mapping behaviour)\n", first_sample_mapping.y, a, first_sample_mapping.x, b, first_sample_mapping.x, c);
+    fprintf(stdout, "%lu \u2261 %lu * %lu^2 + %lu * %lu + %lu		(2nd sample of f()'s mapping behaviour)\n", second_sample_mapping.y, a, second_sample_mapping.x, b, second_sample_mapping.x, c);
+    fprintf(stdout, "%lu \u2261 %lu * %lu^2 + %lu * %lu + %lu		(3rd sample of f()'s mapping behaviour)\n\n", third_sample_mapping.y, a, third_sample_mapping.x, b, third_sample_mapping.x, c);
+
     fprintf(stdout, "Derived from sample mappings under \U0001D53D%lu that the second-degree polynomial function responsible must have been:\n", MOD);
     fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(%% %lu)\n", a, b, c, MOD);
 
     fprintf(stdout, "\nSolution to 3_n Shamir Secret Sharing Sceme:\n");
     fprintf(stdout, "f(0) \u2261 %lu * 0^2 + %lu * 0^1 + %lu \u2261 %lu * 0 + %lu * 0 + %lu \u2261 0 + 0 + %lu \u2261 %lu	(mod %lu)\n\n", a, b, c, a, b, c, c, c, MOD);
     fprintf(stdout, "The secret  split / shared \\ encoded  is always the constant term in the polynomial, 'c' in this case; so the secret is (represented by) the numeric value '%lu'.\n", c);
-
     return 0;
 }
