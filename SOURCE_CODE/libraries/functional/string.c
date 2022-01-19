@@ -5,6 +5,7 @@
  * The warning for an implicit declaration of "exponentiation" during "gcc -c string.c -o .string.o" can be ignored. Just include .maths.o in the linking process.
  * */
 #include "string.h"
+#include "../mathematics/maths.h" // must be in this file or else compiler complaints
 #include <stdio.h>
 
 /* Returns an unsigned long containing the number of characters in the string pointed at by the constant char pointer 'string_pointer' */
@@ -165,7 +166,7 @@ unsigned long *str_represents_ul(char *str, unsigned long *UL_PTR) {
 void ignored_arguments(int argc, char **argv, int used_arguments) {
     ul difference = argc - 1 - used_arguments;
     if (difference) {
-	fprintf(stderr, "Ignored following %lu unneccesary argument(s): ", difference);
+	fprintf(stderr, "The following %lu unused argument(s) were unneccesary: ", difference);
 	do {fprintf(stderr, "%s", argv[used_arguments + 1]);
 	    used_arguments++; if (used_arguments + 1 == argc) break;
 	    fprintf(stderr, ", ");
