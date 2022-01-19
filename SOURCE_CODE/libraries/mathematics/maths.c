@@ -2,6 +2,7 @@
  *
  * See the header file for function descriptions. */
 #include "maths.h"
+// #include "stdio.h"
 
 unsigned long conditional_field_cap(unsigned long result) { return (MOD) ? result % MOD : result; } // < Return result if there is no N_quotient, otherwise apply modular arithmetic
 unsigned long add(unsigned long a, unsigned long b) { return conditional_field_cap(a + b); }
@@ -143,20 +144,18 @@ unsigned long least_common_multiple(unsigned long a, unsigned long b) {
 }
 
 unsigned long DOWN_ROUNDED_second_root(unsigned long number) {
-    ul multiplications = ADDITIVE_IDENTITY; ul exponent = MULTIPLICATIVE_IDENTITY;
-    while (number > exponent) { exponent += ADDITIVE_IDENTITY; exponent *= exponent; multiplications++; }
-    return multiplications;
+    struct ordered_pair pair = {0, 0}; update(&pair, number);
+    if (pair.b == number) return pair.a;
+    else return pair.a - 1;
 }
 
-struct ordered_pair naive_factorize(unsigned long composite) {
+struct ordered_pair naive_factorization_approach(unsigned long composite) {
     for (ul i = 2; i < composite; i++) if (composite % i == 0) return (struct ordered_pair) { composite / i, i };
     return (struct ordered_pair) { composite, 1 };
 }
 
 struct ordered_pair least_naive_factorization_approach(unsigned long composite) { struct ordered_pair ret_val;
-    printf("least_naive_factorization_approach(%lu)\n", composite);
-    printf("DOWN ROUNDED second root of %lu: %lu\n", composite, DOWN_ROUNDED_second_root(composite));
-    for (ul i = 2; i <= DOWN_ROUNDED_second_root(composite); i++) if (composite % i == 0) { ret_val.a = composite; ret_val.b = composite / i; return N_pair_order(&ret_val); }
+    for (ul i = 2; i <= DOWN_ROUNDED_second_root(composite); i++) if (composite % i == 0) { ret_val.a = composite / i; ret_val.b = i; return pair_reorder(&ret_val); }
     return (struct ordered_pair) { composite, 1 };
 }
 
@@ -165,9 +164,9 @@ struct ordered_pair least_naive_factorization_approach(unsigned long composite) 
 // We will use unsigned long member 'a' for the roots
 // We will use unsigned member 'b' for the squares
 void update(struct ordered_pair *to_be_updated, unsigned long least) { while (to_be_updated->b < least) { to_be_updated->b += to_be_updated->a; to_be_updated->a++; to_be_updated->b += to_be_updated->a; } }
-// ^ dependency of 'fermat_factorize()'
+// ^ dependency of 'fermats_factorization_approach()'
 
-struct ordered_pair fermat_factorize(unsigned long odd_composite) {
+struct ordered_pair fermats_factorization_approach(unsigned long odd_composite) {
     struct ordered_pair square_BIG = {0, 0}; // Declare the struct we will use for the 'BIG' square
     struct ordered_pair square_SMALL = {0, 0}; // Declare the struct we will use for the 'SMALL' square
     while (square_BIG.b != odd_composite + square_SMALL.b) {
@@ -176,7 +175,7 @@ struct ordered_pair fermat_factorize(unsigned long odd_composite) {
     } return (struct ordered_pair) { square_BIG.a + square_SMALL.a, square_BIG.a - square_SMALL.a};
 }
 
-struct ordered_pair N_pair_order(struct ordered_pair *switched) { if (switched->a < switched->b) { unsigned long temp = switched->b; switched->b = switched->a; switched->a = temp; } return *switched; }
+struct ordered_pair pair_reorder(struct ordered_pair *switched) { if (switched->a < switched->b) { unsigned long temp = switched->b; switched->b = switched->a; switched->a = temp; } return *switched; }
 // ^ Switched the values of member 'a' and member 'b' with a 'struct ordered_pair' pair of numbers IFF 'b' > 'a'
 
 struct ordered_pair factorization_method_WRAPPER(_factorization_method factorization_method_that_cannot_handle_even_numbers, unsigned long COMPOSITE) { struct ordered_pair ret_val;
@@ -184,5 +183,5 @@ struct ordered_pair factorization_method_WRAPPER(_factorization_method factoriza
     while (COMPOSITE % 2 == 0) { COMPOSITE /= 2; exponent_of_two_within_COMPOSITE *= 2; }
     if (exponent_of_two_within_COMPOSITE != 1) { ret_val.a = exponent_of_two_within_COMPOSITE; ret_val.b = COMPOSITE; }
     else { ret_val = factorization_method_that_cannot_handle_even_numbers(COMPOSITE); }
-    return N_pair_order(&ret_val);
+    return pair_reorder(&ret_val);
 }

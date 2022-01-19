@@ -16,8 +16,8 @@ unsigned long subtract(unsigned long a, unsigned long b);
 unsigned long inverse(unsigned long element_of_additive_group); // yields the additive inverse of ul 'element_of_additive_group'
 unsigned long multiply(unsigned long a, unsigned long b);
 
-typedef unsigned long (*_group_operation) (unsigned long, unsigned long); // << Declare a variable type for #23 & #18
-typedef struct ordered_pair (*_factorization_method) (unsigned long); // << Declare a variable type for #23 & #18
+typedef unsigned long (*_group_operation) (unsigned long, unsigned long);
+typedef struct ordered_pair (*_factorization_method) (unsigned long);
 _group_operation operation_from_ID(unsigned long ID);
 
 unsigned long exponentiation(unsigned long base, unsigned long exponent);
@@ -53,13 +53,13 @@ unsigned long least_common_multiple(unsigned long a, unsigned long b);
 
 unsigned long DOWN_ROUNDED_second_root(unsigned long number);
 
-struct ordered_pair naive_factorize(unsigned long any_composite);
+struct ordered_pair naive_factorization_approach(unsigned long any_composite);
 struct ordered_pair least_naive_factorization_approach(unsigned long any_composite);
 
 // TWO FUNCTIONS FOR FERMAT FACTORIZATION (only works for odd primes): ->
 void update(struct ordered_pair *updated, unsigned long least);
-struct ordered_pair fermat_factorize(unsigned long odd_composite);
+struct ordered_pair fermats_factorization_approach(unsigned long odd_composite);
 
 // BECAUSE FERMAT's FACTORIZATION METHOD CANNOT HANDLE EVEN NUMBERS
-struct ordered_pair N_pair_order(struct ordered_pair *switched);
+struct ordered_pair pair_reorder(struct ordered_pair *switched);
 struct ordered_pair factorization_method_WRAPPER(_factorization_method factorization_method_that_cannot_handle_even_numbers, unsigned long COMPOSITE);
