@@ -49,8 +49,8 @@ unsigned long multiplicative_inverse(unsigned long a);
 /* Two functions for modular exponentiation */
 unsigned long least_base_TWO_log(unsigned long power_of_TWO);
 unsigned long modular_division(unsigned long member_from_equivalence_class_representing_the_numerator, unsigned long denominator);
-unsigned long polynomial_over_finite_field(unsigned long **coefficient, unsigned long _x); // < array of coefficient pointers needs to be in reversed order to how polynomials are usually written in standard form
-unsigned long polynomial_over_finite_field_VARIADIC(unsigned long x, int number_of_coefficients, ...);
+unsigned long SINGULAR_polynomial_over_GF(unsigned long **coefficient, unsigned long _x); // < array of coefficient pointers needs to be in reversed order to how polynomials are usually written in standard form
+unsigned long polynomial_over_GF(unsigned long x, int number_of_coefficients, ...);
 unsigned long least_common_multiple(unsigned long a, unsigned long b);
 
 // TWO FUNCTIONS FOR FERMAT FACTORIZATION (only works for odd primes): ->

@@ -34,7 +34,7 @@ unsigned long *square_and_multiply_backbone(unsigned long base, unsigned long re
     // In the other cases (where 1 < "exponent"), it will run just the appriopiate amount of times
 
     return backbone;
-} // ^ Used by "exponentiation()", "polynomial_over_finite_field()"
+} // ^ Used by "exponentiation()", "SINGULAR_polynomial_over_GF()"
 
 unsigned long least_base_TWO_log(unsigned long power_of_TWO) {
     if (power_of_TWO == 0) return 0;
@@ -77,12 +77,12 @@ unsigned long exponentiation(unsigned long base, unsigned long exponent) { if (M
 
 unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return add(a, b); case 1: return multiply(a, b); default: return exponentiation(a, b); }; }
 
-unsigned long polynomial_over_finite_field(unsigned long **coefficient, unsigned long _x) { ul additions, Res; additions = Res = ADDITIVE_IDENTITY; ul term_factor = MULTIPLICATIVE_IDENTITY;
+unsigned long SINGULAR_polynomial_over_GF(unsigned long **coefficient, unsigned long _x) { ul additions, Res; additions = Res = ADDITIVE_IDENTITY; ul term_factor = MULTIPLICATIVE_IDENTITY;
     while (coefficient[additions]) { Res += (term_factor * *coefficient[additions]); Res %= MOD; term_factor *= _x; term_factor %= MOD; additions++; }
     return Res;
 }
 
-unsigned long polynomial_over_finite_field_VARIADIC(unsigned long x, int number_of_coefficients, ...) {
+unsigned long polynomial_over_GF(unsigned long x, int number_of_coefficients, ...) {
     ul additions, Res; additions = Res = ADDITIVE_IDENTITY; ul term_factor = MULTIPLICATIVE_IDENTITY;
     va_list ap;
     va_start (ap, number_of_coefficients);

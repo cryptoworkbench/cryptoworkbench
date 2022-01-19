@@ -3,7 +3,7 @@
 // Use "\U0001D557" for a lower case double stroke f
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/maths.h" // 'polynomial_over_finite_field()'
+#include "../../libraries/mathematics/maths.h" // 'SINGULAR_polynomial_over_GF()'
 ul MOD = 0;
 
 int main(int argc, char **argv) {
@@ -24,6 +24,6 @@ int main(int argc, char **argv) {
 	    if (!coefficients[i + 1]) break; fprintf(stdout, " * x^%lu + ", number_of_coefficients - 1 - i); i++;
 	} fprintf(stdout, "	(mod %lu)'\n", MOD); // \u21E8 \u2794 \u279C \u279F \u27A0
 	
-	for (ul x = 0; x < MOD; x++) fprintf(stdout, "(%lu, %lu)\n", x, polynomial_over_finite_field(coefficients, x)); return 0;
+	for (ul x = 0; x < MOD; x++) fprintf(stdout, "(%lu, %lu)\n", x, SINGULAR_polynomial_over_GF(coefficients, x)); return 0;
     } else { fprintf(stderr, "Please fill out the remainder of the arguments with coefficients.\n\nTerminating with exit status '-4'.\n"); return -4; }
 }

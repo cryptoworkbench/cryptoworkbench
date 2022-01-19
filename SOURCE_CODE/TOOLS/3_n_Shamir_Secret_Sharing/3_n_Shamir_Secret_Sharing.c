@@ -129,6 +129,6 @@ int main(int argc, char **argv) {
     fprintf(stdout, "Second-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", MOD);
     fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(modulus %lu)\n", a, b, c, MOD);
 
-    fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_finite_field_VARIADIC(0, 3, a, b, c));
+    fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_GF(0, 3, a, b, c));
     return 0;
 }
