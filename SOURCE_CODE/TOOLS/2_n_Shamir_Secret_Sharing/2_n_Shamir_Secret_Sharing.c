@@ -68,8 +68,8 @@ int main(int argc, char **argv) {
     unsigned long X_difference = add(first_sample_mapping.x, inverse(second_sample_mapping.x));
     ul a = modular_division(Y_difference, X_difference);
     ul b = add(first_sample_mapping.y, inverse(multiply(first_sample_mapping.x, a)));
-    fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings (assuming \U0001D53D%lu):\n", MOD);
-    fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(%% %lu)\n\n", a, b, MOD);
+    fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", MOD);
+    fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n\n", a, b, MOD);
     fprintf(stdout, "The shared secret was '%lu'.\n", b);
     return 0;
 }

@@ -10,6 +10,7 @@
 #include <unistd.h> // 'execvp()'
 #include <sys/wait.h> // 'waitpid()'
 #include "../../libraries/functional/string.h"
+#include "../../libraries/mathematics/maths.h"
 ul MOD = 0;
 
 unsigned long a, b, c;
@@ -75,19 +76,12 @@ int main(int argc, char **argv) {
     if (8 < argc) { ignored_arguments(argc, argv, 7); argc = 8; } // < complain about unneccesary arguments and forget about them once and for all
     struct cartesian_coordinates first_sample_mapping, second_sample_mapping, third_sample_mapping;
     switch (argc) {
-	case 8:
-	    if (!str_represents_ul(argv[7], &third_sample_mapping.y)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[7]); }
-	case 7:
-	    if (!str_represents_ul(argv[6], &third_sample_mapping.x)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[6]); }
-	case 6:
-	    if (!str_represents_ul(argv[5], &second_sample_mapping.y)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[5]); }
-	case 5:
-	    if (!str_represents_ul(argv[4], &second_sample_mapping.x)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[4]); }
-	case 4:
-	    if (!str_represents_ul(argv[3], &first_sample_mapping.y)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[3]); }
-	case 3:
-	    if (!str_represents_ul(argv[2], &first_sample_mapping.x)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[2]); }
-	    break;
+	case 8: if (!str_represents_ul(argv[7], &third_sample_mapping.y)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[7]); }
+	case 7: if (!str_represents_ul(argv[6], &third_sample_mapping.x)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[6]); }
+	case 6: if (!str_represents_ul(argv[5], &second_sample_mapping.y)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[5]); }
+	case 5: if (!str_represents_ul(argv[4], &second_sample_mapping.x)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[4]); }
+	case 4: if (!str_represents_ul(argv[3], &first_sample_mapping.y)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[3]); }
+	case 3: if (!str_represents_ul(argv[2], &first_sample_mapping.x)) { fprintf(stderr, "Failed to interpret argument '%s' as a coordinate variable.\n", argv[2]); }
     }; // ^ Interpret interpretable information
     fprintf(stdout, "Imagine a function under the specified finite field \U0001D53D%lu:\n", MOD); // \U0001D53D%lu doesn't look nice
     fprintf(stdout, "f(x) \u2261 a * x^2 + b * x + c	(%% %lu)\n\n", MOD);

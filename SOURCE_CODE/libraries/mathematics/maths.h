@@ -16,7 +16,7 @@ struct N_pair {
 
 unsigned long conditional_field_cap(unsigned long result);
 unsigned long add(unsigned long a, unsigned long b);
-unsigned long subtraction(unsigned long a, unsigned long b);
+unsigned long subtract(unsigned long a, unsigned long b);
 unsigned long inverse(unsigned long element_of_additive_group); // yields the additive inverse of ul 'element_of_additive_group'
 unsigned long multiply(unsigned long a, unsigned long b);
 typedef unsigned long (*_group_operation) (unsigned long, unsigned long); // << Declare a variable type for #23 & #18

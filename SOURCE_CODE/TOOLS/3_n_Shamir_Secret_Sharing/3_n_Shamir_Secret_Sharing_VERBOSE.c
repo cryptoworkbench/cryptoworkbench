@@ -115,6 +115,12 @@ int main(int argc, char **argv) {
     else fscanf(stdin, " %lu", &third_sample_mapping.y); fprintf(stdout, "\n");
     // ^ Take in information
 
+    fprintf(stdout, "Sample mappings of second-degree polynomial function over \U0001D53D%lu:\n", MOD);
+    fprintf(stdout, "%lu -> %lu\n", first_sample_mapping.x, first_sample_mapping.y);
+    fprintf(stdout, "%lu -> %lu\n", second_sample_mapping.x, second_sample_mapping.y);
+    fprintf(stdout, "%lu -> %lu\n\n", third_sample_mapping.x, third_sample_mapping.y);
+    // ^ Display information abstractly
+
     struct linear_equation equation_a = { exponentiation(first_sample_mapping.x, 2), exponentiation(first_sample_mapping.x, 1), first_sample_mapping.y};
     struct linear_equation equation_b = { exponentiation(second_sample_mapping.x, 2), exponentiation(second_sample_mapping.x, 1), second_sample_mapping.y};
     struct linear_equation equation_c = { exponentiation(third_sample_mapping.x, 2), exponentiation(third_sample_mapping.x, 1), third_sample_mapping.y};
@@ -126,9 +132,12 @@ int main(int argc, char **argv) {
     ul b = modular_division(add(equation_a_and_b.result, inverse(multiply(equation_a_and_b.coefficient_a, a))), equation_a_and_b.coefficient_b) % MOD;
     ul c = add(equation_a.result, inverse((add(multiply(b, first_sample_mapping.x), (multiply(a, exponentiation(first_sample_mapping.x, 2)))))));
 
-    fprintf(stdout, "Second-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", MOD);
-    fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(modulus %lu)\n", a, b, c, MOD);
+    fprintf(stdout, "Derived from sample mappings under \U0001D53D%lu that the second-degree polynomial function responsible must have been:\n", MOD);
+    fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(%% %lu)\n", a, b, c, MOD);
 
-    fprintf(stdout, "\nThe shared secret was '%lu'.\n", c);
+    fprintf(stdout, "\nSolution to 3_n Shamir Secret Sharing Sceme:\n");
+    fprintf(stdout, "f(0) \u2261 %lu * 0^2 + %lu * 0^1 + %lu \u2261 %lu * 0 + %lu * 0 + %lu \u2261 0 + 0 + %lu \u2261 %lu	(mod %lu)\n\n", a, b, c, a, b, c, c, c, MOD);
+    fprintf(stdout, "The secret  split / shared \\ encoded  is always the constant term in the polynomial, 'c' in this case; so the secret is (represented by) the numeric value '%lu'.\n", c);
+
     return 0;
 }
