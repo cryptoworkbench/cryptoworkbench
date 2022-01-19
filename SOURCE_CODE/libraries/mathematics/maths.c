@@ -164,18 +164,18 @@ struct ordered_pair least_naive_factorization_approach(unsigned long composite) 
 // We will use unsigned long member 'a' for the roots
 // We will use unsigned member 'b' for the squares
 void update(struct ordered_pair *to_be_updated, unsigned long least) { while (to_be_updated->b < least) { to_be_updated->b += to_be_updated->a; to_be_updated->a++; to_be_updated->b += to_be_updated->a; } }
-// ^ dependency of 'fermats_factorization_approach()'
+// ^ dependency of 'fermats_factorization_approach_ENGINE()'
 
-struct ordered_pair fermats_factorization_approach(unsigned long odd_composite) {
+struct ordered_pair fermats_factorization_approach_ENGINE(unsigned long odd_composite) {
     struct ordered_pair square_BIG = {0, 0}; // Declare the struct we will use for the 'BIG' square
     struct ordered_pair square_SMALL = {0, 0}; // Declare the struct we will use for the 'SMALL' square
     while (square_BIG.b != odd_composite + square_SMALL.b) {
 	update(&square_BIG, odd_composite + square_SMALL.b);
 	update(&square_SMALL, square_BIG.b - odd_composite);
     } return (struct ordered_pair) { square_BIG.a + square_SMALL.a, square_BIG.a - square_SMALL.a};
-}
+} struct ordered_pair fermats_factorization_approach(unsigned long composite) { return factorization_method_WRAPPER(fermats_factorization_approach_ENGINE, composite); }
 
-struct ordered_pair pair_reorder(struct ordered_pair *switched) { if (switched->a < switched->b) { unsigned long temp = switched->b; switched->b = switched->a; switched->a = temp; } return *switched; }
+struct ordered_pair pair_reorder(struct ordered_pair *pair) { if (pair->a < pair->b) { unsigned long temp = pair->b; pair->b = pair->a; pair->a = temp; } return *pair; }
 // ^ Switched the values of member 'a' and member 'b' with a 'struct ordered_pair' pair of numbers IFF 'b' > 'a'
 
 struct ordered_pair factorization_method_WRAPPER(_factorization_method factorization_method_that_cannot_handle_even_numbers, unsigned long COMPOSITE) { struct ordered_pair ret_val;

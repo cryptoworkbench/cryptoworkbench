@@ -20,15 +20,23 @@ void unrecognized_APPROACH(char *argv_two) {
 int main(int argc, char **argv) {
     if (2 > argc || !match_variadic(argv[1], 3, fermats_factorization_APPROACH, naive_factorization_APPROACH, least_naive_factorization_APPROACH)) unrecognized_APPROACH(argv[1]);
     if (3 > argc || !str_represents_ul(argv[2], &MOD)) { fprintf(stderr, "Failed to interpret composite '%s'!\n\nTerminating with exit status '-1'.\n", argv[2]); exit(-2); }
-    fprintf(stdout, "Using \"%s\" as the factorization method.\n\n", argv[1]);
-    // ^ Deal with user input
 
     _factorization_method factorization_method_chosen;
-    if (strcmp(argv[1], fermats_factorization_APPROACH) == 0) factorization_method_chosen = fermats_factorization_approach;
-    else if (strcmp(argv[1], naive_factorization_APPROACH) == 0) factorization_method_chosen = naive_factorization_approach;
-    else factorization_method_chosen = least_naive_factorization_approach; // we do not have to check the last possibility
+    if (strcmp(argv[1], fermats_factorization_APPROACH) == 0) {
+	fprintf(stdout, "Using fermats factorization approach.\n\n", argv[1]);
+	factorization_method_chosen = fermats_factorization_approach;
+    }
 
-    struct ordered_pair factorization_of_MOD = factorization_method_WRAPPER(factorization_method_chosen, MOD);
+    else if (strcmp(argv[1], naive_factorization_APPROACH) == 0) {
+	fprintf(stdout, "Using the naive factorization approach.\n\n", argv[1]);
+	factorization_method_chosen = naive_factorization_approach;
+    }
+    else { // we do not have to check the last possibility
+	fprintf(stdout, "Using the least naive factorization approach	(see the naive factorization approach).\n\n", argv[1]);
+	factorization_method_chosen = least_naive_factorization_approach;
+    }
+
+    struct ordered_pair factorization_of_MOD = factorization_method_chosen(MOD);
     fprintf(stdout, "%lu = %lu * %lu\n", MOD, factorization_of_MOD.a, factorization_of_MOD.b);
     return 0;
 }

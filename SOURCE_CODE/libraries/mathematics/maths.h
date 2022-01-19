@@ -56,10 +56,10 @@ unsigned long DOWN_ROUNDED_second_root(unsigned long number);
 struct ordered_pair naive_factorization_approach(unsigned long any_composite);
 struct ordered_pair least_naive_factorization_approach(unsigned long any_composite);
 
-// TWO FUNCTIONS FOR FERMAT FACTORIZATION (only works for odd primes): ->
 void update(struct ordered_pair *updated, unsigned long least);
-struct ordered_pair fermats_factorization_approach(unsigned long odd_composite);
+struct ordered_pair fermats_factorization_approach_ENGINE(unsigned long odd_composite); struct ordered_pair fermats_factorization_approach(unsigned long composite);
+// ^ Three functions for fermat factorization
 
 // BECAUSE FERMAT's FACTORIZATION METHOD CANNOT HANDLE EVEN NUMBERS
-struct ordered_pair pair_reorder(struct ordered_pair *switched);
+struct ordered_pair pair_reorder(struct ordered_pair *pair);
 struct ordered_pair factorization_method_WRAPPER(_factorization_method factorization_method_that_cannot_handle_even_numbers, unsigned long COMPOSITE);
