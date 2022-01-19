@@ -21,7 +21,7 @@ void unrecognized_APPROACH(char *argv_two) {
 }
 
 int main(int argc, char **argv) {
-    if (2 > argc || !match_variadic(argv[1], 3, most_naive_factorization_APPROACH, less_naive_factorization_APPROACH, least_naive_factorization_APPROACH, fermats_factorization_APPROACH)) unrecognized_APPROACH(argv[1]);
+    if (2 > argc || !match_variadic(argv[1], 4, most_naive_factorization_APPROACH, less_naive_factorization_APPROACH, least_naive_factorization_APPROACH, fermats_factorization_APPROACH)) unrecognized_APPROACH(argv[1]);
     if (3 > argc || !str_represents_ul(argv[2], &MOD)) { fprintf(stderr, "Failed to interpret composite '%s'!\n\nTerminating with exit status '-1'.\n", argv[2]); exit(-2); }
 
     _factorization_method factorization_method_chosen = fermats_factorization_approach;

@@ -149,18 +149,26 @@ unsigned long DOWN_ROUNDED_second_root(unsigned long number) {
     else return pair.a - 1;
 }
 
+unsigned long HALT_VAL(unsigned long composite, int stupidity_level) {
+    switch (stupidity_level) {
+	case 3: return composite;
+	case 2: return (composite - (composite % 2)) / 2;
+	case 1: return DOWN_ROUNDED_second_root(composite);
+    };
+}
+
 struct ordered_pair most_naive_factorization_approach(unsigned long composite) {
-    for (ul i = 2; i < composite; i++) if (composite % i == 0) return (struct ordered_pair) { composite / i, i };
+    for (ul i = 2; i < HALT_VAL(composite, 3); i++) if (composite % i == 0) return (struct ordered_pair) { composite / i, i };
     return (struct ordered_pair) { composite, 1 };
 }
 
 struct ordered_pair less_naive_factorization_approach(unsigned long composite) {
-    for (ul i = 2; i < (composite - (composite % 2)) / 2; i++) if (composite % i == 0) return (struct ordered_pair) { composite / i, i };
+    for (ul i = 2; i <= HALT_VAL(composite, 2); i++) if (composite % i == 0) return (struct ordered_pair) { composite / i, i };
     return (struct ordered_pair) { composite, 1 };
 }
 
 struct ordered_pair least_naive_factorization_approach(unsigned long composite) { struct ordered_pair ret_val;
-    for (ul i = 2; i <= DOWN_ROUNDED_second_root(composite); i++) if (composite % i == 0) { ret_val.a = composite / i; ret_val.b = i; return pair_reorder(&ret_val); }
+    for (ul i = 2; i <= HALT_VAL(composite, 1); i++) if (composite % i == 0) { ret_val.a = composite / i; ret_val.b = i; return pair_reorder(&ret_val); }
     return (struct ordered_pair) { composite, 1 };
 }
 
