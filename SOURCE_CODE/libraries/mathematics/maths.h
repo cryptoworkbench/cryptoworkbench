@@ -58,10 +58,10 @@ struct ordered_pair inefficient_trail_division(unsigned long any_composite);
 struct ordered_pair more_efficient_trail_division(unsigned long any_composite);
 struct ordered_pair most_efficient_trail_division(unsigned long any_composite);
 
-void update(struct ordered_pair *updated, unsigned long least);
-struct ordered_pair fermats_factorization_approach_ENGINE(unsigned long odd_composite); struct ordered_pair fermats_factorization_approach(unsigned long composite);
-// ^ Three functions for fermat factorization
-
-// BECAUSE FERMAT's FACTORIZATION METHOD CANNOT HANDLE EVEN NUMBERS
 struct ordered_pair pair_reorder(struct ordered_pair *pair);
-struct ordered_pair twos_factor_filter(_factorization_method factorization_method_that_cannot_handle_even_numbers, unsigned long COMPOSITE);
+struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *pair, unsigned long minimum);
+struct ordered_pair twos_factor_filter(unsigned long even_composite);
+struct ordered_pair difference_of_squares_factorization_method(unsigned long odd_composite); // almost fermat's factorization method
+struct ordered_pair odd_composite_decomposer_WRAPPER(unsigned long composite, _factorization_method odds_decomposer);
+struct ordered_pair fermat_factorization(unsigned long composite);
+// ^ Five functions for fermat factorization

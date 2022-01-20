@@ -24,7 +24,7 @@ int main(int argc, char **argv) {
     if (2 > argc || !match_variadic(argv[1], 4, INEFFICIENT_trail_division, MORE_EFFICIENT_trail_division, MOST_EFFICIENT_trail_division, fermats_factorization_METHOD)) unrecognized_APPROACH(argv[1]);
     if (3 > argc || !str_represents_ul(argv[2], &MOD)) { fprintf(stderr, "Failed to interpret composite '%s'!\n\nTerminating with exit status '-1'.\n", argv[2]); exit(-2); }
 
-    _factorization_method factorization_method_chosen = fermats_factorization_approach;
+    _factorization_method factorization_method_chosen = fermat_factorization;
     if (strcmp(argv[1], INEFFICIENT_trail_division) == 0) {
 	fprintf(stdout, "Using trail division and checking for all 'x <= %lu' if x divides %lu.", MOD - 1, MOD);
 	factorization_method_chosen = inefficient_trail_division;
@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
     } else if (strcmp(argv[1], MOST_EFFICIENT_trail_division) == 0) {
 	fprintf(stdout, "Using trail division and checking for all x <= %lu if x divides %lu.", DOWN_ROUNDED_second_root(MOD), MOD);
 	factorization_method_chosen = most_efficient_trail_division;
-    } else fprintf(stdout, "Using fermat's factorization approach."); fprintf(stdout, "\n\n");
+    } else fprintf(stdout, "Using fermat's factorization method."); fprintf(stdout, "\n\n");
 
     struct ordered_pair factorization_of_MOD = factorization_method_chosen(MOD);
     fprintf(stdout, "%lu = %lu * %lu\n", MOD, factorization_of_MOD.a, factorization_of_MOD.b);

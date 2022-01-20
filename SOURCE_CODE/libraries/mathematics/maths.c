@@ -145,7 +145,7 @@ unsigned long least_common_multiple(unsigned long a, unsigned long b) {
 
 // FUNCTIONS FOR FACTORIZING FOLLOW ->
 unsigned long DOWN_ROUNDED_second_root(unsigned long number) {
-    struct ordered_pair pair = {0, 0}; update(&pair, number);
+    struct ordered_pair pair = {0, 0}; least_perfect_square_equal_to_or_greater_than(&pair, number);
     if (pair.b == number) return pair.a;
     else return pair.a - 1;
 }
@@ -159,29 +159,34 @@ struct ordered_pair inefficient_trail_division(unsigned long composite) { return
 struct ordered_pair more_efficient_trail_division(unsigned long composite) { return trail_division(composite, (composite - (composite % 2)) / 2); }
 struct ordered_pair most_efficient_trail_division(unsigned long composite) { return trail_division(composite, DOWN_ROUNDED_second_root(composite)); }
 
-// Now some functions to achieve Fermat factorization
+// NOW SOME FUNCTIONS TO ACHIEVE FERMAT FACTORIZATION
 // We will use "struct ordered_pair"
 // We will use unsigned long member 'a' for the roots
 // We will use unsigned member 'b' for the squares
-void update(struct ordered_pair *to_be_updated, unsigned long least) { while (to_be_updated->b < least) { to_be_updated->b += to_be_updated->a; to_be_updated->a++; to_be_updated->b += to_be_updated->a; } }
-// ^ dependency of 'fermats_factorization_approach_ENGINE()'
 
-struct ordered_pair fermats_factorization_approach_ENGINE(unsigned long odd_composite) {
+struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *to_be_updated, unsigned long minimum)
+{ while (to_be_updated->b < minimum) { to_be_updated->b += to_be_updated->a; to_be_updated->a++; to_be_updated->b += to_be_updated->a; } }
+// ^ dependency of 'difference_of_squares_factorization()'
+
+struct ordered_pair difference_of_squares_factorization_method(unsigned long odd_composite) {
     struct ordered_pair square_BIG = {0, 0}; // Declare the struct we will use for the 'BIG' square
     struct ordered_pair square_SMALL = {0, 0}; // Declare the struct we will use for the 'SMALL' square
     while (square_BIG.b != odd_composite + square_SMALL.b) {
-	update(&square_BIG, odd_composite + square_SMALL.b);
-	update(&square_SMALL, square_BIG.b - odd_composite);
+	least_perfect_square_equal_to_or_greater_than(&square_BIG, odd_composite + square_SMALL.b);
+	least_perfect_square_equal_to_or_greater_than(&square_SMALL, square_BIG.b - odd_composite);
     } return (struct ordered_pair) { square_BIG.a + square_SMALL.a, square_BIG.a - square_SMALL.a};
-} struct ordered_pair fermats_factorization_approach(unsigned long composite) { return twos_factor_filter(fermats_factorization_approach_ENGINE, composite); }
+}
+
+struct ordered_pair odd_composite_decomposer_WRAPPER(unsigned long composite, _factorization_method odds_decomposer)
+{ return (composite % 2 == 0) ? twos_factor_filter(composite) : odds_decomposer(composite); }
 
 struct ordered_pair pair_reorder(struct ordered_pair *pair) { if (pair->a < pair->b) { unsigned long temp = pair->b; pair->b = pair->a; pair->a = temp; } return *pair; }
 // ^ Switched the values of member 'a' and member 'b' with a 'struct ordered_pair' pair of numbers IFF 'b' > 'a'
 
-struct ordered_pair twos_factor_filter(_factorization_method factorization_method_that_cannot_handle_even_numbers, unsigned long COMPOSITE) { struct ordered_pair ret_val;
-    ul exponent_of_two_within_COMPOSITE = MULTIPLICATIVE_IDENTITY; // start off assuming 'COMPOSITE' is divisible by 2 ZERO times
-    while (COMPOSITE % 2 == 0) { COMPOSITE /= 2; exponent_of_two_within_COMPOSITE *= 2; }
-    if (exponent_of_two_within_COMPOSITE != 1) { ret_val.a = exponent_of_two_within_COMPOSITE; ret_val.b = COMPOSITE; } // < imperfect
-    else { ret_val = factorization_method_that_cannot_handle_even_numbers(COMPOSITE); }
+struct ordered_pair twos_factor_filter(unsigned long even_composite) { struct ordered_pair ret_val;
+    ret_val.a = MULTIPLICATIVE_IDENTITY; do { even_composite /= 2; ret_val.a *= 2; } while (even_composite % 2 == 0); // REMEMBER: this function is only supposed to be called for an even composite!
+    ret_val.b = even_composite;
     return pair_reorder(&ret_val);
 }
+
+struct ordered_pair fermat_factorization(unsigned long composite) { return odd_composite_decomposer_WRAPPER(composite, difference_of_squares_factorization_method); }
