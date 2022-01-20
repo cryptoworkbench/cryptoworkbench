@@ -25,32 +25,31 @@
 #include "../../libraries/mathematics/factorization_methods.h" // needed for function pointers 'most_inefficient_trial_division', 'less_inefficient_trial_division', 'least_inefficient_trial_division', etc
 ul MOD; // < This time we will use 'MOD' for the composite
 
-const char *most_inefficient_TRIAL_DIVISION = "most_inefficient_trial_division"; const char *ONE = "1";
-const char *less_inefficient_TRIAL_DIVISION = "less_inefficient_trial_division"; const char *TWO = "2";
-const char *least_inefficient_TRIAL_DIVISION = "least_inefficient_trial_division"; const char *THREE = "3";
-const char *difference_of_squares_FACTORIZATION_METHOD = "difference_of_squares_factorization_method"; const char *FOUR = "4";
-const char *fermats_FACTORIZATION_METHOD = "fermats_factorization_method"; const char *FIVE = "5";
+const char *most_inefficient_TRIAL_DIVISION = "most_inefficient_trial_division"; const char *_a = "a";
+const char *less_inefficient_TRIAL_DIVISION = "less_inefficient_trial_division"; const char *_b = "b";
+const char *least_inefficient_TRIAL_DIVISION = "least_inefficient_trial_division"; const char *_c = "c";
+const char *difference_of_squares_FACTORIZATION_METHOD = "difference_of_squares_factorization_method"; const char *_d = "d";
+const char *fermats_FACTORIZATION_METHOD = "fermats_factorization_method"; const char *_e = "e";
 const char *supported_engines[11]; // 5 factorization engines are supported, and each takes 2 signifiers (identifiers in 'argv[1]'). That means we need 10 slots plus one for the "NULL" pointer at the end. That's 11 sloths
 // ^^ Prepare const char * array for 'match()'. set_list() completes the preparation immediately when 'main()' starts (which is to say immediately upon program execution).
 
 void unrecognized_APPROACH(char *argv_two) {
-    fprintf(stderr, "Failed to interpret '%s' as one of these five factorization method at my disposal:\n", argv_two);
-    fprintf(stderr, "1). %s\n", most_inefficient_TRIAL_DIVISION);
-    fprintf(stderr, "2). %s\n", less_inefficient_TRIAL_DIVISION);
-    fprintf(stderr, "3). %s\n", least_inefficient_TRIAL_DIVISION);
-    fprintf(stderr, "4). %s\n", difference_of_squares_FACTORIZATION_METHOD);
-    fprintf(stderr, "5). %s\n\n", fermats_FACTORIZATION_METHOD);
-    fprintf(stderr, "Terminating with exit status '-1'.\n");
+    fprintf(stderr, "Please specify one of the factorization methods available:\n");
+    fprintf(stderr, "a). %s\n", most_inefficient_TRIAL_DIVISION);
+    fprintf(stderr, "b). %s\n", less_inefficient_TRIAL_DIVISION);
+    fprintf(stderr, "c). %s\n", least_inefficient_TRIAL_DIVISION);
+    fprintf(stderr, "d). %s\n", difference_of_squares_FACTORIZATION_METHOD);
+    fprintf(stderr, "e). %s\n\n", fermats_FACTORIZATION_METHOD);
+    fprintf(stderr, "\"%s\" is not one of them. Terminating with exit status '-1'.\n", argv_two);
     exit(-1);
 }
 
-
 void set_list() {
-    supported_engines[0] = ONE; supported_engines[1] = most_inefficient_TRIAL_DIVISION;
-    supported_engines[2] = TWO; supported_engines[3] = less_inefficient_TRIAL_DIVISION;
-    supported_engines[4] = THREE; supported_engines[5] = least_inefficient_TRIAL_DIVISION;
-    supported_engines[6] = FOUR; supported_engines[7] = difference_of_squares_FACTORIZATION_METHOD;
-    supported_engines[8] = FIVE; supported_engines[9] = fermats_FACTORIZATION_METHOD; supported_engines[10] = 0;
+    supported_engines[0] = _a; supported_engines[1] = most_inefficient_TRIAL_DIVISION;
+    supported_engines[2] = _b; supported_engines[3] = less_inefficient_TRIAL_DIVISION;
+    supported_engines[4] = _c; supported_engines[5] = least_inefficient_TRIAL_DIVISION;
+    supported_engines[6] = _d; supported_engines[7] = difference_of_squares_FACTORIZATION_METHOD;
+    supported_engines[8] = _e; supported_engines[9] = fermats_FACTORIZATION_METHOD; supported_engines[10] = 0;
 }
 
 int main(int argc, char **argv) { set_list(); // < initialize the const char * array 'supported_engines' that we call 'match()' with in the line immediately below
@@ -58,16 +57,16 @@ int main(int argc, char **argv) { set_list(); // < initialize the const char * a
     if (3 > argc || !str_represents_ul(argv[2], &MOD)) { fprintf(stderr, "Failed to interpret composite '%s'!\n\nTerminating with exit status '-1'.\n", argv[2]); exit(-2); }
 
     _factorization_method factorization_method_chosen = fermat_factorization;
-    if (match_variadic(argv[1], 2, most_inefficient_TRIAL_DIVISION, ONE)) {
+    if (match_variadic(argv[1], 2, most_inefficient_TRIAL_DIVISION, _a)) {
 	fprintf(stdout, "Using trail division and checking for all 'x <= %lu' if x divides %lu.", MOD - 1, MOD);
 	factorization_method_chosen = most_inefficient_trial_division;
-    } else if (match_variadic(argv[1], 2, less_inefficient_TRIAL_DIVISION, TWO)) {
+    } else if (match_variadic(argv[1], 2, less_inefficient_TRIAL_DIVISION, _b)) {
 	fprintf(stdout, "Using trail division and checking for all 'x <= %lu' if f x divides %lu.", (MOD - (MOD % 2)) / 2, MOD);
 	factorization_method_chosen = less_inefficient_trial_division;
-    } else if (match_variadic(argv[1], 2, least_inefficient_TRIAL_DIVISION, THREE)) {
+    } else if (match_variadic(argv[1], 2, least_inefficient_TRIAL_DIVISION, _c)) {
 	fprintf(stdout, "Using trail division and checking for all x <= %lu if x divides %lu.", DOWN_ROUNDED_second_root(MOD), MOD);
 	factorization_method_chosen = least_inefficient_trial_division;
-    } else if (match_variadic(argv[1], 2, difference_of_squares_FACTORIZATION_METHOD, FOUR)) { if (MOD % 2 == 0)
+    } else if (match_variadic(argv[1], 2, difference_of_squares_FACTORIZATION_METHOD, _d)) { if (MOD % 2 == 0)
 	{ fprintf(stderr, "%lu \u2261 0	(modulus 2)\n\nThe difference of squares method can only handle odd numbers, but %lu is even. Terminating with exit status '-3'.\n", MOD, MOD); return -3; }
 	fprintf(stderr, "Using the difference of squares method.");
 	factorization_method_chosen = difference_of_squares_factorization_method;
