@@ -155,3 +155,8 @@ char *sieve_of_eratosthenes(unsigned long limit) {
     ul i; for (i = 2; i <= limit; i++) ret_val[i - 2] = 1; for (i = 2; i * i <= limit; i++) for (ul j = i; j * i <= limit; j++) ret_val[(j * i) - 2] = 0;
     return ret_val;
 }
+
+unsigned long primes_printed_from_sieve_array_to_FS(char *sieve, unsigned long limit, FILE *FS) { ul ret_val = ADDITIVE_IDENTITY;
+    for (ul i = 1; i < limit; i++) if (sieve[i - 1]) { fprintf(FS, "%lu\n", i + 1); ret_val++; }
+    return ret_val;
+}

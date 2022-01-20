@@ -18,9 +18,7 @@ int main(int argc, char **argv) {
     // ^ Deal with user input
 
     char *sieve = sieve_of_eratosthenes(MOD);
-    ul number_of_primes_under_MOD = ADDITIVE_IDENTITY; for (ul i = 2; i <= MOD; i++) if (sieve[i - 2]) { fprintf(stdout, "%lu\n", i); number_of_primes_under_MOD++; } free(sieve);
-    // ^ Print all primes less than 'MOD' to stdout
-
-    fprintf(stdout, "\nPrinted %lu primes.\n", number_of_primes_under_MOD); return 0;
+    fprintf(stdout, "\nPrinted %lu primes.\n", primes_printed_from_sieve_array_to_FS(sieve, MOD, stdout));
+    free(sieve); return 0;
     // ^ Terminate program like this
 }
