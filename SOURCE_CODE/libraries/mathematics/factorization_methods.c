@@ -6,9 +6,9 @@ struct ordered_pair trail_division(unsigned long composite, unsigned long trail_
     return (struct ordered_pair) { composite, 1 };
 }
 
-struct ordered_pair inefficient_trail_division(unsigned long composite) { return trail_division(composite, composite - 1); }
-struct ordered_pair more_efficient_trail_division(unsigned long composite) { return trail_division(composite, (composite - (composite % 2)) / 2); }
-struct ordered_pair most_efficient_trail_division(unsigned long composite) { return trail_division(composite, DOWN_ROUNDED_second_root(composite)); }
+struct ordered_pair most_inefficient_trial_division(unsigned long composite) { return trail_division(composite, composite - 1); }
+struct ordered_pair less_inefficient_trial_division(unsigned long composite) { return trail_division(composite, (composite - (composite % 2)) / 2); }
+struct ordered_pair least_inefficient_trial_division(unsigned long composite) { return trail_division(composite, DOWN_ROUNDED_second_root(composite)); }
 
 // NOW SOME FUNCTIONS TO ACHIEVE FERMAT FACTORIZATION
 // We will use "struct ordered_pair"

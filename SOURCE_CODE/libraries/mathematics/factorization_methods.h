@@ -2,9 +2,9 @@ typedef struct ordered_pair (*_factorization_method) (unsigned long);
 // ^ One function pointer type
 
 struct ordered_pair trail_division(unsigned long composite, unsigned long trail_limit);
-struct ordered_pair inefficient_trail_division(unsigned long composite);
-struct ordered_pair more_efficient_trail_division(unsigned long composite);
-struct ordered_pair most_efficient_trail_division(unsigned long composite);
+struct ordered_pair most_inefficient_trial_division(unsigned long composite);
+struct ordered_pair less_inefficient_trial_division(unsigned long composite);
+struct ordered_pair least_inefficient_trial_division(unsigned long composite);
 struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *to_be_updated, unsigned long minimum);
 struct ordered_pair difference_of_squares_factorization_method(unsigned long odd_composite);
 struct ordered_pair odd_composite_decomposer_WRAPPER(unsigned long composite, _factorization_method odds_decomposer);
