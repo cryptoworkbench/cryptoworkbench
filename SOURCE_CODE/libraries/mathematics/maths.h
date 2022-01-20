@@ -54,9 +54,9 @@ unsigned long least_common_multiple(unsigned long a, unsigned long b);
 unsigned long DOWN_ROUNDED_second_root(unsigned long number);
 
 struct ordered_pair trail_division(unsigned long composite, unsigned long trail_limit);
-struct ordered_pair most_naive_factorization_approach(unsigned long any_composite);
-struct ordered_pair less_naive_factorization_approach(unsigned long any_composite);
-struct ordered_pair least_naive_factorization_approach(unsigned long any_composite);
+struct ordered_pair inefficient_trail_division(unsigned long any_composite);
+struct ordered_pair more_efficient_trail_division(unsigned long any_composite);
+struct ordered_pair most_efficient_trail_division(unsigned long any_composite);
 
 void update(struct ordered_pair *updated, unsigned long least);
 struct ordered_pair fermats_factorization_approach_ENGINE(unsigned long odd_composite); struct ordered_pair fermats_factorization_approach(unsigned long composite);
