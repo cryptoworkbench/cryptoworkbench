@@ -64,4 +64,4 @@ struct ordered_pair fermats_factorization_approach_ENGINE(unsigned long odd_comp
 
 // BECAUSE FERMAT's FACTORIZATION METHOD CANNOT HANDLE EVEN NUMBERS
 struct ordered_pair pair_reorder(struct ordered_pair *pair);
-struct ordered_pair factorization_method_WRAPPER(_factorization_method factorization_method_that_cannot_handle_even_numbers, unsigned long COMPOSITE);
+struct ordered_pair twos_factor_filter(_factorization_method factorization_method_that_cannot_handle_even_numbers, unsigned long COMPOSITE);

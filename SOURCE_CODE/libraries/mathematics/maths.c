@@ -173,15 +173,15 @@ struct ordered_pair fermats_factorization_approach_ENGINE(unsigned long odd_comp
 	update(&square_BIG, odd_composite + square_SMALL.b);
 	update(&square_SMALL, square_BIG.b - odd_composite);
     } return (struct ordered_pair) { square_BIG.a + square_SMALL.a, square_BIG.a - square_SMALL.a};
-} struct ordered_pair fermats_factorization_approach(unsigned long composite) { return factorization_method_WRAPPER(fermats_factorization_approach_ENGINE, composite); }
+} struct ordered_pair fermats_factorization_approach(unsigned long composite) { return twos_factor_filter(fermats_factorization_approach_ENGINE, composite); }
 
 struct ordered_pair pair_reorder(struct ordered_pair *pair) { if (pair->a < pair->b) { unsigned long temp = pair->b; pair->b = pair->a; pair->a = temp; } return *pair; }
 // ^ Switched the values of member 'a' and member 'b' with a 'struct ordered_pair' pair of numbers IFF 'b' > 'a'
 
-struct ordered_pair factorization_method_WRAPPER(_factorization_method factorization_method_that_cannot_handle_even_numbers, unsigned long COMPOSITE) { struct ordered_pair ret_val;
+struct ordered_pair twos_factor_filter(_factorization_method factorization_method_that_cannot_handle_even_numbers, unsigned long COMPOSITE) { struct ordered_pair ret_val;
     ul exponent_of_two_within_COMPOSITE = MULTIPLICATIVE_IDENTITY; // start off assuming 'COMPOSITE' is divisible by 2 ZERO times
     while (COMPOSITE % 2 == 0) { COMPOSITE /= 2; exponent_of_two_within_COMPOSITE *= 2; }
-    if (exponent_of_two_within_COMPOSITE != 1) { ret_val.a = exponent_of_two_within_COMPOSITE; ret_val.b = COMPOSITE; }
+    if (exponent_of_two_within_COMPOSITE != 1) { ret_val.a = exponent_of_two_within_COMPOSITE; ret_val.b = COMPOSITE; } // < imperfect
     else { ret_val = factorization_method_that_cannot_handle_even_numbers(COMPOSITE); }
     return pair_reorder(&ret_val);
 }
