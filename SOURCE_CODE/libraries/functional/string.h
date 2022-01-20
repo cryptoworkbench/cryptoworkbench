@@ -3,6 +3,7 @@
 #include <stdarg.h>
 // ^^^ Necessary library inclusions that are needed in "string.c"
 
+#define EXIT_STATUS_GOODBYE "Terminating with exit status '%i'. Goodbye.\n"
 #define STRING_TERMINATING_CHARACTER 0
 #define NUMERIC_BASE 10
 #define ASCII_BASE 48

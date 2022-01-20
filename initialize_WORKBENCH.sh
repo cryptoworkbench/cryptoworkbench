@@ -30,6 +30,8 @@ echo "#######===> SOME TOOLS FOR EXPLORING SHAMIR'S SECRET SHARING SCEME HAVE BE
 ~ 3_n_Shamir_Secret_Sharing
 " # ^-- Notify end of second stage of compilation.
 
+cd ../sieve_of_eratosthenes && make sieve_of_eratosthenes && echo "#######===> The following tool has been assemblied/linked: sieve_of_eratosthenes
+"
 cd ../modular_group_element_table_generator && make modular_group_element_table_generator && echo "#######===> The following tool has been assemblied/linked: modular_group_element_table_generator
 "
 cd ../subgroup_examplifier && make subgroup_examplifier && echo "#######===> The following tool has been assemblied/linked: subgroup_examplifier
@@ -38,7 +40,6 @@ cd ../Diffie_Hellman_Key_Agreement && make Diffie_Hellman_Key_Agreement && echo 
 "
 cd ../cayley_table_generator && make cayley_table_generator && echo "#######===> The following tool has been assemblied/linked: cayley_table_generator
 "
-# cd ../prime_table_generator && make prime_table_generator && echo "#######===> The following tool has been assemblied/linked: prime_table_generator
 #"
 echo "#######===> SOME MORE TOOLS HAVE BEEN ASSEMBLED/LINKED: -->                                         <===#######
 ~ modular_group_element_table_generator 
