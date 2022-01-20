@@ -19,44 +19,55 @@
 //
 // When the program is ran for the first time it asks what factorization engine should be preferred and this is automatically saved to the external preferences file.
 #include <stdio.h>
+#include <stdlib.h>
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h" // needed for 'DOWN_ROUNDED_second_root()' and some of the factorization methods in 'factorization_methods.c' need functions headers from 'maths.h'
 #include "../../libraries/mathematics/factorization_methods.h" // needed for function pointers 'most_inefficient_trial_division', 'less_inefficient_trial_division', 'least_inefficient_trial_division', etc
 ul MOD; // < This time we will use 'MOD' for the composite
 
-
-char *most_inefficient_TRIAL_DIVISION = "most_inefficient_trial_division";
-char *less_inefficient_TRIAL_DIVISION = "less_inefficient_trial_division";
-char *least_inefficient_TRIAL_DIVISION = "least_inefficient_trial_division";
-char *difference_of_squares_factorization_METHOD = "difference_of_squares_factorization_method";
-char *fermats_factorization_METHOD = "fermats_factorization_method";
+const char *most_inefficient_TRIAL_DIVISION = "most_inefficient_trial_division"; const char *ONE = "1";
+const char *less_inefficient_TRIAL_DIVISION = "less_inefficient_trial_division"; const char *TWO = "2";
+const char *least_inefficient_TRIAL_DIVISION = "least_inefficient_trial_division"; const char *THREE = "3";
+const char *difference_of_squares_FACTORIZATION_METHOD = "difference_of_squares_factorization_method"; const char *FOUR = "4";
+const char *fermats_FACTORIZATION_METHOD = "fermats_factorization_method"; const char *FIVE = "5";
+const char *supported_engines[11]; // 5 factorization engines are supported, and each takes 2 signifiers (identifiers in 'argv[1]'). That means we need 10 slots plus one for the "NULL" pointer at the end. That's 11 sloths
+// ^^ Prepare const char * array for 'match()'. set_list() completes the preparation immediately when 'main()' starts (which is to say immediately upon program execution).
 
 void unrecognized_APPROACH(char *argv_two) {
     fprintf(stderr, "Failed to interpret '%s' as one of these five factorization method at my disposal:\n", argv_two);
     fprintf(stderr, "1). %s\n", most_inefficient_TRIAL_DIVISION);
     fprintf(stderr, "2). %s\n", less_inefficient_TRIAL_DIVISION);
     fprintf(stderr, "3). %s\n", least_inefficient_TRIAL_DIVISION);
-    fprintf(stderr, "4). %s\n", difference_of_squares_factorization_METHOD);
-    fprintf(stderr, "5). %s\n\n", fermats_factorization_METHOD);
+    fprintf(stderr, "4). %s\n", difference_of_squares_FACTORIZATION_METHOD);
+    fprintf(stderr, "5). %s\n\n", fermats_FACTORIZATION_METHOD);
     fprintf(stderr, "Terminating with exit status '-1'.\n");
     exit(-1);
 }
 
-int main(int argc, char **argv) {
-    if (2 > argc || !match_variadic(argv[1], 5, most_inefficient_TRIAL_DIVISION, less_inefficient_TRIAL_DIVISION, least_inefficient_TRIAL_DIVISION, difference_of_squares_factorization_METHOD, fermats_factorization_METHOD)) unrecognized_APPROACH(argv[1]);
+
+void set_list() {
+    supported_engines[0] = ONE; supported_engines[1] = most_inefficient_TRIAL_DIVISION;
+    supported_engines[2] = TWO; supported_engines[3] = less_inefficient_TRIAL_DIVISION;
+    supported_engines[4] = THREE; supported_engines[5] = least_inefficient_TRIAL_DIVISION;
+    supported_engines[6] = FOUR; supported_engines[7] = difference_of_squares_FACTORIZATION_METHOD;
+    supported_engines[8] = FIVE; supported_engines[9] = fermats_FACTORIZATION_METHOD; supported_engines[10] = 0;
+}
+
+int main(int argc, char **argv) { set_list(); // < initialize the const char * array 'supported_engines' that we call 'match()' with in the line immediately below
+    if (2 > argc || !match(argv[1], supported_engines)) unrecognized_APPROACH(argv[1]);
     if (3 > argc || !str_represents_ul(argv[2], &MOD)) { fprintf(stderr, "Failed to interpret composite '%s'!\n\nTerminating with exit status '-1'.\n", argv[2]); exit(-2); }
 
     _factorization_method factorization_method_chosen = fermat_factorization;
-    if (strcmp(argv[1], most_inefficient_TRIAL_DIVISION) == 0) {
+    if (match_variadic(argv[1], 2, most_inefficient_TRIAL_DIVISION, ONE)) {
 	fprintf(stdout, "Using trail division and checking for all 'x <= %lu' if x divides %lu.", MOD - 1, MOD);
 	factorization_method_chosen = most_inefficient_trial_division;
-    } else if (strcmp(argv[1], less_inefficient_TRIAL_DIVISION) == 0) {
+    } else if (match_variadic(argv[1], 2, less_inefficient_TRIAL_DIVISION, TWO)) {
 	fprintf(stdout, "Using trail division and checking for all 'x <= %lu' if f x divides %lu.", (MOD - (MOD % 2)) / 2, MOD);
 	factorization_method_chosen = less_inefficient_trial_division;
-    } else if (strcmp(argv[1], least_inefficient_TRIAL_DIVISION) == 0) {
+    } else if (match_variadic(argv[1], 2, least_inefficient_TRIAL_DIVISION, THREE)) {
 	fprintf(stdout, "Using trail division and checking for all x <= %lu if x divides %lu.", DOWN_ROUNDED_second_root(MOD), MOD);
 	factorization_method_chosen = least_inefficient_trial_division;
-    } else if (strcmp(argv[1], difference_of_squares_factorization_METHOD) == 0) { if (MOD % 2 == 0)
+    } else if (match_variadic(argv[1], 2, difference_of_squares_FACTORIZATION_METHOD, FOUR)) { if (MOD % 2 == 0)
 	{ fprintf(stderr, "%lu \u2261 0	(modulus 2)\n\nThe difference of squares method can only handle odd numbers, but %lu is even. Terminating with exit status '-3'.\n", MOD, MOD); return -3; }
 	fprintf(stderr, "Using the difference of squares method.");
 	factorization_method_chosen = difference_of_squares_factorization_method;
