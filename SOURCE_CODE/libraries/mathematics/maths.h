@@ -53,7 +53,7 @@ unsigned long least_common_multiple(unsigned long a, unsigned long b);
 
 unsigned long DOWN_ROUNDED_second_root(unsigned long number);
 
-unsigned long HALT_VAL(unsigned long composite, int stupidity_level); // Tells a for loop in one of the three functions below when to stop
+struct ordered_pair trail_division(unsigned long composite, unsigned long trail_limit);
 struct ordered_pair most_naive_factorization_approach(unsigned long any_composite);
 struct ordered_pair less_naive_factorization_approach(unsigned long any_composite);
 struct ordered_pair least_naive_factorization_approach(unsigned long any_composite);
