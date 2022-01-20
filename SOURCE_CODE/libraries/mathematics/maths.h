@@ -50,18 +50,5 @@ unsigned long modular_division(unsigned long member_from_equivalence_class_repre
 unsigned long SINGULAR_polynomial_over_GF(unsigned long **coefficient, unsigned long _x); // < array of coefficient pointers needs to be in reversed order to how polynomials are usually written in standard form
 unsigned long polynomial_over_GF(unsigned long x, int number_of_coefficients, ...);
 unsigned long least_common_multiple(unsigned long a, unsigned long b);
-
+struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *to_be_updated, unsigned long minimum);
 unsigned long DOWN_ROUNDED_second_root(unsigned long number);
-
-struct ordered_pair trail_division(unsigned long composite, unsigned long trail_limit);
-struct ordered_pair inefficient_trail_division(unsigned long any_composite);
-struct ordered_pair more_efficient_trail_division(unsigned long any_composite);
-struct ordered_pair most_efficient_trail_division(unsigned long any_composite);
-
-struct ordered_pair pair_reorder(struct ordered_pair *pair);
-struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *pair, unsigned long minimum);
-struct ordered_pair twos_factor_filter(unsigned long even_composite);
-struct ordered_pair difference_of_squares_factorization_method(unsigned long odd_composite); // almost fermat's factorization method
-struct ordered_pair odd_composite_decomposer_WRAPPER(unsigned long composite, _factorization_method odds_decomposer);
-struct ordered_pair fermat_factorization(unsigned long composite);
-// ^ Five functions for fermat factorization

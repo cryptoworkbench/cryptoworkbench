@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h" // 'factorization_method_WRAPPER()'
+#include "../../libraries/mathematics/factorization_methods.h" // 'factorization_method_WRAPPER()'
 ul MOD; // < This time we will use 'MOD' for the odd composite
 
 
