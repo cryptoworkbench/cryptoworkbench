@@ -20,9 +20,9 @@
 // When the program is ran for the first time it asks what factorization engine should be preferred and this is automatically saved to the external preferences file.
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/maths.h" // 'factorization_method_WRAPPER()'
-#include "../../libraries/mathematics/factorization_methods.h" // 'factorization_method_WRAPPER()'
-ul MOD; // < This time we will use 'MOD' for the odd composite
+#include "../../libraries/mathematics/maths.h" // needed for 'DOWN_ROUNDED_second_root()' and some of the factorization methods in 'factorization_methods.c' need functions headers from 'maths.h'
+#include "../../libraries/mathematics/factorization_methods.h" // needed for function pointers 'most_inefficient_trial_division', 'less_inefficient_trial_division', 'least_inefficient_trial_division', etc
+ul MOD; // < This time we will use 'MOD' for the composite
 
 
 char *most_inefficient_TRIAL_DIVISION = "most_inefficient_trial_division";
