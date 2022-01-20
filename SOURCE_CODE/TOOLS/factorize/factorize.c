@@ -30,7 +30,8 @@ const char *less_inefficient_TRIAL_DIVISION = "less_inefficient_trial_division";
 const char *least_inefficient_TRIAL_DIVISION = "least_inefficient_trial_division"; const char *_c = "c";
 const char *difference_of_squares_FACTORIZATION_METHOD = "difference_of_squares_factorization_method"; const char *_d = "d";
 const char *fermats_FACTORIZATION_METHOD = "fermats_factorization_method"; const char *_e = "e";
-const char *supported_engines[11]; // 5 factorization engines are supported, and each takes 2 signifiers (identifiers in 'argv[1]'). That means we need 10 slots plus one for the "NULL" pointer at the end. That's 11 sloths
+const char *prime_table_FACTORIZATION_METHOD = "prime_table_factorization_method"; const char *_f = "f";
+const char *supported_engines[13]; // 6 factorization engines are supported, and each takes 2 signifiers (identifiers in 'argv[1]'). That means we need 12 slots plus one for the "NULL" pointer at the end. That's 11 sloths
 // ^^ Prepare const char * array for 'match()'. set_list() completes the preparation immediately when 'main()' starts (which is to say immediately upon program execution).
 
 void unrecognized_APPROACH(char *argv_two) {
@@ -39,7 +40,8 @@ void unrecognized_APPROACH(char *argv_two) {
     fprintf(stderr, "b). %s\n", less_inefficient_TRIAL_DIVISION);
     fprintf(stderr, "c). %s\n", least_inefficient_TRIAL_DIVISION);
     fprintf(stderr, "d). %s\n", difference_of_squares_FACTORIZATION_METHOD);
-    fprintf(stderr, "e). %s\n\n", fermats_FACTORIZATION_METHOD);
+    fprintf(stderr, "e). %s\n", fermats_FACTORIZATION_METHOD);
+    fprintf(stderr, "f). %s\n\n", prime_table_FACTORIZATION_METHOD);
     fprintf(stderr, "\"%s\" is not one of them. Terminating with exit status '-1'.\n", argv_two);
     exit(-1);
 }
@@ -49,7 +51,9 @@ void set_list() {
     supported_engines[2] = _b; supported_engines[3] = less_inefficient_TRIAL_DIVISION;
     supported_engines[4] = _c; supported_engines[5] = least_inefficient_TRIAL_DIVISION;
     supported_engines[6] = _d; supported_engines[7] = difference_of_squares_FACTORIZATION_METHOD;
-    supported_engines[8] = _e; supported_engines[9] = fermats_FACTORIZATION_METHOD; supported_engines[10] = 0;
+    supported_engines[8] = _e; supported_engines[9] = fermats_FACTORIZATION_METHOD;
+    supported_engines[10] = _f; supported_engines[11] = prime_table_FACTORIZATION_METHOD;
+    supported_engines[12] = 0;
 }
 
 int main(int argc, char **argv) { set_list(); // < initialize the const char * array 'supported_engines' that we call 'match()' with in the line immediately below
@@ -68,9 +72,12 @@ int main(int argc, char **argv) { set_list(); // < initialize the const char * a
 	factorization_method_chosen = least_inefficient_trial_division;
     } else if (match_variadic(argv[1], 2, difference_of_squares_FACTORIZATION_METHOD, _d)) { if (MOD % 2 == 0)
 	{ fprintf(stderr, "%lu \u2261 0	(modulus 2)\n\nThe difference of squares method can only handle odd numbers, but %lu is even. Terminating with exit status '-3'.\n", MOD, MOD); return -3; }
-	fprintf(stderr, "Using the difference of squares method.");
+	fprintf(stdout, "Using the difference of squares method.");
 	factorization_method_chosen = difference_of_squares_factorization_method;
-    } else fprintf(stdout, "Using fermat's factorization method."); fprintf(stdout, "\n\n");
+    } else if (match_variadic(argv[1], 2, prime_table_FACTORIZATION_METHOD, _f)) {
+	fprintf(stdout, "Using a lookup by prime table trial division approach (using lookup table '%s').", _REPORT_standard_prime_table_filename());
+	factorization_method_chosen = prime_table_lookup_factorization_STANDARDIZED;
+    } else fprintf(stdout, "Using Fermat's factorization method."); fprintf(stdout, "\n\n");
 
     struct ordered_pair factorization_of_MOD = factorization_method_chosen(MOD);
     fprintf(stdout, "%lu = %lu * %lu\n", MOD, factorization_of_MOD.a, factorization_of_MOD.b);

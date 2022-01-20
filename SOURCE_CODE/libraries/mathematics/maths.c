@@ -2,7 +2,9 @@
  *
  * See the header file for function descriptions. */
 #include "maths.h"
-// #include "stdio.h"
+
+const char *standard_prime_table_filename = "universal_prime_table";
+char *_REPORT_standard_prime_table_filename() { return (char *) standard_prime_table_filename; }
 
 unsigned long conditional_field_cap(unsigned long result) { return (MOD) ? result % MOD : result; } // < Return result if there is no N_quotient, otherwise apply modular arithmetic
 unsigned long add(unsigned long a, unsigned long b) { return conditional_field_cap(a + b); }

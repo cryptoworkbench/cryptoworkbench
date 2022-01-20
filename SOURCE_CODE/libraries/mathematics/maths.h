@@ -6,6 +6,9 @@
 #define SET_DEVOID_OF_UNITS 0
 #define SET_DEVOID_OF_PRIME_FACTORS 1
 typedef unsigned long ul; extern ul MOD;
+
+char *_REPORT_standard_prime_table_filename(); // < for access in other files to 'const char pointer standard_prime_table_filename'.
+
 struct ordered_pair { unsigned long a; unsigned long b; };
 
 typedef ul* UL_ptr;
