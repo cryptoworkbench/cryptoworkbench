@@ -21,5 +21,5 @@ int main(int argc, char **argv) {
     // ^ Deal with user input
 
     FILE *FS_to_external_prime_table = fopen(output_filename, "w"); // overwritten if already exists: outputting to the same output file again with a lesser 'MOD' shrinks the prime table
-    fprintf(stdout, "Exported %lu primes to external file '%s' (which is all primes less than %lu).\n", primes_printed_from_sieve_array_to_FS(sieve_of_eratosthenes(MOD), MOD, FS_to_external_prime_table), output_filename, MOD); return 0;
+    fprintf(stdout, "Exported %lu primes to external file '%s' (which is all primes less than %lu).\n", primes_printed_from_sieve_array_to_FS(sieve_of_eratosthenes(MOD), MOD, FS_to_external_prime_table), output_filename, MOD); fclose(FS_to_external_prime_table); return 0;
 }
