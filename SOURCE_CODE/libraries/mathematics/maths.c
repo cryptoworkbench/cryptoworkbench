@@ -154,9 +154,9 @@ char *sieve_of_eratosthenes(unsigned long limit) {
     char *ret_val = (char *) malloc(sizeof(char) * (limit - 1)); // we allocate a spot less because I do not see the number one as a prime, or perhaps because it isn't ... ... ...
     ul i; for (i = 2; i <= limit; i++) ret_val[i - 2] = 1; for (i = 2; i * i <= limit; i++) for (ul j = i; j * i <= limit; j++) ret_val[(j * i) - 2] = 0;
     return ret_val;
-}
+} // ^ supposed to be used in conjunction with 'primes_printed_from_sieve_array_to_FS()'
 
 unsigned long primes_printed_from_sieve_array_to_FS(char *sieve, unsigned long limit, FILE *FS) { ul ret_val = ADDITIVE_IDENTITY;
-    for (ul i = 1; i < limit; i++) if (sieve[i - 1]) { fprintf(FS, "%lu\n", i + 1); ret_val++; }
+    for (ul i = 2; i < limit; i++) if (sieve[i - 2]) { fprintf(FS, "%lu\n", i); ret_val++; } free(sieve); // it is quintisentially a difficult problem to predict the last prime in the sieve unfortunately
     return ret_val;
 }
