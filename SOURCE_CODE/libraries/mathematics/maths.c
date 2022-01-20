@@ -149,3 +149,9 @@ struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered
 
 unsigned long DOWN_ROUNDED_second_root(unsigned long number) { struct ordered_pair pair = {0, 0}; least_perfect_square_equal_to_or_greater_than(&pair, number); if (pair.b == number) return pair.a; else return pair.a - 1;}
 // ^ dependency of 'most_efficient_trail_division()' function in the library 'factorization_methods.c'
+
+char *sieve_of_eratosthenes(unsigned long limit) {
+    char *ret_val = (char *) malloc(sizeof(char) * (limit - 1)); // we allocate a spot less because I do not see the number one as a prime, or perhaps because it isn't ... ... ...
+    ul i; for (i = 2; i <= limit; i++) ret_val[i - 2] = 1; for (i = 2; i * i <= limit; i++) for (ul j = i; j * i <= limit; j++) ret_val[(j * i) - 2] = 0;
+    return ret_val;
+}

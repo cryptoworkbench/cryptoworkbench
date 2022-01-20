@@ -52,3 +52,4 @@ unsigned long polynomial_over_GF(unsigned long x, int number_of_coefficients, ..
 unsigned long least_common_multiple(unsigned long a, unsigned long b);
 struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *to_be_updated, unsigned long minimum);
 unsigned long DOWN_ROUNDED_second_root(unsigned long number);
+char *sieve_of_eratosthenes(unsigned long limit);

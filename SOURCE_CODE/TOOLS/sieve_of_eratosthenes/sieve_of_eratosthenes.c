@@ -12,15 +12,13 @@ void error_and_exit(char *argv_one) { int exit_status = - 1;
     exit(exit_status);
 }
 
+
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) error_and_exit(argv[1]);
     // ^ Deal with user input
 
-    char *sieve = (char *) malloc(sizeof(char) * (MOD - 1)); // we allocate a spot less because I do not see the number one as a prime, or perhaps because it isn't ... ... ...
-    ul i; for (i = 2; i <= MOD; i++) sieve[i - 2] = 1; for (i = 2; i * i <= MOD; i++) for (ul j = i; j * i <= MOD; j++) sieve[(j * i) - 2] = 0;
-    // ^^ Prepare everything for printing out all primes less than 'MOD'
-
-    ul number_of_primes_under_MOD = ADDITIVE_IDENTITY; for (i = 2; i <= MOD; i++) if (sieve[i - 2]) { fprintf(stdout, "%lu\n", i); number_of_primes_under_MOD++; }
+    char *sieve = sieve_of_eratosthenes(MOD);
+    ul number_of_primes_under_MOD = ADDITIVE_IDENTITY; for (ul i = 2; i <= MOD; i++) if (sieve[i - 2]) { fprintf(stdout, "%lu\n", i); number_of_primes_under_MOD++; } free(sieve);
     // ^ Print all primes less than 'MOD' to stdout
 
     fprintf(stdout, "\nPrinted %lu primes.\n", number_of_primes_under_MOD); return 0;
