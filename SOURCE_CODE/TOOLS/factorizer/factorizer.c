@@ -28,47 +28,39 @@ ul MOD; // < This time we will use 'MOD' for the composite
 const char *A = "a"; const char *B ="b"; const char *C = "c"; const char *D = "d"; const char *E = "e"; const char *F ="f"; const char *G = "g"; const char *H = "h";
 // ^ All of the codes in use to signify the various engines.
 
-const char *choice_A_description = "least efficient trial division";
-const char *choice_B_description = "less efficient trial division";
-const char *choice_C_description = "most efficient trial division";
+const char *choice_A = "least efficient trial division";
+const char *choice_B = "less efficient trial division";
+const char *choice_C = "most efficient trial division";
 
-const char *choice_D_description = "least efficient trial division (aided by prime table)";
-const char *choice_E_description = "less efficient trial division (aided by prime table)";
-const char *choice_F_description = "most efficient trial division (aided by prime table)";
+const char *choice_D = "least efficient trial division (aided by prime table)";
+const char *choice_E = "less efficient trial division (aided by prime table)";
+const char *choice_F = "most efficient trial division (aided by prime table)";
 
-const char *choice_G_description = "difference of squares factorization method";
-const char *choice_H_description = "fermats factorization method";
+const char *choice_G = "difference of squares factorization method";
+const char *choice_H = "fermats factorization method";
 
 const char *supported_engines[9]; // 6 factorization engines are supported, and each takes 2 signifiers (identifiers in 'argv[1]'). That means we need 12 slots plus one for the "NULL" pointer at the end. That's 11 sloths
 // ^^ Prepare const char * array for 'match()'. set_list() completes the preparation immediately when 'main()' starts (which is to say immediately upon program execution).
 
 void unrecognized_APPROACH(char *argv_two) {
     fprintf(stderr, "Please specify one of the factorization methods available:\n");
-    fprintf(stderr, "%s). %s\n", A, choice_A_description);
-    fprintf(stderr, "%s). %s\n", B, choice_B_description);
+    fprintf(stderr, "%s). %s\n", A, choice_A);
+    fprintf(stderr, "%s). %s\n", B, choice_B);
+    fprintf(stderr, "%s). %s\n", C, choice_C); // < ^ trial division algorithms
 
-    fprintf(stderr, "%s). %s\n", C, choice_C_description);
-    fprintf(stderr, "%s). %s\n", D, choice_D_description);
+    fprintf(stderr, "%s). %s\n", D, choice_D);
+    fprintf(stderr, "%s). %s\n", E, choice_E);
+    fprintf(stderr, "%s). %s\n", F, choice_F); // < ^ trial division algorithms aided by a prime table
 
-    fprintf(stderr, "%s). %s\n", E, choice_E_description);
-    fprintf(stderr, "%s). %s\n", F, choice_F_description);
-
-    fprintf(stderr, "%s). %s\n", G, choice_G_description);
-    fprintf(stderr, "%s). %s\n\n", H, choice_H_description);
+    fprintf(stderr, "%s). %s\n", G, choice_G);
+    fprintf(stderr, "%s). %s\n\n", H, choice_H);
     fprintf(stderr, "\"%s\" is not one of them. Terminating with exit status '-1'.\n", argv_two);
     exit(-1);
 }
 
 void set_list() {
-    supported_engines[0] = A;
-    supported_engines[1] = B;
-    supported_engines[2] = C;
-    supported_engines[3] = D;
-    supported_engines[4] = E;
-    supported_engines[5] = F;
-    supported_engines[6] = G;
-    supported_engines[7] = H;
-    supported_engines[8] = 0;
+    supported_engines[0] = A; supported_engines[1] = B; supported_engines[2] = C; supported_engines[3] = D; supported_engines[4] = E;
+    supported_engines[5] = F; supported_engines[6] = G; supported_engines[7] = H; supported_engines[8] = 0;
 }
 
 int main(int argc, char **argv) { set_list(); // < initialize the const char * array 'supported_engines' that we call 'match()' with in the line immediately below
