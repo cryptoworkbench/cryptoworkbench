@@ -7,26 +7,32 @@ struct ordered_pair trail_division(unsigned long composite, unsigned long trial_
     ret_val.a = i; ret_val.b = composite / i; return ret_val;
 } // 'most_inefficient_trial_division()', 'less_inefficient_trial_division()', 'least_inefficient_trial_division()'
 
-struct ordered_pair trial_division_aided_by_table(unsigned long composite, char *prime_table_filename) { struct ordered_pair ret_val; ret_val.a = 1; ret_val.b = composite; // make this without return variable 'ret_val'
+struct ordered_pair trial_division_aided_by_table(unsigned long composite, unsigned long trial_limit, char *prime_table_filename) { struct ordered_pair ret_val; ret_val.a = 1; ret_val.b = composite; // make this without return variable 'ret_val'
     if (!prime_table_filename) prime_table_filename = _REPORT_standard_prime_table_filename(); FILE *prime_table = fopen(prime_table_filename, "r"); // < open the right table to interpret primes from
     ul prime; do {
 	if (fscanf(prime_table, "%lu\n", &prime) != 1) { fprintf(stderr, "The prime table '%s' is not complete enough to find the first prime divisors of %lu.\n", prime_table_filename, composite); exit(-1); }
-	if (DOWN_ROUNDED_second_root(composite) < prime) return ret_val;
+	if (trial_limit < prime) return ret_val;
     } while (composite % prime != 0); // we perform the same while loop here as in 'trail_division()'
     ret_val.a = prime; ret_val.b = composite / prime; return ret_val;
-} // ^ Dependency of 'trial_division_aided_by_table_STANDARDIZED()'
+} struct ordered_pair _trial_division_aided_by_table(unsigned long composite, unsigned long trial_limit) { return trial_division_aided_by_table(composite, trial_limit, NULL); }
+// ^ Dependency of 'trial_division_aided_by_table_STANDARDIZED()'
 
-struct ordered_pair most_inefficient_trial_division(unsigned long composite) { return trail_division(composite, composite - 1); }
-struct ordered_pair less_inefficient_trial_division(unsigned long composite) { return trail_division(composite, (composite - (composite % 2)) / 2); }
-struct ordered_pair least_inefficient_trial_division(unsigned long composite) { return trail_division(composite, DOWN_ROUNDED_second_root(composite)); }
+unsigned long trial_limit(unsigned long composite, int supidity_level)
+{ switch (supidity_level) { case 3: return composite; case 2: return (composite - (composite % 2)) / 2; case 1: return DOWN_ROUNDED_second_root(composite); }; }
 
-struct ordered_pair _trial_division_aided_by_table(unsigned long composite) { return trial_division_aided_by_table(composite, NULL); }
+struct ordered_pair most_inefficient_trial_division(unsigned long composite) { return trail_division(composite, trial_limit(composite, 3)); }
+struct ordered_pair most_inefficient_trial_division_aided_by_table(unsigned long composite) { return _trial_division_aided_by_table(composite, trial_limit(composite, 3)); }
+
+struct ordered_pair less_inefficient_trial_division(unsigned long composite) { return trail_division(composite, trial_limit(composite, 2)); }
+struct ordered_pair less_inefficient_trial_division_aided_by_table(unsigned long composite) { return _trial_division_aided_by_table(composite, trial_limit(composite, 2)); }
+
+struct ordered_pair least_inefficient_trial_division(unsigned long composite) { return trail_division(composite, trial_limit(composite, 1)); }
+struct ordered_pair least_inefficient_trial_division_aided_by_table(unsigned long composite) { return _trial_division_aided_by_table(composite, trial_limit(composite, 1)); }
 
 // NOW SOME FUNCTIONS TO ACHIEVE FERMAT FACTORIZATION
 // We will use "struct ordered_pair"
 // We will use unsigned long member 'a' for the roots
 // We will use unsigned member 'b' for the squares
-
 struct ordered_pair difference_of_squares_factorization_method(unsigned long odd_composite) {
     struct ordered_pair square_BIG = {0, 0}; // Declare the struct we will use for the 'BIG' square
     struct ordered_pair square_SMALL = {0, 0}; // Declare the struct we will use for the 'SMALL' square

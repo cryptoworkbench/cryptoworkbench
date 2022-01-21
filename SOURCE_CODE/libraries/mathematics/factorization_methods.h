@@ -3,7 +3,12 @@
 typedef struct ordered_pair (*_factorization_method) (unsigned long);
 // ^ One function pointer type
 
-struct ordered_pair trail_division(unsigned long composite, unsigned long trail_limit);
+struct ordered_pair trail_division(unsigned long composite, unsigned long trial_limit);
+struct ordered_pair trial_division_aided_by_table(unsigned long composite, unsigned long trial_limit, char *prime_table_filename);
+struct ordered_pair _trial_division_aided_by_table(unsigned long composite, unsigned long trial_limit);
+// ^ Trial division factorization engines
+
+unsigned long trial_limit(unsigned long composite, int supidity_level);
 struct ordered_pair most_inefficient_trial_division(unsigned long composite);
 struct ordered_pair less_inefficient_trial_division(unsigned long composite);
 struct ordered_pair least_inefficient_trial_division(unsigned long composite);
@@ -13,6 +18,8 @@ struct ordered_pair odd_composite_decomposer_WRAPPER(unsigned long composite, _f
 struct ordered_pair pair_reorder(struct ordered_pair *pair);
 struct ordered_pair twos_factor_filter(unsigned long even_composite);
 struct ordered_pair fermat_factorization(unsigned long composite);
-struct ordered_pair trial_division_aided_by_table(unsigned long composite, char *alternate_prime_lookup_table);
-struct ordered_pair _trial_division_aided_by_table(unsigned long composite);
 // ^ And a lot of functions
+
+struct ordered_pair most_inefficient_trial_division_aided_by_table(unsigned long composite);
+struct ordered_pair less_inefficient_trial_division_aided_by_table(unsigned long composite);
+struct ordered_pair least_inefficient_trial_division_aided_by_table(unsigned long composite);
