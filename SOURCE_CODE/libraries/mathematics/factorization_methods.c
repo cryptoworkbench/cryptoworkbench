@@ -6,7 +6,7 @@
 
 struct ordered_pair trial_division(unsigned long composite, unsigned long trial_limit) { struct ordered_pair ret_val;
     // ul i = 1; do { i++; if (trial_limit < i) break; } while (composite % i != 0); // ul i = 1; do { i++; if (composite % i == 0) break; } while (trial_limit < i);
-    ul i = 2; while (composite % i != 0) i++;
+    ul i; for (i = 2; composite % i != 0; i++) {} // ul i = 2; while (composite % i != 0) i++;
     ret_val.a = i; ret_val.b = composite / i; return ret_val;
 } // 'trial_division_LEAST_EFFICIENT()', 'trial_division_LESS_EFFICIENT()', 'trial_division_MOST_EFFICIENT()'
 
@@ -15,12 +15,12 @@ struct ordered_pair _TABLE_AIDED_trial_division(unsigned long composite, unsigne
     if (!prime_table_filename) prime_table_filename = _REPORT_standard_prime_table_filename();
     FILE *prime_table = prime_table_open(prime_table_filename);
 
-    ul prime; do {
+    ul prime; do { // this is actualy the simplest construction possible.
 	if (fscanf(prime_table, "%lu\n", &prime) != 1) { fprintf(stderr, "The prime table '%s' is not complete enough to find the first prime divisor of %lu.\n", prime_table_filename, composite); exit(-1); }
-	if (trial_limit < prime) break;
+	if (trial_limit < prime) prime = composite; // < in normal trial division, the next loop iterator variable value would be composite, but not here.
     } while (composite % prime != 0); fclose(prime_table); // we perform the same while loop here as in 'trial_division()'
-    if (composite % prime == 0) { ret_val.a = prime; ret_val.b = composite / ret_val.a; }
-    else { ret_val.a = MULTIPLICATIVE_IDENTITY; ret_val.b = composite / ret_val.a; }
+
+    ret_val.a = prime; ret_val.b = composite / ret_val.a;
     return ret_val;
 }
 

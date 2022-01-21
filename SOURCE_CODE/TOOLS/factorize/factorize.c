@@ -69,17 +69,17 @@ int main(int argc, char **argv) { set_list(); // < initialize the const char * a
 
     _factorization_method factorization_method_chosen = fermat_factorization;
     if (strcmp(argv[1], A) == 0) { factorization_method_chosen = trial_division_LEAST_EFFICIENT;
-	fprintf(stdout, "Using trail division and checking for all 'x <= %lu' if x divides %lu.", MOD, MOD);
+	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", MOD, MOD);
     } else if (strcmp(argv[1], B) == 0) { factorization_method_chosen = trial_division_LESS_EFFICIENT;
-	fprintf(stdout, "Using trail division and checking for all 'x <= %lu' if f x divides %lu.", (MOD - (MOD % 2)) / 2, MOD);
+	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", (MOD - (MOD % 2)) / 2, MOD);
     } else if (strcmp(argv[1], C) == 0) { factorization_method_chosen = trial_division_MOST_EFFICIENT;
-	fprintf(stdout, "Using trail division and checking for all 'x <= %lu' if f x divides %lu.", DOWN_ROUNDED_second_root(MOD), MOD);
+	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", DOWN_ROUNDED_second_root(MOD), MOD);
     } else if (strcmp(argv[1], D)) { factorization_method_chosen = TABLE_AIDED_trial_division_LEAST_EFFICIENT;
-	fprintf(stdout, "Using prime table aided trail division (with '%s') and checking for all 'x <= %lu' if f x divides %lu.", _REPORT_standard_prime_table_filename(), MOD, MOD);
+	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", _REPORT_standard_prime_table_filename(), MOD, MOD);
     } else if (strcmp(argv[1], E)) { factorization_method_chosen = TABLE_AIDED_trial_division_LESS_EFFICIENT;
-	fprintf(stdout, "Using prime table aided trail division (with '%s') and checking for all 'x <= %lu' if f x divides %lu.", _REPORT_standard_prime_table_filename(), (MOD - (MOD % 2)) / 2, MOD);
+	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", _REPORT_standard_prime_table_filename(), (MOD - (MOD % 2)) / 2, MOD);
     } else if (strcmp(argv[1], F)) { factorization_method_chosen = TABLE_AIDED_trial_division_MOST_EFFICIENT;
-	fprintf(stdout, "Using prime table aided trail division (with '%s') and checking for all 'x <= %lu' if f x divides %lu.", _REPORT_standard_prime_table_filename(), DOWN_ROUNDED_second_root(MOD), MOD);
+	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", _REPORT_standard_prime_table_filename(), DOWN_ROUNDED_second_root(MOD), MOD);
     } else if (strcmp(argv[1], G)) { factorization_method_chosen = difference_of_squares_factorization_method;
 	if (MOD % 2 == 0)
 	{ fprintf(stderr, "%lu \u2261 0	(modulus 2)\n\nThe difference of squares method can only handle odd numbers, but %lu is even. Terminating with exit status '-3'.\n", MOD, MOD); return -3; }
