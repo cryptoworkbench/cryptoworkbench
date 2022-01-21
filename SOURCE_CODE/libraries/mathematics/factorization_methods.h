@@ -10,8 +10,14 @@ struct ordered_pair _trial_division_aided_by_table(unsigned long composite, unsi
 
 unsigned long trial_limit(unsigned long composite, int supidity_level);
 struct ordered_pair most_inefficient_trial_division(unsigned long composite);
+struct ordered_pair most_inefficient_trial_division_aided_by_table(unsigned long composite);
+
 struct ordered_pair less_inefficient_trial_division(unsigned long composite);
+struct ordered_pair less_inefficient_trial_division_aided_by_table(unsigned long composite);
+
 struct ordered_pair least_inefficient_trial_division(unsigned long composite);
+struct ordered_pair least_inefficient_trial_division_aided_by_table(unsigned long composite);
+
 struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *to_be_updated, unsigned long minimum);
 struct ordered_pair difference_of_squares_factorization_method(unsigned long odd_composite);
 struct ordered_pair odd_composite_decomposer_WRAPPER(unsigned long composite, _factorization_method odds_decomposer);
