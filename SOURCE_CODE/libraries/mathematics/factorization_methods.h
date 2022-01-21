@@ -13,6 +13,6 @@ struct ordered_pair odd_composite_decomposer_WRAPPER(unsigned long composite, _f
 struct ordered_pair pair_reorder(struct ordered_pair *pair);
 struct ordered_pair twos_factor_filter(unsigned long even_composite);
 struct ordered_pair fermat_factorization(unsigned long composite);
-struct ordered_pair prime_table_lookup_factorization(unsigned long composite, char *alternate_prime_lookup_table);
-struct ordered_pair prime_table_lookup_factorization_STANDARDIZED(unsigned long composite);
+struct ordered_pair trial_division_aided_by_table(unsigned long composite, char *alternate_prime_lookup_table);
+struct ordered_pair _trial_division_aided_by_table(unsigned long composite);
 // ^ And a lot of functions

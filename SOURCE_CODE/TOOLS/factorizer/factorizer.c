@@ -76,7 +76,7 @@ int main(int argc, char **argv) { set_list(); // < initialize the const char * a
 	factorization_method_chosen = difference_of_squares_factorization_method;
     } else if (match_variadic(argv[1], 2, prime_table_FACTORIZATION_METHOD, _f)) {
 	fprintf(stdout, "Using a lookup by prime table trial division approach (using lookup table '%s').", _REPORT_standard_prime_table_filename());
-	factorization_method_chosen = prime_table_lookup_factorization_STANDARDIZED;
+	factorization_method_chosen = _trial_division_aided_by_table;
     } else fprintf(stdout, "Using Fermat's factorization method."); fprintf(stdout, "\n\n");
 
     struct ordered_pair factorization_of_MOD = factorization_method_chosen(MOD);
