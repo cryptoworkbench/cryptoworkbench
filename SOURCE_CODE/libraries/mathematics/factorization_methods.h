@@ -2,7 +2,7 @@ typedef struct ordered_pair (*_factorization_method) (unsigned long);
 // ^ One function pointer type
 
 unsigned long trial_limit(unsigned long composite, int supidity_level);
-struct ordered_pair trail_division(unsigned long composite, unsigned long trial_limit);
+struct ordered_pair trial_division(unsigned long composite, unsigned long trial_limit);
 struct ordered_pair _TABLE_AIDED_trial_division(unsigned long composite, unsigned long trial_limit, char *prime_table_filename);
 struct ordered_pair TABLE_AIDED_trial_division(unsigned long composite, unsigned long trial_limit);
 // ^ Trial division factorization engines
