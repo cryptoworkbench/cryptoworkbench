@@ -3,36 +3,24 @@
 #include "maths.h" // needed for 'DOWN_ROUNDED_second_root()'
 
 struct ordered_pair trail_division(unsigned long composite, unsigned long trial_limit) { struct ordered_pair ret_val;
-    ul i = 1;
-    do {i++; if (trial_limit < i) break;
-    } while (composite % i != 0);
-    // ^ Perform a while loop in order to find 'i' such that 'composite % i' is the first prime divisor of 'composite'
-
-    ret_val.a = composite / i; ret_val.b = i;
-    return pair_reorder(&ret_val);
+    ul i = 1; do { i++; if (trial_limit < i) break; } while (composite % i != 0);
+    ret_val.a = i; ret_val.b = composite / i; return ret_val;
 } // 'most_inefficient_trial_division()', 'less_inefficient_trial_division()', 'least_inefficient_trial_division()'
 
-struct ordered_pair trial_division_aided_by_table(unsigned long composite, char *prime_table_filename) { struct ordered_pair ret_val; ret_val.a = 1; ret_val.b = composite;
+struct ordered_pair trial_division_aided_by_table(unsigned long composite, char *prime_table_filename) { struct ordered_pair ret_val; ret_val.a = 1; ret_val.b = composite; // make this without return variable 'ret_val'
     if (!prime_table_filename) prime_table_filename = _REPORT_standard_prime_table_filename(); FILE *prime_table = fopen(prime_table_filename, "r"); // < open the right table to interpret primes from
-
-    ul prime;
-    do {if (fscanf(prime_table, "%lu\n", &prime) != 1) { fprintf(stderr, "The prime table '%s' is not complete enough to find the first prime divisors of %lu.\n", prime_table_filename, composite); exit(-1); }
-	// ^ Complain if the prime needed next is not available
-
+    ul prime; do {
+	if (fscanf(prime_table, "%lu\n", &prime) != 1) { fprintf(stderr, "The prime table '%s' is not complete enough to find the first prime divisors of %lu.\n", prime_table_filename, composite); exit(-1); }
 	if (DOWN_ROUNDED_second_root(composite) < prime) return ret_val;
-	// ^ Return '1' in member 'a' when composite turned out to be prime
-
-    } while (composite % prime != 0);
-    // ^ Perform a while loop in order to find 
-
-    ret_val.a = prime;
-    ret_val.b = composite / prime;
-    return ret_val; // pair reorder not needed here
+    } while (composite % prime != 0); // we perform the same while loop here as in 'trail_division()'
+    ret_val.a = prime; ret_val.b = composite / prime; return ret_val;
 } // ^ Dependency of 'trial_division_aided_by_table_STANDARDIZED()'
 
 struct ordered_pair most_inefficient_trial_division(unsigned long composite) { return trail_division(composite, composite - 1); }
 struct ordered_pair less_inefficient_trial_division(unsigned long composite) { return trail_division(composite, (composite - (composite % 2)) / 2); }
 struct ordered_pair least_inefficient_trial_division(unsigned long composite) { return trail_division(composite, DOWN_ROUNDED_second_root(composite)); }
+
+struct ordered_pair _trial_division_aided_by_table(unsigned long composite) { return trial_division_aided_by_table(composite, NULL); }
 
 // NOW SOME FUNCTIONS TO ACHIEVE FERMAT FACTORIZATION
 // We will use "struct ordered_pair"
@@ -61,7 +49,3 @@ struct ordered_pair twos_factor_filter(unsigned long even_composite) { struct or
 }
 
 struct ordered_pair fermat_factorization(unsigned long composite) { return odd_composite_decomposer_WRAPPER(composite, difference_of_squares_factorization_method); }
-
-struct ordered_pair _trial_division_aided_by_table(unsigned long composite) {
-    return trial_division_aided_by_table(composite, NULL);
-}
