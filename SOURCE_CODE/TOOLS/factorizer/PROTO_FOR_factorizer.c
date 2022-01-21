@@ -37,11 +37,16 @@ const char *supported_engines[13]; // 6 factorization engines are supported, and
 void unrecognized_APPROACH(char *argv_two) {
     fprintf(stderr, "Please specify one of the factorization methods available:\n");
     fprintf(stderr, "a). %s\n", most_inefficient_TRIAL_DIVISION);
-    fprintf(stderr, "b). %s\n", less_inefficient_TRIAL_DIVISION);
-    fprintf(stderr, "c). %s\n", least_inefficient_TRIAL_DIVISION);
-    fprintf(stderr, "d). %s\n", difference_of_squares_FACTORIZATION_METHOD);
-    fprintf(stderr, "e). %s\n", fermats_FACTORIZATION_METHOD);
-    fprintf(stderr, "f). %s\n\n", prime_table_FACTORIZATION_METHOD);
+    fprintf(stderr, "b). %s\n", most_inefficient_TRIAL_DIVISION_AIDED_BY_PRIME_TABLE);
+
+    fprintf(stderr, "c). %s\n", less_inefficient_TRIAL_DIVISION);
+    fprintf(stderr, "d). %s\n", less_inefficient_TRIAL_DIVISION_AIDED_BY_PRIME_TABLE);
+
+    fprintf(stderr, "e). %s\n", least_inefficient_TRIAL_DIVISION);
+    fprintf(stderr, "f). %s\n", least_inefficient_TRIAL_DIVISION_AIDED_BY_PRIME_TABLE);
+
+    fprintf(stderr, "g). %s\n", difference_of_squares_FACTORIZATION_METHOD);
+    fprintf(stderr, "h). %s\n", fermats_FACTORIZATION_METHOD);
     fprintf(stderr, "\"%s\" is not one of them. Terminating with exit status '-1'.\n", argv_two);
     exit(-1);
 }
