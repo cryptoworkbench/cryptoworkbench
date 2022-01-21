@@ -58,4 +58,4 @@ unsigned long DOWN_ROUNDED_second_root(unsigned long number);
 
 char *sieve_of_eratosthenes(unsigned long limit);
 unsigned long primes_printed_from_sieve_array_to_FS(char *sieve, unsigned long limit, FILE *FS);
-FILE *prime_table_open(char *prime_table_filename);
+FILE *prime_table_open(char *prime_table_filename); // < I want this to eventually try to cooperate with the logbook instead of stderr

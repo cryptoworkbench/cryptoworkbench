@@ -10,21 +10,21 @@ struct ordered_pair trial_division(unsigned long composite, unsigned long trial_
     ret_val.a = i; ret_val.b = composite / i; return ret_val;
 } // 'trial_division_LEAST_EFFICIENT()', 'trial_division_LESS_EFFICIENT()', 'trial_division_MOST_EFFICIENT()'
 
-struct ordered_pair _TABLE_AIDED_trial_division(unsigned long composite, unsigned long trial_limit, char *prime_table_filename) {
-    struct ordered_pair ret_val; // ret_val.a = MULTIPLICATIVE_IDENTITY; ret_val.b = composite; // < prepare ret_val
-    if (!prime_table_filename) prime_table_filename = _REPORT_standard_prime_table_filename();
-    FILE *prime_table = prime_table_open(prime_table_filename); // < quits if the file cannot be opened
+struct ordered_pair _table_aided_trial_division(unsigned long composite, unsigned long trial_limit, char *prime_table_filename_specification) {
+    if (!prime_table_filename_specification) prime_table_filename_specification = _REPORT_standard_prime_table_filename();
+    FILE *prime_table = prime_table_open(prime_table_filename_specification);
+    // ^^ Open the prime table specified (quits with appriopiate error message if impossible)
 
-    ul prime; do { // this is actualy the simplest construction possible.
-	if (fscanf(prime_table, "%lu\n", &prime) != 1) { fprintf(stderr, "The prime table '%s' is not complete enough to find the first prime divisor of %lu.\n", prime_table_filename, composite); exit(-1); }
-	if (trial_limit < prime) prime = composite; // < in normal trial division, the next loop iterator variable value would be composite, but not here.
-    } while (composite % prime != 0); fclose(prime_table); // we perform the same while loop here as in 'trial_division()'
+    ul prime; do {
+	if (fscanf(prime_table, "%lu\n", &prime) != 1) { fprintf(stderr, "The prime table '%s' is not complete enough to find the first prime divisor of %lu.\n", prime_table_filename_specification, composite); exit(-1); }
+	if (trial_limit < prime) prime = composite; } while (composite % prime != 0); fclose(prime_table);
 
+    struct ordered_pair ret_val;
     ret_val.a = prime; ret_val.b = composite / ret_val.a;
     return ret_val;
 }
 
-struct ordered_pair table_aided_trial_division(unsigned long composite, unsigned long trial_limit) { return _TABLE_AIDED_trial_division(composite, trial_limit, NULL); }
+struct ordered_pair table_aided_trial_division(unsigned long composite, unsigned long trial_limit) { return _table_aided_trial_division(composite, trial_limit, NULL); }
 // ^ Dependency of 'trial_division_aided_by_table_STANDARDIZED()'
 
 unsigned long trial_limit(unsigned long composite, int supidity_level)
@@ -35,9 +35,9 @@ struct ordered_pair trial_division_LESS_EFFICIENT(unsigned long composite) { ret
 struct ordered_pair trial_division_MOST_EFFICIENT(unsigned long composite) { return trial_division(composite, trial_limit(composite, 1)); }
 // ^ trial division methods
 
-struct ordered_pair TABLE_AIDED_trial_division_LEAST_EFFICIENT(unsigned long composite) { return table_aided_trial_division(composite, trial_limit(composite, 3)); }
-struct ordered_pair TABLE_AIDED_trial_division_LESS_EFFICIENT(unsigned long composite) { return table_aided_trial_division(composite, trial_limit(composite, 2)); }
-struct ordered_pair TABLE_AIDED_trial_division_MOST_EFFICIENT(unsigned long composite) { return table_aided_trial_division(composite, trial_limit(composite, 1)); }
+struct ordered_pair table_aided_trial_division_LEAST_EFFICIENT(unsigned long composite) { return table_aided_trial_division(composite, trial_limit(composite, 3)); }
+struct ordered_pair table_aided_trial_division_LESS_EFFICIENT(unsigned long composite) { return table_aided_trial_division(composite, trial_limit(composite, 2)); }
+struct ordered_pair table_aided_trial_division_MOST_EFFICIENT(unsigned long composite) { return table_aided_trial_division(composite, trial_limit(composite, 1)); }
 // ^ same trial division methods aided by a table
 
 // NOW SOME FUNCTIONS TO ACHIEVE FERMAT FACTORIZATION
