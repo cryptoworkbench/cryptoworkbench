@@ -4,8 +4,8 @@
 ../../libraries/mathematics/.factorization_methods.o: ../../libraries/mathematics/factorization_methods.h ../../libraries/mathematics/factorization_methods.c
 	gcc -c ../../libraries/mathematics/factorization_methods.c -o ../../libraries/mathematics/.factorization_methods.o
 
-.factorize.o: factorize.c
-	gcc -c factorize.c -o .factorize.o
+.factorizer.o: factorizer.c
+	gcc -c factorizer.c -o .factorizer.o
 
-factorize: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o .factorize.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o .factorize.o -o ../../../WORKBENCH/factorize
+factorizer: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o .factorizer.o
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o .factorizer.o -o ../../../WORKBENCH/factorizer

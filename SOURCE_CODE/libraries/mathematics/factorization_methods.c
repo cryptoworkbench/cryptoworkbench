@@ -3,8 +3,8 @@
 #include "maths.h" // needed for 'DOWN_ROUNDED_second_root()'
 
 struct ordered_pair trail_division(unsigned long composite, unsigned long trail_limit) { struct ordered_pair ret_val;
-    for (ul i = 2; i <= trail_limit; i++) if (composite % i == 0) { ret_val.a = composite / i; ret_val.b = i; return pair_reorder(&ret_val); }
-    return (struct ordered_pair) { composite, 1 };
+    ul i = 1; do {i++; if (composite % i == 0) break; } while (i < trail_limit);
+    ret_val.a = composite / i; ret_val.b = i; return pair_reorder(&ret_val);
 }
 
 struct ordered_pair most_inefficient_trial_division(unsigned long composite) { return trail_division(composite, composite - 1); }
@@ -38,19 +38,6 @@ struct ordered_pair twos_factor_filter(unsigned long even_composite) { struct or
 }
 
 struct ordered_pair fermat_factorization(unsigned long composite) { return odd_composite_decomposer_WRAPPER(composite, difference_of_squares_factorization_method); }
-
-/*
-struct ordered_pair prime_table_lookup_factorization(unsigned long composite, char *prime_table_filename) { struct ordered_pair ret_val;
-    if (!prime_table_filename) prime_table_filename = _REPORT_standard_prime_table_filename(); FILE *prime_table = fopen(prime_table_filename, "r");
-    // ^ open the appriopiate prime table to read from
-
-    ul limit = DOWN_ROUNDED_second_root(composite); ul prime;
-    while (fscanf(prime_table, "%lu\n", &prime) == 1) {
-	if (prime <= limit) {
-	    if (composite % prime == 0) { ret_val.a = prime; ret_val.b = composite / prime; return ret_val; }
-	} else { ret_val.a = 1; ret_val.b = composite; return ret_val; } // < in the case where 'composite' is actually prime
-    } fprintf(stderr, "The prime table '%s' is not complete enough to the first prime divisors of %lu.");
-} */
 
 struct ordered_pair prime_table_lookup_factorization(unsigned long composite, char *prime_table_filename) { struct ordered_pair ret_val;
     if (!prime_table_filename) prime_table_filename = _REPORT_standard_prime_table_filename(); FILE *prime_table = fopen(prime_table_filename, "r");
