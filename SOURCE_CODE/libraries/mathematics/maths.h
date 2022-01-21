@@ -3,8 +3,8 @@
 #include <stdarg.h>
 #define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
-#define SET_DEVOID_OF_UNITS 0
-#define SET_DEVOID_OF_PRIME_FACTORS 1
+#define PRIME_TABLE_UNAVAILABLE_ERROR "Failed to open the prime table '%s'.\n\n"
+
 typedef unsigned long ul; extern ul MOD;
 
 char *_REPORT_standard_prime_table_filename(); // < for access in other files to 'const char pointer standard_prime_table_filename'.
@@ -58,3 +58,4 @@ unsigned long DOWN_ROUNDED_second_root(unsigned long number);
 
 char *sieve_of_eratosthenes(unsigned long limit);
 unsigned long primes_printed_from_sieve_array_to_FS(char *sieve, unsigned long limit, FILE *FS);
+FILE *prime_table_open(char *prime_table_filename);

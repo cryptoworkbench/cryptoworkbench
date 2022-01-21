@@ -1,9 +1,8 @@
 #include <stdio.h> // needed for 'fprintf()'
 #include "../functional/string.h" // needed for definition EXIT_STATUS_GOODBYE
-#include "maths.h" // needed for 'DOWN_ROUNDED_second_root()'
 #include "factorization_methods.h" // need for function headers
+#include "maths.h" // needed for 'DOWN_ROUNDED_second_root()'
 #define STANDARD_PRIME_TABLE_FILENAME "UNIVERSAL PRIME TABLE"
-#define PRIME_TABLE_UNAVAILABLE_ERROR "Failed to open the prime table '%s'.\n\n"
 
 struct ordered_pair trial_division(unsigned long composite, unsigned long trial_limit) { struct ordered_pair ret_val;
     // ul i = 1; do { i++; if (trial_limit < i) break; } while (composite % i != 0); // ul i = 1; do { i++; if (composite % i == 0) break; } while (trial_limit < i);
@@ -13,11 +12,11 @@ struct ordered_pair trial_division(unsigned long composite, unsigned long trial_
 
 struct ordered_pair _TABLE_AIDED_trial_division(unsigned long composite, unsigned long trial_limit, char *prime_table_filename) {
     struct ordered_pair ret_val; // ret_val.a = MULTIPLICATIVE_IDENTITY; ret_val.b = composite; // < prepare ret_val
-    if (!prime_table_filename) prime_table_filename = _REPORT_standard_prime_table_filename(); FILE *prime_table;
-    if (!(prime_table = fopen(prime_table_filename, "r"))) { fprintf(stderr, PRIME_TABLE_UNAVAILABLE_ERROR EXIT_STATUS_GOODBYE, prime_table_filename, -1); exit(-1); }
+    if (!prime_table_filename) prime_table_filename = _REPORT_standard_prime_table_filename();
+    FILE *prime_table = prime_table_open(prime_table_filename);
 
     ul prime; do {
-	if (fscanf(prime_table, "%lu\n", &prime) != 1) { fprintf(stderr, "The prime table '%s' is not complete enough to find the first prime divisors of %lu.\n", prime_table_filename, composite); exit(-1); }
+	if (fscanf(prime_table, "%lu\n", &prime) != 1) { fprintf(stderr, "The prime table '%s' is not complete enough to find the first prime divisor of %lu.\n", prime_table_filename, composite); exit(-1); }
 	if (trial_limit < prime) break;
     } while (composite % prime != 0); fclose(prime_table); // we perform the same while loop here as in 'trial_division()'
     if (composite % prime == 0) { ret_val.a = prime; ret_val.b = composite / ret_val.a; }

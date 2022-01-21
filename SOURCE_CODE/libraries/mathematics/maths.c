@@ -1,7 +1,8 @@
 /* This library contains all the math functions which are not verbose.
  *
  * See the header file for function descriptions. */
-#include "maths.h"
+#include "maths.h" // needed for function headers and for the definition PRIME_TABLE_UNAVAILABLE_ERROR
+#include "../functional/string.h" // needed for the definition EXIT_STATUS_GOODBYE
 
 const char *standard_prime_table_filename = "universal_prime_table";
 char *_REPORT_standard_prime_table_filename() { return (char *) standard_prime_table_filename; }
@@ -162,3 +163,6 @@ unsigned long primes_printed_from_sieve_array_to_FS(char *sieve, unsigned long l
     for (ul i = 2; i < limit; i++) if (sieve[i - 2]) { fprintf(FS, "%lu\n", i); ret_val++; } free(sieve); // it is quintisentially a difficult problem to predict the last prime in the sieve unfortunately
     return ret_val;
 }
+
+FILE *prime_table_open(char *prime_table_filename)
+{ FILE *prime_table; if (!(prime_table = fopen(standard_prime_table_filename, "r"))) { fprintf(stderr, PRIME_TABLE_UNAVAILABLE_ERROR EXIT_STATUS_GOODBYE, prime_table_filename, -1); exit(-1); } return prime_table; }
