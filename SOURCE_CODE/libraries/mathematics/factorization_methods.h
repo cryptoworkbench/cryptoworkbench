@@ -1,5 +1,3 @@
-#define STANDARD_PRIME_TABLE_FILENAME "UNIVERSAL PRIME TABLE"
-
 typedef struct ordered_pair (*_factorization_method) (unsigned long);
 // ^ One function pointer type
 
