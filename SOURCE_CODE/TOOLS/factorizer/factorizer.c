@@ -25,47 +25,35 @@
 #include "../../libraries/mathematics/factorization_methods.h" // needed for function pointers 'most_inefficient_trial_division', 'less_inefficient_trial_division', 'least_inefficient_trial_division', etc
 ul MOD; // < This time we will use 'MOD' for the composite
 
-const char *a = "a"; const char *_a = "most_inefficient_trial_division";
-const char *b ="b"; const char *_b = "most_inefficient_aided_trial_division";
-
-const char *c = "c"; const char *_c = "less_inefficient_trial_division";
-const char *d = "d"; const char *_d = "less_inefficient_aided_trial_division";
-
-const char *e = "e"; const char *_e = "least_inefficient_trial_division";
-const char *f ="f"; const char *_f = "least_inefficient_aided_trial_division";
-
-const char *g = "g"; const char *_g = "difference_of_squares_factorization_method";
-const char *h = "h"; const char *_h = "fermats_factorization_method";
+const char *a = "a"; const char *_a = "most_inefficient_trial_division"; const char *b ="b"; const char *_b = "most_inefficient_aided_trial_division";
+const char *c = "c"; const char *_c = "less_inefficient_trial_division"; const char *d = "d"; const char *_d = "less_inefficient_aided_trial_division";
+const char *e = "e"; const char *_e = "least_inefficient_trial_division"; const char *f ="f"; const char *_f = "least_inefficient_aided_trial_division";
+const char *g = "g"; const char *_g = "difference_of_squares_factorization_method"; const char *h = "h"; const char *_h = "fermats_factorization_method";
+// ^ All of the codes in use to signify the various engines.
 
 const char *supported_engines[16]; // 6 factorization engines are supported, and each takes 2 signifiers (identifiers in 'argv[1]'). That means we need 12 slots plus one for the "NULL" pointer at the end. That's 11 sloths
 // ^^ Prepare const char * array for 'match()'. set_list() completes the preparation immediately when 'main()' starts (which is to say immediately upon program execution).
 
 void unrecognized_APPROACH(char *argv_two) {
     fprintf(stderr, "Please specify one of the factorization methods available:\n");
-    fprintf(stderr, "a). %s\n", _a);
-    fprintf(stderr, "b). %s\n", _b);
+    fprintf(stderr, "%s). %s\n", a, _a);
+    fprintf(stderr, "%s). %s\n", b, _b);
 
-    fprintf(stderr, "c). %s\n", _c);
-    fprintf(stderr, "d). %s\n", _d);
+    fprintf(stderr, "%s). %s\n", c, _c);
+    fprintf(stderr, "%s). %s\n", d, _d);
 
-    fprintf(stderr, "e). %s\n", _e);
-    fprintf(stderr, "f). %s\n", _f);
+    fprintf(stderr, "%s). %s\n", e, _e);
+    fprintf(stderr, "%s). %s\n", f, _f);
 
-    fprintf(stderr, "g). %s\n", _g);
-    fprintf(stderr, "h). %s\n\n", _h);
+    fprintf(stderr, "%s). %s\n", g, _g);
+    fprintf(stderr, "%s). %s\n\n", h, _h);
     fprintf(stderr, "\"%s\" is not one of them. Terminating with exit status '-1'.\n", argv_two);
     exit(-1);
 }
 
 void set_list() {
-    supported_engines[0] = a; supported_engines[1] = _a;
-    supported_engines[2] = b; supported_engines[3] = _b;
-    supported_engines[4] = c; supported_engines[5] = _c;
-    supported_engines[6] = d; supported_engines[7] = _d;
-    supported_engines[8] = e; supported_engines[9] = _e;
-    supported_engines[10] = f; supported_engines[11] = _f;
-    supported_engines[12] = g; supported_engines[13] = _g;
-    supported_engines[14] = h; supported_engines[15] = _h;
+    supported_engines[0] = a; supported_engines[1] = _a; supported_engines[2] = b; supported_engines[3] = _b; supported_engines[4] = c; supported_engines[5] = _c; supported_engines[6] = d; supported_engines[7] = _d;
+    supported_engines[8] = e; supported_engines[9] = _e; supported_engines[10] = f; supported_engines[11] = _f; supported_engines[12] = g; supported_engines[13] = _g; supported_engines[14] = h; supported_engines[15] = _h;
     supported_engines[16] = 0;
 }
 

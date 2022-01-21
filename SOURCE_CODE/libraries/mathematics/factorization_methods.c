@@ -7,14 +7,20 @@ struct ordered_pair trail_division(unsigned long composite, unsigned long trial_
     ret_val.a = i; ret_val.b = composite / i; return ret_val;
 } // 'most_inefficient_trial_division()', 'less_inefficient_trial_division()', 'least_inefficient_trial_division()'
 
-struct ordered_pair trial_division_aided_by_table(unsigned long composite, unsigned long trial_limit, char *prime_table_filename) { struct ordered_pair ret_val; ret_val.a = 1; ret_val.b = composite; // make this without return variable 'ret_val'
+struct ordered_pair trial_division_aided_by_table(unsigned long composite, unsigned long trial_limit, char *prime_table_filename) {
+    struct ordered_pair ret_val; // ret_val.a = MULTIPLICATIVE_IDENTITY; ret_val.b = composite; // < prepare ret_val
     if (!prime_table_filename) prime_table_filename = _REPORT_standard_prime_table_filename(); FILE *prime_table = fopen(prime_table_filename, "r"); // < open the right table to interpret primes from
+
     ul prime; do {
 	if (fscanf(prime_table, "%lu\n", &prime) != 1) { fprintf(stderr, "The prime table '%s' is not complete enough to find the first prime divisors of %lu.\n", prime_table_filename, composite); exit(-1); }
-	if (trial_limit < prime) return ret_val;
+	if (trial_limit < prime) break;
     } while (composite % prime != 0); // we perform the same while loop here as in 'trail_division()'
-    ret_val.a = prime; ret_val.b = composite / prime; return ret_val;
-} struct ordered_pair _trial_division_aided_by_table(unsigned long composite, unsigned long trial_limit) { return trial_division_aided_by_table(composite, trial_limit, NULL); }
+    if (composite % prime == 0) { ret_val.a = prime; ret_val.b = composite / ret_val.a; }
+    else { ret_val.a = MULTIPLICATIVE_IDENTITY; ret_val.b = composite / ret_val.a; }
+    return ret_val;
+}
+
+struct ordered_pair _trial_division_aided_by_table(unsigned long composite, unsigned long trial_limit) { return trial_division_aided_by_table(composite, trial_limit, NULL); }
 // ^ Dependency of 'trial_division_aided_by_table_STANDARDIZED()'
 
 unsigned long trial_limit(unsigned long composite, int supidity_level)
