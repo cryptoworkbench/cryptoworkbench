@@ -22,14 +22,27 @@
 #include <stdlib.h>
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h" // needed for 'DOWN_ROUNDED_second_root()' and some of the factorization methods in 'factorization_methods.c' need functions headers from 'maths.h'
-#include "../../libraries/mathematics/factorization_methods.h" // needed for function pointers 'most_inefficient_trial_division', 'less_inefficient_trial_division', 'least_inefficient_trial_division', etc
+#include "../../libraries/mathematics/factorization_methods.h" // needed for function pointers 'trial_division_MOST_INEFFICIENT', 'trial_division_LESS_INEFFICIENT', 'trial_division_LEAST_INEFFICIENT', etc
 ul MOD; // < This time we will use 'MOD' for the composite
 
-const char *a = "a"; const char *_a = "most_inefficient_trial_division"; const char *b ="b"; const char *_b = "most_inefficient_aided_trial_division";
-const char *c = "c"; const char *_c = "less_inefficient_trial_division"; const char *d = "d"; const char *_d = "less_inefficient_aided_trial_division";
-const char *e = "e"; const char *_e = "least_inefficient_trial_division"; const char *f ="f"; const char *_f = "least_inefficient_aided_trial_division";
-const char *g = "g"; const char *_g = "difference_of_squares_factorization_method"; const char *h = "h"; const char *_h = "fermats_factorization_method";
+const char *a = "a";
+const char *b ="b";
+const char *c = "c";
+const char *d = "d";
+const char *e = "e";
+const char *f ="f";
+const char *g = "g";
+const char *h = "h";
 // ^ All of the codes in use to signify the various engines.
+
+const char *_a = "trial_division_MOST_INEFFICIENT";
+const char *_b = "most_inefficient_aided_trial_division";
+const char *_c = "trial_division_LESS_INEFFICIENT";
+const char *_d = "less_inefficient_aided_trial_division";
+const char *_e = "trial_division_LEAST_INEFFICIENT";
+const char *_f = "least_inefficient_aided_trial_division";
+const char *_g = "difference_of_squares_factorization_method";
+const char *_h = "fermats_factorization_method";
 
 const char *supported_engines[16]; // 6 factorization engines are supported, and each takes 2 signifiers (identifiers in 'argv[1]'). That means we need 12 slots plus one for the "NULL" pointer at the end. That's 11 sloths
 // ^^ Prepare const char * array for 'match()'. set_list() completes the preparation immediately when 'main()' starts (which is to say immediately upon program execution).
@@ -64,21 +77,21 @@ int main(int argc, char **argv) { set_list(); // < initialize the const char * a
     _factorization_method factorization_method_chosen = fermat_factorization;
     if (match_variadic(argv[1], 2, a, _a)) {
 	fprintf(stdout, "Using trail division and checking for all 'x <= %lu' if x divides %lu.", MOD, MOD);
-	factorization_method_chosen = most_inefficient_trial_division;
+	factorization_method_chosen = trial_division_MOST_INEFFICIENT;
     } else if (match_variadic(argv[1], 2, b, _b)) {
 	fprintf(stdout, "Using prime table aided trail division (with '%s') and checking for all 'x <= %lu' if f x divides %lu.", _REPORT_standard_prime_table_filename(), MOD, MOD);
-	factorization_method_chosen = most_inefficient_trial_division_aided_by_table;
+	factorization_method_chosen = TABLE_AIDED_trial_division_MOST_INEFFICIENT; //.
     } else if (match_variadic(argv[1], 2, c, _c)) {
 	fprintf(stdout, "Using trail division and checking for all 'x <= %lu' if f x divides %lu.", (MOD - (MOD % 2)) / 2, MOD);
-	factorization_method_chosen = less_inefficient_trial_division;
+	factorization_method_chosen = trial_division_LESS_INEFFICIENT;
     } else if (match_variadic(argv[1], 2, d, _d)) {
 	fprintf(stdout, "Using prime table aided trail division (with '%s') and checking for all 'x <= %lu' if f x divides %lu.", _REPORT_standard_prime_table_filename(), (MOD - (MOD % 2)) / 2, MOD);
-	factorization_method_chosen = less_inefficient_trial_division_aided_by_table;
+	factorization_method_chosen = TABLE_AIDED_trial_division_LESS_INEFFICIENT;//.
     } else if (match_variadic(argv[1], 2, e, _e)) {
 	fprintf(stdout, "Using trail division and checking for all 'x <= %lu' if f x divides %lu.", DOWN_ROUNDED_second_root(MOD), MOD);
-	factorization_method_chosen = least_inefficient_trial_division;
+	factorization_method_chosen = trial_division_LEAST_INEFFICIENT;
     } else if (match_variadic(argv[1], 2, f, _f)) {
-	factorization_method_chosen = least_inefficient_trial_division_aided_by_table;
+	factorization_method_chosen = TABLE_AIDED_trial_division_LEAST_INEFFICIENT;
 	fprintf(stdout, "Using prime table aided trail division (with '%s') and checking for all 'x <= %lu' if f x divides %lu.", _REPORT_standard_prime_table_filename(), DOWN_ROUNDED_second_root(MOD), MOD);
     } else if (match_variadic(argv[1], 2, g, _g)) { if (MOD % 2 == 0)
 	{ fprintf(stderr, "%lu \u2261 0	(modulus 2)\n\nThe difference of squares method can only handle odd numbers, but %lu is even. Terminating with exit status '-3'.\n", MOD, MOD); return -3; }
