@@ -6,9 +6,10 @@
 #define PRIME_TABLE_UNAVAILABLE_ERROR "Failed to open the prime table '%s'.\n\n"
 
 struct ordered_pair trail_division(unsigned long composite, unsigned long trial_limit) { struct ordered_pair ret_val;
-    ul i = 1; do { i++; if (trial_limit < i) break; } while (composite % i != 0);
+    // ul i = 1; do { i++; if (trial_limit < i) break; } while (composite % i != 0); // ul i = 1; do { i++; if (composite % i == 0) break; } while (trial_limit < i);
+    ul i = 2; while (composite % i != 0) i++;
     ret_val.a = i; ret_val.b = composite / i; return ret_val;
-} // 'trial_division_MOST_INEFFICIENT()', 'trial_division_LESS_INEFFICIENT()', 'trial_division_LEAST_INEFFICIENT()'
+} // 'trial_division_LEAST_EFFICIENT()', 'trial_division_LESS_EFFICIENT()', 'trial_division_MOST_EFFICIENT()'
 
 struct ordered_pair _TABLE_AIDED_trial_division(unsigned long composite, unsigned long trial_limit, char *prime_table_filename) {
     struct ordered_pair ret_val; // ret_val.a = MULTIPLICATIVE_IDENTITY; ret_val.b = composite; // < prepare ret_val
@@ -30,14 +31,14 @@ struct ordered_pair table_aided_trial_division(unsigned long composite, unsigned
 unsigned long trial_limit(unsigned long composite, int supidity_level)
 { switch (supidity_level) { case 3: return composite; case 2: return (composite - (composite % 2)) / 2; case 1: return DOWN_ROUNDED_second_root(composite); }; }
 
-struct ordered_pair trial_division_MOST_INEFFICIENT(unsigned long composite) { return trail_division(composite, trial_limit(composite, 3)); }
-struct ordered_pair trial_division_LESS_INEFFICIENT(unsigned long composite) { return trail_division(composite, trial_limit(composite, 2)); }
-struct ordered_pair trial_division_LEAST_INEFFICIENT(unsigned long composite) { return trail_division(composite, trial_limit(composite, 1)); }
+struct ordered_pair trial_division_LEAST_EFFICIENT(unsigned long composite) { return trail_division(composite, trial_limit(composite, 3)); }
+struct ordered_pair trial_division_LESS_EFFICIENT(unsigned long composite) { return trail_division(composite, trial_limit(composite, 2)); }
+struct ordered_pair trial_division_MOST_EFFICIENT(unsigned long composite) { return trail_division(composite, trial_limit(composite, 1)); }
 // ^ trial division methods
 
-struct ordered_pair TABLE_AIDED_trial_division_MOST_INEFFICIENT(unsigned long composite) { return table_aided_trial_division(composite, trial_limit(composite, 3)); }
-struct ordered_pair TABLE_AIDED_trial_division_LESS_INEFFICIENT(unsigned long composite) { return table_aided_trial_division(composite, trial_limit(composite, 2)); }
-struct ordered_pair TABLE_AIDED_trial_division_LEAST_INEFFICIENT(unsigned long composite) { return table_aided_trial_division(composite, trial_limit(composite, 1)); }
+struct ordered_pair TABLE_AIDED_trial_division_LEAST_EFFICIENT(unsigned long composite) { return table_aided_trial_division(composite, trial_limit(composite, 3)); }
+struct ordered_pair TABLE_AIDED_trial_division_LESS_EFFICIENT(unsigned long composite) { return table_aided_trial_division(composite, trial_limit(composite, 2)); }
+struct ordered_pair TABLE_AIDED_trial_division_MOST_EFFICIENT(unsigned long composite) { return table_aided_trial_division(composite, trial_limit(composite, 1)); }
 // ^ same trial division methods aided by a table
 
 // NOW SOME FUNCTIONS TO ACHIEVE FERMAT FACTORIZATION

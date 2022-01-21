@@ -7,14 +7,14 @@ struct ordered_pair _TABLE_AIDED_trial_division(unsigned long composite, unsigne
 struct ordered_pair TABLE_AIDED_trial_division(unsigned long composite, unsigned long trial_limit);
 // ^ Trial division factorization engines
 
-struct ordered_pair trial_division_MOST_INEFFICIENT(unsigned long composite);
-struct ordered_pair trial_division_LESS_INEFFICIENT(unsigned long composite);
-struct ordered_pair trial_division_LEAST_INEFFICIENT(unsigned long composite);
+struct ordered_pair trial_division_LEAST_EFFICIENT(unsigned long composite);
+struct ordered_pair trial_division_LESS_EFFICIENT(unsigned long composite);
+struct ordered_pair trial_division_MOST_EFFICIENT(unsigned long composite);
 // ^ Different implementations of ordinary trial division
 
-struct ordered_pair TABLE_AIDED_trial_division_MOST_INEFFICIENT(unsigned long composite);
-struct ordered_pair TABLE_AIDED_trial_division_LESS_INEFFICIENT(unsigned long composite);
-struct ordered_pair TABLE_AIDED_trial_division_LEAST_INEFFICIENT(unsigned long composite);
+struct ordered_pair TABLE_AIDED_trial_division_LEAST_EFFICIENT(unsigned long composite);
+struct ordered_pair TABLE_AIDED_trial_division_LESS_EFFICIENT(unsigned long composite);
+struct ordered_pair TABLE_AIDED_trial_division_MOST_EFFICIENT(unsigned long composite);
 // ^ Different implementations of table aided trial division
 
 struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *to_be_updated, unsigned long minimum);
