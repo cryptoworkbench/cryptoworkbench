@@ -28,13 +28,13 @@ ul MOD; // < This time we will use 'MOD' for the composite
 const char *A = "a"; const char *B ="b"; const char *C = "c"; const char *D = "d"; const char *E = "e"; const char *F ="f"; const char *G = "g"; const char *H = "h";
 // ^ All of the codes in use to signify the various engines.
 
-const char *choice_A = "least efficient trial division";
-const char *choice_B = "less efficient trial division";
-const char *choice_C = "most efficient trial division";
+const char *choice_A = "trial division (in it's least efficient form)";
+const char *choice_B = "trial division (in it's less efficient form)";
+const char *choice_C = "trial division (in it's most efficient form)";
 
-const char *choice_D = "least efficient trial division (aided by prime table)";
-const char *choice_E = "less efficient trial division (aided by prime table)";
-const char *choice_F = "most efficient trial division (aided by prime table)";
+const char *choice_D = "prime table aided trial division (in it's least efficient form)";
+const char *choice_E = "prime table aided trial division (in it's less efficient form)";
+const char *choice_F = "prime table aided trial division (in it's most efficient form)";
 
 const char *choice_G = "difference of squares factorization method";
 const char *choice_H = "fermats factorization method";
