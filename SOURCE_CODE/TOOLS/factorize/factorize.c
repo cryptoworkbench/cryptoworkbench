@@ -74,13 +74,13 @@ int main(int argc, char **argv) { set_list(); // < initialize the const char * a
 	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", (MOD - (MOD % 2)) / 2, MOD);
     } else if (strcmp(argv[1], C) == 0) { factorization_method_chosen = trial_division_MOST_EFFICIENT;
 	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", DOWN_ROUNDED_second_root(MOD), MOD);
-    } else if (strcmp(argv[1], D)) { factorization_method_chosen = table_aided_trial_division_LEAST_EFFICIENT;
+    } else if (strcmp(argv[1], D) == 0) { factorization_method_chosen = table_aided_trial_division_LEAST_EFFICIENT;
 	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", _REPORT_standard_prime_table_filename(), MOD, MOD);
-    } else if (strcmp(argv[1], E)) { factorization_method_chosen = table_aided_trial_division_LESS_EFFICIENT;
+    } else if (strcmp(argv[1], E) == 0) { factorization_method_chosen = table_aided_trial_division_LESS_EFFICIENT;
 	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", _REPORT_standard_prime_table_filename(), (MOD - (MOD % 2)) / 2, MOD);
-    } else if (strcmp(argv[1], F)) { factorization_method_chosen = table_aided_trial_division_MOST_EFFICIENT;
+    } else if (strcmp(argv[1], F) == 0) { factorization_method_chosen = table_aided_trial_division_MOST_EFFICIENT;
 	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", _REPORT_standard_prime_table_filename(), DOWN_ROUNDED_second_root(MOD), MOD);
-    } else if (strcmp(argv[1], G)) { factorization_method_chosen = difference_of_squares_factorization_method;
+    } else if (strcmp(argv[1], G) == 0) { factorization_method_chosen = difference_of_squares_factorization_method;
 	if (MOD % 2 == 0)
 	{ fprintf(stderr, "%lu \u2261 0	(modulus 2)\n\nThe difference of squares method can only handle odd numbers, but %lu is even. Terminating with exit status '-3'.\n", MOD, MOD); return -3; }
 	fprintf(stdout, "Using the difference of squares method.");

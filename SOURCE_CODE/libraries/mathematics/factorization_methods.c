@@ -12,15 +12,10 @@ struct ordered_pair trial_division(unsigned long composite, unsigned long trial_
 
 struct ordered_pair _table_aided_trial_division(unsigned long composite, unsigned long trial_limit, char *prime_table_filename_specification) {
     if (!prime_table_filename_specification) prime_table_filename_specification = _REPORT_standard_prime_table_filename();
-    FILE *prime_table = prime_table_open(prime_table_filename_specification);
-    // ^^ Open the prime table specified (quits with appriopiate error message if impossible)
-
-    ul prime; do {
+    FILE *prime_table = prime_table_open(prime_table_filename_specification); ul prime; do {
 	if (fscanf(prime_table, "%lu\n", &prime) != 1) { fprintf(stderr, "The prime table '%s' is not complete enough to find the first prime divisor of %lu.\n", prime_table_filename_specification, composite); exit(-1); }
 	if (trial_limit < prime) prime = composite; } while (composite % prime != 0); fclose(prime_table);
-
-    struct ordered_pair ret_val;
-    ret_val.a = prime; ret_val.b = composite / ret_val.a;
+    struct ordered_pair ret_val; ret_val.a = prime; ret_val.b = composite / ret_val.a;
     return ret_val;
 }
 
@@ -53,8 +48,8 @@ struct ordered_pair difference_of_squares_factorization_method(unsigned long odd
     } return (struct ordered_pair) { square_BIG.a + square_SMALL.a, square_BIG.a - square_SMALL.a};
 }
 
-struct ordered_pair pair_reorder(struct ordered_pair *pair) { if (pair->a < pair->b) { unsigned long temp = pair->b; pair->b = pair->a; pair->a = temp; } return *pair; }
-// ^ Switched the values of member 'a' and member 'b' with a 'struct ordered_pair' pair of numbers IFF 'b' > 'a'
+struct ordered_pair pair_reorder(struct ordered_pair *pair) { if (pair->a > pair->b) { unsigned long temp = pair->a; pair->a = pair->b; pair->b = temp; } return *pair; }
+// ^ Switched the values of member 'a' and member 'b' within a 'struct ordered_pair' pair of numbers IFF 'b' > 'a'
 
 struct ordered_pair twos_factor_filter(unsigned long even_composite) { struct ordered_pair ret_val;
     ret_val.a = MULTIPLICATIVE_IDENTITY; do { even_composite /= 2; ret_val.a *= 2; } while (even_composite % 2 == 0); // REMEMBER: this function is only supposed to be called for an even composite!
