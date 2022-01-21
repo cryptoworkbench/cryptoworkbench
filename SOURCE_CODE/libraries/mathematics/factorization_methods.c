@@ -13,7 +13,7 @@ struct ordered_pair trial_division(unsigned long composite, unsigned long trial_
 struct ordered_pair _TABLE_AIDED_trial_division(unsigned long composite, unsigned long trial_limit, char *prime_table_filename) {
     struct ordered_pair ret_val; // ret_val.a = MULTIPLICATIVE_IDENTITY; ret_val.b = composite; // < prepare ret_val
     if (!prime_table_filename) prime_table_filename = _REPORT_standard_prime_table_filename();
-    FILE *prime_table = prime_table_open(prime_table_filename);
+    FILE *prime_table = prime_table_open(prime_table_filename); // < quits if the file cannot be opened
 
     ul prime; do { // this is actualy the simplest construction possible.
 	if (fscanf(prime_table, "%lu\n", &prime) != 1) { fprintf(stderr, "The prime table '%s' is not complete enough to find the first prime divisor of %lu.\n", prime_table_filename, composite); exit(-1); }
