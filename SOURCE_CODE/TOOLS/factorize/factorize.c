@@ -39,7 +39,11 @@ void initialize() {
 
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) { fprintf(stderr, COMPOSITE_NOT_INTERPRETABLE EXIT_STATUS_GOODBYE, argv[1], -1); exit(-1); }
-    ENGINE_SET(interpret_ENGINE_from_external_file()); initialize();
+    if (2 < argc) {
+	int SELECTOR_PLUS_ONE = translate_ADD_ONE(argv[2]);
+	if (SELECTOR_PLUS_ONE) ENGINE = factorization_method(SELECTOR_PLUS_ONE - 1);
+	else ERR(argv[2]);
+    } else ENGINE_SET(interpret_ENGINE_from_external_file()); initialize();
 
     ul smallest_divisor_of_MOD_greater_than_the_MULTIPLICATIVE_IDENTITY = ENGINE(MOD);
     fprintf(stdout, "%lu = %lu * %lu\n", MOD, smallest_divisor_of_MOD_greater_than_the_MULTIPLICATIVE_IDENTITY, MOD / smallest_divisor_of_MOD_greater_than_the_MULTIPLICATIVE_IDENTITY);

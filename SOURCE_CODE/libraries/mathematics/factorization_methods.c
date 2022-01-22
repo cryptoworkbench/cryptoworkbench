@@ -60,6 +60,8 @@ _factorization_method factorization_method(int SELECTOR) {
 	case 4: return LESS_efficient_trial_division_TABLE_AIDED; case 5: return efficient_trial_division_TABLE_AIDED; case 6: return fermat_factorization; };
 } void ENGINE_SET(int SELECTOR) { ENGINE = factorization_method(SELECTOR); }
 
+const char *a = "a"; const char *b = "b"; const char *c = "c"; const char *d = "d";
+const char *e = "e"; const char *f = "f"; const char *g = "g";
 const char *A = "trial_division_in_its_least_efficient_form";
 const char *B = "trial_division_in_its_less_efficient_form";
 const char *C = "trial_division_in_its_most_efficient_form";
@@ -67,17 +69,31 @@ const char *D = "prime_table_aided_trial_division_in_its_least_efficient_form";
 const char *E = "prime_table_aided_trial_division_in_its_less_efficient_form";
 const char *F = "prime_table_aided_trial_division_in_its_most_efficient_form";
 const char *G = "Fermats_factorization_method";
+// ^ string literals we will be comparing against
 
-int interpret_ENGINE_from_external_file() {
-    FILE *file; if (!(file = fopen(FILE_SPECIFYING_PREFERRED_ENGINE, "r"))) { fprintf(stderr, "Couldn't open preferences file '" FILE_SPECIFYING_PREFERRED_ENGINE "'." EXIT_STATUS_GOODBYE, -1); exit(-1); }
-    char *BUFFER = BUFFER_OF_SIZE(200); fscanf(file, "%s[^\n]", BUFFER); fclose(file);
-    int SELECTOR; if (strcmp(BUFFER, A) == 0) SELECTOR = 0;
-    else if (strcmp(BUFFER, B) == 0) SELECTOR = 1;
-    else if (strcmp(BUFFER, C) == 0) SELECTOR = 2;
-    else if (strcmp(BUFFER, D) == 0) SELECTOR = 3;
-    else if (strcmp(BUFFER, E) == 0) SELECTOR = 4;
-    else if (strcmp(BUFFER, F) == 0) SELECTOR = 5;
-    else if (strcmp(BUFFER, G) == 0) SELECTOR = 6; else
-    { fprintf(stderr, "Couldn't interpret preferences file, please put one of these specification there:\n"); fprintf(stderr, "%s\n%s\n%s\n%s\n%s\n%s\n%s\n\n'%s' is not one of these.\n\n" EXIT_STATUS_GOODBYE, A, B, C, D, E, F, G, BUFFER, -2); exit(-2); }
-    free(BUFFER); return SELECTOR;
+void ERR(char *arg) {
+    fprintf(stderr, "Couldn't understand engine specification '%s', please specify one of the following:\n", arg);
+    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", a, A, b, B, c, C);
+    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", d, D, e, E, f, F);
+    fprintf(stderr, "\"%s\" for \"%s\"\n", g, G);
+    fprintf(stderr, "\n'%s' is not one of these.\n\n", arg);
+    fprintf(stderr, EXIT_STATUS_GOODBYE, -2); exit(-2);
+}
+
+int translate_ADD_ONE(char *arg) {
+    if (match_variadic(arg, 2, A, a)) return 1;
+    else if (match_variadic(arg, 2, B, b)) return 2;
+    else if (match_variadic(arg, 2, C, c)) return 3;
+    else if (match_variadic(arg, 2, D, d)) return 4;
+    else if (match_variadic(arg, 2, E, e)) return 5;
+    else if (match_variadic(arg, 2, F, f)) return 6;
+    else if (match_variadic(arg, 2, G, g)) return 7;
+    return 0;
+}
+
+int interpret_ENGINE_from_external_file() { FILE *file;
+    if (file = fopen(FILE_SPECIFYING_PREFERRED_ENGINE, "r")) {
+	char *BUFFER = BUFFER_OF_SIZE(200); fscanf(file, "%s[^\n]", BUFFER); fclose(file);
+	int SELECTOR = translate_ADD_ONE(BUFFER) - 1; free(BUFFER); return SELECTOR; // <-- return situated here
+    } fprintf(stderr, "Couldn't open preferences file '" FILE_SPECIFYING_PREFERRED_ENGINE "'." EXIT_STATUS_GOODBYE, -1); exit(-1);
 }

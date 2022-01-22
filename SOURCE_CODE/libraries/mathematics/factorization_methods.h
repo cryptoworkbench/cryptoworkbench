@@ -32,4 +32,6 @@ unsigned long fermat_factorization(unsigned long composite);
 
 _factorization_method factorization_method(int SELECTOR); // 'ENGINE_SET()'
 void ENGINE_SET(int SELECTOR);
+void ERR(char *arg);
+int translate_ADD_ONE(char *arg);
 int interpret_ENGINE_from_external_file();
