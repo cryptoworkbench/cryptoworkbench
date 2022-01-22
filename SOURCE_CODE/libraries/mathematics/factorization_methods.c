@@ -14,12 +14,9 @@ struct ordered_pair _trial_division_TABLE_AIDED(unsigned long composite, unsigne
     FILE *prime_table = prime_table_open(prime_table_filename_specification); ul prime; do {
 	if (fscanf(prime_table, "%lu\n", &prime) != 1) { fprintf(stderr, "The prime table '%s' is not complete enough to find the first prime divisor of %lu.\n", prime_table_filename_specification, composite); exit(-1); }
 	if (trial_limit < prime) prime = composite; } while (composite % prime != 0); fclose(prime_table);
-    struct ordered_pair ret_val; ret_val.a = prime; ret_val.b = composite / ret_val.a;
-    return ret_val;
-}
-
-struct ordered_pair trial_division_TABLE_AIDED(unsigned long composite, unsigned long trial_limit) { return _trial_division_TABLE_AIDED(composite, trial_limit, NULL); }
-// ^ Dependency of 'trial_division_aided_by_table_STANDARDIZED()'
+    struct ordered_pair ret_val; ret_val.a = prime; ret_val.b = composite / ret_val.a; return ret_val;
+} struct ordered_pair trial_division_TABLE_AIDED(unsigned long composite, unsigned long trial_limit) { return _trial_division_TABLE_AIDED(composite, trial_limit, NULL); }
+// ^ 'trial_division_TABLE_AIDED()' simply calls '_trial_division_TABLE_AIDED()' without 'char *prime_table_filename_specification' specification field.
 
 unsigned long trial_limit(unsigned long composite, int supidity_level)
 { switch (supidity_level) { case 3: return composite; case 2: return (composite - (composite % 2)) / 2; case 1: return DOWN_ROUNDED_second_root(composite); }; }
@@ -56,21 +53,10 @@ struct ordered_pair twos_factor_filter(unsigned long even_composite) { struct or
     return pair_reorder(&ret_val);
 }
 
-struct ordered_pair odd_composite_decomposer_WRAPPER(unsigned long composite, _factorization_method odds_decomposer)
-{ return (composite % 2 == 0) ? twos_factor_filter(composite) : odds_decomposer(composite); }
-
+struct ordered_pair odd_composite_decomposer_WRAPPER(unsigned long composite, _factorization_method odds_decomposer) { return (composite % 2 == 0) ? twos_factor_filter(composite) : odds_decomposer(composite); }
 struct ordered_pair fermat_factorization(unsigned long composite) { return odd_composite_decomposer_WRAPPER(composite, difference_of_squares_factorization_method); }
 
 _factorization_method factorization_method(int SELECTOR) {
-    switch (SELECTOR) {
-	case 0: return LEAST_efficient_trial_division;
-	case 1: return LESS_efficient_trial_division;
-	case 2: return efficient_trial_division;
-	case 3: return LEAST_efficient_trial_division_TABLE_AIDED;
-	case 4: return LESS_efficient_trial_division_TABLE_AIDED;
-	case 5: return efficient_trial_division_TABLE_AIDED;
-	case 6: return difference_of_squares_factorization_method;
-	case 7: return fermat_factorization;
-    };
-}
-
+    switch (SELECTOR) { case 0: return LEAST_efficient_trial_division; case 1: return LESS_efficient_trial_division; case 2: return efficient_trial_division; case 3: return LEAST_efficient_trial_division_TABLE_AIDED;
+	case 4: return LESS_efficient_trial_division_TABLE_AIDED; case 5: return efficient_trial_division_TABLE_AIDED; case 6: return difference_of_squares_factorization_method; case 7: return fermat_factorization; };
+} // ^ the central point of function unity
