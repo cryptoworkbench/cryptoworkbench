@@ -80,7 +80,7 @@ void ERR(char *arg) {
     fprintf(stderr, EXIT_STATUS_GOODBYE, -2); exit(-2);
 }
 
-int translate_ADD_ONE(char *arg) {
+int translate_SUBTRACT_ONE(char *arg) {
     if (match_variadic(arg, 2, A, a)) return 1;
     else if (match_variadic(arg, 2, B, b)) return 2;
     else if (match_variadic(arg, 2, C, c)) return 3;
@@ -94,6 +94,8 @@ int translate_ADD_ONE(char *arg) {
 int interpret_ENGINE_from_external_file() { FILE *file;
     if (file = fopen(FILE_SPECIFYING_PREFERRED_ENGINE, "r")) {
 	char *BUFFER = BUFFER_OF_SIZE(200); fscanf(file, "%s[^\n]", BUFFER); fclose(file);
-	int SELECTOR = translate_ADD_ONE(BUFFER) - 1; free(BUFFER); return SELECTOR; // <-- return situated here
+	int SELECTOR = translate_SUBTRACT_ONE(BUFFER) - 1;
+	free(BUFFER);
+	return SELECTOR; // <-- return situated here
     } fprintf(stderr, "Couldn't open preferences file '" FILE_SPECIFYING_PREFERRED_ENGINE "'." EXIT_STATUS_GOODBYE, -1); exit(-1);
 }
