@@ -3,11 +3,13 @@
 #include "factorization_methods.h" // need for function headers
 #include "maths.h" // needed for 'DOWN_ROUNDED_second_root()'
 
-void SET_DIVISORS(unsigned long divisor, unsigned long original_number, struct ordered_pair *N) { N->a = divisor; N->b = original_number / N->a; }
+struct ordered_pair divisor_pair(unsigned long number, unsigned long DIVISOR_OF_number) {
+    struct ordered_pair pair_of_divisors; pair_of_divisors.a = DIVISOR_OF_number; pair_of_divisors.b = number / pair_of_divisors.a; return pair_of_divisors; }
+
 struct ordered_pair trial_division(unsigned long presumed_composite, unsigned long trial_limit) {
     ul divisor = MULTIPLICATIVE_IDENTITY; do { divisor++; if (trial_limit < divisor) divisor == presumed_composite; } while (presumed_composite % divisor != 0);
 
-    struct ordered_pair ret_val; SET_DIVISORS(divisor, presumed_composite, &ret_val);
+    struct ordered_pair ret_val = divisor_pair(presumed_composite, divisor);
     return pair_reorder(&ret_val);
 } // 'LEAST_efficient_trial_division()', 'LESS_efficient_trial_division()', 'efficient_trial_division()'
 
@@ -18,7 +20,7 @@ struct ordered_pair _trial_division_TABLE_AIDED(unsigned long presumed_composite
 	if (prime_divisor > trial_limit) prime_divisor = presumed_composite;
     } while (presumed_composite % prime_divisor != 0); prime_table_close(prime_table);
 
-    struct ordered_pair ret_val; SET_DIVISORS(prime_divisor, presumed_composite, &ret_val);
+    struct ordered_pair ret_val = divisor_pair(presumed_composite, prime_divisor);
     return pair_reorder(&ret_val);
 }
 
