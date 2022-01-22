@@ -34,7 +34,7 @@ cd ../sieve_of_eratosthenes && make sieve_of_eratosthenes && echo "#######===> T
 "
 cd ../prime_table_exporter && make prime_table_exporter && echo "#######===> The following tool has been assemblied/linked: prime_table_exporter
 "
-cd ../factorizer && make factorizer && echo "#######===> The following tool has been assemblied/linked: factorizer
+cd ../factorize && make factorize && echo "#######===> The following tool has been assemblied/linked: factorize
 "
 cd ../modular_group_element_table_generator && make modular_group_element_table_generator && echo "#######===> The following tool has been assemblied/linked: modular_group_element_table_generator
 "
@@ -48,7 +48,7 @@ cd ../cayley_table_generator && make cayley_table_generator && echo "#######===>
 echo "#######===> SOME MORE TOOLS HAVE BEEN ASSEMBLED/LINKED: -->                                         <===#######
 ~ sieve_of_eratosthenes
 ~ prime_table_exporter
-~ factorizer
+~ factorize
 ~ modular_group_element_table_generator 
 ~ subgroup_examplifier
 ~ Diffie_Hellman_Key_Agreement
