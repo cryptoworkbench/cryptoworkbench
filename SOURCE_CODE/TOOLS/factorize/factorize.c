@@ -38,7 +38,7 @@ const char *choice_E = "prime table aided trial division (in it's less efficient
 const char *choice_F = "prime table aided trial division (in it's most efficient form)";
 
 const char *choice_G = "difference of squares factorization method";
-const char *choice_H = "fermats factorization method";
+const char *choice_H = "Fermats factorization method";
 
 const char *supported_engines[9]; // 6 factorization engines are supported, and each takes 2 signifiers (identifiers in 'argv[1]'). That means we need 12 slots plus one for the "NULL" pointer at the end. That's 11 sloths
 // ^^ Prepare const char * array for 'match()'. set_list() completes the preparation immediately when 'main()' starts (which is to say immediately upon program execution).

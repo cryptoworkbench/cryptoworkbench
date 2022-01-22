@@ -3,20 +3,22 @@
 #include "factorization_methods.h" // need for function headers
 #include "maths.h" // needed for 'DOWN_ROUNDED_second_root()'
 
+void SET_DIVISORS(unsigned long divisor, unsigned long original_number, struct ordered_pair *N) { N->a = divisor; N->b = original_number / N->a; }
 struct ordered_pair trial_division(unsigned long presumed_composite, unsigned long trial_limit) {
-    ul i = MULTIPLICATIVE_IDENTITY; do {i++; if (trial_limit < i) i == presumed_composite; } while (presumed_composite % i != 0);
-    struct ordered_pair ret_val; ret_val.a = i; ret_val.b = presumed_composite / i; return ret_val;
+    ul divisor = MULTIPLICATIVE_IDENTITY; do { divisor++; if (trial_limit < divisor) divisor == presumed_composite; } while (presumed_composite % divisor != 0);
+
+    struct ordered_pair ret_val; SET_DIVISORS(divisor, presumed_composite, &ret_val);
+    return pair_reorder(&ret_val);
 } // 'LEAST_efficient_trial_division()', 'LESS_efficient_trial_division()', 'efficient_trial_division()'
 
-struct ordered_pair _trial_division_TABLE_AIDED(unsigned long composite, unsigned long trial_limit, FILE *prime_table) {
-    ul prime; do {
-	if (fscanf(prime_table, "%lu\n", &prime) != 1)
-	{ fprintf(stderr, "The prime table '%s' not complete enough to find the first prime divisor of %lu. The last prime tested was %lu.\n", REPORT_open_prime_table(), composite, prime); exit(-1); }
-	if (prime > trial_limit) prime = composite;
-    } while (composite % prime != 0); prime_table_close(prime_table);
-    struct ordered_pair ret_val;
-    ret_val.a = prime;
-    ret_val.b = composite / ret_val.a;
+struct ordered_pair _trial_division_TABLE_AIDED(unsigned long presumed_composite, unsigned long trial_limit, FILE *prime_table) {
+    ul prime_divisor; do {
+	if (fscanf(prime_table, "%lu\n", &prime_divisor) != 1)
+	{ fprintf(stderr, "The prime table '%s' not complete enough to find the first prime divisor of %lu. The last prime tested was %lu.\n", REPORT_open_prime_table(), presumed_composite, prime_divisor); exit(-1); }
+	if (prime_divisor > trial_limit) prime_divisor = presumed_composite;
+    } while (presumed_composite % prime_divisor != 0); prime_table_close(prime_table);
+
+    struct ordered_pair ret_val; SET_DIVISORS(prime_divisor, presumed_composite, &ret_val);
     return pair_reorder(&ret_val);
 }
 
@@ -49,7 +51,7 @@ struct ordered_pair difference_of_squares_factorization_method(unsigned long odd
     } return (struct ordered_pair) { square_BIG.a - square_SMALL.a, square_BIG.a + square_SMALL.a};
 }
 
-struct ordered_pair pair_reorder(struct ordered_pair *pair) { if (pair->b < pair->a) { unsigned long temp = pair->a; pair->a = pair->b; pair->b = temp; } return *pair; }
+struct ordered_pair pair_reorder(struct ordered_pair *pair) { if (pair->a > pair->b) { unsigned long temp = pair->a; pair->a = pair->b; pair->b = temp; } return *pair; }
 // ^ Switched the values of member 'a' and member 'b' within a 'struct ordered_pair' pair of numbers IFF 'b' > 'a'
 
 struct ordered_pair twos_factor_filter(unsigned long even_composite) { struct ordered_pair ret_val;

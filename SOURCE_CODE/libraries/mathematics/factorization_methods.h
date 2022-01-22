@@ -1,6 +1,7 @@
 typedef struct ordered_pair (*_factorization_method) (unsigned long);
 // ^ One function pointer type
 
+void SET_DIVISORS(unsigned long divisor, unsigned long original_number, struct ordered_pair *N);
 unsigned long trial_limit(unsigned long composite, int supidity_level);
 struct ordered_pair trial_division(unsigned long composite, unsigned long trial_limit);
 struct ordered_pair trial_division_TABLE_AIDED(unsigned long composite, unsigned long trial_limit);
