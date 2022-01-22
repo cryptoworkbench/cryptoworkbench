@@ -2,8 +2,9 @@ struct ordered_pair pair_reorder(struct ordered_pair *pair); // < switches the v
 // ^ FUNCTIONS NOT IN USE
 
 typedef unsigned long (*_factorization_method) (unsigned long);
-_factorization_method ENGINE; // apparently this does not need 'extern' before the declaration
-// ^ One function pointer type
+_factorization_method ENGINE; // 'ENGINE_SET()'
+void ENGINE_SET(int SELECTOR);
+// ^ apparently this does not need 'extern' before the declaration
 
 struct ordered_pair divisor_pair(unsigned long number, unsigned long DIVISOR_OF_number);
 unsigned long trial_limit(unsigned long composite, int supidity_level);
@@ -31,5 +32,3 @@ unsigned long fermat_factorization(unsigned long composite);
 
 _factorization_method factorization_method(int SELECTOR);
 // ^ This function returns a function pointer
-
-void ENGINE_SET(int SELECTOR);

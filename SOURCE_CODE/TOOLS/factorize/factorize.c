@@ -37,18 +37,44 @@ const char *choice_D = "prime table aided trial division (in it's least efficien
 const char *choice_E = "prime table aided trial division (in it's less efficient form)";
 const char *choice_F = "prime table aided trial division (in it's most efficient form)";
 const char *choice_G = "Fermats factorization method";
-const char *supported_engines[8]; // 6 factorization engines are supported, and each takes 2 signifiers (identifiers in 'argv[1]'). That means we need 12 slots plus one for the "NULL" pointer at the end. That's 11 sloths
+const char *supported_engines[8];
 // ^^ Prepare const char * array for 'match()'. set_list() completes the preparation immediately when 'main()' starts (which is to say immediately upon program execution).
+
+void initialize(char *argv_two) {
+    if (strcmp(argv_two, A) == 0) ENGINE_SET(0);
+    else if (strcmp(argv_two, B) == 0) ENGINE_SET(1);
+    else if (strcmp(argv_two, C) == 0) ENGINE_SET(2);
+    else if (strcmp(argv_two, D) == 0) ENGINE_SET(3);
+    else if (strcmp(argv_two, E) == 0) ENGINE_SET(4);
+    else if (strcmp(argv_two, F) == 0) ENGINE_SET(5);
+    else ENGINE_SET(6); 
+
+    if (ENGINE == LEAST_efficient_trial_division)
+	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", MOD, MOD);
+
+    else if (ENGINE == LESS_efficient_trial_division)
+	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", (MOD - (MOD % 2)) / 2, MOD);
+
+    else if (ENGINE == efficient_trial_division)
+	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", DOWN_ROUNDED_second_root(MOD), MOD);
+
+    else if (ENGINE == LEAST_efficient_trial_division_TABLE_AIDED)
+	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", REPORT_standard_prime_table_filename(), MOD, MOD);
+
+    else if (ENGINE == LESS_efficient_trial_division_TABLE_AIDED)
+	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", REPORT_standard_prime_table_filename(), (MOD - (MOD % 2)) / 2, MOD);
+
+    else if (ENGINE == efficient_trial_division_TABLE_AIDED)
+	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", REPORT_standard_prime_table_filename(), DOWN_ROUNDED_second_root(MOD), MOD);
+
+    else fprintf(stdout, "Using Fermat's factorization method.");
+    fprintf(stdout, "\n\n");
+}
 
 void unrecognized_APPROACH(char *argv_two) {
     fprintf(stderr, "Please specify one of the factorization methods available:\n");
-    fprintf(stderr, "%s). %s\n", A, choice_A);
-    fprintf(stderr, "%s). %s\n", B, choice_B);
-    fprintf(stderr, "%s). %s\n", C, choice_C); // < ^ trial division algorithms
-    fprintf(stderr, "%s). %s\n", D, choice_D);
-    fprintf(stderr, "%s). %s\n", E, choice_E);
-    fprintf(stderr, "%s). %s\n", F, choice_F); // < ^ trial division algorithms aided by a prime table
-    fprintf(stderr, "%s). %s\n\n", G, choice_G);
+    fprintf(stderr, "%s). %s\n", A, choice_A); fprintf(stderr, "%s). %s\n", B, choice_B); fprintf(stderr, "%s). %s\n", C, choice_C); fprintf(stderr, "%s). %s\n", D, choice_D);
+    fprintf(stderr, "%s). %s\n", E, choice_E); fprintf(stderr, "%s). %s\n", F, choice_F); fprintf(stderr, "%s). %s\n\n", G, choice_G);
     fprintf(stderr, "\"%s\" is not one of them. Terminating with exit status '-1'.\n", argv_two);
     exit(-1);
 }
@@ -58,27 +84,10 @@ void set_list() {
     supported_engines[5] = F; supported_engines[6] = G; supported_engines[7] = 0;
 }
 
-void initialize(char *argv_two) {
-    int SWITCH = 6;
-    if (strcmp(argv_two, A) == 0) { SWITCH = 0;
-	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", MOD, MOD);
-    } else if (strcmp(argv_two, B) == 0) { SWITCH = 1;
-	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", (MOD - (MOD % 2)) / 2, MOD);
-    } else if (strcmp(argv_two, C) == 0) { SWITCH = 2;
-	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", DOWN_ROUNDED_second_root(MOD), MOD);
-    } else if (strcmp(argv_two, D) == 0) { SWITCH = 3;
-	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", REPORT_standard_prime_table_filename(), MOD, MOD);
-    } else if (strcmp(argv_two, E) == 0) { SWITCH = 4;
-	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", REPORT_standard_prime_table_filename(), (MOD - (MOD % 2)) / 2, MOD);
-    } else if (strcmp(argv_two, F) == 0) { SWITCH = 5;
-	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", REPORT_standard_prime_table_filename(), DOWN_ROUNDED_second_root(MOD), MOD);
-    } else fprintf(stdout, "Using Fermat's factorization method."); fprintf(stdout, "\n\n");
-    ENGINE_SET(SWITCH);
-}
-
 int main(int argc, char **argv) { set_list();
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) { fprintf(stderr, COMPOSITE_NOT_INTERPRETABLE EXIT_STATUS_GOODBYE, argv[1], -1); exit(-1); }
-    if (3 > argc || !match(argv[2], supported_engines)) unrecognized_APPROACH(argv[2]); initialize(argv[2]);
+    if (3 > argc || !match(argv[2], supported_engines)) unrecognized_APPROACH(argv[2]);
+    initialize(argv[2]);
 
     ul smallest_divisor_of_MOD_greater_than_the_MULTIPLICATIVE_IDENTITY = ENGINE(MOD);
     fprintf(stdout, "%lu = %lu * %lu\n", MOD, smallest_divisor_of_MOD_greater_than_the_MULTIPLICATIVE_IDENTITY, MOD / smallest_divisor_of_MOD_greater_than_the_MULTIPLICATIVE_IDENTITY);
