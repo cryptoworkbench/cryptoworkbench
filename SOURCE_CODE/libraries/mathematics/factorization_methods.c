@@ -2,6 +2,7 @@
 #include "../functional/string.h" // needed for definition EXIT_STATUS_GOODBYE
 #include "factorization_methods.h" // need for function headers
 #include "maths.h" // needed for 'DOWN_ROUNDED_second_root()'
+#include "universal_group_library.h" // needed for 'BUFFER_OF_SIZE()'
 
 struct ordered_pair divisor_pair(unsigned long number, unsigned long DIVISOR_OF_number)
 { struct ordered_pair pair_of_divisors; pair_of_divisors.a = DIVISOR_OF_number; pair_of_divisors.b = number / pair_of_divisors.a; return pair_of_divisors; }
@@ -58,3 +59,25 @@ _factorization_method factorization_method(int SELECTOR) {
     switch (SELECTOR) { case 0: return LEAST_efficient_trial_division; case 1: return LESS_efficient_trial_division; case 2: return efficient_trial_division; case 3: return LEAST_efficient_trial_division_TABLE_AIDED;
 	case 4: return LESS_efficient_trial_division_TABLE_AIDED; case 5: return efficient_trial_division_TABLE_AIDED; case 6: return fermat_factorization; };
 } void ENGINE_SET(int SELECTOR) { ENGINE = factorization_method(SELECTOR); }
+
+const char *A = "trial_division_in_its_least_efficient_form";
+const char *B = "trial_division_in_its_less_efficient_form";
+const char *C = "trial_division_in_its_most_efficient_form";
+const char *D = "prime_table_aided_trial_division_in_its_least_efficient_form";
+const char *E = "prime_table_aided_trial_division_in_its_less_efficient_form";
+const char *F = "prime_table_aided_trial_division_in_its_most_efficient_form";
+const char *G = "Fermats_factorization_method";
+
+int interpret_ENGINE_from_external_file() {
+    FILE *file; if (!(file = fopen(FILE_SPECIFYING_PREFERRED_ENGINE, "r"))) { fprintf(stderr, "Couldn't open preferences file '" FILE_SPECIFYING_PREFERRED_ENGINE "'." EXIT_STATUS_GOODBYE, -1); exit(-1); }
+    char *BUFFER = BUFFER_OF_SIZE(200); fscanf(file, "%s[^\n]", BUFFER); fclose(file);
+    int SELECTOR; if (strcmp(BUFFER, A) == 0) SELECTOR = 0;
+    else if (strcmp(BUFFER, B) == 0) SELECTOR = 1;
+    else if (strcmp(BUFFER, C) == 0) SELECTOR = 2;
+    else if (strcmp(BUFFER, D) == 0) SELECTOR = 3;
+    else if (strcmp(BUFFER, E) == 0) SELECTOR = 4;
+    else if (strcmp(BUFFER, F) == 0) SELECTOR = 5;
+    else if (strcmp(BUFFER, G) == 0) SELECTOR = 6; else
+    { fprintf(stderr, "Couldn't interpret preferences file, please put one of these specification there:\n"); fprintf(stderr, "%s\n%s\n%s\n%s\n%s\n%s\n%s\n\n'%s' is not one of these.\n\n" EXIT_STATUS_GOODBYE, A, B, C, D, E, F, G, BUFFER, -2); exit(-2); }
+    free(BUFFER); return SELECTOR;
+}

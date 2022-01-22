@@ -1,4 +1,10 @@
 // See dev note at line 28. That is the only issue.
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h> // <<< Needed for "execvp()"
+#include <sys/wait.h> // <<< Needed for "waitpid()"
+#include "maths.h"
+#include "../functional/string.h"
 #include "universal_group_library.h"
 
 unsigned long *STR_could_be_parsed_into_id(char *STR, unsigned long *id) {
@@ -7,11 +13,11 @@ unsigned long *STR_could_be_parsed_into_id(char *STR, unsigned long *id) {
     else return NULL;
 }
 
-const char *ID_denoted_numerically(UL id) { return (id) ? multiplicative_signs[0] : additive_signs[0]; }
-const char *ID_denoted_by_operation_symbol(UL id) { return (id) ? multiplicative_signs[1] : additive_signs[1]; }
-const char *ID_proNOUNced(UL id) { return (id) ? multiplicative_signs[2] : additive_signs[2]; }
-const char *ID_proNOUNSed(UL id) { return (id) ? multiplicative_signs[3] : additive_signs[3]; }
-const char *operation_ADJECTIVE_from_ID(UL id) { return (id) ? multiplicative_signs[4] : additive_signs[4]; }
+const char *ID_denoted_numerically(ul id) { return (id) ? multiplicative_signs[0] : additive_signs[0]; }
+const char *ID_denoted_by_operation_symbol(ul id) { return (id) ? multiplicative_signs[1] : additive_signs[1]; }
+const char *ID_proNOUNced(ul id) { return (id) ? multiplicative_signs[2] : additive_signs[2]; }
+const char *ID_proNOUNSed(ul id) { return (id) ? multiplicative_signs[3] : additive_signs[3]; }
+const char *operation_ADJECTIVE_from_ID(ul id) { return (id) ? multiplicative_signs[4] : additive_signs[4]; }
 
 char *BUFFER_OF_SIZE(unsigned int SIZE) {
     char *return_value = (char *) malloc(sizeof(char) * SIZE);

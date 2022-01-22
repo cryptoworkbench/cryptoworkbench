@@ -1,3 +1,5 @@
+#define FILE_SPECIFYING_PREFERRED_ENGINE "factorize.preferences"
+
 struct ordered_pair pair_reorder(struct ordered_pair *pair); // < switches the values of member 'a' and member 'b' within a 'struct ordered_pair' pair of numbers IFF 'b' > 'a'
 // ^ FUNCTIONS NOT IN USE
 
@@ -30,3 +32,4 @@ unsigned long fermat_factorization(unsigned long composite);
 
 _factorization_method factorization_method(int SELECTOR); // 'ENGINE_SET()'
 void ENGINE_SET(int SELECTOR);
+int interpret_ENGINE_from_external_file();

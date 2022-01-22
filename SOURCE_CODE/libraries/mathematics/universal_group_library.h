@@ -1,10 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h> // <<< Needed for "execvp()"
-#include <sys/wait.h> // <<< Needed for "waitpid()"
-#include "maths.h"
-#include "../functional/string.h"
-
 #define ELEMENT_EXPORTER "modular_group_element_table_generator"
 #define FILENAME_BODY "_group_of_integers_modulus_"
 #define LOGBOOK_PATH ".LOGBOOK" // << This will be the logbook filename in "WORKBENCH/"
@@ -26,11 +19,11 @@ unsigned long *STR_could_be_parsed_into_id(char *STR, unsigned long *ID);
 /* ^^ Returns "NULL" upon parsing failure, otherwise parses "0" or "1" into their respective ENUM equivalents (a.k.a. representations) within this struct that is abbreviated "group_OBJ" */
 
 char *BUFFER_OF_SIZE(unsigned int SIZE);
-const char *ID_denoted_numerically(UL ID);
-const char *ID_denoted_by_operation_symbol(UL ID);
-const char *ID_proNOUNced(UL ID);
-const char *ID_proNOUNSed(UL ID);
-const char *operation_ADJECTIVE_from_ID(UL ID);
+const char *ID_denoted_numerically(ul ID);
+const char *ID_denoted_by_operation_symbol(ul ID);
+const char *ID_proNOUNced(ul ID);
+const char *ID_proNOUNSed(ul ID);
+const char *operation_ADJECTIVE_from_ID(ul ID);
 
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line);
 void open_and_append_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line);
