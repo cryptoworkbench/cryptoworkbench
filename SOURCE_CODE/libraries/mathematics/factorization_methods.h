@@ -1,4 +1,8 @@
+struct ordered_pair pair_reorder(struct ordered_pair *pair); // < switches the values of member 'a' and member 'b' within a 'struct ordered_pair' pair of numbers IFF 'b' > 'a'
+// ^ FUNCTIONS NOT IN USE
+
 typedef unsigned long (*_factorization_method) (unsigned long);
+_factorization_method ENGINE; // apparently this does not need 'extern' before the declaration
 // ^ One function pointer type
 
 struct ordered_pair divisor_pair(unsigned long number, unsigned long DIVISOR_OF_number);
@@ -28,5 +32,4 @@ unsigned long fermat_factorization(unsigned long composite);
 _factorization_method factorization_method(int SELECTOR);
 // ^ This function returns a function pointer
 
-struct ordered_pair pair_reorder(struct ordered_pair *pair); // < switches the values of member 'a' and member 'b' within a 'struct ordered_pair' pair of numbers IFF 'b' > 'a'
-// ^ not in use currently (deleted)
+void ENGINE_SET(int SELECTOR);

@@ -25,6 +25,7 @@
 #include "../../libraries/mathematics/factorization_methods.h" // needed for function pointers 'trial_division_LEAST_EFFICIENT', 'trial_division_LESS_EFFICIENT', 'trial_division_MOST_EFFICIENT', etc
 #define COMPOSITE_NOT_INTERPRETABLE "Failed to interpret composite '%s'!\n\n"
 ul MOD; // < This time we will use 'MOD' for the composite
+_factorization_method ENGINE;
 
 const char *A = "a"; const char *B ="b"; const char *C = "c"; const char *D = "d"; const char *E = "e"; const char *F ="f"; const char *G = "g";
 // ^ All of the codes in use to signify the various engines.
@@ -57,7 +58,7 @@ void set_list() {
     supported_engines[5] = F; supported_engines[6] = G; supported_engines[7] = 0;
 }
 
-_factorization_method initialize(char *argv_two) {
+void initialize(char *argv_two) {
     int SWITCH = 6;
     if (strcmp(argv_two, A) == 0) { SWITCH = 0;
 	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", MOD, MOD);
@@ -72,15 +73,14 @@ _factorization_method initialize(char *argv_two) {
     } else if (strcmp(argv_two, F) == 0) { SWITCH = 5;
 	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", REPORT_standard_prime_table_filename(), DOWN_ROUNDED_second_root(MOD), MOD);
     } else fprintf(stdout, "Using Fermat's factorization method."); fprintf(stdout, "\n\n");
-    return factorization_method(SWITCH);
+    ENGINE_SET(SWITCH);
 }
 
 int main(int argc, char **argv) { set_list();
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) { fprintf(stderr, COMPOSITE_NOT_INTERPRETABLE EXIT_STATUS_GOODBYE, argv[1], -1); exit(-1); }
-    if (3 > argc || !match(argv[2], supported_engines)) unrecognized_APPROACH(argv[2]);
+    if (3 > argc || !match(argv[2], supported_engines)) unrecognized_APPROACH(argv[2]); initialize(argv[2]);
 
-    _factorization_method factorization_method_chosen = initialize(argv[2]);
-    ul smallest_divisor_of_MOD_greater_than_the_MULTIPLICATIVE_IDENTITY = factorization_method_chosen(MOD);
+    ul smallest_divisor_of_MOD_greater_than_the_MULTIPLICATIVE_IDENTITY = ENGINE(MOD);
     fprintf(stdout, "%lu = %lu * %lu\n", MOD, smallest_divisor_of_MOD_greater_than_the_MULTIPLICATIVE_IDENTITY, MOD / smallest_divisor_of_MOD_greater_than_the_MULTIPLICATIVE_IDENTITY);
     return 0;
 }
