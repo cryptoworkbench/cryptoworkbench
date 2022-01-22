@@ -3,18 +3,18 @@ typedef struct ordered_pair (*_factorization_method) (unsigned long);
 
 unsigned long trial_limit(unsigned long composite, int supidity_level);
 struct ordered_pair trial_division(unsigned long composite, unsigned long trial_limit);
-struct ordered_pair _table_aided_trial_division(unsigned long composite, unsigned long trial_limit, char *prime_table_filename);
-struct ordered_pair table_aided_trial_division(unsigned long composite, unsigned long trial_limit);
+struct ordered_pair trial_division_TABLE_AIDED(unsigned long composite, unsigned long trial_limit);
+struct ordered_pair _trial_division_TABLE_AIDED(unsigned long composite, unsigned long trial_limit, char *prime_table_filename); // ^ inner of the above <<
 // ^ Trial division factorization engines
 
-struct ordered_pair trial_division_LEAST_EFFICIENT(unsigned long composite);
-struct ordered_pair trial_division_LESS_EFFICIENT(unsigned long composite);
-struct ordered_pair trial_division_MOST_EFFICIENT(unsigned long composite);
+struct ordered_pair efficient_trial_division(unsigned long composite);
+struct ordered_pair LESS_efficient_trial_division(unsigned long composite);
+struct ordered_pair LEAST_efficient_trial_division(unsigned long composite);
 // ^ Different implementations of ordinary trial division
 
-struct ordered_pair table_aided_trial_division_LEAST_EFFICIENT(unsigned long composite);
-struct ordered_pair table_aided_trial_division_LESS_EFFICIENT(unsigned long composite);
-struct ordered_pair table_aided_trial_division_MOST_EFFICIENT(unsigned long composite);
+struct ordered_pair efficient_trial_division_TABLE_AIDED(unsigned long composite);
+struct ordered_pair LESS_efficient_trial_division_TABLE_AIDED(unsigned long composite);
+struct ordered_pair LEAST_efficient_trial_division_TABLE_AIDED(unsigned long composite);
 // ^ Different implementations of table aided trial division
 
 struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *to_be_updated, unsigned long minimum);
