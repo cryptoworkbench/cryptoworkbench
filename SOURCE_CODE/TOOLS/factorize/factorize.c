@@ -23,6 +23,7 @@
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h" // needed for 'DOWN_ROUNDED_second_root()' and some of the factorization methods in 'factorization_methods.c' need functions headers from 'maths.h'
 #include "../../libraries/mathematics/factorization_methods.h" // needed for function pointers 'trial_division_LEAST_EFFICIENT', 'trial_division_LESS_EFFICIENT', 'trial_division_MOST_EFFICIENT', etc
+#define COMPOSITE_NOT_INTERPRETABLE "Failed to interpret composite '%s'!\n\n"
 ul MOD; // < This time we will use 'MOD' for the composite
 
 const char *A = "a"; const char *B ="b"; const char *C = "c"; const char *D = "d"; const char *E = "e"; const char *F ="f"; const char *G = "g"; const char *H = "h";
@@ -63,24 +64,24 @@ void set_list() {
     supported_engines[5] = F; supported_engines[6] = G; supported_engines[7] = H; supported_engines[8] = 0;
 }
 
-int main(int argc, char **argv) { set_list(); // < initialize the const char * array 'supported_engines' that we call 'match()' with in the line immediately below
-    if (2 > argc || !match(argv[1], supported_engines)) unrecognized_APPROACH(argv[1]);
-    if (3 > argc || !str_represents_ul(argv[2], &MOD)) { fprintf(stderr, "Failed to interpret composite '%s'!\n\nTerminating with exit status '-1'.\n", argv[2]); exit(-2); }
+int main(int argc, char **argv) { set_list();
+    if (2 > argc || !str_represents_ul(argv[1], &MOD)) { fprintf(stderr, COMPOSITE_NOT_INTERPRETABLE EXIT_STATUS_GOODBYE, argv[1], -1); exit(-1); }
+    if (3 > argc || !match(argv[2], supported_engines)) unrecognized_APPROACH(argv[2]);
 
-    _factorization_method factorization_method_chosen;
-    if (strcmp(argv[1], A) == 0) { factorization_method_chosen = factorization_method(0);
+    _factorization_method factorization_method_chosen = factorization_method(7);
+    if (strcmp(argv[2], A) == 0) { factorization_method_chosen = factorization_method(0);
 	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", MOD, MOD);
-    } else if (strcmp(argv[1], B) == 0) { factorization_method_chosen = factorization_method(1);
+    } else if (strcmp(argv[2], B) == 0) { factorization_method_chosen = factorization_method(1);
 	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", (MOD - (MOD % 2)) / 2, MOD);
-    } else if (strcmp(argv[1], C) == 0) { factorization_method_chosen = factorization_method(2);
+    } else if (strcmp(argv[2], C) == 0) { factorization_method_chosen = factorization_method(2);
 	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", DOWN_ROUNDED_second_root(MOD), MOD);
-    } else if (strcmp(argv[1], D) == 0) { factorization_method_chosen = factorization_method(3);
+    } else if (strcmp(argv[2], D) == 0) { factorization_method_chosen = factorization_method(3);
 	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", _REPORT_standard_prime_table_filename(), MOD, MOD);
-    } else if (strcmp(argv[1], E) == 0) { factorization_method_chosen = factorization_method(4);
+    } else if (strcmp(argv[2], E) == 0) { factorization_method_chosen = factorization_method(4);
 	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", _REPORT_standard_prime_table_filename(), (MOD - (MOD % 2)) / 2, MOD);
-    } else if (strcmp(argv[1], F) == 0) { factorization_method_chosen = factorization_method(5);
+    } else if (strcmp(argv[2], F) == 0) { factorization_method_chosen = factorization_method(5);
 	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", _REPORT_standard_prime_table_filename(), DOWN_ROUNDED_second_root(MOD), MOD);
-    } else if (strcmp(argv[1], G) == 0) { factorization_method_chosen = factorization_method(6); if (MOD % 2 == 0)
+    } else if (strcmp(argv[2], G) == 0) { factorization_method_chosen = factorization_method(6); if (MOD % 2 == 0)
 	{ fprintf(stderr, "%lu \u2261 0	(modulus 2)\n\nThe difference of squares method can only handle odd numbers, but %lu is even. Terminating with exit status '-3'.\n", MOD, MOD); return -3; }
 	fprintf(stdout, "Using the difference of squares method.");
     } else fprintf(stdout, "Using Fermat's factorization method."); fprintf(stdout, "\n\n");
