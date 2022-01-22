@@ -21,7 +21,6 @@ unsigned long inverse(unsigned long element_of_additive_group); // yields the ad
 unsigned long multiply(unsigned long a, unsigned long b);
 
 typedef unsigned long (*_group_operation) (unsigned long, unsigned long);
-typedef struct ordered_pair (*_factorization_method) (unsigned long);
 _group_operation operation_from_ID(unsigned long ID);
 
 unsigned long exponentiation(unsigned long base, unsigned long exponent);

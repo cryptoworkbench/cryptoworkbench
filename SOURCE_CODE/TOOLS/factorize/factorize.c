@@ -64,29 +64,33 @@ void set_list() {
     supported_engines[5] = F; supported_engines[6] = G; supported_engines[7] = H; supported_engines[8] = 0;
 }
 
+_factorization_method initialize(char *argv_two) {
+    int SWITCH = 7;
+    if (strcmp(argv_two, A) == 0) { SWITCH = 0;
+	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", MOD, MOD);
+    } else if (strcmp(argv_two, B) == 0) { SWITCH = 1;
+	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", (MOD - (MOD % 2)) / 2, MOD);
+    } else if (strcmp(argv_two, C) == 0) { SWITCH = 2;
+	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", DOWN_ROUNDED_second_root(MOD), MOD);
+    } else if (strcmp(argv_two, D) == 0) { SWITCH = 3;
+	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", REPORT_standard_prime_table_filename(), MOD, MOD);
+    } else if (strcmp(argv_two, E) == 0) { SWITCH = 4;
+	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", REPORT_standard_prime_table_filename(), (MOD - (MOD % 2)) / 2, MOD);
+    } else if (strcmp(argv_two, F) == 0) { SWITCH = 5;
+	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", REPORT_standard_prime_table_filename(), DOWN_ROUNDED_second_root(MOD), MOD);
+    } else if (strcmp(argv_two, G) == 0) { SWITCH = 6; if (MOD % 2 == 0)
+	{ fprintf(stderr, "%lu \u2261 0	(modulus 2)\n\nThe difference of squares method can only handle odd numbers, but %lu is even. Terminating with exit status '-3'.\n", MOD, MOD); exit(-3); }
+	fprintf(stdout, "Using the difference of squares method.");
+    } else fprintf(stdout, "Using Fermat's factorization method."); fprintf(stdout, "\n\n");
+    return factorization_method(SWITCH);
+}
+
 int main(int argc, char **argv) { set_list();
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) { fprintf(stderr, COMPOSITE_NOT_INTERPRETABLE EXIT_STATUS_GOODBYE, argv[1], -1); exit(-1); }
     if (3 > argc || !match(argv[2], supported_engines)) unrecognized_APPROACH(argv[2]);
 
-    _factorization_method factorization_method_chosen = factorization_method(7);
-    if (strcmp(argv[2], A) == 0) { factorization_method_chosen = factorization_method(0);
-	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", MOD, MOD);
-    } else if (strcmp(argv[2], B) == 0) { factorization_method_chosen = factorization_method(1);
-	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", (MOD - (MOD % 2)) / 2, MOD);
-    } else if (strcmp(argv[2], C) == 0) { factorization_method_chosen = factorization_method(2);
-	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", DOWN_ROUNDED_second_root(MOD), MOD);
-    } else if (strcmp(argv[2], D) == 0) { factorization_method_chosen = factorization_method(3);
-	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", REPORT_standard_prime_table_filename(), MOD, MOD);
-    } else if (strcmp(argv[2], E) == 0) { factorization_method_chosen = factorization_method(4);
-	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", REPORT_standard_prime_table_filename(), (MOD - (MOD % 2)) / 2, MOD);
-    } else if (strcmp(argv[2], F) == 0) { factorization_method_chosen = factorization_method(5);
-	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", REPORT_standard_prime_table_filename(), DOWN_ROUNDED_second_root(MOD), MOD);
-    } else if (strcmp(argv[2], G) == 0) { factorization_method_chosen = factorization_method(6); if (MOD % 2 == 0)
-	{ fprintf(stderr, "%lu \u2261 0	(modulus 2)\n\nThe difference of squares method can only handle odd numbers, but %lu is even. Terminating with exit status '-3'.\n", MOD, MOD); return -3; }
-	fprintf(stdout, "Using the difference of squares method.");
-    } else fprintf(stdout, "Using Fermat's factorization method."); fprintf(stdout, "\n\n");
-
-    struct ordered_pair factorization_of_MOD = factorization_method_chosen(MOD);
-    fprintf(stdout, "%lu = %lu * %lu\n", MOD, factorization_of_MOD.a, factorization_of_MOD.b);
+    _factorization_method factorization_method_chosen = initialize(argv[2]);
+    ul factor_a = factorization_method_chosen(MOD);
+    fprintf(stdout, "%lu = %lu * %lu\n", MOD, factor_a, MOD / factor_a);
     return 0;
 }
