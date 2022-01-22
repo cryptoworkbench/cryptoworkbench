@@ -1,10 +1,8 @@
 struct ordered_pair pair_reorder(struct ordered_pair *pair); // < switches the values of member 'a' and member 'b' within a 'struct ordered_pair' pair of numbers IFF 'b' > 'a'
 // ^ FUNCTIONS NOT IN USE
 
-typedef unsigned long (*_factorization_method) (unsigned long);
-_factorization_method ENGINE; // 'ENGINE_SET()'
-void ENGINE_SET(int SELECTOR);
-// ^ apparently this does not need 'extern' before the declaration
+typedef unsigned long (*_factorization_method) (unsigned long); _factorization_method ENGINE; // 'ENGINE_SET()'
+// a global function pointer for functions that take an UL and return an UL, that is going to be used for factorization ENGINEs returning the smallest divisor (from N, obviously) of any number greater than 1
 
 struct ordered_pair divisor_pair(unsigned long number, unsigned long DIVISOR_OF_number);
 unsigned long trial_limit(unsigned long composite, int supidity_level);
@@ -30,5 +28,5 @@ unsigned long evens_factorizer(unsigned long even_composite); // the most effici
 unsigned long fermat_factorization(unsigned long composite);
 // ^ And a lot of functions
 
-_factorization_method factorization_method(int SELECTOR);
-// ^ This function returns a function pointer
+_factorization_method factorization_method(int SELECTOR); // 'ENGINE_SET()'
+void ENGINE_SET(int SELECTOR);

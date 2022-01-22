@@ -2,6 +2,7 @@
  *
  * See the header file for function descriptions. */
 #include "maths.h" // needed for function headers and for the definition PRIME_TABLE_UNAVAILABLE_ERROR
+#include "factorization_methods.h" // needed for '_factorization_method'
 #include "../functional/string.h" // needed for the definition EXIT_STATUS_GOODBYE
 
 const char *_standard_prime_table_filename = "universal_prime_table"; char *REPORT_standard_prime_table_filename() { return (char *) _standard_prime_table_filename; }
@@ -170,3 +171,6 @@ FILE *prime_table_open(char *prime_table_filename) {
     else { fprintf(stderr, PRIME_TABLE_UNAVAILABLE_ERROR EXIT_STATUS_GOODBYE, prime_table_filename, -1); exit(-1); }
     return prime_table;
 } void prime_table_close(FILE *prime_table) { fclose(prime_table); _open_prime_table = NULL; }
+
+_factorization_method ENGINE;
+int prime(ul potential_prime) { return (!(potential_prime - ENGINE(potential_prime))) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY; }

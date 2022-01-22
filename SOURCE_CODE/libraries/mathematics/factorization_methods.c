@@ -57,6 +57,4 @@ unsigned long fermat_factorization(unsigned long composite) { return odds_factor
 _factorization_method factorization_method(int SELECTOR) {
     switch (SELECTOR) { case 0: return LEAST_efficient_trial_division; case 1: return LESS_efficient_trial_division; case 2: return efficient_trial_division; case 3: return LEAST_efficient_trial_division_TABLE_AIDED;
 	case 4: return LESS_efficient_trial_division_TABLE_AIDED; case 5: return efficient_trial_division_TABLE_AIDED; case 6: return fermat_factorization; };
-} // 'ENGINE_SET()'
-
-void ENGINE_SET(int SELECTOR) { ENGINE = factorization_method(SELECTOR); }
+} void ENGINE_SET(int SELECTOR) { ENGINE = factorization_method(SELECTOR); }
