@@ -4,7 +4,7 @@ typedef struct ordered_pair (*_factorization_method) (unsigned long);
 unsigned long trial_limit(unsigned long composite, int supidity_level);
 struct ordered_pair trial_division(unsigned long composite, unsigned long trial_limit);
 struct ordered_pair trial_division_TABLE_AIDED(unsigned long composite, unsigned long trial_limit);
-struct ordered_pair _trial_division_TABLE_AIDED(unsigned long composite, unsigned long trial_limit, char *prime_table_filename); // ^ inner of the above <<
+struct ordered_pair _trial_division_TABLE_AIDED(unsigned long composite, unsigned long trial_limit, FILE *prime_table); // ^ inner of the above <<
 // ^ Trial division factorization engines
 
 struct ordered_pair efficient_trial_division(unsigned long composite);

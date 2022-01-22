@@ -9,13 +9,18 @@ struct ordered_pair trial_division(unsigned long presumed_composite, unsigned lo
     struct ordered_pair ret_val; ret_val.a = i; ret_val.b = presumed_composite / i; return ret_val;
 } // 'LEAST_efficient_trial_division()', 'LESS_efficient_trial_division()', 'efficient_trial_division()'
 
-struct ordered_pair _trial_division_TABLE_AIDED(unsigned long composite, unsigned long trial_limit, char *prime_table_filename_specification) {
-    if (!prime_table_filename_specification) prime_table_filename_specification = _REPORT_standard_prime_table_filename();
-    FILE *prime_table = prime_table_open(prime_table_filename_specification); ul prime; do {
-	if (fscanf(prime_table, "%lu\n", &prime) != 1) { fprintf(stderr, "The prime table '%s' is not complete enough to find the first prime divisor of %lu.\n", prime_table_filename_specification, composite); exit(-1); }
-	if (trial_limit < prime) prime = composite; } while (composite % prime != 0); fclose(prime_table);
-    struct ordered_pair ret_val; ret_val.a = prime; ret_val.b = composite / ret_val.a; return ret_val;
-} struct ordered_pair trial_division_TABLE_AIDED(unsigned long composite, unsigned long trial_limit) { return _trial_division_TABLE_AIDED(composite, trial_limit, NULL); }
+struct ordered_pair _trial_division_TABLE_AIDED(unsigned long composite, unsigned long trial_limit, FILE *prime_table) {
+    ul prime; do {
+	if (fscanf(prime_table, "%lu\n", &prime) != 1) { fprintf(stderr, "The prime table used not complete enough to find the first prime divisor of %lu.\n", composite); exit(-1); }
+	if (trial_limit < prime) prime = composite;
+    } while (composite % prime != 0); fclose(prime_table);
+    struct ordered_pair ret_val;
+    ret_val.a = prime;
+    ret_val.b = composite / ret_val.a;
+    return pair_reorder(&ret_val);
+}
+
+struct ordered_pair trial_division_TABLE_AIDED(unsigned long composite, unsigned long trial_limit) { return _trial_division_TABLE_AIDED(composite, trial_limit, prime_table_open(_REPORT_standard_prime_table_filename()));}
 // ^ 'trial_division_TABLE_AIDED()' simply calls '_trial_division_TABLE_AIDED()' without 'char *prime_table_filename_specification' specification field.
 
 unsigned long trial_limit(unsigned long composite, int supidity_level)
@@ -41,10 +46,10 @@ struct ordered_pair difference_of_squares_factorization_method(unsigned long odd
     while (square_BIG.b != odd_composite + square_SMALL.b) {
 	least_perfect_square_equal_to_or_greater_than(&square_BIG, odd_composite + square_SMALL.b);
 	least_perfect_square_equal_to_or_greater_than(&square_SMALL, square_BIG.b - odd_composite);
-    } return (struct ordered_pair) { square_BIG.a + square_SMALL.a, square_BIG.a - square_SMALL.a};
+    } return (struct ordered_pair) { square_BIG.a - square_SMALL.a, square_BIG.a + square_SMALL.a};
 }
 
-struct ordered_pair pair_reorder(struct ordered_pair *pair) { if (pair->a > pair->b) { unsigned long temp = pair->a; pair->a = pair->b; pair->b = temp; } return *pair; }
+struct ordered_pair pair_reorder(struct ordered_pair *pair) { if (pair->b < pair->a) { unsigned long temp = pair->a; pair->a = pair->b; pair->b = temp; } return *pair; }
 // ^ Switched the values of member 'a' and member 'b' within a 'struct ordered_pair' pair of numbers IFF 'b' > 'a'
 
 struct ordered_pair twos_factor_filter(unsigned long even_composite) { struct ordered_pair ret_val;
