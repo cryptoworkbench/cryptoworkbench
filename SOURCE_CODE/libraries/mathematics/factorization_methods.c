@@ -61,3 +61,17 @@ struct ordered_pair odd_composite_decomposer_WRAPPER(unsigned long composite, _f
 { return (composite % 2 == 0) ? twos_factor_filter(composite) : odds_decomposer(composite); }
 
 struct ordered_pair fermat_factorization(unsigned long composite) { return odd_composite_decomposer_WRAPPER(composite, difference_of_squares_factorization_method); }
+
+_factorization_method factorization_method(int SELECTOR) {
+    switch (SELECTOR) {
+	case 0: return trial_division_LEAST_EFFICIENT;
+	case 1: return trial_division_LESS_EFFICIENT;
+	case 2: return trial_division_MOST_EFFICIENT;
+	case 3: return table_aided_trial_division_LEAST_EFFICIENT;
+	case 4: return table_aided_trial_division_LESS_EFFICIENT;
+	case 5: return table_aided_trial_division_MOST_EFFICIENT;
+	case 6: return difference_of_squares_factorization_method;
+	case 7: return fermat_factorization;
+    };
+}
+

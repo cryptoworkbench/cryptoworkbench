@@ -24,3 +24,6 @@ struct ordered_pair pair_reorder(struct ordered_pair *pair);
 struct ordered_pair twos_factor_filter(unsigned long even_composite);
 struct ordered_pair fermat_factorization(unsigned long composite);
 // ^ And a lot of functions
+
+_factorization_method factorization_method(int SELECTOR);
+// ^ This function returns a function pointer
