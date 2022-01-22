@@ -2,7 +2,6 @@
 #include "../functional/string.h" // needed for definition EXIT_STATUS_GOODBYE
 #include "factorization_methods.h" // need for function headers
 #include "maths.h" // needed for 'DOWN_ROUNDED_second_root()'
-#define STANDARD_PRIME_TABLE_FILENAME "UNIVERSAL PRIME TABLE"
 
 struct ordered_pair trial_division(unsigned long presumed_composite, unsigned long trial_limit) {
     ul i = MULTIPLICATIVE_IDENTITY; do {i++; if (trial_limit < i) i == presumed_composite; } while (presumed_composite % i != 0);
@@ -11,16 +10,17 @@ struct ordered_pair trial_division(unsigned long presumed_composite, unsigned lo
 
 struct ordered_pair _trial_division_TABLE_AIDED(unsigned long composite, unsigned long trial_limit, FILE *prime_table) {
     ul prime; do {
-	if (fscanf(prime_table, "%lu\n", &prime) != 1) { fprintf(stderr, "The prime table used not complete enough to find the first prime divisor of %lu.\n", composite); exit(-1); }
-	if (trial_limit < prime) prime = composite;
-    } while (composite % prime != 0); fclose(prime_table);
+	if (fscanf(prime_table, "%lu\n", &prime) != 1)
+	{ fprintf(stderr, "The prime table '%s' not complete enough to find the first prime divisor of %lu. The last prime tested was %lu.\n", REPORT_open_prime_table(), composite, prime); exit(-1); }
+	if (prime > trial_limit) prime = composite;
+    } while (composite % prime != 0); prime_table_close(prime_table);
     struct ordered_pair ret_val;
     ret_val.a = prime;
     ret_val.b = composite / ret_val.a;
     return pair_reorder(&ret_val);
 }
 
-struct ordered_pair trial_division_TABLE_AIDED(unsigned long composite, unsigned long trial_limit) { return _trial_division_TABLE_AIDED(composite, trial_limit, prime_table_open(_REPORT_standard_prime_table_filename()));}
+struct ordered_pair trial_division_TABLE_AIDED(unsigned long composite, unsigned long trial_limit) { return _trial_division_TABLE_AIDED(composite, trial_limit, prime_table_open(REPORT_standard_prime_table_filename()));}
 // ^ 'trial_division_TABLE_AIDED()' simply calls '_trial_division_TABLE_AIDED()' without 'char *prime_table_filename_specification' specification field.
 
 unsigned long trial_limit(unsigned long composite, int supidity_level)

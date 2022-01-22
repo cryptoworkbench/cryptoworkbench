@@ -7,7 +7,8 @@
 
 typedef unsigned long ul; extern ul MOD;
 
-char *_REPORT_standard_prime_table_filename(); // < for access in other files to 'const char pointer standard_prime_table_filename'.
+char *REPORT_standard_prime_table_filename(); // < for access in other files to 'const char pointer standard_prime_table_filename'.
+char *REPORT_open_prime_table(); // < for access in other files to 'char * _opened_prime_table' (which gets initialied to NULL).
 
 struct ordered_pair { unsigned long a; unsigned long b; };
 
@@ -59,3 +60,4 @@ unsigned long DOWN_ROUNDED_second_root(unsigned long number);
 char *sieve_of_eratosthenes(unsigned long limit);
 unsigned long primes_printed_from_sieve_array_to_FS(char *sieve, unsigned long limit, FILE *FS);
 FILE *prime_table_open(char *prime_table_filename); // < I want this to eventually try to cooperate with the logbook instead of stderr
+void prime_table_close(FILE *prime_table); // < closes FS and resets char * variable '_open_prime_table' to NULL

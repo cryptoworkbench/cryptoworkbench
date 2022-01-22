@@ -4,8 +4,9 @@
 #include "maths.h" // needed for function headers and for the definition PRIME_TABLE_UNAVAILABLE_ERROR
 #include "../functional/string.h" // needed for the definition EXIT_STATUS_GOODBYE
 
-const char *standard_prime_table_filename = "universal_prime_table";
-char *_REPORT_standard_prime_table_filename() { return (char *) standard_prime_table_filename; }
+const char *_standard_prime_table_filename = "universal_prime_table"; char *REPORT_standard_prime_table_filename() { return (char *) _standard_prime_table_filename; }
+char *_open_prime_table = NULL; char *REPORT_open_prime_table() { return (char *) _open_prime_table; }
+// Two global variables and two functions for access to these global variables in other files/libraries
 
 unsigned long conditional_field_cap(unsigned long result) { return (MOD) ? result % MOD : result; } // < Return result if there is no N_quotient, otherwise apply modular arithmetic
 unsigned long add(unsigned long a, unsigned long b) { return conditional_field_cap(a + b); }
@@ -164,5 +165,8 @@ unsigned long primes_printed_from_sieve_array_to_FS(char *sieve, unsigned long l
     return ret_val;
 }
 
-FILE *prime_table_open(char *prime_table_filename)
-{ FILE *prime_table; if (!(prime_table = fopen(standard_prime_table_filename, "r"))) { fprintf(stderr, PRIME_TABLE_UNAVAILABLE_ERROR EXIT_STATUS_GOODBYE, prime_table_filename, -1); exit(-1); } return prime_table; }
+FILE *prime_table_open(char *prime_table_filename) {
+    FILE *prime_table; if (prime_table = fopen(prime_table_filename, "r")) _open_prime_table = prime_table_filename;
+    else { fprintf(stderr, PRIME_TABLE_UNAVAILABLE_ERROR EXIT_STATUS_GOODBYE, prime_table_filename, -1); exit(-1); }
+    return prime_table;
+} void prime_table_close(FILE *prime_table) { fclose(prime_table); _open_prime_table = NULL; }

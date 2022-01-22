@@ -76,11 +76,11 @@ int main(int argc, char **argv) { set_list();
     } else if (strcmp(argv[2], C) == 0) { factorization_method_chosen = factorization_method(2);
 	fprintf(stdout, "Using trial division and checking for all 'x <= %lu' if x divides %lu.", DOWN_ROUNDED_second_root(MOD), MOD);
     } else if (strcmp(argv[2], D) == 0) { factorization_method_chosen = factorization_method(3);
-	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", _REPORT_standard_prime_table_filename(), MOD, MOD);
+	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", REPORT_standard_prime_table_filename(), MOD, MOD);
     } else if (strcmp(argv[2], E) == 0) { factorization_method_chosen = factorization_method(4);
-	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", _REPORT_standard_prime_table_filename(), (MOD - (MOD % 2)) / 2, MOD);
+	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", REPORT_standard_prime_table_filename(), (MOD - (MOD % 2)) / 2, MOD);
     } else if (strcmp(argv[2], F) == 0) { factorization_method_chosen = factorization_method(5);
-	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", _REPORT_standard_prime_table_filename(), DOWN_ROUNDED_second_root(MOD), MOD);
+	fprintf(stdout, "Using prime table aided trial division (with '%s') and checking for all 'x <= %lu' if x divides %lu.", REPORT_standard_prime_table_filename(), DOWN_ROUNDED_second_root(MOD), MOD);
     } else if (strcmp(argv[2], G) == 0) { factorization_method_chosen = factorization_method(6); if (MOD % 2 == 0)
 	{ fprintf(stderr, "%lu \u2261 0	(modulus 2)\n\nThe difference of squares method can only handle odd numbers, but %lu is even. Terminating with exit status '-3'.\n", MOD, MOD); return -3; }
 	fprintf(stdout, "Using the difference of squares method.");
