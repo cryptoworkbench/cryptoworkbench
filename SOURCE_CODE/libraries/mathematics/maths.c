@@ -174,5 +174,4 @@ FILE *prime_table_open(char *prime_table_filename) {
 
 _factorization_method prefered_factorization_ENGINE;
 int composite(unsigned long potential_composite) { return (potential_composite - prefered_factorization_ENGINE(potential_composite)) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY; }
-int prime(unsigned long potential_prime) { return !composite(potential_prime); }
-// int prime(unsigned long potential_prime) { return (MULTIPLICATIVE_IDENTITY - composite(potential_prime)) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY; }
+int prime(unsigned long potential_prime) { return (potential_prime - prefered_factorization_ENGINE(potential_prime)) ? ADDITIVE_IDENTITY : MULTIPLICATIVE_IDENTITY; }
