@@ -13,24 +13,24 @@
 #include "../../libraries/mathematics/factorization_methods.h" // needed for function pointers 'trial_division_LEAST_EFFICIENT', 'trial_division_LESS_EFFICIENT', 'trial_division_MOST_EFFICIENT', etc
 #define COMPOSITE_NOT_INTERPRETABLE "Failed to interpret composite '%s'!\n\n"
 ul MOD; // < This time we will use 'MOD' for the composite
-_factorization_method prefered_factorization_ENGINE;
+_factorization_method preferred_factorization_ENGINE;
 
 void domain_display(unsigned long a, unsigned long b) { fprintf(stdout, " and checking for all 'x <= %lu' if x divides %lu.", a, b); }
 
 void initialize() {
-    if (prefered_factorization_ENGINE == LEAST_efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(MOD, 3), MOD); }
-    else if (prefered_factorization_ENGINE == LESS_efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(MOD, 2), MOD); }
-    else if (prefered_factorization_ENGINE == efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(MOD, 1), MOD); }
-    else if (prefered_factorization_ENGINE == LEAST_efficient_trial_division_TABLE_AIDED)
+    if (preferred_factorization_ENGINE == LEAST_efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(MOD, 3), MOD); }
+    else if (preferred_factorization_ENGINE == LESS_efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(MOD, 2), MOD); }
+    else if (preferred_factorization_ENGINE == efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(MOD, 1), MOD); }
+    else if (preferred_factorization_ENGINE == LEAST_efficient_trial_division_TABLE_AIDED)
     { fprintf(stdout, "Using prime table aided trial division (with '%s')", REPORT_standard_prime_table_filename()); domain_display(trial_limit(MOD, 3), MOD); }
-    else if (prefered_factorization_ENGINE == LESS_efficient_trial_division_TABLE_AIDED)
+    else if (preferred_factorization_ENGINE == LESS_efficient_trial_division_TABLE_AIDED)
     { fprintf(stdout, "Using prime table aided trial division (with '%s')", REPORT_standard_prime_table_filename()); domain_display(trial_limit(MOD, 2), MOD); }
-    else if (prefered_factorization_ENGINE == efficient_trial_division_TABLE_AIDED)
+    else if (preferred_factorization_ENGINE == efficient_trial_division_TABLE_AIDED)
     { fprintf(stdout, "Using prime table aided trial division (with '%s')", REPORT_standard_prime_table_filename()); domain_display(trial_limit(MOD, 1), MOD); }
     else fprintf(stdout, "Using Fermat's factorization method.");
 }
 
-int main(int argc, char **argv) { prefered_factorization_ENGINE = NULL;
+int main(int argc, char **argv) { preferred_factorization_ENGINE = NULL;
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) { fprintf(stderr, COMPOSITE_NOT_INTERPRETABLE EXIT_STATUS_GOODBYE, argv[1], -1); exit(-1); } char *ptr = argv[2];
     if (argc < 3) { FILE *file; if (file = fopen(FILE_SPECIFYING_PREFERRED_ENGINE, "r")) { ptr = BUFFER_OF_SIZE(200); fscanf(file, "%s[^\n]", ptr); fclose(file); }
 	else { fprintf(stderr, "Couldn't open preferences file '" FILE_SPECIFYING_PREFERRED_ENGINE "'. " EXIT_STATUS_GOODBYE, -1); exit(-1); } }
@@ -38,8 +38,8 @@ int main(int argc, char **argv) { prefered_factorization_ENGINE = NULL;
     if (SELECTOR) SET_preferred_factorization_ENGINE(SELECTOR - 1); // < a.k.a. interpretation from 'ptr' successful
     else ERR(ptr); initialize(); if (!(argc < 3)) fprintf(stdout, "	(engine specified by terminal argument)"); fprintf(stdout, "\n\n");
 
-    ul smallest_divisor_of_MOD_greater_than_the_MULTIPLICATIVE_IDENTITY = prefered_factorization_ENGINE(MOD);
-    struct ordered_pair factor_a_and_b = factorize(MOD, NULL); // <- NULL means 'prefered_factorization_ENGINE' will be deployed
+    ul smallest_divisor_of_MOD_greater_than_the_MULTIPLICATIVE_IDENTITY = preferred_factorization_ENGINE(MOD);
+    struct ordered_pair factor_a_and_b = factorize(MOD, NULL); // <- NULL means 'preferred_factorization_ENGINE' will be deployed
     fprintf(stdout, "%lu = %lu * %lu\n", MOD, factor_a_and_b.a, factor_a_and_b.b);
     return 0;
 } // make use use of '

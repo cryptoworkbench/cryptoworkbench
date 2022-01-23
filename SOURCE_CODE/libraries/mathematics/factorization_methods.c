@@ -52,10 +52,10 @@ unsigned long fermat_factorization(unsigned long composite) { return odds_factor
 _factorization_method factorization_method(int SELECTOR) {
     switch (SELECTOR) { case 0: return LEAST_efficient_trial_division; case 1: return LESS_efficient_trial_division; case 2: return efficient_trial_division; case 3: return LEAST_efficient_trial_division_TABLE_AIDED;
 	case 4: return LESS_efficient_trial_division_TABLE_AIDED; case 5: return efficient_trial_division_TABLE_AIDED; case 6: return fermat_factorization; };
-} void SET_preferred_factorization_ENGINE(int SELECTOR) { prefered_factorization_ENGINE = factorization_method(SELECTOR); }
+} void SET_preferred_factorization_ENGINE(int SELECTOR) { preferred_factorization_ENGINE = factorization_method(SELECTOR); }
 
 struct ordered_pair factorize(unsigned long number, _factorization_method factorization_ENGINE_to_use) {
-    if (!factorization_ENGINE_to_use) factorization_ENGINE_to_use = prefered_factorization_ENGINE; // < unless there was an engine specified, use the engine all of the functions use
+    if (!factorization_ENGINE_to_use) factorization_ENGINE_to_use = preferred_factorization_ENGINE; // < unless there was an engine specified, use the engine all of the functions use
     return divisor_pair(number, factorization_ENGINE_to_use(number));
 }
 
