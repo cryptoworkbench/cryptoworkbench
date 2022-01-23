@@ -63,12 +63,14 @@ _factorization_method factorization_method(int SELECTOR) {
 const char *a = "a"; const char *b = "b"; const char *c = "c"; const char *d = "d";
 const char *e = "e"; const char *f = "f"; const char *g = "g";
 const char *A = "trial_division_in_its_least_efficient_form";
-const char *B = "trial_division_in_its_less_efficient_form";
-const char *C = "trial_division_in_its_most_efficient_form";
-const char *D = "prime_table_aided_trial_division_in_its_least_efficient_form";
-const char *E = "prime_table_aided_trial_division_in_its_less_efficient_form";
-const char *F = "prime_table_aided_trial_division_in_its_most_efficient_form";
-const char *G = "Fermats_factorization_method";
+char *REPORT_A() { return (char *) A; }
+
+const char *B = "trial_division_in_its_less_efficient_form"; char *REPORT_B() { return (char *) B; }
+const char *C = "trial_division_in_its_most_efficient_form"; char *REPORT_C() { return (char *) C; }
+const char *D = "prime_table_aided_trial_division_in_its_least_efficient_form"; char *REPORT_D() { return (char *) D; }
+const char *E = "prime_table_aided_trial_division_in_its_less_efficient_form"; char *REPORT_E() { return (char *) E; }
+const char *F = "prime_table_aided_trial_division_in_its_most_efficient_form"; char *REPORT_F() { return (char *) F; }
+const char *G = "Fermats_factorization_method"; char *REPORT_G() { return (char *) G; }
 // ^ string literals we will be comparing against
 
 void ERR(char *arg) {

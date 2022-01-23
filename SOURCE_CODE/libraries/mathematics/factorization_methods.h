@@ -1,5 +1,13 @@
 #define FILE_SPECIFYING_PREFERRED_ENGINE "factorize.preferences"
 
+char *REPORT_A();
+char *REPORT_B();
+char *REPORT_C();
+char *REPORT_D();
+char *REPORT_E();
+char *REPORT_F();
+char *REPORT_G();
+
 struct ordered_pair pair_reorder(struct ordered_pair *pair); // < switches the values of member 'a' and member 'b' within a 'struct ordered_pair' pair of numbers IFF 'b' > 'a'
 // ^ FUNCTIONS NOT IN USE
 

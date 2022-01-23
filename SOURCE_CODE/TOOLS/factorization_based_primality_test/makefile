@@ -10,8 +10,8 @@
 ../../libraries/mathematics/.universal_group_library.o: ../../libraries/mathematics/universal_group_library.h ../../libraries/mathematics/universal_group_library.c
 	gcc -c ../../libraries/mathematics/universal_group_library.c -o ../../libraries/mathematics/.universal_group_library.o
 
-.prime.o: prime.c
-	gcc -c prime.c -o .prime.o
+.factorization_based_primality_test.o: factorization_based_primality_test.c
+	gcc -c factorization_based_primality_test.c -o .factorization_based_primality_test.o
 
-prime: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.universal_group_library.o .prime.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.universal_group_library.o .prime.o -o ../../../WORKBENCH/prime
+factorization_based_primality_test: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.universal_group_library.o .factorization_based_primality_test.o
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.universal_group_library.o .factorization_based_primality_test.o -o ../../../WORKBENCH/factorization_based_primality_test
