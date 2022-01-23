@@ -19,11 +19,6 @@ const char *ID_proNOUNced(ul id) { return (id) ? multiplicative_signs[2] : addit
 const char *ID_proNOUNSed(ul id) { return (id) ? multiplicative_signs[3] : additive_signs[3]; }
 const char *operation_ADJECTIVE_from_ID(ul id) { return (id) ? multiplicative_signs[4] : additive_signs[4]; }
 
-char *BUFFER_OF_SIZE(unsigned int SIZE) {
-    char *return_value = (char *) malloc(sizeof(char) * SIZE);
-    return return_value;
-}
-
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line) {
     fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", argv_ZERO, TO_BE_APPENDED_logbook_line);
     fflush(logbook_fs);

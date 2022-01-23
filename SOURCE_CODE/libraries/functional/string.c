@@ -8,6 +8,11 @@
 #include "../mathematics/maths.h" // must be in this file or else compiler complaints
 #include <stdio.h>
 
+char *BUFFER_OF_SIZE(unsigned int SIZE) {
+    char *return_value = (char *) malloc(sizeof(char) * SIZE);
+    return return_value;
+}
+
 /* Returns an unsigned long containing the number of characters in the string pointed at by the constant char pointer 'string_pointer' */
 unsigned long str_len(const char *string_pointer) {
     unsigned long index = 0;

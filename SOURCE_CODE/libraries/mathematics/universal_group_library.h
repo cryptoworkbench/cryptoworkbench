@@ -18,12 +18,11 @@ static const char *multiplicative_signs[] = {"1", "*", "multiplication", "multip
 unsigned long *STR_could_be_parsed_into_id(char *STR, unsigned long *ID);
 /* ^^ Returns "NULL" upon parsing failure, otherwise parses "0" or "1" into their respective ENUM equivalents (a.k.a. representations) within this struct that is abbreviated "group_OBJ" */
 
-char *BUFFER_OF_SIZE(unsigned int SIZE);
-const char *ID_denoted_numerically(ul ID);
-const char *ID_denoted_by_operation_symbol(ul ID);
-const char *ID_proNOUNced(ul ID);
-const char *ID_proNOUNSed(ul ID);
-const char *operation_ADJECTIVE_from_ID(ul ID);
+const char *ID_denoted_numerically(unsigned long ID);
+const char *ID_denoted_by_operation_symbol(unsigned long ID);
+const char *ID_proNOUNced(unsigned long ID);
+const char *ID_proNOUNSed(unsigned long ID);
+const char *operation_ADJECTIVE_from_ID(unsigned long ID);
 
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line);
 void open_and_append_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line);

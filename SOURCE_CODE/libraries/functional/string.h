@@ -9,6 +9,8 @@
 #define ASCII_BASE 48
 // ^^^ Necessary definitions that are needed in "string.c"
 
+char *BUFFER_OF_SIZE(unsigned int SIZE);
+
 /* Returns an unsigned long containing the number of characters in the string pointed at by variable 'string_pointer' of type 'constant char *' */
 unsigned long str_len(const char *string_pointer); // Just like in the standard library, works just as expected
 

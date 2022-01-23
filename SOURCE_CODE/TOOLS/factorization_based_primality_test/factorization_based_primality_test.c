@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/maths.h" // needed for 'prime()'
 #include "../../libraries/mathematics/factorization_methods.h" // needed for 'SET_preferred_factorization_ENGINE()'
-#include "../../libraries/mathematics/universal_group_library.h" // needed for 'BUFFER_OF_SIZE()'
-ul MOD;
+#include "../../libraries/mathematics/primality_testing_scemes.h" // needed for 'prime()'
+// #include "../../libraries/mathematics/universal_group_library.h" // needed for 'BUFFER_OF_SIZE()'
+unsigned long MOD;
 
 char *chosen_factorization_engine(_factorization_method engine) {
     if (engine == LEAST_efficient_trial_division) return REPORT_A();
