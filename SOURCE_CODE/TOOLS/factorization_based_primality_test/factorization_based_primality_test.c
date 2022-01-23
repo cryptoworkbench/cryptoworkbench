@@ -13,7 +13,7 @@ void initialize(unsigned long potential_prime) { char *engine;
     else if (ENGINE == LESS_efficient_trial_division_TABLE_AIDED) engine = REPORT_E();
     else if (ENGINE == efficient_trial_division_TABLE_AIDED) engine = REPORT_F();
     else engine = REPORT_G();
-    fprintf(stdout, "Using the factorization engine %s as the basis for my primality test on %lu.", engine, potential_prime);
+    fprintf(stdout, "Using the factorization engine \"%s\" as the basis for my primality test on %lu.", engine, potential_prime);
 }
 
 int main(int argc, char **argv) {
