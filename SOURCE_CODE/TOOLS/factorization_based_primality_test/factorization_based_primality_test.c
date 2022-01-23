@@ -1,8 +1,7 @@
-#include <stdio.h>
-#include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/factorization_methods.h" // needed for 'SET_preferred_factorization_ENGINE()'
+#include <stdio.h> // needed for 'fprintf()', 'fopen()'
+#include "../../libraries/functional/string.h" // needed for 'str_represents_ul()', 'BUFFER_OF_SIZE()', EXIT_STATUS_GOODBYE
+#include "../../libraries/mathematics/factorization_methods.h" // needed for 'SET_preferred_factorization_ENGINE()', 'translate_SUBTRACT_ONE()'
 #include "../../libraries/mathematics/primality_testing_scemes.h" // needed for 'prime()'
-// #include "../../libraries/mathematics/universal_group_library.h" // needed for 'BUFFER_OF_SIZE()'
 unsigned long MOD;
 
 char *chosen_factorization_engine(_factorization_method engine) {
@@ -20,7 +19,7 @@ int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) exit(-1);
     interpret_ENGINE_from_external_file(); char *ptr = argv[2]; // may be NULL
     if (argc < 3) { FILE *file; if (file = fopen(FILE_SPECIFYING_PREFERRED_ENGINE, "r")) { ptr = BUFFER_OF_SIZE(200); fscanf(file, "%s[^\n]", ptr); fclose(file); }
-	else { fprintf(stderr, "Couldn't open preferences file '" FILE_SPECIFYING_PREFERRED_ENGINE "'." EXIT_STATUS_GOODBYE, -1); exit(-1); } }
+	else { fprintf(stderr, "Couldn't open preferences file '" FILE_SPECIFYING_PREFERRED_ENGINE "'. kkkk"EXIT_STATUS_GOODBYE, -1); exit(-1); } }
     int SELECTOR = translate_SUBTRACT_ONE(ptr);
     if (SELECTOR) SET_preferred_factorization_ENGINE(SELECTOR - 1); // < a.k.a. interpretation from 'ptr' successful
     else ERR(ptr);

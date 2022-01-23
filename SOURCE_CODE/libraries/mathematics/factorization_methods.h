@@ -1,4 +1,4 @@
-#define FILE_SPECIFYING_PREFERRED_ENGINE "factorize.preferences"
+#define FILE_SPECIFYING_PREFERRED_ENGINE "universally_preferred_factorization_engine"
 
 char *REPORT_A(); char *REPORT_B(); char *REPORT_C(); char *REPORT_D(); char *REPORT_E(); char *REPORT_F(); char *REPORT_G();
 typedef unsigned long (*_factorization_method) (unsigned long); _factorization_method prefered_factorization_ENGINE; // 'SET_preferred_factorization_ENGINE()'

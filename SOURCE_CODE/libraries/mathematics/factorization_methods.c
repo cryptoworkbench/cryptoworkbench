@@ -95,5 +95,5 @@ int interpret_ENGINE_from_external_file() { FILE *file;
 	int SELECTOR = translate_SUBTRACT_ONE(BUFFER) - 1;
 	free(BUFFER);
 	return SELECTOR; // <-- return situated here
-    } fprintf(stderr, "Couldn't open preferences file '" FILE_SPECIFYING_PREFERRED_ENGINE "'." EXIT_STATUS_GOODBYE, -1); exit(-1);
+    } fprintf(stderr, "Couldn't open preferences file '" FILE_SPECIFYING_PREFERRED_ENGINE "'. " EXIT_STATUS_GOODBYE, -1); exit(-1);
 }

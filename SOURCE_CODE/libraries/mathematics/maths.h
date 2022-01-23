@@ -60,5 +60,3 @@ char *sieve_of_eratosthenes(unsigned long limit);
 unsigned long primes_printed_from_sieve_array_to_FS(char *sieve, unsigned long limit, FILE *FS);
 FILE *prime_table_open(char *prime_table_filename); // < I want this to eventually try to cooperate with the logbook instead of stderr
 void prime_table_close(FILE *prime_table); // < closes FS and resets char * variable '_open_prime_table' to NULL
-int composite(unsigned long potential_composite); // < the global factorization method function pointer 'ENGINE' in order to subtract from a potential prime the first divisor of this number greate than one
-int prime(unsigned long potential_prime); // flips the ternary function above 

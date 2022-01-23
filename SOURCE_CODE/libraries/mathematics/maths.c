@@ -171,7 +171,3 @@ FILE *prime_table_open(char *prime_table_filename) {
     else { fprintf(stderr, PRIME_TABLE_UNAVAILABLE_ERROR EXIT_STATUS_GOODBYE, prime_table_filename, -1); exit(-1); }
     return prime_table;
 } void prime_table_close(FILE *prime_table) { fclose(prime_table); _open_prime_table = NULL; }
-
-_factorization_method prefered_factorization_ENGINE;
-int composite(unsigned long potential_composite) { return (potential_composite - prefered_factorization_ENGINE(potential_composite)) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY; }
-int prime(unsigned long potential_prime) { return (potential_prime - prefered_factorization_ENGINE(potential_prime)) ? ADDITIVE_IDENTITY : MULTIPLICATIVE_IDENTITY; }
