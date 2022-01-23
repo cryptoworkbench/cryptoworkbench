@@ -173,4 +173,4 @@ FILE *prime_table_open(char *prime_table_filename) {
 } void prime_table_close(FILE *prime_table) { fclose(prime_table); _open_prime_table = NULL; }
 
 _factorization_method ENGINE;
-int prime(ul potential_prime) { return (!(potential_prime - ENGINE(potential_prime))) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY; }
+int prime(unsigned long potential_prime) { return (potential_prime - ENGINE(potential_prime)) ? ADDITIVE_IDENTITY : MULTIPLICATIVE_IDENTITY; }
