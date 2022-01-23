@@ -1,14 +1,7 @@
 #define FILE_SPECIFYING_PREFERRED_ENGINE "factorize.preferences"
 
-char *REPORT_A();
-char *REPORT_B();
-char *REPORT_C();
-char *REPORT_D();
-char *REPORT_E();
-char *REPORT_F();
-char *REPORT_G();
-
-typedef unsigned long (*_factorization_method) (unsigned long); _factorization_method ENGINE; // 'ENGINE_SET()'
+char *REPORT_A(); char *REPORT_B(); char *REPORT_C(); char *REPORT_D(); char *REPORT_E(); char *REPORT_F(); char *REPORT_G();
+typedef unsigned long (*_factorization_method) (unsigned long); _factorization_method prefered_factorization_ENGINE; // 'ENGINE_SET()'
 // a global function pointer for functions that take an UL and return an UL, that is going to be used for factorization ENGINEs returning the smallest divisor (from N, obviously) of any number greater than 1
 
 struct ordered_pair divisor_pair(unsigned long number, unsigned long DIVISOR_OF_number);

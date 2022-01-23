@@ -14,19 +14,19 @@
 #include "../../libraries/mathematics/universal_group_library.h" // needed for function pointers 'trial_division_LEAST_EFFICIENT', 'trial_division_LESS_EFFICIENT', 'trial_division_MOST_EFFICIENT', etc
 #define COMPOSITE_NOT_INTERPRETABLE "Failed to interpret composite '%s'!\n\n"
 ul MOD; // < This time we will use 'MOD' for the composite
-_factorization_method ENGINE;
+_factorization_method prefered_factorization_ENGINE;
 
 void domain_display(unsigned long a, unsigned long b) { fprintf(stdout, " and checking for all 'x <= %lu' if x divides %lu.", a, b); }
 
 void initialize() {
-    if (ENGINE == LEAST_efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(MOD, 3), MOD); }
-    else if (ENGINE == LESS_efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(MOD, 2), MOD); }
-    else if (ENGINE == efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(MOD, 1), MOD); }
-    else if (ENGINE == LEAST_efficient_trial_division_TABLE_AIDED)
+    if (prefered_factorization_ENGINE == LEAST_efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(MOD, 3), MOD); }
+    else if (prefered_factorization_ENGINE == LESS_efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(MOD, 2), MOD); }
+    else if (prefered_factorization_ENGINE == efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(MOD, 1), MOD); }
+    else if (prefered_factorization_ENGINE == LEAST_efficient_trial_division_TABLE_AIDED)
     { fprintf(stdout, "Using prime table aided trial division (with '%s')", REPORT_standard_prime_table_filename()); domain_display(trial_limit(MOD, 3), MOD); }
-    else if (ENGINE == LESS_efficient_trial_division_TABLE_AIDED)
+    else if (prefered_factorization_ENGINE == LESS_efficient_trial_division_TABLE_AIDED)
     { fprintf(stdout, "Using prime table aided trial division (with '%s')", REPORT_standard_prime_table_filename()); domain_display(trial_limit(MOD, 2), MOD); }
-    else if (ENGINE == efficient_trial_division_TABLE_AIDED)
+    else if (prefered_factorization_ENGINE == efficient_trial_division_TABLE_AIDED)
     { fprintf(stdout, "Using prime table aided trial division (with '%s')", REPORT_standard_prime_table_filename()); domain_display(trial_limit(MOD, 1), MOD); }
     else fprintf(stdout, "Using Fermat's factorization method.");
 }
@@ -39,8 +39,8 @@ int main(int argc, char **argv) {
     if (SELECTOR) ENGINE_SET(SELECTOR - 1); // < a.k.a. interpretation from 'ptr' successful
     else ERR(ptr); initialize(); if (!(argc < 3)) fprintf(stdout, "	(engine specified by terminal argument)"); fprintf(stdout, "\n\n");
 
-    ul smallest_divisor_of_MOD_greater_than_the_MULTIPLICATIVE_IDENTITY = ENGINE(MOD);
-    struct ordered_pair factor_a_and_b = factorize(MOD, ENGINE);
+    ul smallest_divisor_of_MOD_greater_than_the_MULTIPLICATIVE_IDENTITY = prefered_factorization_ENGINE(MOD);
+    struct ordered_pair factor_a_and_b = factorize(MOD, NULL); // <- NULL means 'prefered_factorization_ENGINE' will be deployed
     fprintf(stdout, "%lu = %lu * %lu\n", MOD, factor_a_and_b.a, factor_a_and_b.b);
     return 0;
 }

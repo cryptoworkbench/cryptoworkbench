@@ -172,7 +172,7 @@ FILE *prime_table_open(char *prime_table_filename) {
     return prime_table;
 } void prime_table_close(FILE *prime_table) { fclose(prime_table); _open_prime_table = NULL; }
 
-_factorization_method ENGINE;
-int composite(unsigned long potential_composite) { return (potential_composite - ENGINE(potential_composite)) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY; }
+_factorization_method prefered_factorization_ENGINE;
+int composite(unsigned long potential_composite) { return (potential_composite - prefered_factorization_ENGINE(potential_composite)) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY; }
 int prime(unsigned long potential_prime) { return !composite(potential_prime); }
 // int prime(unsigned long potential_prime) { return (MULTIPLICATIVE_IDENTITY - composite(potential_prime)) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY; }
