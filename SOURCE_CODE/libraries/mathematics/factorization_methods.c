@@ -49,9 +49,15 @@ unsigned long odds_factorizer_WRAPPER(unsigned long composite, _factorization_me
 unsigned long fermat_factorization(unsigned long composite) { return odds_factorizer_WRAPPER(composite, difference_of_squares_factorization_method); }
 // ^ FOUR FUCNCTIONS TO ACHIEVE FERMAT FACTORIZATION
 
+unsigned long shor_factorize(unsigned long presumed_composite) {
+    for (ul a = 2; a <= presumed_composite; a++) { unsigned long _GCD = GCD(presumed_composite, a); if (_GCD != 1) return _GCD; unsigned long period = 1; while (a != MULTIPLICATIVE_IDENTITY) a = multiply(a, a);
+	if (period % 2 == 1) continue; unsigned long a_raised = exponentiate_UNRESTRICTEDLY(a, period / 2); unsigned long a_raised_PLUS_ONE = a_raised + 1; if (MOD == a_raised_PLUS_ONE) continue;
+	struct ordered_pair factor = divisor_pair(presumed_composite, GCD(presumed_composite, a_raised_PLUS_ONE)); if (factor.a > factor.b) return factor.b; return factor.a; }
+} // dependency of 'factorization_method()'
+
 _factorization_method factorization_method(int SELECTOR) {
     switch (SELECTOR) { case 0: return LEAST_efficient_trial_division; case 1: return LESS_efficient_trial_division; case 2: return efficient_trial_division; case 3: return LEAST_efficient_trial_division_TABLE_AIDED;
-	case 4: return LESS_efficient_trial_division_TABLE_AIDED; case 5: return efficient_trial_division_TABLE_AIDED; case 6: return fermat_factorization; };
+	case 4: return LESS_efficient_trial_division_TABLE_AIDED; case 5: return efficient_trial_division_TABLE_AIDED; case 6: return fermat_factorization; case 7: shor_factorize; };
 } void SET_preferred_factorization_ENGINE(int SELECTOR) { preferred_factorization_ENGINE = factorization_method(SELECTOR); }
 
 struct ordered_pair factorize(unsigned long number, _factorization_method factorization_ENGINE_to_use) {
@@ -98,13 +104,3 @@ int interpret_ENGINE_from_external_file() { FILE *file;
     } fprintf(stderr, "Couldn't open preferences file '" FILE_SPECIFYING_PREFERRED_ENGINE "'. " EXIT_STATUS_GOODBYE, -1); exit(-1);
 }
 
-unsigned long shor_factorize(unsigned long presumed_composite) {
-    ul a = MULTIPLICATIVE_IDENTITY; do {a++;
-	unsigned long _GCD = GCD(presumed_composite, a); if (_GCD != 1) return _GCD;
-	unsigned long period = 1; while (a != MULTIPLICATIVE_IDENTITY) a = multiply(a, a);
-	if (period % 2 == 1 || MOD == exponentiation(a, period / 2) + 1) continue; unsigned long a_raised = exponentiate_UNRESTRICTEDLY(a, period / 2);
-	unsigned long p = GCD(a_raised - 1, MOD); unsigned long q = GCD(a_raised + 1, MOD);
-	if (p < q) return p;
-	else return q;
-    } while (a <= presumed_composite);
-}
