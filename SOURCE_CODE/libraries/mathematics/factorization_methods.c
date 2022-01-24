@@ -39,7 +39,7 @@ unsigned long LEAST_efficient_trial_division_TABLE_AIDED(unsigned long composite
 
 unsigned long shor_factorization(unsigned long presumed_composite) {
     for (ul a = 2; a <= presumed_composite; a++) {
-	unsigned long _GCD = GCD(presumed_composite, a); if (_GCD != 1) return _GCD; unsigned long period = 1; for (ul _a = a; _a != MULTIPLICATIVE_IDENTITY; _a *= a, _a %= MOD) period++; if (period % 2 == 1) continue;
+	unsigned long _GCD = GCD(presumed_composite, a); if (_GCD != 1) return _GCD; unsigned long period = 1; for (ul _a = a; _a != MULTIPLICATIVE_IDENTITY; _a *= a, _a %= presumed_composite) period++; if (period % 2 == 1) continue;
 	unsigned long a_power = exponentiate_UNRESTRICTEDLY(a, period / 2); if (MOD == a_power + 1) continue;
 	return GCD(presumed_composite, a_power + 1);
 	if (GCD(presumed_composite, a_power - 1) == 1 || GCD(presumed_composite, a_power + 1) == 1) { // printf("Factor: %lu\n", GCD(presumed_composite, a_power + 1));
@@ -108,11 +108,10 @@ int translate_SUBTRACT_ONE(char *arg) {
     return 0;
 }
 
-int interpret_ENGINE_from_external_file() { FILE *file;
+int interpret_ENGINE_from_external_file() {
+    FILE *file;
     if (file = fopen(FILE_SPECIFYING_PREFERRED_ENGINE, "r")) {
-	char *BUFFER = BUFFER_OF_SIZE(200); fscanf(file, "%s[^\n]", BUFFER); fclose(file);
-	int SELECTOR = translate_SUBTRACT_ONE(BUFFER) - 1;
-	free(BUFFER);
-	return SELECTOR; // <-- return situated here
+	char *BUFFER = BUFFER_OF_SIZE(200);
+	fscanf(file, "%s[^\n]", BUFFER); fclose(file); int SELECTOR = translate_SUBTRACT_ONE(BUFFER); free(BUFFER); return SELECTOR;
     } fprintf(stderr, "Couldn't open preferences file '" FILE_SPECIFYING_PREFERRED_ENGINE "'. " EXIT_STATUS_GOODBYE, -1); exit(-1);
 }
