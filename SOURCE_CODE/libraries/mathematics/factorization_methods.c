@@ -6,6 +6,7 @@
 
 struct ordered_pair divisor_pair(unsigned long number, unsigned long DIVISOR_OF_number)
 { struct ordered_pair pair_of_divisors; pair_of_divisors.a = DIVISOR_OF_number; pair_of_divisors.b = number / pair_of_divisors.a; return pair_of_divisors; }
+unsigned long return_greatest(struct ordered_pair divisor_pair) { if (divisor_pair.a > divisor_pair.b) return divisor_pair.b; return divisor_pair.a; }
 
 unsigned long trial_division(unsigned long presumed_composite, unsigned long trial_limit) {
     ul divisor = MULTIPLICATIVE_IDENTITY; do { divisor++; if (trial_limit < divisor) divisor == presumed_composite; } while (presumed_composite % divisor != 0);
@@ -39,9 +40,7 @@ unsigned long LEAST_efficient_trial_division_TABLE_AIDED(unsigned long composite
 unsigned long shor_factorize(unsigned long presumed_composite) {
     for (ul a = 2; a <= presumed_composite; a++) {
 	unsigned long _GCD = GCD(presumed_composite, a); if (_GCD != 1) return _GCD; unsigned long period = 1; for (ul _a = a; _a != MULTIPLICATIVE_IDENTITY; _a = multiply(_a, a)) period++; if (period % 2 == 1) continue;
-	unsigned long a_power = exponentiate_UNRESTRICTEDLY(a, period / 2); unsigned long a_power_PLUS_ONE = a_power + 1;
-	if (MOD == a_power_PLUS_ONE) continue; struct ordered_pair factor = divisor_pair(presumed_composite, GCD(presumed_composite, a_power_PLUS_ONE)); if (factor.a > factor.b) return factor.b; return factor.a;
-    }
+	unsigned long a_power = exponentiate_UNRESTRICTEDLY(a, period / 2); if (MOD == a_power + 1) continue; return return_greatest(divisor_pair(presumed_composite, GCD(presumed_composite, a_power + 1))); }
 } // dependency of 'factorization_method()'
 
 // NOW SOME FUNCTIONS TO ACHIEVE FERMAT FACTORIZATION

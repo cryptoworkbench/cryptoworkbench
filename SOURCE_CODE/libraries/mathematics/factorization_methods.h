@@ -5,6 +5,7 @@ typedef unsigned long (*_factorization_method) (unsigned long); _factorization_m
 // a global function pointer for functions that take an UL and return an UL, that is going to be used for factorization ENGINEs returning the smallest divisor (from N, obviously) of any number greater than 1
 
 struct ordered_pair divisor_pair(unsigned long number, unsigned long DIVISOR_OF_number);
+unsigned long return_greatest(struct ordered_pair divisor_pair);
 unsigned long trial_limit(unsigned long composite, int supidity_level);
 unsigned long trial_division(unsigned long composite, unsigned long trial_limit);
 unsigned long trial_division_TABLE_AIDED(unsigned long composite, unsigned long trial_limit);
