@@ -171,3 +171,5 @@ FILE *prime_table_open(char *prime_table_filename) {
     else { fprintf(stderr, PRIME_TABLE_UNAVAILABLE_ERROR EXIT_STATUS_GOODBYE, prime_table_filename, -1); exit(-1); }
     return prime_table;
 } void prime_table_close(FILE *prime_table) { fclose(prime_table); _open_prime_table = NULL; }
+
+int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q) { MOD = odd_prime_q; if (exponentiation(odd_prime_p, (odd_prime_q - 1) / 2) + 1 == MOD) return -1; return 1; }

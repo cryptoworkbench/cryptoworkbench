@@ -34,7 +34,6 @@ int main(int argc, char **argv) { // MOD = 0;
     if (composite_test_based_on_preferred_factorization_engine(p)) { fprintf(stderr, "p (%lu) is not prime.\n", p); exit(-4); }
     if (composite_test_based_on_preferred_factorization_engine(q)) { fprintf(stderr, "q (%lu) is not prime.\n", q); exit(-5); }
     if (p > q) { p %= q; fprintf(stdout, "Reduced p modulus q.\n"); }
-    fprintf(stdout, "p = %lu\n", p); fprintf(stdout, "q = %lu\n\n", q); fprintf(stdout, "The Legendre symbol of p over q ( p / q ) = %lu over %lu = ( %lu / %lu ) = ", p, q, p, q); MOD = q;
-    if (exponentiation(p, (q - 1) / 2) + 1 == MOD) printf("-1"); else fprintf(stdout, "1"); fprintf(stdout, "\n");
+    fprintf(stdout, "p = %lu\n", p); fprintf(stdout, "q = %lu\n\n", q); fprintf(stdout, "The Legendre symbol of p over q ( p / q ) = %lu over %lu = ( %lu / %lu ) = %i\n", p, q, p, q, legendre_symbol(p, q));
     return 0;
 }
