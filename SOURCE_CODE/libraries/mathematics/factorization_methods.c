@@ -40,7 +40,13 @@ unsigned long LEAST_efficient_trial_division_TABLE_AIDED(unsigned long composite
 unsigned long shor_factorize(unsigned long presumed_composite) {
     for (ul a = 2; a <= presumed_composite; a++) {
 	unsigned long _GCD = GCD(presumed_composite, a); if (_GCD != 1) return _GCD; unsigned long period = 1; for (ul _a = a; _a != MULTIPLICATIVE_IDENTITY; _a *= a, _a %= MOD) period++; if (period % 2 == 1) continue;
-	unsigned long a_power = exponentiate_UNRESTRICTEDLY(a, period / 2); if (MOD == a_power + 1) continue; return return_greatest(divisor_pair(presumed_composite, GCD(presumed_composite, a_power + 1))); }
+	unsigned long a_power = exponentiate_UNRESTRICTEDLY(a, period / 2); if (MOD == a_power + 1) continue;
+	if (GCD(presumed_composite, a_power - 1) == 1 || GCD(presumed_composite, a_power + 1) == 1) { // printf("Factor: %lu\n", GCD(presumed_composite, a_power + 1));
+	    ul prime_divisor = GCD(presumed_composite, a_power + 1); // I have a feeling this always yields the greater factor
+	    if (GCD(presumed_composite, a_power - 1) == 1) return prime_divisor;
+	    return GCD(presumed_composite, a_power - 1);
+	}
+    }
 } // dependency of 'factorization_method()'
 
 // NOW SOME FUNCTIONS TO ACHIEVE FERMAT FACTORIZATION
