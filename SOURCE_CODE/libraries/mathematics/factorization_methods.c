@@ -70,7 +70,9 @@ _factorization_method factorization_method(int SELECTOR) {
 
 struct ordered_pair factorize(unsigned long number, _factorization_method factorization_ENGINE_to_use) {
     if (!factorization_ENGINE_to_use) factorization_ENGINE_to_use = preferred_factorization_ENGINE; // < unless there was an engine specified, use the engine all of the functions use
-    return divisor_pair(number, factorization_ENGINE_to_use(number));
+    struct ordered_pair factor = divisor_pair(number, factorization_ENGINE_to_use(number));
+    if (factor.b < factor.a) { ul temp = factor.b; factor.b = factor.a; factor.a = temp; }
+    return factor;
 }
 
 const char *a = "a"; const char *b = "b"; const char *c = "c"; const char *d = "d"; const char *e = "e"; const char *f = "f"; const char *g = "g"; const char *h = "h";
