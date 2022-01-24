@@ -1,6 +1,6 @@
 #define FILE_SPECIFYING_PREFERRED_ENGINE "universally_preferred_factorization_engine"
 
-char *REPORT_A(); char *REPORT_B(); char *REPORT_C(); char *REPORT_D(); char *REPORT_E(); char *REPORT_F(); char *REPORT_G();
+char *REPORT_A(); char *REPORT_B(); char *REPORT_C(); char *REPORT_D(); char *REPORT_E(); char *REPORT_F(); char *REPORT_G(); char *REPORT_H();
 typedef unsigned long (*_factorization_method) (unsigned long); _factorization_method preferred_factorization_ENGINE; // 'SET_preferred_factorization_ENGINE()'
 // a global function pointer for functions that take an UL and return an UL, that is going to be used for factorization ENGINEs returning the smallest divisor (from N, obviously) of any number greater than 1
 
@@ -13,13 +13,11 @@ unsigned long _trial_division_TABLE_AIDED(unsigned long composite, unsigned long
 
 unsigned long efficient_trial_division(unsigned long composite);
 unsigned long LESS_efficient_trial_division(unsigned long composite);
-unsigned long LEAST_efficient_trial_division(unsigned long composite);
-// ^ Different implementations of ordinary trial division
-
+unsigned long LEAST_efficient_trial_division(unsigned long composite); // < ^ Different implementations of ordinary trial division
 unsigned long efficient_trial_division_TABLE_AIDED(unsigned long composite);
 unsigned long LESS_efficient_trial_division_TABLE_AIDED(unsigned long composite);
-unsigned long LEAST_efficient_trial_division_TABLE_AIDED(unsigned long composite);
-// ^ Different implementations of table aided trial division
+unsigned long LEAST_efficient_trial_division_TABLE_AIDED(unsigned long composite); // < ^ Different implementations of table aided trial division
+unsigned long shor_factorize(unsigned long presumed_composite);
 
 struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *to_be_updated, unsigned long minimum);
 unsigned long difference_of_squares_factorization_method(unsigned long odd_composite);
@@ -34,4 +32,3 @@ void SET_preferred_factorization_ENGINE(int SELECTOR);
 void ERR(char *arg);
 int translate_SUBTRACT_ONE(char *arg);
 int interpret_ENGINE_from_external_file();
-unsigned long shor_factorize(unsigned long presumed_composite);

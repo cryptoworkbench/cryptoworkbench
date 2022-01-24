@@ -27,6 +27,7 @@ void initialize() {
     { fprintf(stdout, "Using prime table aided trial division (with '%s')", REPORT_standard_prime_table_filename()); domain_display(trial_limit(MOD, 2), MOD); }
     else if (preferred_factorization_ENGINE == efficient_trial_division_TABLE_AIDED)
     { fprintf(stdout, "Using prime table aided trial division (with '%s')", REPORT_standard_prime_table_filename()); domain_display(trial_limit(MOD, 1), MOD); }
+    else if (preferred_factorization_ENGINE == shor_factorize) { fprintf(stdout, "Applying Shor's factorization algorithm for quantum computers."); }
     else fprintf(stdout, "Using Fermat's factorization method.");
 }
 
@@ -38,7 +39,6 @@ int main(int argc, char **argv) { preferred_factorization_ENGINE = NULL;
     if (SELECTOR) SET_preferred_factorization_ENGINE(SELECTOR - 1); // < a.k.a. interpretation from 'ptr' successful
     else ERR(ptr); initialize(); if (!(argc < 3)) fprintf(stdout, "	(engine specified by terminal argument)"); fprintf(stdout, "\n\n");
 
-    ul smallest_divisor_of_MOD_greater_than_the_MULTIPLICATIVE_IDENTITY = preferred_factorization_ENGINE(MOD);
     struct ordered_pair factor_a_and_b = factorize(MOD, NULL); // <- NULL means 'preferred_factorization_ENGINE' will be deployed
     fprintf(stdout, "%lu = %lu * %lu\n", MOD, factor_a_and_b.a, factor_a_and_b.b);
     return 0;
