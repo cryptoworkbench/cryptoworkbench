@@ -10,8 +10,8 @@
 ../../libraries/mathematics/.primality_testing_scemes.o: ../../libraries/mathematics/primality_testing_scemes.h ../../libraries/mathematics/primality_testing_scemes.c
 	gcc -c ../../libraries/mathematics/primality_testing_scemes.c -o ../../libraries/mathematics/.primality_testing_scemes.o
 
-.legende_symbol.o: legende_symbol.c
-	gcc -c legende_symbol.c -o .legende_symbol.o
+.legendre_symbol.o: legendre_symbol.c
+	gcc -c legendre_symbol.c -o .legendre_symbol.o
 
-legende_symbol: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.primality_testing_scemes.o .legende_symbol.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.primality_testing_scemes.o .legende_symbol.o -o ../../../WORKBENCH/legende_symbol
+legendre_symbol: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.primality_testing_scemes.o .legendre_symbol.o
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.primality_testing_scemes.o .legendre_symbol.o -o ../../../WORKBENCH/legendre_symbol

@@ -17,7 +17,7 @@ void initialize() {
     else fprintf(stdout, "Using Fermat's factorization method.");
 }
 
-int main(int argc, char **argv) { // MOD = 0;
+int main(int argc, char **argv) {
     FILE *file; if (!(file = fopen(FILE_SPECIFYING_PREFERRED_ENGINE, "r"))) { fprintf(stderr, "Couldn't open preferences file '" FILE_SPECIFYING_PREFERRED_ENGINE "'. " EXIT_STATUS_GOODBYE, -1); exit(-1); }
     // ^ open file required for reading
 

@@ -60,4 +60,5 @@ char *sieve_of_eratosthenes(unsigned long limit);
 unsigned long primes_printed_from_sieve_array_to_FS(char *sieve, unsigned long limit, FILE *FS);
 FILE *prime_table_open(char *prime_table_filename); // < I want this to eventually try to cooperate with the logbook instead of stderr
 void prime_table_close(FILE *prime_table); // < closes FS and resets char * variable '_open_prime_table' to NULL
-int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q); // calculates the legendre symbol using euler's criterion. "reset MOD after use!"
+int _legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q); // calculates the legendre symbol using euler's criterion. "reset MOD after use!"
+int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q); // wrapper for the above function that is needed to perserve global variable MOD()
