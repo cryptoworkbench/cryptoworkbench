@@ -41,6 +41,7 @@ unsigned long shor_factorize(unsigned long presumed_composite) {
     for (ul a = 2; a <= presumed_composite; a++) {
 	unsigned long _GCD = GCD(presumed_composite, a); if (_GCD != 1) return _GCD; unsigned long period = 1; for (ul _a = a; _a != MULTIPLICATIVE_IDENTITY; _a *= a, _a %= MOD) period++; if (period % 2 == 1) continue;
 	unsigned long a_power = exponentiate_UNRESTRICTEDLY(a, period / 2); if (MOD == a_power + 1) continue;
+	return GCD(presumed_composite, a_power + 1);
 	if (GCD(presumed_composite, a_power - 1) == 1 || GCD(presumed_composite, a_power + 1) == 1) { // printf("Factor: %lu\n", GCD(presumed_composite, a_power + 1));
 	    ul prime_divisor = GCD(presumed_composite, a_power + 1); // I have a feeling this always yields the greater factor
 	    if (GCD(presumed_composite, a_power - 1) == 1) return prime_divisor;
@@ -56,7 +57,7 @@ unsigned long shor_factorize(unsigned long presumed_composite) {
 unsigned long difference_of_squares_factorization_method(unsigned long odd_composite) { struct ordered_pair square_BIG = {0, 0}; struct ordered_pair square_SMALL = {0, 0};
     while (square_BIG.b != odd_composite + square_SMALL.b)
     { least_perfect_square_equal_to_or_greater_than(&square_BIG, odd_composite + square_SMALL.b); least_perfect_square_equal_to_or_greater_than(&square_SMALL, square_BIG.b - odd_composite); }
-    return square_BIG.a - square_SMALL.a; }
+    return square_BIG.a + square_SMALL.a; }
 unsigned long evens_factorizer(unsigned long even_composite) { ul a = MULTIPLICATIVE_IDENTITY; do { even_composite /= 2; a *= 2; } while (even_composite % 2 == 0); return a; } // only call with even composite
 unsigned long odds_factorizer_WRAPPER(unsigned long composite, _factorization_method odds_factorizer) { return (composite % 2 == 0) ? evens_factorizer(composite) : odds_factorizer(composite); }
 unsigned long fermat_factorization(unsigned long composite) { return odds_factorizer_WRAPPER(composite, difference_of_squares_factorization_method); }

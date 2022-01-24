@@ -1,3 +1,4 @@
+// doesn't get 'h'
 #include <stdio.h> // needed for 'fprintf()', 'fopen()'
 #include "../../libraries/functional/string.h" // needed for 'str_represents_ul()', 'BUFFER_OF_SIZE()', EXIT_STATUS_GOODBYE
 #include "../../libraries/mathematics/factorization_methods.h" // needed for 'translate_SUBTRACT_ONE()'
@@ -12,7 +13,8 @@ char *chosen_PRIMALITY_TEST(_primality_test PRIMALITY_TEST) {
     else if (PRIMALITY_TEST == LEAST_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return REPORT_D();
     else if (PRIMALITY_TEST == LESS_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return REPORT_E();
     else if (PRIMALITY_TEST == efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return REPORT_F();
-    else if (PRIMALITY_TEST == fermat_factorization_PRIMALITY_TEST) return REPORT_G();
+    else if (PRIMALITY_TEST == shor_factorize_PRIMALITY_TEST) return REPORT_G();
+    else if (PRIMALITY_TEST == fermat_factorization_PRIMALITY_TEST) return REPORT_H();
     else return NULL;
 }
 
