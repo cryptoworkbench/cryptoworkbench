@@ -99,17 +99,20 @@ int interpret_ENGINE_from_external_file() { FILE *file;
 }
 
 unsigned long _period(unsigned long exponent) { // only suppoed to be called when i^MOD
+    printf("arrived in _period():\n");
+    printf("GCD(%lu, %lu) = %lu\n", exponent, MOD, GCD(exponent, MOD));
     ul logarithm = 1;
+    /*
     while (exponent != MULTIPLICATIVE_IDENTITY)
-    { exponent *= exponent; exponent %= MOD; logarithm++; printf("%lu, ", exponent); }
+    { exponent *= exponent; exponent %= MOD; logarithm++; printf("%lu, ", exponent); } */
     return logarithm;
 }
 
 unsigned long shor_factorize(unsigned long presumed_composite) {
-    ul a = 1; do {a++;
+    ul a = MULTIPLICATIVE_IDENTITY; do {a++;
 	fprintf(stdout, "\ntest for value a = %lu  ", a);
-	unsigned long _GCD = GCD(presumed_composite, a); if (1 < _GCD) return _GCD; else continue;
-	unsigned long period = _period(a); // I thought 'ul period = modular_division(MULTIPLICATIVE_IDENTITY, a);' would work
+	unsigned long _GCD = GCD(presumed_composite, a); if (_GCD != 1) return _GCD;
+	ul period = modular_division(MULTIPLICATIVE_IDENTITY, a);
 	printf(" (peroid of a mod N: %lu)", period);
 	// if (period % 2 == 1 || MOD == exponentiation(a, period / 2) + 1) continue;
 	if (period % 2 == 1) continue; printf(" period of %lu is even, subjecting %lu to next test.", a, a);
