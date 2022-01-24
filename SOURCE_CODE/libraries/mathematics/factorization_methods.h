@@ -34,3 +34,6 @@ void SET_preferred_factorization_ENGINE(int SELECTOR);
 void ERR(char *arg);
 int translate_SUBTRACT_ONE(char *arg);
 int interpret_ENGINE_from_external_file();
+unsigned long _period(unsigned long a);
+unsigned long shor_factorize(unsigned long presumed_composite);
+// unsigned long shor_factorize(unsigned long presumed_composite, unsigned long a);

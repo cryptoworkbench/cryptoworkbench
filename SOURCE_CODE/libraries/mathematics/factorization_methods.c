@@ -97,3 +97,32 @@ int interpret_ENGINE_from_external_file() { FILE *file;
 	return SELECTOR; // <-- return situated here
     } fprintf(stderr, "Couldn't open preferences file '" FILE_SPECIFYING_PREFERRED_ENGINE "'. " EXIT_STATUS_GOODBYE, -1); exit(-1);
 }
+
+unsigned long _period(unsigned long exponent) { // only suppoed to be called when i^MOD
+    ul logarithm = 1;
+    while (exponent != MULTIPLICATIVE_IDENTITY)
+    { exponent *= exponent; exponent %= MOD; logarithm++; printf("%lu, ", exponent); }
+    return logarithm;
+}
+
+unsigned long shor_factorize(unsigned long presumed_composite) {
+    ul a = 1; do {a++;
+	fprintf(stdout, "\ntest for value a = %lu  ", a);
+	unsigned long _GCD = GCD(presumed_composite, a); if (1 < _GCD) return _GCD; else continue;
+	unsigned long period = _period(a); // I thought 'ul period = modular_division(MULTIPLICATIVE_IDENTITY, a);' would work
+	printf(" (peroid of a mod N: %lu)", period);
+	// if (period % 2 == 1 || MOD == exponentiation(a, period / 2) + 1) continue;
+	if (period % 2 == 1) continue; printf(" period of %lu is even, subjecting %lu to next test.", a, a);
+	if (exponentiation(a, period / 2) + 1 == MOD) continue; printf(" %lu^%lu + 1 is not k * %lu", a, period / 2, MOD);
+	printf("\n");
+	ul a_to_half_p = exponentiate_UNRESTRICTEDLY(a, period / 2);
+	ul p = GCD(a_to_half_p - 1, MOD);
+	ul q = GCD(a_to_half_p + 1, MOD);
+
+	printf("Factor a = GCD(%lu, %lu - 1) = GCD(%lu, %lu) = %lu\n", MOD, a_to_half_p, MOD, a_to_half_p - 1, p);
+	printf("Factor q = GCD(%lu, %lu + 1) = GCD(%lu, %lu) = %lu\n", MOD, a_to_half_p, MOD, a_to_half_p + 1, q);
+	printf("%lu = %lu * %lu\n", MOD, p, q);
+	if (p < q) return p;
+	else return q;
+    } while (a <= presumed_composite);
+}
