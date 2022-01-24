@@ -6,9 +6,9 @@
 ul MOD; // < This time we will use 'MOD' for the composite
 _factorization_method preferred_factorization_ENGINE;
 
-int main(int argc, char **argv) { SET_preferred_factorization_ENGINE(9);
-    if (2 > argc || !str_represents_ul(argv[1], &MOD)) { fprintf(stderr, "Str didn represent ul.\n"); exit(-1); }
-    struct ordered_pair factor = factorize(MOD, preferred_factorization_ENGINE);
+int main(int argc, char **argv) {  if (2 > argc || !str_represents_ul(argv[1], &MOD))
+    { fprintf(stderr, "Str didn represent ul.\n"); exit(-1); } SET_preferred_factorization_ENGINE(9);
+    struct ordered_pair factor = factorize(MOD, preferred_factorization_ENGINE); // as you can see 'shor_factorize' is supported by 'factorization_method()'
     printf("%lu = %lu * %lu\n", MOD, factor.a, factor.b);
     return 0;
 }
