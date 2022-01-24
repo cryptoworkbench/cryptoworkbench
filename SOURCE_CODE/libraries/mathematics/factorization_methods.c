@@ -98,15 +98,10 @@ int interpret_ENGINE_from_external_file() { FILE *file;
     } fprintf(stderr, "Couldn't open preferences file '" FILE_SPECIFYING_PREFERRED_ENGINE "'. " EXIT_STATUS_GOODBYE, -1); exit(-1);
 }
 
-unsigned long period_finder(unsigned long a) { // only suppoed to be called when 'a' is coprime to 'MOD'
-    ul log; for (log = 1; 1; log++) if (exponentiation(a, log) == 1) return log;
-    return log;
-}
-
 unsigned long shor_factorize(unsigned long presumed_composite) {
     ul a = MULTIPLICATIVE_IDENTITY; do {a++;
 	unsigned long _GCD = GCD(presumed_composite, a); if (_GCD != 1) return _GCD;
-	unsigned long period = period_finder(a); // I think 'ul period = modular_division(MULTIPLICATIVE_IDENTITY, a);' should also work
+	unsigned long period = 1; while (a != MULTIPLICATIVE_IDENTITY) a = multiply(a, a);
 	if (period % 2 == 1 || MOD == exponentiation(a, period / 2) + 1) continue; unsigned long a_raised = exponentiate_UNRESTRICTEDLY(a, period / 2);
 	unsigned long p = GCD(a_raised - 1, MOD); unsigned long q = GCD(a_raised + 1, MOD);
 	if (p < q) return p;
