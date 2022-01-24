@@ -37,7 +37,7 @@ unsigned long LESS_efficient_trial_division_TABLE_AIDED(unsigned long composite)
 unsigned long LEAST_efficient_trial_division_TABLE_AIDED(unsigned long composite) { return trial_division_TABLE_AIDED(composite, trial_limit(composite, 3)); }
 // ^ same trial division methods aided by a table
 
-unsigned long shor_factorize(unsigned long presumed_composite) {
+unsigned long shor_factorization(unsigned long presumed_composite) {
     for (ul a = 2; a <= presumed_composite; a++) {
 	unsigned long _GCD = GCD(presumed_composite, a); if (_GCD != 1) return _GCD; unsigned long period = 1; for (ul _a = a; _a != MULTIPLICATIVE_IDENTITY; _a *= a, _a %= MOD) period++; if (period % 2 == 1) continue;
 	unsigned long a_power = exponentiate_UNRESTRICTEDLY(a, period / 2); if (MOD == a_power + 1) continue;
@@ -65,7 +65,8 @@ unsigned long fermat_factorization(unsigned long composite) { return odds_factor
 
 _factorization_method factorization_method(int SELECTOR) {
     switch (SELECTOR) { case 0: return LEAST_efficient_trial_division; case 1: return LESS_efficient_trial_division; case 2: return efficient_trial_division; case 3: return LEAST_efficient_trial_division_TABLE_AIDED;
-	case 4: return LESS_efficient_trial_division_TABLE_AIDED; case 5: return efficient_trial_division_TABLE_AIDED; case 6: return shor_factorize; case 7: return fermat_factorization; };
+	case 4: return LESS_efficient_trial_division_TABLE_AIDED; case 5: return efficient_trial_division_TABLE_AIDED; case 6: return shor_factorization; case 7: return fermat_factorization;
+	default: return NULL; };
 } void SET_preferred_factorization_ENGINE(int SELECTOR) { preferred_factorization_ENGINE = factorization_method(SELECTOR); }
 
 struct ordered_pair factorize(unsigned long number, _factorization_method factorization_ENGINE_to_use) {

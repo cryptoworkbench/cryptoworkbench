@@ -6,7 +6,7 @@ int LEAST_efficient_trial_division_PRIMALITY_TEST(unsigned long potential_prime)
 int efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST(unsigned long potential_prime);
 int LESS_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST(unsigned long potential_prime);
 int LEAST_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST(unsigned long potential_prime);
-int shor_factorize_PRIMALITY_TEST(unsigned long potential_prime);
+int shor_factorization_PRIMALITY_TEST(unsigned long potential_prime);
 int fermat_factorization_PRIMALITY_TEST(unsigned long potential_prime);
 // ^ These 7 we know
 

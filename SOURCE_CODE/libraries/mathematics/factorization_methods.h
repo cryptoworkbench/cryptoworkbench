@@ -18,7 +18,7 @@ unsigned long LEAST_efficient_trial_division(unsigned long composite); // < ^ Di
 unsigned long efficient_trial_division_TABLE_AIDED(unsigned long composite);
 unsigned long LESS_efficient_trial_division_TABLE_AIDED(unsigned long composite);
 unsigned long LEAST_efficient_trial_division_TABLE_AIDED(unsigned long composite); // < ^ Different implementations of table aided trial division
-unsigned long shor_factorize(unsigned long presumed_composite);
+unsigned long shor_factorization(unsigned long presumed_composite);
 
 struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *to_be_updated, unsigned long minimum);
 unsigned long difference_of_squares_factorization_method(unsigned long odd_composite);

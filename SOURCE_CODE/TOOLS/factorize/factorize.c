@@ -27,7 +27,7 @@ void initialize() {
     { fprintf(stdout, "Using prime table aided trial division (with '%s')", REPORT_standard_prime_table_filename()); domain_display(trial_limit(MOD, 2), MOD); }
     else if (preferred_factorization_ENGINE == efficient_trial_division_TABLE_AIDED)
     { fprintf(stdout, "Using prime table aided trial division (with '%s')", REPORT_standard_prime_table_filename()); domain_display(trial_limit(MOD, 1), MOD); }
-    else if (preferred_factorization_ENGINE == shor_factorize) { fprintf(stdout, "Applying Shor's factorization algorithm for quantum computers."); }
+    else if (preferred_factorization_ENGINE == shor_factorization) { fprintf(stdout, "Applying Shor's factorization algorithm for quantum computers."); }
     else fprintf(stdout, "Using Fermat's factorization method.");
 }
 
