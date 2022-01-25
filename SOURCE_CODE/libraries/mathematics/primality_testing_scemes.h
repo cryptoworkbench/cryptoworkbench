@@ -16,4 +16,4 @@ int composite_test_based_on_preferred_factorization_engine(unsigned long potenti
 int primality_test_based_on_preferred_factorization_engine(unsigned long potential_prime);
 // ^ Two functions which just use the engine that is currently registered as the preferred one
 
-int fermat_primality_test_DETERMINISTIC(unsigned long potential_prime);
+int fermats_DETERMINISTIC_primality_test(unsigned long potential_prime);
