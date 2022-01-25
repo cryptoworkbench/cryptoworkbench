@@ -23,7 +23,8 @@ unsigned long multiply(unsigned long a, unsigned long b);
 typedef unsigned long (*_group_operation) (unsigned long, unsigned long);
 _group_operation operation_from_ID(unsigned long ID);
 
-unsigned long exponentiate(unsigned long base, unsigned long exponent);
+unsigned long exponentiate(unsigned long base, unsigned long exponent, unsigned long MOD);
+unsigned long modular_exponentiate(unsigned long base, unsigned long exponent, unsigned long MOD);
 unsigned long exponentiate_UNRESTRICTEDLY(unsigned long base, unsigned long exponent); // << normal finite field exponentiation depends upon this ):
 unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID);
 // ^^^ Combine them all
