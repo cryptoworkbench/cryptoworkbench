@@ -15,3 +15,5 @@ void SET_preferred_PRIMALITY_TEST(int SELECTOR);
 int composite_test_based_on_preferred_factorization_engine(unsigned long potential_composite);
 int primality_test_based_on_preferred_factorization_engine(unsigned long potential_prime);
 // ^ Two functions which just use the engine that is currently registered as the preferred one
+
+int fermat_primality_test_DETERMINISTIC(unsigned long potential_prime);
