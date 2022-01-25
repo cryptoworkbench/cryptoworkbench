@@ -115,16 +115,16 @@ int main(int argc, char **argv) {
     else fscanf(stdin, " %lu", &third_sample_mapping.y); fprintf(stdout, "\n");
     // ^ Take in information
 
-    struct linear_equation equation_a = { exponentiation(first_sample_mapping.x, 2), exponentiation(first_sample_mapping.x, 1), first_sample_mapping.y};
-    struct linear_equation equation_b = { exponentiation(second_sample_mapping.x, 2), exponentiation(second_sample_mapping.x, 1), second_sample_mapping.y};
-    struct linear_equation equation_c = { exponentiation(third_sample_mapping.x, 2), exponentiation(third_sample_mapping.x, 1), third_sample_mapping.y};
+    struct linear_equation equation_a = { exponentiate(first_sample_mapping.x, 2), exponentiate(first_sample_mapping.x, 1), first_sample_mapping.y};
+    struct linear_equation equation_b = { exponentiate(second_sample_mapping.x, 2), exponentiate(second_sample_mapping.x, 1), second_sample_mapping.y};
+    struct linear_equation equation_c = { exponentiate(third_sample_mapping.x, 2), exponentiate(third_sample_mapping.x, 1), third_sample_mapping.y};
     struct linear_equation equation_a_and_b = ADD(equation_a, INV(equation_b));
     struct linear_equation equation_b_and_c = ADD(equation_b, INV(equation_c));
     struct linear_equation final_linear_equation = ADD(equation_b_and_c, MULTIPLY(equation_a_and_b, modular_division(equation_a_and_b.coefficient_b, inverse(equation_b_and_c.coefficient_b))));
 
     ul a = modular_division(final_linear_equation.result, final_linear_equation.coefficient_a) % MOD;
     ul b = modular_division(add(equation_a_and_b.result, inverse(multiply(equation_a_and_b.coefficient_a, a))), equation_a_and_b.coefficient_b) % MOD;
-    ul c = add(equation_a.result, inverse((add(multiply(b, first_sample_mapping.x), (multiply(a, exponentiation(first_sample_mapping.x, 2)))))));
+    ul c = add(equation_a.result, inverse((add(multiply(b, first_sample_mapping.x), (multiply(a, exponentiate(first_sample_mapping.x, 2)))))));
 
     fprintf(stdout, "Second-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", MOD);
     fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(modulus %lu)\n", a, b, c, MOD);

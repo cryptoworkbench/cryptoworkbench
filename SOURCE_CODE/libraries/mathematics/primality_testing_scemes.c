@@ -25,4 +25,4 @@ void SET_preferred_PRIMALITY_TEST(int SELECTOR) { preferred_PRIMALITY_TEST = pri
 int composite_test_based_on_preferred_factorization_engine(unsigned long potential_composite) { return (potential_composite - preferred_factorization_ENGINE(potential_composite)) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY; }
 int primality_test_based_on_preferred_factorization_engine(unsigned long potential_prime) { return (potential_prime - preferred_factorization_ENGINE(potential_prime)) ? ADDITIVE_IDENTITY : MULTIPLICATIVE_IDENTITY; }
 
-int fermats_DETERMINISTIC_primality_test(unsigned long potential_prime) { for (ul i = 2; i < potential_prime; i++) if (GCD(i, potential_prime) != 1 || 1 != exponentiation(i, potential_prime - 1)) return 0; return 1; }
+int fermats_DETERMINISTIC_primality_test(unsigned long potential_prime) { for (ul i = 2; i < potential_prime; i++) if (GCD(i, potential_prime) != 1 || 1 != exponentiate(i, potential_prime - 1)) return 0; return 1; }

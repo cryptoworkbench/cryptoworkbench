@@ -26,7 +26,7 @@ unsigned long exponentiate_UNRESTRICTEDLY(unsigned long base, unsigned long expo
 	exponentiation_RESULT *= base;
 
     return exponentiation_RESULT;
-} // ^ Used by "exponentiate_using_backbone()", "exponentiation()"
+} // ^ Used by "exponentiate_using_backbone()", "exponentiate()"
 
 unsigned long *square_and_multiply_backbone(unsigned long base, unsigned long required_base_two_log) {
     ul *backbone = (unsigned long *) malloc(sizeof(unsigned long) * (required_base_two_log + 1));
@@ -40,7 +40,7 @@ unsigned long *square_and_multiply_backbone(unsigned long base, unsigned long re
     // In the other cases (where 1 < "exponent"), it will run just the appriopiate amount of times
 
     return backbone;
-} // ^ Used by "exponentiation()", "SINGULAR_polynomial_over_GF()"
+} // ^ Used by "exponentiate()", "SINGULAR_polynomial_over_GF()"
 
 unsigned long least_base_TWO_log(unsigned long power_of_TWO) {
     if (power_of_TWO == 0) return 0;
@@ -62,7 +62,7 @@ unsigned long least_base_TWO_log(unsigned long power_of_TWO) {
 	return_value--;
 
     return return_value;
-} // ^ Used by "exponentiation_using_backbone()", "exponentiation()"
+} // ^ Used by "exponentiation_using_backbone()", "exponentiate()"
 
 unsigned long exponentiation_using_backbone(unsigned long *residue_list, unsigned long index, unsigned long exponent) {
     ul return_value = MULTIPLICATIVE_IDENTITY;
@@ -71,9 +71,9 @@ unsigned long exponentiation_using_backbone(unsigned long *residue_list, unsigne
 	exponent -= exponentiate_UNRESTRICTEDLY(2, index);
 	index = least_base_TWO_log(exponent);
     } return return_value;
-} // ^ Used by "exponentiation()"
+} // ^ Used by "exponentiate()"
 
-unsigned long exponentiation(unsigned long base, unsigned long exponent) { if (MOD == 0) return exponentiate_UNRESTRICTEDLY(base, exponent);
+unsigned long exponentiate(unsigned long base, unsigned long exponent) { if (MOD == 0) return exponentiate_UNRESTRICTEDLY(base, exponent);
     if (base == 0 || exponent == 0) return 1;
     unsigned long mininum_log = least_base_TWO_log(exponent);
     unsigned long *backbone = square_and_multiply_backbone(base, mininum_log);
@@ -81,7 +81,7 @@ unsigned long exponentiation(unsigned long base, unsigned long exponent) { if (M
     free(backbone); return exponentiation_RESULT;
 } // ^ Used by N_operation
 
-unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return add(a, b); case 1: return multiply(a, b); default: return exponentiation(a, b); }; }
+unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return add(a, b); case 1: return multiply(a, b); default: return exponentiate(a, b); }; }
 
 unsigned long SINGULAR_polynomial_over_GF(unsigned long **coefficient, unsigned long _x) { ul additions, Res; additions = Res = ADDITIVE_IDENTITY; ul term_factor = MULTIPLICATIVE_IDENTITY;
     while (coefficient[additions]) { Res += (term_factor * *coefficient[additions]); Res %= MOD; term_factor *= _x; term_factor %= MOD; additions++; }
@@ -172,5 +172,5 @@ FILE *prime_table_open(char *prime_table_filename) {
     return prime_table;
 } void prime_table_close(FILE *prime_table) { fclose(prime_table); _open_prime_table = NULL; }
 
-int _legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q) { MOD = odd_prime_q; if (exponentiation(odd_prime_p, (odd_prime_q - 1) / 2) + 1 == MOD) return -1; return 1; }
+int _legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q) { MOD = odd_prime_q; if (exponentiate(odd_prime_p, (odd_prime_q - 1) / 2) + 1 == MOD) return -1; return 1; }
 int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q) { ul old_MOD = MOD; ul ret_val = _legendre_symbol(odd_prime_p, odd_prime_q); MOD = old_MOD; return ret_val; }

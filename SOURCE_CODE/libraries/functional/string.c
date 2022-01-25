@@ -2,7 +2,7 @@
  *
  * See the header file for function descriptions.
  *
- * The warning for an implicit declaration of "exponentiation" during "gcc -c string.c -o .string.o" can be ignored. Just include .maths.o in the linking process.
+ * The warning for an implicit declaration of "exponentiate" during "gcc -c string.c -o .string.o" can be ignored. Just include .maths.o in the linking process.
  * */
 #include "string.h"
 #include "../mathematics/maths.h" // must be in this file or else compiler complaints
@@ -92,11 +92,11 @@ int string_to_int(char *string) {
 
     char *current_character = (string + (length_of_string - 1));
     while (current_character != string) {
-	string_as_integer += (*current_character - ASCII_BASE) * exponentiation(NUMERIC_BASE, iteration_count);
+	string_as_integer += (*current_character - ASCII_BASE) * exponentiate(NUMERIC_BASE, iteration_count);
 
 	iteration_count++; // Update the iteration count
 	current_character = (current_character - 1); // Move back one character
-    } string_as_integer += (*current_character - ASCII_BASE) * (exponentiation(NUMERIC_BASE, length_of_string - 1));
+    } string_as_integer += (*current_character - ASCII_BASE) * (exponentiate(NUMERIC_BASE, length_of_string - 1));
     return string_as_integer;
 }
 
@@ -105,10 +105,10 @@ unsigned long char_in_val(unsigned long a) {
 	return 1;
 
     unsigned long char_index, intermediate_value;
-    char_index = 0; intermediate_value = exponentiation(NUMERIC_BASE, char_index);
+    char_index = 0; intermediate_value = exponentiate(NUMERIC_BASE, char_index);
 
     while (!(intermediate_value >= a)) /* Calculate the first power of NUMERIC_BASE which is greater than or equal to a */
-    { char_index++; intermediate_value = exponentiation(NUMERIC_BASE, char_index); }
+    { char_index++; intermediate_value = exponentiate(NUMERIC_BASE, char_index); }
 
     if (intermediate_value == a)
 	char_index++;
