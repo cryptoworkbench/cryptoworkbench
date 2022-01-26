@@ -40,11 +40,11 @@ unsigned long LEAST_efficient_trial_division_TABLE_AIDED(unsigned long composite
 // ^ trial division methods (all dependencies of 'factorization_method()'
 
 unsigned long shor_factorization(unsigned long presumed_composite) {
-    for (ul a = 2; a <= presumed_composite; a++) {
-	unsigned long _GCD = GCD(presumed_composite, a); if (_GCD != 1) return _GCD;
+    for (unsigned long a_ = 2; a_ <= presumed_composite; a_++) {
+	unsigned long _GCD = GCD(presumed_composite, a_); if (_GCD != 1) return _GCD;
 	// ^ return when we find a number less than 'presumed_composite' which proves that 'presumed_composite' has a divisor greater than one (namely, the divisor it shared in common with this number)
-	unsigned long period = 1; for (unsigned long _a = a; _a != MULTIPLICATIVE_IDENTITY; _a *= a, _a %= presumed_composite) period++; if (period % 2 == 1) continue;
-	unsigned long a_power = exponentiate_UNRESTRICTEDLY(a, period / 2); if (presumed_composite == a_power + 1) continue; return GCD(presumed_composite, a_power + 1);
+	unsigned long period = 1; for (unsigned long a_power = a_; a_power != MULTIPLICATIVE_IDENTITY; a_power *= a_, a_power %= presumed_composite) period++; if (period % 2 == 1) continue;
+	unsigned long a_power = exponentiate_UNRESTRICTEDLY(a_, period / 2); if (presumed_composite == a_power + 1) continue; return GCD(presumed_composite, a_power + 1);
     }
 } // dependency of 'factorization_method()'
 
