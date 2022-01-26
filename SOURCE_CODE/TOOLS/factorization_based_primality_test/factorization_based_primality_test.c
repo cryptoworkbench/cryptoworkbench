@@ -18,11 +18,11 @@ char *chosen_PRIMALITY_TEST(_primality_test PRIMALITY_TEST) {
     else return NULL;
 }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv) { 
     if (2 > argc || !str_represents_ul(argv[1], &MOD)) exit(-1);
     char *ptr = argv[2]; // may be NULL
-    if (argc < 3) { FILE *file; if (file = fopen(FILE_SPECIFYING_PREFERRED_ENGINE, "r")) { ptr = BUFFER_OF_SIZE(200); fscanf(file, "%s[^\n]", ptr); fclose(file); }
-	else { fprintf(stderr, "Couldn't open preferences file '" FILE_SPECIFYING_PREFERRED_ENGINE "'. "EXIT_STATUS_GOODBYE, -1); exit(-1); } }
+    if (argc < 3) { FILE *file; if (file = fopen(REPORT_preferred_factorization_engine_file(), "r")) { ptr = BUFFER_OF_SIZE(200); fscanf(file, "%s[^\n]", ptr); fclose(file); }
+	else { fprintf(stderr, "Couldn't open preferences file '%s'. "EXIT_STATUS_GOODBYE, REPORT_preferred_factorization_engine_file(), -1); exit(-1); } }
     int SELECTOR = translate_SUBTRACT_ONE(ptr);
     if (SELECTOR) SET_preferred_PRIMALITY_TEST(SELECTOR - 1); // < a.k.a. interpretation from 'ptr' successful
     else ERR(ptr);

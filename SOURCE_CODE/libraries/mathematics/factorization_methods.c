@@ -4,6 +4,7 @@
 #include "maths.h" // needed for 'DOWN_ROUNDED_second_root()'
 #include "universal_group_library.h" // needed for 'BUFFER_OF_SIZE()'
 
+const char *preferred_factorization_engine_file = "shared_preferred_factorization_engine"; char *REPORT_preferred_factorization_engine_file() { return (char *) preferred_factorization_engine_file; }
 const char *a = "a"; const char *b = "b"; const char *c = "c"; const char *d = "d"; const char *e = "e"; const char *f = "f"; const char *g = "g"; const char *h = "h";
 const char *A = "efficient_trial_division"; const char *B = "less_efficient_trial_division"; const char *C = "trial_division";
 const char *D = "TABLE_AIDED_efficient_trial_division"; const char *E = "TABLE_AIDED_less_efficient_trial_division"; const char *F = "TABLE_AIDED_trial_division";
@@ -114,8 +115,8 @@ int translate_SUBTRACT_ONE(char *arg) {
 
 int interpret_ENGINE_from_external_file() {
     FILE *file;
-    if (file = fopen(FILE_SPECIFYING_PREFERRED_ENGINE, "r")) {
+    if (file = fopen(preferred_factorization_engine_file, "r")) {
 	char *BUFFER = BUFFER_OF_SIZE(200);
 	fscanf(file, "%s[^\n]", BUFFER); fclose(file); int SELECTOR = translate_SUBTRACT_ONE(BUFFER); free(BUFFER); return SELECTOR;
-    } fprintf(stderr, "Couldn't open preferences file '" FILE_SPECIFYING_PREFERRED_ENGINE "'. " EXIT_STATUS_GOODBYE, -1); exit(-1);
+    } fprintf(stderr, "Couldn't open preferences file '%s'. " EXIT_STATUS_GOODBYE, -1, preferred_factorization_engine_file); exit(-1);
 }
