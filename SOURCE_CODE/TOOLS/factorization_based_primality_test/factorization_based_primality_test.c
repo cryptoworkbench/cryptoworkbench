@@ -4,16 +4,16 @@
 #include "../../libraries/mathematics/factorization_methods.h" // needed for 'translate_SUBTRACT_ONE()'
 #include "../../libraries/mathematics/primality_testing_scemes.h" // needed for 'SET_preferred_PRIMALITY_TEST()', 'FACTORIZATION_METHOD_UNCHOSEN()'
 
-const char *chosen_PRIMALITY_TEST() { _primality_test PRIMALITY_TEST = preferred_PRIMALITY_TEST_REPORT();
-    if (PRIMALITY_TEST == efficient_trial_division_PRIMALITY_TEST) return A_REPORT();
-    else if (PRIMALITY_TEST == LESS_efficient_trial_division_PRIMALITY_TEST) return B_REPORT();
-    else if (PRIMALITY_TEST == LEAST_efficient_trial_division_PRIMALITY_TEST) return C_REPORT();
-    else if (PRIMALITY_TEST == efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return D_REPORT();
-    else if (PRIMALITY_TEST == LESS_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return E_REPORT();
-    else if (PRIMALITY_TEST == LEAST_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return F_REPORT();
-    else if (PRIMALITY_TEST == shor_factorization_PRIMALITY_TEST) return G_REPORT();
-    else if (PRIMALITY_TEST == fermat_factorization_PRIMALITY_TEST) return H_REPORT();
-    else return NULL;
+_primality_test chosen_PRIMALITY_TEST() { _primality_test preferred_PRIMALITY_TEST = preferred_PRIMALITY_TEST_REPORT();
+    if (preferred_PRIMALITY_TEST == efficient_trial_division_PRIMALITY_TEST) fprintf(stdout, "%s", A_REPORT());
+    else if (preferred_PRIMALITY_TEST == LESS_efficient_trial_division_PRIMALITY_TEST) fprintf(stdout, "%s", B_REPORT());
+    else if (preferred_PRIMALITY_TEST == LEAST_efficient_trial_division_PRIMALITY_TEST) fprintf(stdout, "%s", C_REPORT());
+    else if (preferred_PRIMALITY_TEST == efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) fprintf(stdout, "%s", D_REPORT());
+    else if (preferred_PRIMALITY_TEST == LESS_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) fprintf(stdout, "%s", E_REPORT());
+    else if (preferred_PRIMALITY_TEST == LEAST_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) fprintf(stdout, "%s", F_REPORT());
+    else if (preferred_PRIMALITY_TEST == shor_factorization_PRIMALITY_TEST) fprintf(stdout, "%s", G_REPORT());
+    else if (preferred_PRIMALITY_TEST == fermat_factorization_PRIMALITY_TEST) fprintf(stdout, "%s", H_REPORT());
+    return preferred_PRIMALITY_TEST;
 }
 
 int main(int argc, char **argv) { unsigned long potential_prime;
@@ -27,11 +27,12 @@ int main(int argc, char **argv) { unsigned long potential_prime;
     if (SELECTOR) SET_preferred_PRIMALITY_TEST(SELECTOR - 1);
     else FACTORIZATION_METHOD_UNCHOSEN(ptr);
 
-    fprintf(stdout, "Using the factorization engine \"%s\" as the basis for my primality test on %lu.", chosen_PRIMALITY_TEST(), potential_prime);
+    fprintf(stdout, "Using the factorization engine \""); _primality_test preferred_PRIMALITY_TEST =  chosen_PRIMALITY_TEST();
+    fprintf(stdout, "\" as the basis for my primality test on %lu.", potential_prime);
     if (!(argc < 3)) fprintf(stdout, "	(as specified by terminal argument)"); fprintf(stdout, "\n\n");
 
     fprintf(stdout, "%lu is ", potential_prime);
-    if (prime(potential_prime, preferred_PRIMALITY_TEST_REPORT())) fprintf(stdout, "prime.\n", potential_prime);
+    if (prime(potential_prime, preferred_PRIMALITY_TEST)) fprintf(stdout, "prime.\n", potential_prime);
     else fprintf(stdout, "not prime.\n", potential_prime);
     return 0;
 }
