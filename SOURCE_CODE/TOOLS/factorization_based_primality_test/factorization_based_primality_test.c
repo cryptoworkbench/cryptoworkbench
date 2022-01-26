@@ -33,5 +33,8 @@ int main(int argc, char **argv) { unsigned long potential_prime;
     fprintf(stdout, "%lu is ", potential_prime);
     if (prime(potential_prime, NULL)) fprintf(stdout, "prime.\n", potential_prime);
     else fprintf(stdout, "not prime.\n", potential_prime);
+
+    // for (unsigned long i = 2; i < 100; i++) if (prime(i, NULL)) printf("%lu\n", i);
+    // ^ for a little prime batch
     return 0;
 }
