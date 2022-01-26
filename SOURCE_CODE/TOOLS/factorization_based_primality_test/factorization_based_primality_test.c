@@ -31,7 +31,7 @@ int main(int argc, char **argv) { unsigned long potential_prime;
     if (!(argc < 3)) fprintf(stdout, "	(as specified by terminal argument)"); fprintf(stdout, "\n\n");
 
     fprintf(stdout, "%lu is ", potential_prime);
-    if (prime(potential_prime, NULL)) fprintf(stdout, "prime.\n", potential_prime);
+    if (prime(potential_prime, preferred_PRIMALITY_TEST_REPORT())) fprintf(stdout, "prime.\n", potential_prime);
     else fprintf(stdout, "not prime.\n", potential_prime);
     return 0;
 }

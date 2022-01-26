@@ -16,4 +16,4 @@ int primality_test_based_on_preferred_factorization_engine(unsigned long potenti
 void SET_preferred_PRIMALITY_TEST(int SELECTOR);
 // ^ Two functions which just use the engine that is currently registered as the preferred one
 
-int prime(unsigned long potential_prime, _primality_test alternative_primality_test_specification);
+int prime(unsigned long potential_prime, _primality_test preferred_primality_test);
