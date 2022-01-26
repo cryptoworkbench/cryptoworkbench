@@ -13,7 +13,6 @@
 #include "../../libraries/mathematics/factorization_methods.h" // needed for function pointers 'trial_division_LEAST_EFFICIENT', 'trial_division_LESS_EFFICIENT', 'trial_division_MOST_EFFICIENT', etc
 #define COMPOSITE_NOT_INTERPRETABLE "Failed to interpret composite '%s'!\n\n"
 ul MOD; // < This time we will use 'MOD' for the composite
-_factorization_method preferred_factorization_ENGINE;
 
 void domain_display(unsigned long a, unsigned long b) { fprintf(stdout, " and checking for all 'x <= %lu' if x divides %lu.", a, b); }
 
@@ -39,7 +38,7 @@ int main(int argc, char **argv) { preferred_factorization_ENGINE = NULL;
     if (SELECTOR) SET_preferred_factorization_ENGINE(SELECTOR - 1); // < a.k.a. interpretation from 'ptr' successful
     else ERR(ptr); initialize(); if (!(argc < 3)) fprintf(stdout, "	(engine specified by terminal argument)"); fprintf(stdout, "\n\n");
 
-    struct ordered_pair factor_a_and_b = factorize(MOD, NULL); // <- NULL means 'preferred_factorization_ENGINE' will be deployed
+    struct ordered_pair factor_a_and_b = factorize(MOD, preferred_factorization_ENGINE); // <- NULL means 'preferred_factorization_ENGINE' will be deployed
     fprintf(stdout, "%lu = %lu * %lu\n", MOD, factor_a_and_b.a, factor_a_and_b.b);
     return 0;
 } // make use use of '

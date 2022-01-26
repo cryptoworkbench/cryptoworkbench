@@ -65,19 +65,12 @@ unsigned long fermat_factorization(unsigned long composite) { return odds_factor
 
 _factorization_method factorization_method(int SELECTOR) {
     switch (SELECTOR) {
-	case 0: return efficient_trial_division;
-	case 1: return LESS_efficient_trial_division;
-	case 2: return LEAST_efficient_trial_division;
-	case 3: return efficient_trial_division_TABLE_AIDED;
-	case 4: return LESS_efficient_trial_division_TABLE_AIDED;
-	case 5: return LEAST_efficient_trial_division_TABLE_AIDED;
-	case 6: return shor_factorization;
-	case 7: return fermat_factorization;
-	default: return NULL; };
+	case 0: return efficient_trial_division; case 1: return LESS_efficient_trial_division; case 2: return LEAST_efficient_trial_division;
+	case 3: return efficient_trial_division_TABLE_AIDED; case 4: return LESS_efficient_trial_division_TABLE_AIDED; case 5: return LEAST_efficient_trial_division_TABLE_AIDED;
+	case 6: return shor_factorization; case 7: return fermat_factorization; default: return NULL; };
 } void SET_preferred_factorization_ENGINE(int SELECTOR) { preferred_factorization_ENGINE = factorization_method(SELECTOR); }
 
 struct ordered_pair factorize(unsigned long number, _factorization_method factorization_ENGINE_to_use) {
-    if (!factorization_ENGINE_to_use) factorization_ENGINE_to_use = preferred_factorization_ENGINE; // < unless there was an engine specified, use the engine all of the functions use
     struct ordered_pair factor = divisor_pair(number, factorization_ENGINE_to_use(number));
     if (factor.b < factor.a) { ul temp = factor.b; factor.b = factor.a; factor.a = temp; }
     return factor;
