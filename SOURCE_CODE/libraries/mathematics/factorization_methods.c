@@ -3,6 +3,7 @@
 #include "factorization_methods.h" // need for function headers
 #include "maths.h" // needed for 'DOWN_ROUNDED_second_root()'
 #include "universal_group_library.h" // needed for 'BUFFER_OF_SIZE()'
+_factorization_method preferred_factorization_ENGINE; _factorization_method preferred_factorization_ENGINE_REPORT() { return preferred_factorization_ENGINE; }
 
 const char *preferred_factorization_engine_file = "shared_preferred_factorization_engine"; const char *a = "a"; const char *b = "b"; const char *c = "c"; const char *d = "d"; const char *e = "e"; const char *f = "f";
 const char *g = "g"; const char *h = "h"; const char *A = "efficient_trial_division"; const char *B = "less_efficient_trial_division"; const char *C = "trial_division";
@@ -46,7 +47,7 @@ unsigned long shor_factorization(unsigned long presumed_composite) {
 	unsigned long _GCD = GCD(presumed_composite, a); if (_GCD != 1) return _GCD;
 	// ^ return when we find a number less than 'presumed_composite' which proves that 'presumed_composite' has a divisor greater than one (namely, the divisor it shared in common with this number)
 	unsigned long period = 1; for (unsigned long _a = a; _a != MULTIPLICATIVE_IDENTITY; _a *= a, _a %= presumed_composite) period++; if (period % 2 == 1) continue;
-	unsigned long a_power = exponentiate_UNRESTRICTEDLY(a, period / 2); if (MOD == a_power + 1) continue; return GCD(presumed_composite, a_power + 1);
+	unsigned long a_power = exponentiate_UNRESTRICTEDLY(a, period / 2); if (presumed_composite == a_power + 1) continue; return GCD(presumed_composite, a_power + 1);
     }
 } // dependency of 'factorization_method()'
 
