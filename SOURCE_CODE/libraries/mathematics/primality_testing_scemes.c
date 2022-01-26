@@ -30,4 +30,4 @@ _primality_test primality_test(int SELECTOR) {
 
 int primality_test_based_on_preferred_factorization_engine(unsigned long potential_prime) { return (potential_prime - preferred_factorization_ENGINE(potential_prime)) ? ADDITIVE_IDENTITY : MULTIPLICATIVE_IDENTITY; }
 void SET_preferred_PRIMALITY_TEST(int SELECTOR) { preferred_PRIMALITY_TEST = primality_test(SELECTOR); }
-int prime(unsigned long potential_prime, _primality_test preferred_primality_test) { return preferred_primality_test(potential_prime); }
+int prime(unsigned long potential_prime, _primality_test alternate_test) { return (alternate_test) ? alternate_test(potential_prime) : preferred_PRIMALITY_TEST(potential_prime); }
