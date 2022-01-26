@@ -71,12 +71,11 @@ _factorization_method factorization_method(int SELECTOR) {
 	case 6: return shor_factorization; case 7: return fermat_factorization; default: return NULL; };
 } void SET_preferred_factorization_ENGINE(int SELECTOR) { preferred_factorization_ENGINE = factorization_method(SELECTOR); }
 
-struct ordered_pair factorize(unsigned long number, _factorization_method factorization_ENGINE_to_use) {
-    if (!factorization_ENGINE_to_use) factorization_ENGINE_to_use = preferred_factorization_ENGINE;
-    struct ordered_pair factor = divisor_pair(number, factorization_ENGINE_to_use(number));
-    if (factor.b < factor.a) { ul temp = factor.b; factor.b = factor.a; factor.a = temp; }
-    return factor;
-} // passing as second argument 'preferred_factorization_ENGINE' or 'NULL' yields the same result
+struct ordered_pair _factorize(unsigned long number, _factorization_method factorization_ENGINE_to_use)
+{ struct ordered_pair factor = divisor_pair(number, factorization_ENGINE_to_use(number)); if (factor.b < factor.a) { ul temp = factor.b; factor.b = factor.a; factor.a = temp; } return factor; }
+// ^ passing as second argument 'preferred_factorization_ENGINE' or 'NULL' yields the same result
+
+struct ordered_pair factorize(unsigned long number, _factorization_method alternate_choice) { return (alternate_choice) ? _factorize(number, alternate_choice) : _factorize(number, preferred_factorization_ENGINE);}
 
 void FACTORIZATION_METHOD_UNCHOSEN(char *arg) {
     fprintf(stderr, "Couldn't understand engine specification '%s', please specify one of the following:\n", arg);
