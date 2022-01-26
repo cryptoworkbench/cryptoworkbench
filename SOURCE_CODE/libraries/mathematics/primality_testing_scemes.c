@@ -20,9 +20,15 @@ int fermat_factorization_PRIMALITY_TEST(unsigned long potential_prime) { return 
 // ^ 8 primality tests based on factorization methods
 
 _primality_test primality_test(int SELECTOR) {
-    switch (SELECTOR) { case 0: return LEAST_efficient_trial_division_PRIMALITY_TEST; case 1: return LESS_efficient_trial_division_PRIMALITY_TEST; case 2: return efficient_trial_division_PRIMALITY_TEST;
-	case 3: return LEAST_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST; case 4: return LESS_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST;
-	case 5: return efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST; case 6: return shor_factorization_PRIMALITY_TEST; case 7: return fermat_factorization_PRIMALITY_TEST; default: return NULL; };
+    switch (SELECTOR) {
+	case 0: return efficient_trial_division_PRIMALITY_TEST;
+	case 1: return LESS_efficient_trial_division_PRIMALITY_TEST;
+	case 2: return LEAST_efficient_trial_division_PRIMALITY_TEST;
+	case 3: return efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST;
+	case 4: return LESS_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST;
+	case 5: return LEAST_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST;
+	case 6: return shor_factorization_PRIMALITY_TEST;
+	case 7: return fermat_factorization_PRIMALITY_TEST; default: return NULL; };
 } // ^ A similar function for returning pointers to primality test functions in 'primality_testing_scemes.c' as there was a function for returning pointers to factorization functions in 'factorization.h'
 
 void SET_preferred_PRIMALITY_TEST(int SELECTOR) { preferred_PRIMALITY_TEST = primality_test(SELECTOR); }

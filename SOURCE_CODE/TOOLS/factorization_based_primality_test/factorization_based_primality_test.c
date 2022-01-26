@@ -7,12 +7,12 @@ unsigned long MOD;
 _primality_test preferred_PRIMALITY_TEST;
 
 char *chosen_PRIMALITY_TEST(_primality_test PRIMALITY_TEST) {
-    if (PRIMALITY_TEST == LEAST_efficient_trial_division_PRIMALITY_TEST) return REPORT_A();
+    if (PRIMALITY_TEST == efficient_trial_division_PRIMALITY_TEST) return REPORT_A();
     else if (PRIMALITY_TEST == LESS_efficient_trial_division_PRIMALITY_TEST) return REPORT_B();
-    else if (PRIMALITY_TEST == efficient_trial_division_PRIMALITY_TEST) return REPORT_C();
-    else if (PRIMALITY_TEST == LEAST_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return REPORT_D();
+    else if (PRIMALITY_TEST == LEAST_efficient_trial_division_PRIMALITY_TEST) return REPORT_C();
+    else if (PRIMALITY_TEST == efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return REPORT_D();
     else if (PRIMALITY_TEST == LESS_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return REPORT_E();
-    else if (PRIMALITY_TEST == efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return REPORT_F();
+    else if (PRIMALITY_TEST == LEAST_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return REPORT_F();
     else if (PRIMALITY_TEST == shor_factorization_PRIMALITY_TEST) return REPORT_G();
     else if (PRIMALITY_TEST == fermat_factorization_PRIMALITY_TEST) return REPORT_H();
     else return NULL;
