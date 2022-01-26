@@ -30,5 +30,5 @@ _primality_test primality_test(int SELECTOR) {
 /// Only difference now is that there are 9 primality tests, while there were 8 factorization algorithms; this discrapency is not accounted for
 
 int primality_test_based_on_preferred_factorization_engine(unsigned long potential_prime) { return (potential_prime - preferred_factorization_ENGINE(potential_prime)) ? ADDITIVE_IDENTITY : MULTIPLICATIVE_IDENTITY; }
-
 void SET_preferred_PRIMALITY_TEST(int SELECTOR) { preferred_PRIMALITY_TEST = primality_test(SELECTOR); }
+int prime(unsigned long potential_prime) { return preferred_PRIMALITY_TEST(potential_prime); }

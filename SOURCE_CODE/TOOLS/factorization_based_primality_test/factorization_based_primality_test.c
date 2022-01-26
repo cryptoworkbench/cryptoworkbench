@@ -5,7 +5,7 @@
 #include "../../libraries/mathematics/primality_testing_scemes.h" // needed for 'SET_preferred_PRIMALITY_TEST()', 'FACTORIZATION_METHOD_UNCHOSEN()'
 unsigned long MOD;
 
-const char *chosen_PRIMALITY_TEST(_primality_test PRIMALITY_TEST) { 
+const char *chosen_PRIMALITY_TEST() { _primality_test PRIMALITY_TEST = preferred_PRIMALITY_TEST_REPORT();
     if (PRIMALITY_TEST == efficient_trial_division_PRIMALITY_TEST) return A_REPORT();
     else if (PRIMALITY_TEST == LESS_efficient_trial_division_PRIMALITY_TEST) return B_REPORT();
     else if (PRIMALITY_TEST == LEAST_efficient_trial_division_PRIMALITY_TEST) return C_REPORT();
@@ -27,12 +27,11 @@ int main(int argc, char **argv) {
     int SELECTOR = translate_SUBTRACT_ONE(ptr);
     if (SELECTOR) SET_preferred_PRIMALITY_TEST(SELECTOR - 1);
     else FACTORIZATION_METHOD_UNCHOSEN(ptr);
-    _primality_test PRIMALITY_TEST = preferred_PRIMALITY_TEST_REPORT();
 
-    fprintf(stdout, "Using the factorization engine \"%s\" as the basis for my primality test on %lu.", chosen_PRIMALITY_TEST(PRIMALITY_TEST), MOD); if (!(argc < 3)) fprintf(stdout, "	(as specified by terminal argument)");
+    fprintf(stdout, "Using the factorization engine \"%s\" as the basis for my primality test on %lu.", chosen_PRIMALITY_TEST(), MOD); if (!(argc < 3)) fprintf(stdout, "	(as specified by terminal argument)");
     fprintf(stdout, "\n\n");
 
-    if (PRIMALITY_TEST(MOD)) fprintf(stdout, "%lu is prime.\n", MOD);
+    if (prime(MOD)) fprintf(stdout, "%lu is prime.\n", MOD);
     else fprintf(stdout, "%lu is not prime.\n", MOD);
     return 0;
 }
