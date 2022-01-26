@@ -4,13 +4,12 @@
 #include "maths.h" // needed for 'DOWN_ROUNDED_second_root()'
 #include "universal_group_library.h" // needed for 'BUFFER_OF_SIZE()'
 
-const char *preferred_factorization_engine_file = "shared_preferred_factorization_engine"; char *preferred_factorization_engine_file_REPORT() { return (char *) preferred_factorization_engine_file; }
-const char *a = "a"; const char *b = "b"; const char *c = "c"; const char *d = "d"; const char *e = "e"; const char *f = "f"; const char *g = "g"; const char *h = "h";
-const char *A = "efficient_trial_division"; const char *B = "less_efficient_trial_division"; const char *C = "trial_division";
+const char *preferred_factorization_engine_file = "shared_preferred_factorization_engine"; const char *a = "a"; const char *b = "b"; const char *c = "c"; const char *d = "d"; const char *e = "e"; const char *f = "f";
+const char *g = "g"; const char *h = "h"; const char *A = "efficient_trial_division"; const char *B = "less_efficient_trial_division"; const char *C = "trial_division";
 const char *D = "TABLE_AIDED_efficient_trial_division"; const char *E = "TABLE_AIDED_less_efficient_trial_division"; const char *F = "TABLE_AIDED_trial_division";
 const char *G = "shor_factorization"; const char *H = "fermats_factorization_method";
-const char *A_REPORT() { return A; } const char *B_REPORT() { return B; } const char *C_REPORT() { return C; } const char *D_REPORT() { return D; }
-const char *E_REPORT() { return E; } const char *F_REPORT() { return F; } const char *G_REPORT() { return G; } const char *H_REPORT() { return H; }
+const char *A_REPORT() { return A; } const char *B_REPORT() { return B; } const char *C_REPORT() { return C; } const char *D_REPORT() { return D; } const char *E_REPORT() { return E; }
+const char *F_REPORT() { return F; } const char *G_REPORT() { return G; } const char *H_REPORT() { return H; } char *preferred_factorization_engine_file_REPORT() { return (char *) preferred_factorization_engine_file; }
 // ^ string literals we will be comparing against
 
 struct ordered_pair divisor_pair(unsigned long number, unsigned long DIVISOR_OF_number)
@@ -29,9 +28,7 @@ unsigned long _trial_division_TABLE_AIDED(unsigned long presumed_composite, unsi
 	if (prime_divisor > _trial_limit) prime_divisor = presumed_composite;
     } while (presumed_composite % prime_divisor != 0); prime_table_close(prime_table);
     return prime_divisor;
-}
-
-unsigned long trial_division_TABLE_AIDED(unsigned long composite, unsigned long _trial_limit) { return _trial_division_TABLE_AIDED(composite, _trial_limit, prime_table_open(REPORT_standard_prime_table_filename()));}
+} unsigned long trial_division_TABLE_AIDED(unsigned long composite, unsigned long _trial_limit) { return _trial_division_TABLE_AIDED(composite, _trial_limit, prime_table_open(REPORT_standard_prime_table_filename()));}
 
 unsigned long trial_limit(unsigned long composite, int supidity_level)
 { switch (supidity_level) { case 3: return composite; case 2: return (composite - (composite % 2)) / 2; case 1: return DOWN_ROUNDED_second_root(composite); }; }
@@ -39,23 +36,17 @@ unsigned long trial_limit(unsigned long composite, int supidity_level)
 unsigned long efficient_trial_division(unsigned long composite) { return trial_division(composite, trial_limit(composite, 1)); }
 unsigned long LESS_efficient_trial_division(unsigned long composite) { return trial_division(composite, trial_limit(composite, 2)); }
 unsigned long LEAST_efficient_trial_division(unsigned long composite) { return trial_division(composite, trial_limit(composite, 3)); }
-// ^ trial division methods
-
 unsigned long efficient_trial_division_TABLE_AIDED(unsigned long composite) { return trial_division_TABLE_AIDED(composite, trial_limit(composite, 1)); }
 unsigned long LESS_efficient_trial_division_TABLE_AIDED(unsigned long composite) { return trial_division_TABLE_AIDED(composite, trial_limit(composite, 2)); }
 unsigned long LEAST_efficient_trial_division_TABLE_AIDED(unsigned long composite) { return trial_division_TABLE_AIDED(composite, trial_limit(composite, 3)); }
-// ^ same trial division methods aided by a table
+// ^ trial division methods (all dependencies of 'factorization_method()'
 
 unsigned long shor_factorization(unsigned long presumed_composite) {
     for (ul a = 2; a <= presumed_composite; a++) {
-	unsigned long _GCD = GCD(presumed_composite, a); if (_GCD != 1) return _GCD; unsigned long period = 1; for (ul _a = a; _a != MULTIPLICATIVE_IDENTITY; _a *= a, _a %= presumed_composite) period++; if (period % 2 == 1) continue;
-	unsigned long a_power = exponentiate_UNRESTRICTEDLY(a, period / 2); if (MOD == a_power + 1) continue;
-	return GCD(presumed_composite, a_power + 1);
-	if (GCD(presumed_composite, a_power - 1) == 1 || GCD(presumed_composite, a_power + 1) == 1) { // printf("Factor: %lu\n", GCD(presumed_composite, a_power + 1));
-	    ul prime_divisor = GCD(presumed_composite, a_power + 1); // I have a feeling this always yields the greater factor
-	    if (GCD(presumed_composite, a_power - 1) == 1) return prime_divisor;
-	    return GCD(presumed_composite, a_power - 1);
-	}
+	unsigned long _GCD = GCD(presumed_composite, a); if (_GCD != 1) return _GCD;
+	// ^ return when we find a number less than 'presumed_composite' which proves that 'presumed_composite' has a divisor greater than one (namely, the divisor it shared in common with this number)
+	unsigned long period = 1; for (unsigned long _a = a; _a != MULTIPLICATIVE_IDENTITY; _a *= a, _a %= presumed_composite) period++; if (period % 2 == 1) continue;
+	unsigned long a_power = exponentiate_UNRESTRICTEDLY(a, period / 2); if (MOD == a_power + 1) continue; return GCD(presumed_composite, a_power + 1);
     }
 } // dependency of 'factorization_method()'
 
