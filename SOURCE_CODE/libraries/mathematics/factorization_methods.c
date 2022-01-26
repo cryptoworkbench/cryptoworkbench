@@ -4,13 +4,13 @@
 #include "maths.h" // needed for 'DOWN_ROUNDED_second_root()'
 #include "universal_group_library.h" // needed for 'BUFFER_OF_SIZE()'
 
-const char *preferred_factorization_engine_file = "shared_preferred_factorization_engine"; char *REPORT_preferred_factorization_engine_file() { return (char *) preferred_factorization_engine_file; }
+const char *preferred_factorization_engine_file = "shared_preferred_factorization_engine"; char *preferred_factorization_engine_file_REPORT() { return (char *) preferred_factorization_engine_file; }
 const char *a = "a"; const char *b = "b"; const char *c = "c"; const char *d = "d"; const char *e = "e"; const char *f = "f"; const char *g = "g"; const char *h = "h";
 const char *A = "efficient_trial_division"; const char *B = "less_efficient_trial_division"; const char *C = "trial_division";
 const char *D = "TABLE_AIDED_efficient_trial_division"; const char *E = "TABLE_AIDED_less_efficient_trial_division"; const char *F = "TABLE_AIDED_trial_division";
 const char *G = "shor_factorization"; const char *H = "fermats_factorization_method";
-char *REPORT_A() { return (char *) A; } char *REPORT_B() { return (char *) B; } char *REPORT_C() { return (char *) C; } char *REPORT_D() { return (char *) D; }
-char *REPORT_E() { return (char *) E; } char *REPORT_F() { return (char *) F; } char *REPORT_G() { return (char *) G; } char *REPORT_H() { return (char *) H; }
+const char *A_REPORT() { return A; } const char *B_REPORT() { return B; } const char *C_REPORT() { return C; } const char *D_REPORT() { return D; }
+const char *E_REPORT() { return E; } const char *F_REPORT() { return F; } const char *G_REPORT() { return G; } const char *H_REPORT() { return H; }
 // ^ string literals we will be comparing against
 
 struct ordered_pair divisor_pair(unsigned long number, unsigned long DIVISOR_OF_number)
