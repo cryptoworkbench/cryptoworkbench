@@ -31,8 +31,10 @@ void initialize(unsigned long composite) { _factorization_method preferred_facto
 
 int main(int argc, char **argv) { unsigned long composite;
     if (2 > argc || !str_represents_ul(argv[1], &composite)) { fprintf(stderr, COMPOSITE_NOT_INTERPRETABLE EXIT_STATUS_GOODBYE, argv[1], -1); exit(-1); } char *ptr = argv[2];
-    if (argc < 3) { FILE *file; if (file = fopen(preferred_factorization_engine_file_REPORT(), "r")) { ptr = BUFFER_OF_SIZE(200); fscanf(file, "%s[^\n]", ptr); fclose(file); }
-	else { fprintf(stderr, "Couldn't open preferences file '%s'. " EXIT_STATUS_GOODBYE, -1, preferred_factorization_engine_file_REPORT()); exit(-1); } }
+    if (!ptr) { FILE *file;
+	if (!(file = fopen(preferred_factorization_engine_file_REPORT(), "r"))) { fprintf(stderr, "Couldn't open preferences file '%s'. " EXIT_STATUS_GOODBYE, preferred_factorization_engine_file_REPORT(), -1); exit(-1); }
+	ptr = BUFFER_OF_SIZE(200); fscanf(file, "%s[^\n]", ptr); fclose(file);
+    }
     int SELECTOR = translate_SUBTRACT_ONE(ptr);
     if (SELECTOR) SET_preferred_factorization_ENGINE(SELECTOR - 1); // < a.k.a. interpretation from 'ptr' successful
     else ERR(ptr); initialize(composite); if (!(argc < 3)) fprintf(stdout, "	(engine specified by terminal argument)"); fprintf(stdout, "\n\n");

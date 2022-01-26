@@ -78,7 +78,7 @@ struct ordered_pair factorize(unsigned long number, _factorization_method factor
     return factor;
 } // passing as second argument 'preferred_factorization_ENGINE' or 'NULL' yields the same result
 
-void ERR(char *arg) {
+void FACTORIZATION_METHOD_UNCHOSEN(char *arg) {
     fprintf(stderr, "Couldn't understand engine specification '%s', please specify one of the following:\n", arg);
     fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", a, A, b, B, c, C);
     fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", d, D, e, E, f, F);

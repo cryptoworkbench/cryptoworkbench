@@ -29,6 +29,6 @@ struct ordered_pair factorize(unsigned long number, _factorization_method factor
 
 _factorization_method factorization_method(int SELECTOR); // 'SET_preferred_factorization_ENGINE()'
 void SET_preferred_factorization_ENGINE(int SELECTOR);
-void ERR(char *arg);
+void FACTORIZATION_METHOD_UNCHOSEN(char *arg);
 int translate_SUBTRACT_ONE(char *arg);
 int interpret_ENGINE_from_external_file();
