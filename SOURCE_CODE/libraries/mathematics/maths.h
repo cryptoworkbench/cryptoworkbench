@@ -24,7 +24,6 @@ typedef unsigned long (*_group_operation) (unsigned long, unsigned long);
 _group_operation operation_from_ID(unsigned long ID);
 
 unsigned long exponentiate(unsigned long base, unsigned long exponent, unsigned long MOD);
-unsigned long modular_exponentiate(unsigned long base, unsigned long exponent, unsigned long MOD);
 unsigned long exponentiate_UNRESTRICTEDLY(unsigned long base, unsigned long exponent); // << normal finite field exponentiation depends upon this ):
 unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID);
 // ^^^ Combine them all
@@ -61,5 +60,4 @@ char *sieve_of_eratosthenes(unsigned long limit);
 unsigned long primes_printed_from_sieve_array_to_FS(char *sieve, unsigned long limit, FILE *FS);
 FILE *prime_table_open(char *prime_table_filename); // < I want this to eventually try to cooperate with the logbook instead of stderr
 void prime_table_close(FILE *prime_table); // < closes FS and resets char * variable '_open_prime_table' to NULL
-int _legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q); // calculates the legendre symbol using euler's criterion. "reset MOD after use!"
-int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q); // wrapper for the above function that is needed to perserve global variable MOD()
+int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q);

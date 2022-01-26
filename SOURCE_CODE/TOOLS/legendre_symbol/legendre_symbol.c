@@ -1,4 +1,4 @@
-// Here I will calculate the Legende symbol using Euler's criterion
+// Here I will calculate the Legende symbol using Euler's criterion.:q
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h"
@@ -27,8 +27,8 @@ int main(int argc, char **argv) {
     int SELECTOR = translate_SUBTRACT_ONE(BUFFER); if (SELECTOR) SET_preferred_factorization_ENGINE(SELECTOR - 1); else ERR(BUFFER); free(BUFFER); // initialize();
     // ^ Now engine should be set
 
-    ul p; if (2 > argc || !str_represents_ul(argv[1], &p)) { fprintf(stderr, "Failed to interpret %s as 'p'.\n", argv[1]); exit(-2); }
-    ul q; if (3 > argc || !str_represents_ul(argv[2], &q)) { fprintf(stderr, "Failed to interpret %s as 'q'.\n", argv[2]); exit(-3); }
+    unsigned long p; if (2 > argc || !str_represents_ul(argv[1], &p)) { fprintf(stderr, "Failed to interpret %s as 'p'.\n", argv[1]); exit(-2); }
+    unsigned long q; if (3 > argc || !str_represents_ul(argv[2], &q)) { fprintf(stderr, "Failed to interpret %s as 'q'.\n", argv[2]); exit(-3); }
     // ^ interpret required primes
 
     if (composite_test_based_on_preferred_factorization_engine(p)) { fprintf(stderr, "p (%lu) is not prime.\n", p); exit(-4); }

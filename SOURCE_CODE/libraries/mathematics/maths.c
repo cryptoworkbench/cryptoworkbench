@@ -172,5 +172,4 @@ FILE *prime_table_open(char *prime_table_filename) {
     return prime_table;
 } void prime_table_close(FILE *prime_table) { fclose(prime_table); _open_prime_table = NULL; }
 
-int _legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q) { MOD = odd_prime_q; if (exponentiate(odd_prime_p, (odd_prime_q - 1) / 2, MOD) + 1 == MOD) return -1; return 1; }
-int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q) { ul old_MOD = MOD; ul ret_val = _legendre_symbol(odd_prime_p, odd_prime_q); MOD = old_MOD; return ret_val; }
+int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q) { return (odd_prime_q - 1 - exponentiate(odd_prime_p, (odd_prime_q - 1) / 2, odd_prime_q)) ? 1 : -1; }
