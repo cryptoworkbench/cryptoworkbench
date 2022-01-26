@@ -4,25 +4,33 @@
 #include "maths.h" // needed for 'DOWN_ROUNDED_second_root()'
 #include "universal_group_library.h" // needed for 'BUFFER_OF_SIZE()'
 
+const char *a = "a"; const char *b = "b"; const char *c = "c"; const char *d = "d"; const char *e = "e"; const char *f = "f"; const char *g = "g"; const char *h = "h";
+const char *A = "efficient_trial_division"; const char *B = "less_efficient_trial_division"; const char *C = "trial_division";
+const char *D = "TABLE_AIDED_efficient_trial_division"; const char *E = "TABLE_AIDED_less_efficient_trial_division"; const char *F = "TABLE_AIDED_trial_division";
+const char *G = "shor_factorization"; const char *H = "fermats_factorization_method";
+char *REPORT_A() { return (char *) A; } char *REPORT_B() { return (char *) B; } char *REPORT_C() { return (char *) C; } char *REPORT_D() { return (char *) D; }
+char *REPORT_E() { return (char *) E; } char *REPORT_F() { return (char *) F; } char *REPORT_G() { return (char *) G; } char *REPORT_H() { return (char *) H; }
+// ^ string literals we will be comparing against
+
 struct ordered_pair divisor_pair(unsigned long number, unsigned long DIVISOR_OF_number)
 { struct ordered_pair pair_of_divisors; pair_of_divisors.a = DIVISOR_OF_number; pair_of_divisors.b = number / pair_of_divisors.a; return pair_of_divisors; }
 unsigned long return_greatest(struct ordered_pair divisor_pair) { if (divisor_pair.a > divisor_pair.b) return divisor_pair.b; return divisor_pair.a; }
 
-unsigned long trial_division(unsigned long presumed_composite, unsigned long trial_limit) {
-    ul divisor = MULTIPLICATIVE_IDENTITY; do { divisor++; if (trial_limit < divisor) divisor == presumed_composite; } while (presumed_composite % divisor != 0);
+unsigned long trial_division(unsigned long presumed_composite, unsigned long _trial_limit) {
+    ul divisor = MULTIPLICATIVE_IDENTITY; do { divisor++; if (_trial_limit < divisor) divisor == presumed_composite; } while (presumed_composite % divisor != 0);
     return divisor;
 }
 
-unsigned long _trial_division_TABLE_AIDED(unsigned long presumed_composite, unsigned long trial_limit, FILE *prime_table) {
+unsigned long _trial_division_TABLE_AIDED(unsigned long presumed_composite, unsigned long _trial_limit, FILE *prime_table) {
     ul prime_divisor; do {
 	if (fscanf(prime_table, "%lu\n", &prime_divisor) != 1)
 	{ fprintf(stderr, "The prime table '%s' not complete enough to find the first prime divisor of %lu. The last prime tested was %lu.\n", REPORT_open_prime_table(), presumed_composite, prime_divisor); exit(-1); }
-	if (prime_divisor > trial_limit) prime_divisor = presumed_composite;
+	if (prime_divisor > _trial_limit) prime_divisor = presumed_composite;
     } while (presumed_composite % prime_divisor != 0); prime_table_close(prime_table);
     return prime_divisor;
 }
 
-unsigned long trial_division_TABLE_AIDED(unsigned long composite, unsigned long trial_limit) { return _trial_division_TABLE_AIDED(composite, trial_limit, prime_table_open(REPORT_standard_prime_table_filename()));}
+unsigned long trial_division_TABLE_AIDED(unsigned long composite, unsigned long _trial_limit) { return _trial_division_TABLE_AIDED(composite, _trial_limit, prime_table_open(REPORT_standard_prime_table_filename()));}
 
 unsigned long trial_limit(unsigned long composite, int supidity_level)
 { switch (supidity_level) { case 3: return composite; case 2: return (composite - (composite % 2)) / 2; case 1: return DOWN_ROUNDED_second_root(composite); }; }
@@ -64,8 +72,15 @@ unsigned long fermat_factorization(unsigned long composite) { return odds_factor
 // ^ FOUR FUCNCTIONS TO ACHIEVE FERMAT FACTORIZATION
 
 _factorization_method factorization_method(int SELECTOR) {
-    switch (SELECTOR) { case 0: return LEAST_efficient_trial_division; case 1: return LESS_efficient_trial_division; case 2: return efficient_trial_division; case 3: return LEAST_efficient_trial_division_TABLE_AIDED;
-	case 4: return LESS_efficient_trial_division_TABLE_AIDED; case 5: return efficient_trial_division_TABLE_AIDED; case 6: return shor_factorization; case 7: return fermat_factorization;
+    switch (SELECTOR) {
+	case 0: return efficient_trial_division;
+	case 1: return LESS_efficient_trial_division;
+	case 2: return LEAST_efficient_trial_division;
+	case 3: return efficient_trial_division_TABLE_AIDED;
+	case 4: return LESS_efficient_trial_division_TABLE_AIDED;
+	case 5: return LEAST_efficient_trial_division_TABLE_AIDED;
+	case 6: return shor_factorization;
+	case 7: return fermat_factorization;
 	default: return NULL; };
 } void SET_preferred_factorization_ENGINE(int SELECTOR) { preferred_factorization_ENGINE = factorization_method(SELECTOR); }
 
@@ -74,18 +89,7 @@ struct ordered_pair factorize(unsigned long number, _factorization_method factor
     struct ordered_pair factor = divisor_pair(number, factorization_ENGINE_to_use(number));
     if (factor.b < factor.a) { ul temp = factor.b; factor.b = factor.a; factor.a = temp; }
     return factor;
-}
-
-const char *a = "a"; const char *b = "b"; const char *c = "c"; const char *d = "d"; const char *e = "e"; const char *f = "f"; const char *g = "g"; const char *h = "h";
-const char *A = "trial_division_in_its_least_efficient_form"; char *REPORT_A() { return (char *) A; }
-const char *B = "trial_division_in_its_less_efficient_form"; char *REPORT_B() { return (char *) B; }
-const char *C = "trial_division_in_its_most_efficient_form"; char *REPORT_C() { return (char *) C; }
-const char *D = "prime_table_aided_trial_division_in_its_least_efficient_form"; char *REPORT_D() { return (char *) D; }
-const char *E = "prime_table_aided_trial_division_in_its_less_efficient_form"; char *REPORT_E() { return (char *) E; }
-const char *F = "prime_table_aided_trial_division_in_its_most_efficient_form"; char *REPORT_F() { return (char *) F; }
-const char *G = "shor_factorization"; char *REPORT_G() { return (char *) G; }
-const char *H = "fermats_factorization_method"; char *REPORT_H() { return (char *) H; }
-// ^ string literals we will be comparing against
+} // passing as second argument 'preferred_factorization_ENGINE' or 'NULL' yields the same result
 
 void ERR(char *arg) {
     fprintf(stderr, "Couldn't understand engine specification '%s', please specify one of the following:\n", arg);
