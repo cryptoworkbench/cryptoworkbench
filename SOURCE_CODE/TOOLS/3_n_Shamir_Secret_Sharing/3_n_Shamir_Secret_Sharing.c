@@ -11,7 +11,6 @@
 #include <sys/wait.h> // 'waitpid()'
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h"
-ul MOD = 0;
 
 unsigned long a, b, c;
 
@@ -28,9 +27,9 @@ struct cartesian_coordinates {
 
 struct linear_equation MULTIPLY(struct linear_equation INP, unsigned long multiplier) {
     struct linear_equation return_value;
-    return_value.coefficient_a = (multiplier * INP.coefficient_a) % MOD;
-    return_value.coefficient_b = (multiplier * INP.coefficient_b) % MOD;
-    return_value.result = (multiplier * INP.result) % MOD;
+    return_value.coefficient_a = (multiplier * INP.coefficient_a) % MOD_REPORT();
+    return_value.coefficient_b = (multiplier * INP.coefficient_b) % MOD_REPORT();
+    return_value.result = (multiplier * INP.result) % MOD_REPORT();
     return return_value;
 }
 
@@ -49,13 +48,13 @@ struct linear_equation ADD(struct linear_equation equation_one, struct linear_eq
     ret.result = equation_one.result + equation_two.result;
     // ^^ Add equations
 
-    ret.coefficient_a %= MOD; ret.coefficient_b %= MOD; ret.result %= MOD;
+    ret.coefficient_a %= MOD_REPORT(); ret.coefficient_b %= MOD_REPORT(); ret.result %= MOD_REPORT();
     // ^^ But do not forget we are supposed to be doing this algebra in a finite field
 
     return ret;
 }
 
-void C_reduce() { if (c >= MOD) { c%=MOD; fprintf(stdout, "The secret has been reduced by mod %lu into the congruent secret %lu.\n\n", MOD, c); } }
+void C_reduce() { if (c >= MOD_REPORT()) { c%=MOD_REPORT(); fprintf(stdout, "The secret has been reduced by mod %lu into the congruent secret %lu.\n\n", MOD_REPORT(), c); } }
 
 char *one = "%s is not a suitable value for the field modulus!\n\nExiting '-%lu'.\n";
 char *two = "%s is not a suitable value for the second-degree polynomial parameter 'a'!\n\nExiting '-%lu'.\n";
@@ -72,7 +71,7 @@ void argv_ERROR(unsigned long index, char **argv) {
 }
 
 int main(int argc, char **argv) {
-    if (2 > argc || !str_represents_ul(argv[1], &MOD)) argv_ERROR(1, argv);
+    if (2 > argc || !str_represents_ul(argv[1], MOD_LOCATION_REPORT())) argv_ERROR(1, argv);
     if (8 < argc) { ignored_arguments(argc, argv, 7); argc = 8; } // < complain about unneccesary arguments and forget about them once and for all
     struct cartesian_coordinates first_sample_mapping, second_sample_mapping, third_sample_mapping;
     switch (argc) {
@@ -115,19 +114,19 @@ int main(int argc, char **argv) {
     else fscanf(stdin, " %lu", &third_sample_mapping.y); fprintf(stdout, "\n");
     // ^ Take in information
 
-    struct linear_equation equation_a = { exponentiate(first_sample_mapping.x, 2), exponentiate(first_sample_mapping.x, 1), first_sample_mapping.y};
-    struct linear_equation equation_b = { exponentiate(second_sample_mapping.x, 2), exponentiate(second_sample_mapping.x, 1), second_sample_mapping.y};
-    struct linear_equation equation_c = { exponentiate(third_sample_mapping.x, 2), exponentiate(third_sample_mapping.x, 1), third_sample_mapping.y};
+    struct linear_equation equation_a = { exponentiate(first_sample_mapping.x, 2, MOD_REPORT()), exponentiate(first_sample_mapping.x, 1, MOD_REPORT()), first_sample_mapping.y};
+    struct linear_equation equation_b = { exponentiate(second_sample_mapping.x, 2, MOD_REPORT()), exponentiate(second_sample_mapping.x, 1, MOD_REPORT()), second_sample_mapping.y};
+    struct linear_equation equation_c = { exponentiate(third_sample_mapping.x, 2, MOD_REPORT()), exponentiate(third_sample_mapping.x, 1, MOD_REPORT()), third_sample_mapping.y};
     struct linear_equation equation_a_and_b = ADD(equation_a, INV(equation_b));
     struct linear_equation equation_b_and_c = ADD(equation_b, INV(equation_c));
     struct linear_equation final_linear_equation = ADD(equation_b_and_c, MULTIPLY(equation_a_and_b, modular_division(equation_a_and_b.coefficient_b, inverse(equation_b_and_c.coefficient_b))));
 
-    ul a = modular_division(final_linear_equation.result, final_linear_equation.coefficient_a) % MOD;
-    ul b = modular_division(add(equation_a_and_b.result, inverse(multiply(equation_a_and_b.coefficient_a, a))), equation_a_and_b.coefficient_b) % MOD;
-    ul c = add(equation_a.result, inverse((add(multiply(b, first_sample_mapping.x), (multiply(a, exponentiate(first_sample_mapping.x, 2)))))));
+    ul a = modular_division(final_linear_equation.result, final_linear_equation.coefficient_a) % MOD_REPORT();
+    ul b = modular_division(add(equation_a_and_b.result, inverse(multiply(equation_a_and_b.coefficient_a, a))), equation_a_and_b.coefficient_b) % MOD_REPORT();
+    ul c = add(equation_a.result, inverse((add(multiply(b, first_sample_mapping.x), (multiply(a, exponentiate(first_sample_mapping.x, 2, MOD_REPORT())))))));
 
-    fprintf(stdout, "Second-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", MOD);
-    fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(modulus %lu)\n", a, b, c, MOD);
+    fprintf(stdout, "Second-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", MOD_REPORT());
+    fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(modulus %lu)\n", a, b, c, MOD_REPORT());
 
     fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_GF(0, 3, a, b, c));
     return 0;
