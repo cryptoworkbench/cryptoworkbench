@@ -37,7 +37,7 @@ int main(int argc, char **argv) { unsigned long composite;
     if (SELECTOR) SET_preferred_factorization_ENGINE(SELECTOR - 1); // < a.k.a. interpretation from 'ptr' successful
     else ERR(ptr); initialize(composite); if (!(argc < 3)) fprintf(stdout, "	(engine specified by terminal argument)"); fprintf(stdout, "\n\n");
 
-    struct ordered_pair factor_a_and_b = factorize(composite, preferred_factorization_ENGINE_REPORT()); // <- NULL means 'preferred_factorization_ENGINE' will be deployed
+    struct ordered_pair factor_a_and_b = factorize(composite, NULL); // <- NULL gives the same just as if 'preferred_factorization_ENGINE_REPORT()' was passed as second argument to this function
     fprintf(stdout, "%lu = %lu * %lu\n", composite, factor_a_and_b.a, factor_a_and_b.b);
     return 0;
 } // make use use of '

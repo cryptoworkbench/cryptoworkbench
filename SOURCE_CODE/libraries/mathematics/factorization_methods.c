@@ -72,6 +72,7 @@ _factorization_method factorization_method(int SELECTOR) {
 } void SET_preferred_factorization_ENGINE(int SELECTOR) { preferred_factorization_ENGINE = factorization_method(SELECTOR); }
 
 struct ordered_pair factorize(unsigned long number, _factorization_method factorization_ENGINE_to_use) {
+    if (!factorization_ENGINE_to_use) factorization_ENGINE_to_use = preferred_factorization_ENGINE;
     struct ordered_pair factor = divisor_pair(number, factorization_ENGINE_to_use(number));
     if (factor.b < factor.a) { ul temp = factor.b; factor.b = factor.a; factor.a = temp; }
     return factor;
