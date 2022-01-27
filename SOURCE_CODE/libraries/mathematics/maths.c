@@ -89,11 +89,13 @@ unsigned long SINGULAR_polynomial_over_GF(unsigned long **coefficient, unsigned 
     return Res;
 }
 
-unsigned long polynomial_over_GF(unsigned long x, int number_of_coefficients, ...) { unsigned long additions, result; additions = result = 0; ul term_factor = 1;
-    va_list ap;
-    va_start (ap, number_of_coefficients);
-    for (ul i = 0; i < number_of_coefficients; i++) {
-	result = add(result, (va_arg(ap, unsigned long))); result %= MOD; term_factor = multiply(term_factor, x); additions++;
+unsigned long polynomial_over_GF(unsigned long x, int number_of_coefficients, ...) { unsigned long result = 0; unsigned long term_factor = 1;
+    va_list ap; va_start (ap, number_of_coefficients);
+    for (unsigned long i = 0; i < number_of_coefficients; i++) {
+	// unsigned long coefficient = (va_arg(ap, unsigned long)); multiply(coefficient, term_factor);
+	result = add(result, multiply(term_factor, (va_arg(ap, unsigned long))));
+	// result = add(result, (va_arg(ap, unsigned long)));
+	term_factor = multiply(term_factor, x);
     } va_end(ap);
 
     return result;

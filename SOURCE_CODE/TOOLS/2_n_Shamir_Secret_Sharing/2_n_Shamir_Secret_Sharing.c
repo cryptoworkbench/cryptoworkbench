@@ -69,6 +69,6 @@ int main(int argc, char **argv) {
     unsigned long b = subtract(first_sample_mapping.y, multiply(first_sample_mapping.x, a));
     fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", MOD_REPORT());
     fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", a, b, MOD_REPORT());
-    fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_GF(0, 2, a, b));
+    fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_GF(0, 2, b, a));
     return 0;
 }
