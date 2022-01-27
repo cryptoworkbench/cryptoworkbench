@@ -122,7 +122,7 @@ int main(int argc, char **argv) {
     struct linear_equation final_linear_equation = ADD(equation_b_and_c, MULTIPLY(equation_a_and_b, modular_division(equation_a_and_b.coefficient_b, inverse(equation_b_and_c.coefficient_b))));
 
     ul a = modular_division(final_linear_equation.result, final_linear_equation.coefficient_a) % MOD_REPORT();
-    ul b = modular_division(add(equation_a_and_b.result, inverse(multiply(equation_a_and_b.coefficient_a, a))), equation_a_and_b.coefficient_b) % MOD_REPORT();
+    ul b = modular_division(subtract(equation_a_and_b.result, multiply(equation_a_and_b.coefficient_a, a)), equation_a_and_b.coefficient_b) % MOD_REPORT();
     ul c = add(equation_a.result, inverse((add(multiply(b, first_sample_mapping.x), (multiply(a, exponentiate(first_sample_mapping.x, 2, MOD_REPORT())))))));
 
     fprintf(stdout, "Second-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", MOD_REPORT());

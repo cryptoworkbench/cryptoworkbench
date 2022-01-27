@@ -25,7 +25,6 @@
 #include <sys/wait.h> // 'waitpid()'
 #include "../../libraries/functional/string.h" // 'ignored_arguments()'
 #include "../../libraries/mathematics/maths.h" // 'inverse()'
-ul MOD; // < handle library inclusions ^^
 
 #define EXTERNAL_PROGRAM "polynomial_function_map_over_GF"
 
@@ -36,7 +35,7 @@ struct cartesian_coordinates {
     unsigned long y;
 };
 
-void secret_reduce() { if (_secret_B >= MOD) { _secret_B %= MOD; printf("The secret has been reduced by mod %lu into the congruent secret %lu.\n\n", MOD, _secret_B); } }
+void secret_reduce() { if (_secret_B >= MOD_REPORT()) { _secret_B %= MOD_REPORT(); printf("The secret has been reduced by mod %lu into the congruent secret %lu.\n\n", MOD_REPORT(), _secret_B); } }
 
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], MOD_LOCATION_REPORT())) { printf("%s is not MOD!\n", argv[1]); exit(-1); }
@@ -64,12 +63,12 @@ int main(int argc, char **argv) {
     if (5 < argc) fprintf(stdout, "%lu\n", second_sample_mapping.y);
     else fscanf(stdin, " %lu", &second_sample_mapping.y); fprintf(stdout, "\n");
 
-    unsigned long Y_difference = add(first_sample_mapping.y, inverse(second_sample_mapping.y));
-    unsigned long X_difference = add(first_sample_mapping.x, inverse(second_sample_mapping.x));
-    ul a = modular_division(Y_difference, X_difference);
-    ul b = add(first_sample_mapping.y, inverse(multiply(first_sample_mapping.x, a)));
-    fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", MOD);
-    fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", a, b, MOD);
+    unsigned long Y_difference = subtract(first_sample_mapping.y, second_sample_mapping.y);
+    unsigned long X_difference = subtract(first_sample_mapping.x, second_sample_mapping.x);
+    unsigned long a = modular_division(Y_difference, X_difference);
+    unsigned long b = subtract(first_sample_mapping.y, multiply(first_sample_mapping.x, a));
+    fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", MOD_REPORT());
+    fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", a, b, MOD_REPORT());
     fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_GF(0, 2, a, b));
     return 0;
 }
