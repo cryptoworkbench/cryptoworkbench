@@ -24,7 +24,7 @@
 #include <unistd.h> // 'execvp()'
 #include "../../libraries/functional/string.h" // 'ignored_arguments()'
 #include "../../libraries/mathematics/maths.h" // 'inverse()'
-
+#define K 2 // degree of polynomial that is resolved in other to retrieve secret encoded as contant term
 #define EXTERNAL_PROGRAM "polynomial_function_map_over_GF"
 
 void equation_print(unsigned long **equation) { printf("%lu = ", *equation[0]); int i = 1; while (equation[i]) { printf("%lu + ", *equation[i]); i++; } printf("c"); }
@@ -32,7 +32,7 @@ void equation_print(unsigned long **equation) { printf("%lu = ", *equation[0]); 
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], MOD_LOCATION_REPORT())) { printf("%s is not MOD!\n", argv[1]); exit(-1); }
     if (6 < argc) { ignored_arguments(argc, argv, 5); argc = 6; } // < complain about unneccesary arguments and forget about them once and for all
-    unsigned long **equation_ONE = equation_initialize(2); unsigned long **equation_TWO = equation_initialize(2);
+    unsigned long **equation_ONE, **equation_TWO; equation_ONE = equation_initialize(K); equation_TWO = equation_initialize(K);
     switch (argc) {
 	case 6: if (!str_represents_ul(argv[5], equation_TWO[0])) { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of second point.\n", argv[5]); }
 	case 5: if (!str_represents_ul(argv[4], equation_TWO[1])) { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of second point.\n", argv[4]); }
@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
     fprintf(stdout, "y_1 \u2261 "); if (3 < argc) fprintf(stdout, "%lu\n", *equation_ONE[0]); else fscanf(stdin, " %lu", equation_ONE[0]); fprintf(stdout, "\n");
     fprintf(stdout, "x_2 \u2261 "); if (4 < argc) fprintf(stdout, "%lu\n", *equation_TWO[1]); else fscanf(stdin, " %lu", equation_TWO[1]);
     fprintf(stdout, "y_2 \u2261 "); if (5 < argc) fprintf(stdout, "%lu\n", *equation_TWO[0]); else fscanf(stdin, " %lu", equation_TWO[0]); fprintf(stdout, "\n");
-    // ^ Got all information
+    // ^ Got all information at this point
 
     unsigned long **equation_ONE_WITH_TWO = equation_SUBTRACT(equation_ONE, equation_TWO);
     unsigned long a = modular_division(*equation_ONE_WITH_TWO[0], *equation_ONE_WITH_TWO[1]);
@@ -51,6 +51,6 @@ int main(int argc, char **argv) {
 
     fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", MOD_REPORT());
     fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", a, b, MOD_REPORT());
-    fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_GF(0, 2, b, a));
+    fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_GF(0, K, b, a));
     return 0;
 }
