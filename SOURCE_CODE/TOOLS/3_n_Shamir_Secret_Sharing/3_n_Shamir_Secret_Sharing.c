@@ -27,9 +27,9 @@ struct cartesian_coordinates {
 
 struct linear_equation MULTIPLY(struct linear_equation INP, unsigned long multiplier) {
     struct linear_equation return_value;
-    return_value.coefficient_a = (multiplier * INP.coefficient_a) % MOD_REPORT();
-    return_value.coefficient_b = (multiplier * INP.coefficient_b) % MOD_REPORT();
-    return_value.result = (multiplier * INP.result) % MOD_REPORT();
+    return_value.coefficient_a = multiply(multiplier, INP.coefficient_a);
+    return_value.coefficient_b = multiply(multiplier, INP.coefficient_b);
+    return_value.result = multiply(multiplier, INP.result);
     return return_value;
 }
 
