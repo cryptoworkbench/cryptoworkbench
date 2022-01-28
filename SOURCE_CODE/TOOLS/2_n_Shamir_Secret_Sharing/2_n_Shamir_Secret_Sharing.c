@@ -22,51 +22,33 @@
 
 #include <stdio.h>
 #include <unistd.h> // 'execvp()'
-#include <sys/wait.h> // 'waitpid()'
 #include "../../libraries/functional/string.h" // 'ignored_arguments()'
 #include "../../libraries/mathematics/maths.h" // 'inverse()'
 
 #define EXTERNAL_PROGRAM "polynomial_function_map_over_GF"
 
-unsigned long a, _secret_B;
-
-struct cartesian_coordinates {
-    unsigned long x;
-    unsigned long y;
-};
-
-void secret_reduce() { if (_secret_B >= MOD_REPORT()) { _secret_B %= MOD_REPORT(); printf("The secret has been reduced by mod %lu into the congruent secret %lu.\n\n", MOD_REPORT(), _secret_B); } }
+void equation_print(unsigned long **equation) { printf("%lu = ", *equation[0]); int i = 1; while (equation[i]) { printf("%lu + ", *equation[i]); i++; } printf("c"); }
 
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], MOD_LOCATION_REPORT())) { printf("%s is not MOD!\n", argv[1]); exit(-1); }
     if (6 < argc) { ignored_arguments(argc, argv, 5); argc = 6; } // < complain about unneccesary arguments and forget about them once and for all
-    struct cartesian_coordinates first_sample_mapping, second_sample_mapping;
+    unsigned long **equation_ONE = equation_initialize(2); unsigned long **equation_TWO = equation_initialize(2);
     switch (argc) {
-	case 6: if (!str_represents_ul(argv[5], &second_sample_mapping.y)) { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of second point.\n", argv[5]); }
-	case 5: if (!str_represents_ul(argv[4], &second_sample_mapping.x)) { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of second point.\n", argv[4]); }
-	case 4: if (!str_represents_ul(argv[3], &first_sample_mapping.y)) { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of first point.\n", argv[3]); }
-	case 3: if (!str_represents_ul(argv[2], &first_sample_mapping.x)) { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of first point.\n", argv[2]); }
-    }; // ^ Interpret interpretable information
-    fprintf(stdout, "x_1 \u2261 ");
-    if (2 < argc) fprintf(stdout, "%lu\n", first_sample_mapping.x);
-    else fscanf(stdin, " %lu", &first_sample_mapping.x);
+	case 6: if (!str_represents_ul(argv[5], equation_TWO[0])) { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of second point.\n", argv[5]); }
+	case 5: if (!str_represents_ul(argv[4], equation_TWO[1])) { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of second point.\n", argv[4]); }
+	case 4: if (!str_represents_ul(argv[3], equation_ONE[0])) { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of first point.\n", argv[3]); }
+	case 3: if (!str_represents_ul(argv[2], equation_ONE[1])) { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of first point.\n", argv[2]); }
+    };
+    fprintf(stdout, "x_1 \u2261 "); if (2 < argc) fprintf(stdout, "%lu\n", *equation_ONE[1]); else fscanf(stdin, " %lu", equation_ONE[1]);
+    fprintf(stdout, "y_1 \u2261 "); if (3 < argc) fprintf(stdout, "%lu\n", *equation_ONE[0]); else fscanf(stdin, " %lu", equation_ONE[0]); fprintf(stdout, "\n");
+    fprintf(stdout, "x_2 \u2261 "); if (4 < argc) fprintf(stdout, "%lu\n", *equation_TWO[1]); else fscanf(stdin, " %lu", equation_TWO[1]);
+    fprintf(stdout, "y_2 \u2261 "); if (5 < argc) fprintf(stdout, "%lu\n", *equation_TWO[0]); else fscanf(stdin, " %lu", equation_TWO[0]); fprintf(stdout, "\n");
+    // ^ Got all information
 
-    fprintf(stdout, "y_1 \u2261 ");
-    if (3 < argc) fprintf(stdout, "%lu\n", first_sample_mapping.y);
-    else fscanf(stdin, " %lu", &first_sample_mapping.y); fprintf(stdout, "\n");
+    unsigned long **equation_ONE_WITH_TWO = equation_SUBTRACT(equation_ONE, equation_TWO);
+    unsigned long a = modular_division(*equation_ONE_WITH_TWO[0], *equation_ONE_WITH_TWO[1]);
+    unsigned long b = subtract(*equation_ONE[0], multiply(*equation_ONE[1], a));
 
-    fprintf(stdout, "x_2 \u2261 ");
-    if (4 < argc) fprintf(stdout, "%lu\n", second_sample_mapping.x);
-    else fscanf(stdin, " %lu", &second_sample_mapping.x);
-
-    fprintf(stdout, "y_2 \u2261 ");
-    if (5 < argc) fprintf(stdout, "%lu\n", second_sample_mapping.y);
-    else fscanf(stdin, " %lu", &second_sample_mapping.y); fprintf(stdout, "\n");
-
-    unsigned long Y_difference = subtract(first_sample_mapping.y, second_sample_mapping.y);
-    unsigned long X_difference = subtract(first_sample_mapping.x, second_sample_mapping.x);
-    unsigned long a = modular_division(Y_difference, X_difference);
-    unsigned long b = subtract(first_sample_mapping.y, multiply(first_sample_mapping.x, a));
     fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", MOD_REPORT());
     fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", a, b, MOD_REPORT());
     fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_GF(0, 2, b, a));

@@ -61,3 +61,9 @@ unsigned long primes_printed_from_sieve_array_to_FS(char *sieve, unsigned long l
 FILE *prime_table_open(char *prime_table_filename); // < I want this to eventually try to cooperate with the logbook instead of stderr
 void prime_table_close(FILE *prime_table); // < closes FS and resets char * variable '_open_prime_table' to NULL
 int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q);
+void equation_DISCARD(unsigned long **equation);
+int equation_length(unsigned long **equation);
+unsigned long **equation_initialize(int required_size);
+unsigned long **equation_ADD(unsigned long **equation_ONE, unsigned long **equation_TWO);
+unsigned long **equation_NEGATIVE(unsigned long **equation);
+unsigned long **equation_SUBTRACT(unsigned long **equation_ONE, unsigned long **equation_TWO);

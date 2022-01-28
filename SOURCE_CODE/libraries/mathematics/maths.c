@@ -175,3 +175,31 @@ FILE *prime_table_open(char *prime_table_filename) {
 } void prime_table_close(FILE *prime_table) { fclose(prime_table); _open_prime_table = NULL; }
 
 int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q) { return (odd_prime_q - 1 - exponentiate(odd_prime_p, (odd_prime_q - 1) / 2, odd_prime_q)) ? 1 : -1; }
+
+void equation_DISCARD(unsigned long **equation) { int i; while (equation[i]) { free(equation[i]); i++; }; free(equation); }
+// ^ free()'s an equation
+
+int equation_length(unsigned long **equation) { int equation_length = 0; while (equation[equation_length]) equation_length++; return equation_length; }
+// ^ returns the length of an equation array based on the position of it's ZERO terminating character
+
+unsigned long **equation_initialize(int required_size) {
+    unsigned long **ret_val = (unsigned long **) malloc(sizeof(unsigned long *) * (required_size + 1)); ret_val[required_size] = NULL;
+    for (int i = 0; i < required_size; i++) ret_val[i] = (unsigned long *) malloc(sizeof(unsigned long)); return ret_val;
+}
+
+unsigned long **equation_ADD(unsigned long **equation_ONE, unsigned long **equation_TWO) { int LENGTH_OF_equation_ONE = equation_length(equation_ONE); int LENGTH_OF_equation_TWO = equation_length(equation_TWO);
+    if (LENGTH_OF_equation_ONE != LENGTH_OF_equation_TWO) { fprintf(stderr, "equations had different length: %i vs %i", LENGTH_OF_equation_ONE, LENGTH_OF_equation_TWO); exit(-2); }
+    unsigned long **resulting_equation = equation_initialize(LENGTH_OF_equation_ONE); for (int i = 0; resulting_equation[i]; i++) *resulting_equation[i] = add(*equation_ONE[i], *equation_TWO[i]);return resulting_equation;
+} // ^ dep of 'equation_SUBTRACT()'
+
+unsigned long **equation_NEGATIVE(unsigned long **equation) {
+    unsigned long **resulting_equation = equation_initialize(equation_length(equation));
+    for (int i = 0; resulting_equation[i]; i++) *resulting_equation[i] = inverse(*equation[i]);
+    return resulting_equation;
+} // ^ dep of 'equation_SUBTRACT()'
+
+unsigned long **equation_SUBTRACT(unsigned long **equation_ONE, unsigned long **equation_TWO) {
+    unsigned long **NEGATIVE_OF_equation_ONE = equation_NEGATIVE(equation_ONE);
+    unsigned long **resulting_equation = equation_ADD(NEGATIVE_OF_equation_ONE, equation_TWO); equation_DISCARD(NEGATIVE_OF_equation_ONE);
+    return resulting_equation;
+}
