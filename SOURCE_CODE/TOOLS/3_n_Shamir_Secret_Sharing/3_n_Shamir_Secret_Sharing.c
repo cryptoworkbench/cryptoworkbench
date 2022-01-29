@@ -7,10 +7,9 @@
  */
 #include <stdio.h>
 #include <stdlib.h> // 'exit()'
-#include <unistd.h> // 'execvp()'
-#include <sys/wait.h> // 'waitpid()'
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h"
+#include "../../libraries/mathematics/SSSS.h"
 #define K 3
 
 unsigned long a, b, c;
@@ -51,7 +50,8 @@ int main(int argc, char **argv) {
     *equation[0][2] = exponentiate(*equation[0][1], 2, MOD_REPORT()); *equation[1][2] = exponentiate(*equation[1][1], 2, MOD_REPORT()); *equation[2][2] = exponentiate(*equation[2][1], 2, MOD_REPORT());
     // ^ Prepare equation
 
-    unsigned long **equation_ONE_and_TWO = equation_SUBTRACT(equation[0], equation[1]); unsigned long **equation_TWO_and_THREE = equation_SUBTRACT(equation[1], equation[2]);
+    unsigned long **equation_ONE_and_TWO = equation_SUBTRACT(equation[0], equation[1]);
+    unsigned long **equation_TWO_and_THREE = equation_SUBTRACT(equation[1], equation[2]);
     unsigned long **final_linear_equation = coefficient_cancel(equation_ONE_and_TWO, equation_TWO_and_THREE, 1);
 
     unsigned long a = modular_division(*final_linear_equation[0], *final_linear_equation[2]) % MOD_REPORT();

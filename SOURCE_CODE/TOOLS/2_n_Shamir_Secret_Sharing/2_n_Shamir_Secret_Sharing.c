@@ -20,10 +20,15 @@
  * #2). Determines "f(0)" using the Mod value and this set of coordinates. This equates to the calculation of the linear equation (first degree polynomial) parameter 'B'
  */
 
+/* Complimentary developers notes:
+ * Supplying a point with coordinate x = 0, the general formula still seems to work for 2-n SSSS.
+ * I wrote '3_n_Shamir_Secret_Sharing.c' in a similar manner but for 3-n SSSS it seems to be the case that this is not always the case. (and it is if I wrote it properly).
+ */
 #include <stdio.h>
 #include <unistd.h> // 'execvp()'
 #include "../../libraries/functional/string.h" // 'ignored_arguments()'
 #include "../../libraries/mathematics/maths.h" // 'inverse()'
+#include "../../libraries/mathematics/SSSS.h"
 #define K 2 // degree of polynomial that is resolved in other to retrieve secret encoded as contant term
 #define EXTERNAL_PROGRAM "polynomial_function_map_over_GF"
 
@@ -42,9 +47,10 @@ int main(int argc, char **argv) {
     fprintf(stdout, "y_1 \u2261 "); if (3 < argc) fprintf(stdout, "%lu\n", *equations[0][0]); else fscanf(stdin, " %lu", equations[0][0]); fprintf(stdout, "\n");
     fprintf(stdout, "x_2 \u2261 "); if (4 < argc) fprintf(stdout, "%lu\n", *equations[1][1]); else fscanf(stdin, " %lu", equations[1][1]);
     fprintf(stdout, "y_2 \u2261 "); if (5 < argc) fprintf(stdout, "%lu\n", *equations[1][0]); else fscanf(stdin, " %lu", equations[1][0]); fprintf(stdout, "\n");
-    // ^ Got all information at this point
-
+    // unsigned long **equation_ONE_WITH_TWO = coefficient_cancel(equations[0], equations[1], 1);
     unsigned long **equation_ONE_WITH_TWO = equation_SUBTRACT(equations[0], equations[1]);
+    // ^ Prepare equations
+
     unsigned long a = modular_division(*equation_ONE_WITH_TWO[0], *equation_ONE_WITH_TWO[1]);
     unsigned long b = subtract(*equations[0][0], multiply(*equations[0][1], a));
 
