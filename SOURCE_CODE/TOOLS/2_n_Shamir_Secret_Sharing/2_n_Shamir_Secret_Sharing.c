@@ -55,8 +55,8 @@ int main(int argc, char **argv) {
     *coefficient[0] = modular_division(*equation_ONE_WITH_TWO[0], *equation_ONE_WITH_TWO[1]); // coefficient a
     *coefficient[1] = subtract(*equations[0][0], multiply(*equations[0][1], *coefficient[0])); // coefficient b
 
-    fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", _REPORT_MOD());
-    fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", *coefficient[0], *coefficient[1], _REPORT_MOD());
+    fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", _REPORT_mod());
+    fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", *coefficient[0], *coefficient[1], _REPORT_mod());
     fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_GF(0, K, *coefficient[1], *coefficient[0])); // 0 = x
     equation_DISCARD(coefficient);
     equations_DELETE(equations); return 0;
