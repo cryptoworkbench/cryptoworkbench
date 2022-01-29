@@ -228,3 +228,7 @@ unsigned long **equation_opposite(unsigned long **equation_ONE, unsigned long **
     if (*equation_ONE[index] != *equation_TWO[index]) ret_val = equation_MULTIPLY(equation_ONE, modular_division(*equation_ONE[index], inverse(*equation_TWO[index])));
     else ret_val = equation_ADD(equation_ONE, equation_NEGATIVE(equation_TWO)); return ret_val;
 }
+
+unsigned long ***equations_ALLOCATE(int K) // 'K' as in "K-n Shamir Secret Sharing"
+{ unsigned long ***equations = (unsigned long ***) malloc(sizeof(unsigned long **) * K); for (int i = 0; i < K; i++) equations[i] = equation_initialize(K); return equations; }
+// ^ returns an array which is does not contain a terminating character: remember array length in calling application

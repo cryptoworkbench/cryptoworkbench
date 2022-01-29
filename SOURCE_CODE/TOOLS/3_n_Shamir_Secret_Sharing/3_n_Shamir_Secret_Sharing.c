@@ -34,7 +34,8 @@ void argv_ERROR(unsigned long index, char **argv) {
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], MOD_LOCATION_REPORT())) argv_ERROR(1, argv);
     if (8 < argc) { ignored_arguments(argc, argv, 7); argc = 8; } // < complain about unneccesary arguments and forget about them once and for all
-    unsigned long **equation_A; equation_A = equation_initialize(K); unsigned long **equation_B; equation_B = equation_initialize(K); unsigned long **equation_C; equation_C = equation_initialize(K);
+    unsigned long ***equations = equations_ALLOCATE(K);
+    unsigned long **equation_A = equations[0]; unsigned long **equation_B = equations[1]; unsigned long **equation_C = equations[2]; unsigned long **equation_D = equations[3];
     switch (argc) {
 	case 8: if (!str_represents_ul(argv[7], equation_C[0])) fprintf(stderr, "Failed to interpret argument '%s' as a y variable.\n", argv[7]);
 	case 7: if (!str_represents_ul(argv[6], equation_C[1])) fprintf(stderr, "Failed to interpret argument '%s' as a x variable.\n", argv[6]);
@@ -61,6 +62,6 @@ int main(int argc, char **argv) {
     fprintf(stdout, "Second-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", MOD_REPORT());
     fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(modulus %lu)\n", a, b, c, MOD_REPORT());
 
-    fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_GF(0, 3, c, b, a));
+    fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_GF(0, K, c, b, a));
     return 0;
 }

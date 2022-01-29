@@ -32,7 +32,9 @@ void equation_print(unsigned long **equation) { printf("%lu = ", *equation[0]); 
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], MOD_LOCATION_REPORT())) { printf("%s is not MOD!\n", argv[1]); exit(-1); }
     if (6 < argc) { ignored_arguments(argc, argv, 5); argc = 6; } // < complain about unneccesary arguments and forget about them once and for all
-    unsigned long **equation_ONE, **equation_TWO; equation_ONE = equation_initialize(K); equation_TWO = equation_initialize(K);
+    unsigned long ***equations = equations_ALLOCATE(K);
+    unsigned long **equation_ONE = equations[0]; unsigned long **equation_TWO = equations[1]; unsigned long **equation_THREE = equations[2];
+
     switch (argc) {
 	case 6: if (!str_represents_ul(argv[5], equation_TWO[0])) fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of second point.\n", argv[5]);
 	case 5: if (!str_represents_ul(argv[4], equation_TWO[1])) fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of second point.\n", argv[4]);

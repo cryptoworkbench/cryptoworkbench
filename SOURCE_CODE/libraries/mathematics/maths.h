@@ -71,3 +71,4 @@ unsigned long **equation_SUBTRACT(unsigned long **equation_ONE, unsigned long **
 void equation_DISPLAY(unsigned long **equation);
 unsigned long equation_multiplier(unsigned long **equation_ONE, unsigned long **equation_TWO, int index);
 unsigned long **equation_opposite(unsigned long **equation_ONE, unsigned long **equation_TWO, int index);
+unsigned long ***equations_ALLOCATE(int k_in_k_N_SSSS);
