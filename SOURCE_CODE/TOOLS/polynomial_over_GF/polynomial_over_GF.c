@@ -17,12 +17,12 @@ int main(int argc, char **argv) {
 
 	for (ul i = 0; i + 2 < argc; i++) if (!str_represents_ul(argv[i + 2], coefficients[number_of_coefficients - 1 - i])) { fprintf(stderr, "%s is not interpretable.\n", argv[i + 2]); return -2; }
 
-	fprintf(stdout, "(x, y) : 'y \u2261 ", MOD_REPORT());
+	fprintf(stdout, "(x, y) : 'y \u2261 ", REPORT_MOD());
 	ul i = 0; while (1) {
 	    fprintf(stdout, "%lu", *coefficients[number_of_coefficients - 1 - i]);
 	    if (!coefficients[i + 1]) break; fprintf(stdout, " * x^%lu + ", number_of_coefficients - 1 - i); i++;
-	} fprintf(stdout, "	(mod %lu)'\n", MOD_REPORT()); // \u21E8 \u2794 \u279C \u279F \u27A0
+	} fprintf(stdout, "	(mod %lu)'\n", REPORT_MOD()); // \u21E8 \u2794 \u279C \u279F \u27A0
 	
-	for (ul x = 0; x < MOD_REPORT(); x++) fprintf(stdout, "(%lu, %lu)\n", x, SINGULAR_polynomial_over_GF(coefficients, x)); return 0;
+	for (ul x = 0; x < REPORT_MOD(); x++) fprintf(stdout, "(%lu, %lu)\n", x, SINGULAR_polynomial_over_GF(coefficients, x)); return 0;
     } else { fprintf(stderr, "Please fill out the remainder of the arguments with coefficients.\n\nTerminating with exit status '-4'.\n"); return -4; }
 }
