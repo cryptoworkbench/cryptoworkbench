@@ -84,17 +84,21 @@ unsigned long exponentiate(unsigned long base, unsigned long exponent, unsigned 
 
 unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return add(a, b); case 1: return multiply(a, b); default: return exponentiate(a, b, mod); }; }
 
-unsigned long SINGULAR_polynomial_over_GF(unsigned long **coefficient, unsigned long _x) { ul additions, Res; additions = Res = ADDITIVE_IDENTITY; ul term_factor = MULTIPLICATIVE_IDENTITY;
-    while (coefficient[additions]) { Res += (term_factor * *coefficient[additions]); Res %= mod; term_factor *= _x; term_factor %= mod; additions++; }
-    return Res;
+unsigned long UL_array_LENGTH(unsigned long **UL_array) { int equation_length = 0; while (UL_array[equation_length]) equation_length++; return equation_length; }
+
+unsigned long SINGULAR_polynomial_over_GF(unsigned long **COEFFICIENT_array, unsigned long _x) {
+    unsigned long ret_val = ADDITIVE_IDENTITY; unsigned long term_factor = MULTIPLICATIVE_IDENTITY;
+    int ONE_LESS_THAN_degree_of_polynomial = UL_array_LENGTH(COEFFICIENT_array);
+    unsigned long i = ONE_LESS_THAN_degree_of_polynomial - 1; do {
+	ret_val = add(ret_val, multiply(term_factor, *COEFFICIENT_array[i])); term_factor = multiply(term_factor, _x); i--;
+    } while (i != 0);
+    return ret_val;
 }
 
 unsigned long polynomial_over_GF(unsigned long x, int number_of_coefficients, ...) { unsigned long result = 0; unsigned long term_factor = 1;
     va_list ap; va_start (ap, number_of_coefficients);
     for (unsigned long i = 0; i < number_of_coefficients; i++) {
-	// unsigned long coefficient = (va_arg(ap, unsigned long)); multiply(coefficient, term_factor);
 	result = add(result, multiply(term_factor, (va_arg(ap, unsigned long))));
-	// result = add(result, (va_arg(ap, unsigned long)));
 	term_factor = multiply(term_factor, x);
     } va_end(ap);
 
@@ -175,4 +179,3 @@ FILE *prime_table_open(char *prime_table_filename) {
 } void prime_table_close(FILE *prime_table) { fclose(prime_table); _open_prime_table = NULL; }
 
 int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q) { return (odd_prime_q - 1 - exponentiate(odd_prime_p, (odd_prime_q - 1) / 2, odd_prime_q)) ? 1 : -1; }
-
