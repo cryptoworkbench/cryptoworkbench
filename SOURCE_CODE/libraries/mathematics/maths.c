@@ -95,16 +95,6 @@ unsigned long polynomial_over_GF(unsigned long **COEFFICIENT_array, unsigned lon
     return ret_val;
 }
 
-unsigned long polynomial_over_GF_variadic(unsigned long x, int number_of_coefficients, ...) { unsigned long result = 0; unsigned long term_factor = 1;
-    va_list ap; va_start (ap, number_of_coefficients);
-    for (unsigned long i = 0; i < number_of_coefficients; i++) {
-	result = add(result, multiply(term_factor, (va_arg(ap, unsigned long))));
-	term_factor = multiply(term_factor, x);
-    } va_end(ap);
-
-    return result;
-}
-
 unsigned long GCD(unsigned long a, unsigned long b) {
     unsigned long remainder = a % b;
     while (remainder != 0) {

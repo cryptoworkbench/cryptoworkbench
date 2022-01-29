@@ -51,7 +51,6 @@ unsigned long multiplicative_inverse(unsigned long a);
 unsigned long least_base_TWO_log(unsigned long power_of_TWO);
 unsigned long modular_division(unsigned long member_from_equivalence_class_representing_the_numerator, unsigned long denominator);
 unsigned long polynomial_over_GF(unsigned long **coefficient, unsigned long _x); // < array of coefficient pointers needs to be in reversed order to how polynomials are usually written in standard form
-unsigned long SINGULAR_polynomial_over_GF(unsigned long x, int number_of_coefficients, ...);
 unsigned long least_common_multiple(unsigned long a, unsigned long b);
 struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *to_be_updated, unsigned long minimum);
 unsigned long DOWN_ROUNDED_second_root(unsigned long number);
