@@ -59,7 +59,6 @@ int main(int argc, char **argv) {
     unsigned long c = subtract(*equation[0][0], add(multiply(b, *equation[0][1]), (multiply(a, exponentiate(*equation[0][1], 2, MOD_REPORT())))));
     fprintf(stdout, "Second-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", MOD_REPORT());
     fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(modulus %lu)\n", a, b, c, MOD_REPORT());
-
     fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_GF(0, K, c, b, a));
-    return 0;
+    equations_DELETE(equation); return 0;
 }

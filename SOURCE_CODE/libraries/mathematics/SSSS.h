@@ -1,3 +1,4 @@
+/* The reason I make this library is because I want to make a general K-n SSSS program. */
 void equation_DISCARD(unsigned long **equation);
 int equation_length(unsigned long **equation);
 unsigned long **equation_initialize(int required_size);
@@ -9,3 +10,5 @@ void equation_DISPLAY(unsigned long **equation);
 unsigned long equation_multiplier(unsigned long **equation_ONE, unsigned long **equation_TWO, int index);
 unsigned long **coefficient_cancel(unsigned long **equation_ONE, unsigned long **equation_TWO, int index);
 unsigned long ***equations_ALLOCATE(int k_in_k_N_SSSS);
+int equation_amount(unsigned long ***equation);
+void equations_DELETE(unsigned long ***equations);
