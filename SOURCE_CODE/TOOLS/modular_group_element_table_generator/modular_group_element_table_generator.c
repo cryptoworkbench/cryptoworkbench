@@ -25,7 +25,7 @@
 #include "../../libraries/mathematics/universal_group_library.h" // Needed for: 'BUFFER_OF_SIZE()', 'open_and_append_to_LOGBOOK()'
 #include "../../libraries/functional/string.h" // Needed for 'STR_could_be_parsed_into_UL()'
 #include "../../libraries/mathematics/maths.h" // Need for 'GCD()', 'ADDITIVE_IDENTITY', 'MULTIPLICATIVE_IDENTITY'
-unsigned long MOD; // < Hanle library variable declared 'extern' ^^ handle library inclusions
+unsigned long mod; // < Hanle library variable declared 'extern' ^^ handle library inclusions
 
 #define ARGV_TWO_INSTRUCTION "Please provide as second argument '0' for the additive identity,\nOr '1' for the multiplicative identity.\n"
 #define ARGV_ONE_INSTRUCTION "Please provide as first argument the modulus of the group (in decimal notation).\n"
@@ -47,15 +47,15 @@ int main(int argc, char **argv) {
     // ^^ Parse the infinite field CAP and group ID
 
     unsigned long count = 0;
-    for (unsigned long element = id; element < MOD; element++)
-	if (id == ADDITIVE_IDENTITY || GCD(MOD, element) == MULTIPLICATIVE_IDENTITY) {
+    for (unsigned long element = id; element < mod; element++)
+	if (id == ADDITIVE_IDENTITY || GCD(mod, element) == MULTIPLICATIVE_IDENTITY) {
 	    fprintf(stdout, "%lu\n", element);
 	    count++;
 	}
     // ^^ Export group to stdout
 
     printf("\nExported %lu elements.\n", count);
-    char *BUFFER = BUFFER_OF_SIZE(50); sprintf(BUFFER, "Exported \u2115%lu%s", MOD, ID_denoted_by_operation_symbol(id));
+    char *BUFFER = BUFFER_OF_SIZE(50); sprintf(BUFFER, "Exported \u2115%lu%s", mod, ID_denoted_by_operation_symbol(id));
     open_and_append_to_LOGBOOK(argv[0], BUFFER); free(BUFFER); close_logbook();
     // ^^ Notify in the LOGBOOK about my operations
 

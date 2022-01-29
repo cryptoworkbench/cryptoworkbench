@@ -3,7 +3,7 @@
 #include "../../libraries/mathematics/maths.h" // needed for 'inverse()'
 
 const char *GENERIC_parsing_error = "%s is not something I am able to understand as a number:\n";
-const char *MOD_parsing_error = "Failed to understand the MOD.";
+const char *MOD_parsing_error = "Failed to understand the mod.";
 const char *denominator_parsing_error = "Failed to understand the denominator.";
 const char *numerator_parsing_error = "Failed to understand the nominator.";
 const char *GENERIC_parsing_error_EXIT_STATUS = "Terminating with exit status '-%i'.\n";

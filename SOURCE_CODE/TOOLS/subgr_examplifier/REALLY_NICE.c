@@ -130,7 +130,7 @@ unsigned long *yield_subgroup(unsigned long index, group_OBJ group) {
 
     unsigned long generated_element = ID; do {
 	insert((struct _general_LL ***) &permutation_LL_pair.iterator, index_lookup(generated_element)); subgroup_card++;
-	generated_element = group_operation(generated_element, LOOKUP_table[index].ulong, group->MOD);
+	generated_element = group_operation(generated_element, LOOKUP_table[index].ulong, group->mod);
     } while (generated_element != ID); LOOKUP_table[index].perm_length = subgroup_card;
     // ^^ First we make a linked list of permutations
     
@@ -178,19 +178,19 @@ void print_subgroup(unsigned long index) {
  * ~ Contains the one specific modulus that can be combined with these exponents in order to be able to access ALL of the available generators (noone is out of reach with this 'half exponent collection' and
  * this number present) */
 void group_spitter(unsigned long first_generator, struct group_STRUCT *group) {
-    unsigned long largest_subgroup_card = totient(group->MOD);
+    unsigned long largest_subgroup_card = totient(group->mod);
     printf("\nGroup string: %lu; ", first_generator); unsigned long generator_unit_number = 1;
     for (unsigned long i = 2; i < largest_subgroup_card / 2; i++)
 	if (GCD(i, largest_subgroup_card) == 1) { printf("%lu, ", i);
-	    // printf("(G_%lu) / 1 = %lu\n", generator_unit_number, FINITE_N_exponentiation(first_generator, i + 1, group->MOD));
-	    // printf("(G_%lu) \\ 1 = %lu\n", generator_unit_number, FINITE_N_exponentiation(first_generator, largest_subgroup_card - (i + 1), group->MOD)); generator_unit_number++;
+	    // printf("(G_%lu) / 1 = %lu\n", generator_unit_number, FINITE_N_exponentiation(first_generator, i + 1, group->mod));
+	    // printf("(G_%lu) \\ 1 = %lu\n", generator_unit_number, FINITE_N_exponentiation(first_generator, largest_subgroup_card - (i + 1), group->mod)); generator_unit_number++;
 	}
     printf("%lu | %lu\n", largest_subgroup_card, largest_subgroup_card / cardinality);
 } // Here it would have worked if "largest_subgroup_card" would always be the cardinality of the largest subgroup(s);
 
 int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     if (6 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));
-    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->MOD)) MOD_not_parsable_ERROR(argv[1]);
+    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->mod)) MOD_not_parsable_ERROR(argv[1]);
     if (3 > argc || !STR_could_be_parsed_into_enum_GROUP_IDentity(argv[2], &group->ID)) ID_not_parsable_ERROR(argv[1], argv[2]);
     else group_operation = operation_from_ID(group->ID); // <^^^ Parses and processes everything that has to do with CMD args, also deals with the "help_queries"
 
@@ -198,7 +198,7 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     if (argc != 3) { switch (argc) { case 6: main_fs = fopen(argv[5], "w");
 	    case 5: if (!STR_could_be_parsed_into_UL(argv[4], &shifts->Y)) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
 	    case 4: if (!STR_could_be_parsed_into_UL(argv[3], &shifts->X)) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
-	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the modulus value to shifts when dealing with additive groups
+	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->mod; shifts->Y %= group->mod; } } // << Only applies the modulus value to shifts when dealing with additive groups
     } // ^ Process offset values.
 
     unsigned long *generator_array;

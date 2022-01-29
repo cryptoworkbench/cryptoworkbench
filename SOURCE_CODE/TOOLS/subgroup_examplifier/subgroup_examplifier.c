@@ -4,7 +4,7 @@
 #include "../../libraries/functional/string.h" // <<< Needed for "match()", "STR_could_be_parsed_into_UL()", etc
 #include "../../libraries/functional/triple_ref_pointers.h" // << Needed for "zoom_out()", "initialize_PTR_pair()", and "zoom_in()"
 #include "../../libraries/mathematics/universal_group_library.h" // <<< Needed for "group_OBJ"
-unsigned long MOD; // << Needed because "../../libraries/mathematics/maths.h" declares an ternal unsigned long named "MODULUS"
+unsigned long mod; // << Needed because "../../libraries/mathematics/maths.h" declares an ternal unsigned long named "MODULUS"
 // ^ Handle library inclusions
 
 #define STDOUT_VERTICAL_OFFSET_ERROR "Failed to parse \"%s\" (the 4th argument) as vertical offset. Defaulting to not using a vertical offset.\n"
@@ -99,7 +99,7 @@ unsigned long *yield_subgroup(unsigned long index, group_OBJ group) {
 
     unsigned long generated_element = ID; do {
 	insert((struct _general_LL ***) &permutation_LL_pair.iterator, index_lookup(generated_element)); subgroup_card++;
-	generated_element = group_operation(generated_element, LOOKUP_table[index].ulong, group->MOD);
+	generated_element = group_operation(generated_element, LOOKUP_table[index].ulong, group->mod);
     } while (generated_element != ID); LOOKUP_table[index].perm_length = subgroup_card;
     // ^^ First we make a linked list of permutations
     
@@ -148,7 +148,7 @@ unsigned long process_generator_array(unsigned long *generator_array, char *modu
 
 int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     if (6 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));
-    if (2 > argc || !str_represents_ul(argv[1], &MOD)) MOD_not_parsable_ERROR(argv[1]); UL ID;
+    if (2 > argc || !str_represents_ul(argv[1], &mod)) MOD_not_parsable_ERROR(argv[1]); UL ID;
     if (3 > argc || !str_represents_ul(argv[2], &group->ID)) ID_not_parsable_ERROR(argv[1], argv[2]);
     else group_operation = operation_from_ID(group->ID); // <^^^ Parses and processes everything that has to do with CMD args, also deals with the "help_queries"
 
@@ -156,7 +156,7 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     if (argc != 3) { switch (argc) { case 6: main_fs = fopen(argv[5], "w");
 	    case 5: if (!str_represents_ul(argv[4], &shifts->Y)) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
 	    case 4: if (!str_represents_ul(argv[3], &shifts->X)) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
-	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the modulus value to shifts when dealing with additive groups
+	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->mod; shifts->Y %= group->mod; } } // << Only applies the modulus value to shifts when dealing with additive groups
     } // ^ Process offset values.
 
     unsigned long *generator_array = second_MAIN(element_LL_from_file(argv, group), group); // << Check "subgroup_information.h" for elaboration concerning "second_MAIN()"

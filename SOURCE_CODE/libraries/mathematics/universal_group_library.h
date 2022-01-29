@@ -26,7 +26,7 @@ const char *operation_ADJECTIVE_from_ID(unsigned long ID);
 
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line);
 void open_and_append_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line);
-FILE *open_group(char *prog_NAME, char *MOD, unsigned long ID);
+FILE *open_group(char *prog_NAME, char *mod, unsigned long ID);
 FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, const char *adjective, const char *symbol, char *LINE);
 void close_group(char *group_CAP, const char *symbol_to_use, FILE *opened_group);
 void close_logbook();

@@ -9,9 +9,9 @@
  *
  * A.k.a. "A LINEAR EQUATION!"
  *
- * THIS PROGRAM takes the MOD value and the value for A from the command line arguments.
+ * THIS PROGRAM takes the mod value and the value for A from the command line arguments.
  * Then it determines what linear equation to use based on which number you wished to split/encode.
- * Then it prints out the coordinates of this linear curve over the finite field defined by the MOD value.
+ * Then it prints out the coordinates of this linear curve over the finite field defined by the mod value.
  *
  * The user then will choose what two points (which are obviously never "f(0)" (!) ) this proof of concept program should proceed to work with.
  *
@@ -35,7 +35,7 @@
 void equation_print(unsigned long **equation) { printf("%lu = ", *equation[0]); int i = 1; while (equation[i]) { printf("%lu + ", *equation[i]); i++; } printf("c"); }
 
 int main(int argc, char **argv) {
-    if (2 > argc || !str_represents_ul(argv[1], _REPORT_location_OF_MOD())) { printf("%s is not MOD!\n", argv[1]); exit(-1); }
+    if (2 > argc || !str_represents_ul(argv[1], _REPORT_location_OF_MOD())) { printf("%s is not mod!\n", argv[1]); exit(-1); }
     if (6 < argc) { ignored_arguments(argc, argv, 5); argc = 6; } // < complain about unneccesary arguments and forget about them once and for all
     unsigned long ***equations = equations_ALLOCATE(K); switch (argc) {
 	case 6: if (!str_represents_ul(argv[5], equations[1][0])) fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of second point.\n", argv[5]);

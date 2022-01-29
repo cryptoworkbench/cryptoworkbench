@@ -128,7 +128,7 @@ unsigned long *yield_subgroup(unsigned long index, group_OBJ group) {
 
     unsigned long generated_element = ID; do {
 	insert((struct _general_LL ***) &permutation_LL_pair.iterator, index_lookup(generated_element)); subgroup_card++;
-	generated_element = group_operation(generated_element, LOOKUP_table[index].ulong, group->MOD);
+	generated_element = group_operation(generated_element, LOOKUP_table[index].ulong, group->mod);
     } while (generated_element != ID); LOOKUP_table[index].perm_length = subgroup_card;
     // ^^ First we make a linked list of permutations
     
@@ -174,10 +174,10 @@ void interesting_function_one_old(unsigned long *generator_array, struct group_S
     unsigned long INDEX = offset % generator_count;
     unsigned long factor_accumulator = 1;
     do {unsigned long v = 1; unsigned long additive = 0;
-	do {v *= LOOKUP_table[generator_array[INDEX]].ulong; v %= group->MOD; additive++;
+	do {v *= LOOKUP_table[generator_array[INDEX]].ulong; v %= group->mod; additive++;
 	} while (v != LOOKUP_table[generator_array[(INDEX + 1) % generator_count]].ulong);
 	printf("%lu^%lu = %lu", LOOKUP_table[generator_array[INDEX]].ulong, additive, LOOKUP_table[generator_array[(INDEX + 1) % generator_count]].ulong);
-	factor_accumulator *= additive; factor_accumulator %= totient(group->MOD); INDEX++; INDEX %= generator_count;
+	factor_accumulator *= additive; factor_accumulator %= totient(group->mod); INDEX++; INDEX %= generator_count;
 	if (factor_accumulator == 1) break;
 	else printf("\n");
     } while (1); printf("^1\n"); // replace << using "} while (INDEX != offset % generator_count);" if failure is found
@@ -192,7 +192,7 @@ void interesting_function_one(unsigned long passed_generator, struct group_STRUC
     unsigned long *array = (unsigned long *) malloc(sizeof(unsigned long) * (cardinality / 2));
     for (unsigned long i = 0; i < cardinality / 2; i++) if (GCD(i + 1, cardinality) == 1) array[i] = 1;
     do {unsigned long v = passed_generator; unsigned long log = 1;
-	do {v *= passed_generator; v %= group->MOD; log++;
+	do {v *= passed_generator; v %= group->mod; log++;
 	} while (cardinality / GCD(cardinality, log) != passed_generator_ORDER);
 	printf("%lu^%lu = %lu", passed_generator, log, v);
 	passed_generator = v;
@@ -205,7 +205,7 @@ void interesting_function_one(unsigned long passed_generator, struct group_STRUC
 void interesting_function_two(unsigned long *generator_array, struct group_STRUCT *group) {
     unsigned long FOCUS = 1;
     do {unsigned long v = 1; unsigned long additive = 0;
-	do {v *= LOOKUP_table[generator_array[0]].ulong; v %= group->MOD; additive++;
+	do {v *= LOOKUP_table[generator_array[0]].ulong; v %= group->mod; additive++;
 	} while (v != LOOKUP_table[generator_array[FOCUS]].ulong);
 	printf("%lu^%lu = %lu\n", LOOKUP_table[generator_array[0]].ulong, additive, LOOKUP_table[generator_array[FOCUS]].ulong); FOCUS++;
     } while (FOCUS < generator_count);
@@ -215,7 +215,7 @@ void group_spitter(unsigned long *generator_array, struct group_STRUCT *group) {
     printf("%lu", LOOKUP_table[generator_array[0]].ulong);
     unsigned long FOCUS = 1;
     do {unsigned long v = 1; unsigned long additive = 0;
-	do {v *= LOOKUP_table[generator_array[0]].ulong; v %= group->MOD; additive++;
+	do {v *= LOOKUP_table[generator_array[0]].ulong; v %= group->mod; additive++;
 	} while (v != LOOKUP_table[generator_array[FOCUS]].ulong);
 	printf(", %lu", additive); FOCUS++;
     } while (FOCUS < generator_count);
@@ -224,7 +224,7 @@ void group_spitter(unsigned long *generator_array, struct group_STRUCT *group) {
 
 int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     if (6 < argc || argc > 1 && match(argv[1], help_queries)) HELP_AND_QUIT(argv[0]); else group = (group_OBJ) malloc(sizeof(group_OBJ));
-    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->MOD)) MOD_not_parsable_ERROR(argv[1]);
+    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &group->mod)) MOD_not_parsable_ERROR(argv[1]);
     if (3 > argc || !STR_could_be_parsed_into_enum_GROUP_IDentity(argv[2], &group->ID)) ID_not_parsable_ERROR(argv[1], argv[2]);
     else group_operation = operation_from_ID(group->ID); // <^^^ Parses and processes everything that has to do with CMD args, also deals with the "help_queries"
 
@@ -232,7 +232,7 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     if (argc != 3) { switch (argc) { case 6: main_fs = fopen(argv[5], "w");
 	    case 5: if (!STR_could_be_parsed_into_UL(argv[4], &shifts->Y)) fprintf(stderr, STDOUT_VERTICAL_OFFSET_ERROR, argv[4]);
 	    case 4: if (!STR_could_be_parsed_into_UL(argv[3], &shifts->X)) fprintf(stderr, STDERR_HORIZONTAL_OFFSET_ERROR, argv[3]);
-	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->MOD; shifts->Y %= group->MOD; } } // << Only applies the modulus value to shifts when dealing with additive groups
+	    default: if (!boolean_from_ID_Sloth(group)) { shifts->X %= group->mod; shifts->Y %= group->mod; } } // << Only applies the modulus value to shifts when dealing with additive groups
     } // ^ Process offset values.
 
     unsigned long *generator_array;
@@ -257,14 +257,14 @@ int main(int argc, char **argv) { group_OBJ group; main_fs = stdout;
     fprintf(main_fs, "\nInteresting function #1:\n");
     if (generator_array) {
 	interesting_function_one(LOOKUP_table[generator_array[0]].ulong, group); printf("\n");
-	unsigned long tot = totient(group->MOD);
+	unsigned long tot = totient(group->mod);
 	unsigned long *array = (unsigned long *) malloc(sizeof(unsigned long) * (tot / 2));
 	for (unsigned long i = 0; i < (tot / 2); i++) if (GCD(i + 1, tot) == 1) array[i] = 1;
 	printf("The generators:\n"); unsigned long generator_unit_number = 1;
 	for (unsigned long i = 0; i < tot / 2; i++) {
 	    if (array[i] == 1) {
-		printf("(G_%lu) / 1 = %lu\n", generator_unit_number, FINITE_N_exponentiation(LOOKUP_table[generator_array[0]].ulong, i + 1, group->MOD));
-		printf("(G_%lu) \\ 1 = %lu\n", generator_unit_number, FINITE_N_exponentiation(LOOKUP_table[generator_array[0]].ulong, tot - (i + 1), group->MOD)); generator_unit_number++;
+		printf("(G_%lu) / 1 = %lu\n", generator_unit_number, FINITE_N_exponentiation(LOOKUP_table[generator_array[0]].ulong, i + 1, group->mod));
+		printf("(G_%lu) \\ 1 = %lu\n", generator_unit_number, FINITE_N_exponentiation(LOOKUP_table[generator_array[0]].ulong, tot - (i + 1), group->mod)); generator_unit_number++;
 	    }
 	}
     }

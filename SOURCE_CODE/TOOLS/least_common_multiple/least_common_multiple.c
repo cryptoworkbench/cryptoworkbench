@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/functional/string.h"
-ul MOD;
+ul mod;
 
 int main(int argc, char **argv) { ul a;
     if (2 > argc || !str_represents_ul(argv[1], &a)) { exit(-1); } ul b;

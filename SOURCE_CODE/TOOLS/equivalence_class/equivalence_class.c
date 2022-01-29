@@ -1,6 +1,6 @@
 #include <stdio.h> // 'fprintf()'
 #include "../../libraries/functional/string.h" // 'str_represents_ul()'
-#include "../../libraries/mathematics/maths.h" // 'extern ul MOD;'
+#include "../../libraries/mathematics/maths.h" // 'extern ul mod;'
 
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], _REPORT_location_OF_MOD())) { fprintf(stderr, "%s is not a suitable value for the field modulus!\n", argv[1]); exit(-1); } ul a;

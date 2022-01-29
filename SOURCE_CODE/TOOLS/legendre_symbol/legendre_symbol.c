@@ -4,7 +4,7 @@
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/mathematics/factorization_methods.h"
 #include "../../libraries/mathematics/primality_testing_scemes.h"
-unsigned long MOD;
+unsigned long mod;
 
 void initialize() {
     if (preferred_factorization_ENGINE == LEAST_efficient_trial_division) fprintf(stdout, "Using trial division");
