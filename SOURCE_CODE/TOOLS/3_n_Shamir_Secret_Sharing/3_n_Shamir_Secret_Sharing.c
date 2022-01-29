@@ -15,46 +15,6 @@
 
 unsigned long a, b, c;
 
-struct linear_equation {
-    unsigned long coefficient_a;
-    unsigned long coefficient_b;
-    unsigned long result;
-};
-
-struct cartesian_coordinates {
-    unsigned long x;
-    unsigned long y;
-};
-
-struct linear_equation MULTIPLY(struct linear_equation INP, unsigned long multiplier) {
-    struct linear_equation return_value;
-    return_value.coefficient_a = multiply(multiplier, INP.coefficient_a);
-    return_value.coefficient_b = multiply(multiplier, INP.coefficient_b);
-    return_value.result = multiply(multiplier, INP.result);
-    return return_value;
-}
-
-struct linear_equation INV(struct linear_equation EQUATION) {
-    struct linear_equation ret;
-    ret.coefficient_a = inverse(EQUATION.coefficient_a);
-    ret.coefficient_b = inverse(EQUATION.coefficient_b);
-    ret.result = inverse(EQUATION.result);
-    return ret;
-}
-
-struct linear_equation ADD(struct linear_equation equation_one, struct linear_equation equation_two) {
-    struct linear_equation ret;
-    ret.coefficient_a = equation_one.coefficient_a + equation_two.coefficient_a;
-    ret.coefficient_b = equation_one.coefficient_b + equation_two.coefficient_b;
-    ret.result = equation_one.result + equation_two.result;
-    // ^^ Add equations
-
-    ret.coefficient_a %= MOD_REPORT(); ret.coefficient_b %= MOD_REPORT(); ret.result %= MOD_REPORT();
-    // ^^ But do not forget we are supposed to be doing this algebra in a finite field
-
-    return ret;
-}
-
 void C_reduce() { if (c >= MOD_REPORT()) { c%=MOD_REPORT(); fprintf(stdout, "The secret has been reduced by mod %lu into the congruent secret %lu.\n\n", MOD_REPORT(), c); } }
 
 char *one = "%s is not a suitable value for the field modulus!\n\nExiting '-%lu'.\n";
