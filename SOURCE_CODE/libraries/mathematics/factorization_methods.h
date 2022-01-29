@@ -1,6 +1,6 @@
 typedef unsigned long (*_factorization_method) (unsigned long);
 _factorization_method preferred_factorization_ENGINE_REPORT(); char *preferred_factorization_engine_file_REPORT();
-const char *A_REPORT(); const char *B_REPORT(); const char *C_REPORT(); const char *D_REPORT(); const char *E_REPORT(); const char *F_REPORT(); const char *G_REPORT(); const char *H_REPORT();
+const char *_REPORT_a(); const char *_REPORT_b(); const char *_REPORT_c(); const char *_REPORT_d(); const char *_REPORT_e(); const char *_REPORT_f(); const char *_REPORT_g(); const char *_REPORT_h();
 // a global function pointer for functions that take an UL and return an UL, that is going to be used for factorization ENGINEs returning the smallest divisor (from N, obviously) of any number greater than 1
 
 struct ordered_pair divisor_pair(unsigned long number, unsigned long DIVISOR_OF_number);

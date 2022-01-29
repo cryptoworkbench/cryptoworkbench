@@ -5,14 +5,14 @@
 #include "../../libraries/mathematics/primality_testing_scemes.h" // needed for 'SET_preferred_PRIMALITY_TEST()', 'FACTORIZATION_METHOD_UNCHOSEN()'
 
 const char *chosen_PRIMALITY_TEST() { _primality_test preferred_PRIMALITY_TEST = preferred_PRIMALITY_TEST_REPORT();
-    if (preferred_PRIMALITY_TEST == efficient_trial_division_PRIMALITY_TEST) return A_REPORT();
-    else if (preferred_PRIMALITY_TEST == LESS_efficient_trial_division_PRIMALITY_TEST) return B_REPORT();
-    else if (preferred_PRIMALITY_TEST == LEAST_efficient_trial_division_PRIMALITY_TEST) return C_REPORT();
-    else if (preferred_PRIMALITY_TEST == efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return D_REPORT();
-    else if (preferred_PRIMALITY_TEST == LESS_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return E_REPORT();
-    else if (preferred_PRIMALITY_TEST == LEAST_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return F_REPORT();
-    else if (preferred_PRIMALITY_TEST == shor_factorization_PRIMALITY_TEST) return G_REPORT();
-    else if (preferred_PRIMALITY_TEST == fermat_factorization_PRIMALITY_TEST) return H_REPORT();
+    if (preferred_PRIMALITY_TEST == efficient_trial_division_PRIMALITY_TEST) return _REPORT_a();
+    else if (preferred_PRIMALITY_TEST == LESS_efficient_trial_division_PRIMALITY_TEST) return _REPORT_b();
+    else if (preferred_PRIMALITY_TEST == LEAST_efficient_trial_division_PRIMALITY_TEST) return _REPORT_c();
+    else if (preferred_PRIMALITY_TEST == efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return _REPORT_d();
+    else if (preferred_PRIMALITY_TEST == LESS_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return _REPORT_e();
+    else if (preferred_PRIMALITY_TEST == LEAST_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return _REPORT_f();
+    else if (preferred_PRIMALITY_TEST == shor_factorization_PRIMALITY_TEST) return _REPORT_g();
+    else if (preferred_PRIMALITY_TEST == fermat_factorization_PRIMALITY_TEST) return _REPORT_h();
     return NULL;
 }
 

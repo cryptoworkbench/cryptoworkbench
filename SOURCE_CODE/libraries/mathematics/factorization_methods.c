@@ -9,8 +9,8 @@ const char *preferred_factorization_engine_file = "shared_preferred_factorizatio
 const char *g = "g"; const char *h = "h"; const char *A = "efficient_trial_division"; const char *B = "less_efficient_trial_division"; const char *C = "trial_division";
 const char *D = "TABLE_AIDED_efficient_trial_division"; const char *E = "TABLE_AIDED_less_efficient_trial_division"; const char *F = "TABLE_AIDED_trial_division";
 const char *G = "shor_factorization"; const char *H = "fermats_factorization_method";
-const char *A_REPORT() { return A; } const char *B_REPORT() { return B; } const char *C_REPORT() { return C; } const char *D_REPORT() { return D; } const char *E_REPORT() { return E; }
-const char *F_REPORT() { return F; } const char *G_REPORT() { return G; } const char *H_REPORT() { return H; } char *preferred_factorization_engine_file_REPORT() { return (char *) preferred_factorization_engine_file; }
+const char *_REPORT_a() { return A; } const char *_REPORT_b() { return B; } const char *_REPORT_c() { return C; } const char *_REPORT_d() { return D; } const char *_REPORT_e() { return E; }
+const char *_REPORT_f() { return F; } const char *_REPORT_g() { return G; } const char *_REPORT_h() { return H; } char *preferred_factorization_engine_file_REPORT() { return (char *) preferred_factorization_engine_file; }
 // ^ string literals we will be comparing against
 
 struct ordered_pair divisor_pair(unsigned long number, unsigned long DIVISOR_OF_number)
