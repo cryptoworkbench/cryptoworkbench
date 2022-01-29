@@ -8,4 +8,4 @@
 	gcc -c multiplicative_inverse.c -o .multiplicative_inverse.o
 
 multiplicative_inverse: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .multiplicative_inverse.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .multiplicative_inverse.o -o ../../../WORKBENCH/multiplicative_inverse
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .multiplicative_inverse.o -o ../../../WORKBENCH/multiplicative_inverse && rm .multiplicative_inverse.o

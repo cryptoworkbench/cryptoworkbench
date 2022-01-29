@@ -40,7 +40,7 @@ cd ../factorization_based_primality_test && make factorization_based_primality_t
 "
 cd ../modular_group_element_table_generator && make modular_group_element_table_generator && echo "#######===> The following tool has been assemblied/linked: modular_group_element_table_generator
 "
-# FIX THIS ONE!!!: cd ../subgroup_examplifier && make subgroup_examplifier && echo "#######===> The following tool has been assemblied/linked: subgroup_examplifier
+# FIX THIS ONE!: cd ../subgroup_examplifier && make subgroup_examplifier && echo "#######===> The following tool has been assemblied/linked: subgroup_examplifier
 #"
 # cd ../Diffie_Hellman_Key_Agreement && make Diffie_Hellman_Key_Agreement && echo "#######===> The following tool has been assemblied/linked: Diffie_Hellman_Key_Agreement
 #"
@@ -56,14 +56,13 @@ echo "#######===> SOME MORE TOOLS HAVE BEEN ASSEMBLED/LINKED: -->               
 ~ cayley_table_generator
 " # ^-- Notify end of third stage of compilation.
 
-cd ../Wipe_ARCHIVE && make Wipe_ARCHIVE && echo "#######===> The following tool has been assemblied/linked: Wipe_ARCHIVE
+# ALSO FIX THIS ONE!: cd ../Wipe_ARCHIVE && make Wipe_ARCHIVE && echo "#######===> The following tool has been assemblied/linked: Wipe_ARCHIVE
 "
 cd ../View_LOGBOOK && make View_LOGBOOK && echo "#######===> The following tool has been assemblied/linked: View_LOGBOOK
 "
 echo "#######===> THE LABORATORY HOUSEHOLD EXECUTABLES HAVE BEEN ASSEMBLED/LINKED, NAMELY: -->             <===#######
 ~ Wipe_ARCHIVE
 ~ View_LOGBOOK
-~ Wipe_LOGBOOK
 " # ^-- Notify end of last stage of compilation.
 
 echo "########### ASSEMBLY LINE HALTED !

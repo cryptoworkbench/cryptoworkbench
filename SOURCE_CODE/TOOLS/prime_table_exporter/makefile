@@ -8,4 +8,4 @@
 	gcc -c prime_table_exporter.c -o .prime_table_exporter.o
 
 prime_table_exporter: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .prime_table_exporter.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .prime_table_exporter.o -o ../../../WORKBENCH/prime_table_exporter
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .prime_table_exporter.o -o ../../../WORKBENCH/prime_table_exporter && rm .prime_table_exporter.o

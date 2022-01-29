@@ -8,4 +8,4 @@
 	gcc -c polynomial_over_GF.c -o .polynomial_over_GF.o
 
 polynomial_over_GF: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .polynomial_over_GF.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .polynomial_over_GF.o -o ../../../WORKBENCH/polynomial_over_GF
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .polynomial_over_GF.o -o ../../../WORKBENCH/polynomial_over_GF && rm .polynomial_over_GF.o
