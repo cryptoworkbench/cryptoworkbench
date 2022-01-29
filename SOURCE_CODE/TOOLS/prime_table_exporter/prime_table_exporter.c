@@ -11,7 +11,7 @@ void error_and_exit(char *argv_one) { int exit_status = - 1;
 }
 
 int main(int argc, char **argv) {
-    if (2 > argc || !str_represents_ul(argv[1], _REPORT_location_OF_MOD())) error_and_exit(argv[1]); char *output_filename = REPORT_standard_prime_table_filename();
+    if (2 > argc || !str_represents_ul(argv[1], _REPORT_LOCATION_OF_mod())) error_and_exit(argv[1]); char *output_filename = REPORT_standard_prime_table_filename();
     if (2 < argc) output_filename = argv[2];
     // ^ Deal with user input
 

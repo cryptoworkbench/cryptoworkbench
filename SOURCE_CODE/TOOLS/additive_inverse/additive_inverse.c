@@ -24,7 +24,7 @@ void arg_not_parsable(char **argv, int index) { const char *error_specific_messa
 }
 
 int main(int argc, char **argv) {
-    if (2 > argc || !str_represents_ul(argv[1], _REPORT_location_OF_MOD())) arg_not_parsable(argv, 1); ul inv_of_additive_inv;
+    if (2 > argc || !str_represents_ul(argv[1], _REPORT_LOCATION_OF_mod())) arg_not_parsable(argv, 1); ul inv_of_additive_inv;
     if (3 > argc || !str_represents_ul(argv[2], &inv_of_additive_inv)) arg_not_parsable(argv, 2); fprintf(stdout, "x - %lu \u2261 x + %lu (mod %lu)\n", inv_of_additive_inv, inverse(inv_of_additive_inv), _REPORT_mod());
     return 0;
 }

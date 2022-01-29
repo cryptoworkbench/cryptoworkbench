@@ -6,7 +6,7 @@
 #define PRIME_TABLE_UNAVAILABLE_ERROR "Failed to open the prime table '%s'.\n\n"
 
 typedef unsigned long ul;
-unsigned long *_REPORT_location_OF_MOD(); unsigned long _REPORT_mod();
+unsigned long *_REPORT_LOCATION_OF_mod(); unsigned long _REPORT_mod();
 char *REPORT_standard_prime_table_filename(); // < for access in other files to 'const char pointer standard_prime_table_filename'.
 char *REPORT_open_prime_table(); // < for access in other files to 'char * _opened_prime_table' (which gets initialied to NULL).
 

@@ -5,7 +5,7 @@
 #include "factorization_methods.h" // needed for '_factorization_method'
 #include "../functional/string.h" // needed for the definition EXIT_STATUS_GOODBYE
 
-unsigned long mod; unsigned long *_REPORT_location_OF_MOD() { return &mod; } unsigned long _REPORT_mod() { return mod; }
+unsigned long mod; unsigned long *_REPORT_LOCATION_OF_mod() { return &mod; } unsigned long _REPORT_mod() { return mod; }
 const char *_standard_prime_table_filename = "shared_prime_table"; char *REPORT_standard_prime_table_filename() { return (char *) _standard_prime_table_filename; }
 char *_open_prime_table = NULL; char *REPORT_open_prime_table() { return (char *) _open_prime_table; }
 // Two global variables and two functions for access to these global variables in other files/libraries
