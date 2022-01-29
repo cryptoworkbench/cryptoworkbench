@@ -14,7 +14,7 @@
 
 unsigned long a, b, c;
 
-void C_reduce() { if (c >= REPORT_MOD()) { c%=REPORT_MOD(); fprintf(stdout, "The secret has been reduced by mod %lu into the congruent secret %lu.\n\n", REPORT_MOD(), c); } }
+void C_reduce() { if (c >= _REPORT_MOD()) { c%=_REPORT_MOD(); fprintf(stdout, "The secret has been reduced by mod %lu into the congruent secret %lu.\n\n", _REPORT_MOD(), c); } }
 
 char *one = "%s is not a suitable value for the field modulus!\n\nExiting '-%lu'.\n";
 char *two = "%s is not a suitable value for the second-degree polynomial parameter 'a'!\n\nExiting '-%lu'.\n";
@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
     fprintf(stdout, "y_2 \u2261 "); if (5 < argc) fprintf(stdout, "%lu\n", *equation[1][0]); else fscanf(stdin, " %lu", equation[1][0]); fprintf(stdout, "\n");
     fprintf(stdout, "x_3 \u2261 "); if (4 < argc) fprintf(stdout, "%lu\n", *equation[2][1]); else fscanf(stdin, " %lu", equation[2][1]);
     fprintf(stdout, "y_3 \u2261 "); if (5 < argc) fprintf(stdout, "%lu\n", *equation[2][0]); else fscanf(stdin, " %lu", equation[2][0]); fprintf(stdout, "\n");
-    *equation[0][2] = exponentiate(*equation[0][1], 2, REPORT_MOD()); *equation[1][2] = exponentiate(*equation[1][1], 2, REPORT_MOD()); *equation[2][2] = exponentiate(*equation[2][1], 2, REPORT_MOD());
+    *equation[0][2] = exponentiate(*equation[0][1], 2, _REPORT_MOD()); *equation[1][2] = exponentiate(*equation[1][1], 2, _REPORT_MOD()); *equation[2][2] = exponentiate(*equation[2][1], 2, _REPORT_MOD());
     // ^ Prepared initial equations
 
     unsigned long **equation_ONE_and_TWO = equation_SUBTRACT(equation[0], equation[1]); unsigned long **equation_TWO_and_THREE = equation_SUBTRACT(equation[1], equation[2]);
@@ -56,11 +56,11 @@ int main(int argc, char **argv) {
 
     unsigned long **coefficient = UL_array_with_INDEX(K); *coefficient[0] = modular_division(*final_linear_equation[0], *final_linear_equation[2]);
     *coefficient[1] = modular_division(subtract(*equation_ONE_and_TWO[0], multiply(*equation_ONE_and_TWO[2], *coefficient[0])), *equation_ONE_and_TWO[1]);
-    *coefficient[2] = subtract(*equation[0][0], add(multiply(*coefficient[1], *equation[0][1]), (multiply(*coefficient[0], exponentiate(*equation[0][1], 2, REPORT_MOD())))));
+    *coefficient[2] = subtract(*equation[0][0], add(multiply(*coefficient[1], *equation[0][1]), (multiply(*coefficient[0], exponentiate(*equation[0][1], 2, _REPORT_MOD())))));
     // ^ Put the coefficients into an unsigned long array
 
-    fprintf(stdout, "Second-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", REPORT_MOD());
-    fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(modulus %lu)\n", *coefficient[0], *coefficient[1], *coefficient[2], REPORT_MOD());
+    fprintf(stdout, "Second-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", _REPORT_MOD());
+    fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(modulus %lu)\n", *coefficient[0], *coefficient[1], *coefficient[2], _REPORT_MOD());
     fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_GF(0, K, *coefficient[2], *coefficient[1], *coefficient[0]));
     equations_DELETE(equation); return 0;
     // ^ Finalize program
