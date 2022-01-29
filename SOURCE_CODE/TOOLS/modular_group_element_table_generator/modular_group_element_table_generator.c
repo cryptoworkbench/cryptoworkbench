@@ -21,11 +21,11 @@
  * https://www.youtube.com/watch?v=3QnD2c4Xovk (called "Public Key Cryptography: Diffie-Hellman Key Exchange (short version)")
  * https://www.youtube.com/watch?v=ESPT_36pUFc (supplementary video in this list about Diffie-Hellman) */
 #include <stdio.h>
-#include <unistd.h>
+#include <unistd.h> // 'execvp()'
 #include "../../libraries/mathematics/universal_group_library.h" // Needed for: 'BUFFER_OF_SIZE()', 'open_and_append_to_LOGBOOK()'
 #include "../../libraries/functional/string.h" // Needed for 'STR_could_be_parsed_into_UL()'
 #include "../../libraries/mathematics/maths.h" // Need for 'GCD()', 'ADDITIVE_IDENTITY', 'MULTIPLICATIVE_IDENTITY'
-UL MOD; // < Hanle library variable declared 'extern' ^^ handle library inclusions
+unsigned long MOD; // < Hanle library variable declared 'extern' ^^ handle library inclusions
 
 #define ARGV_TWO_INSTRUCTION "Please provide as second argument '0' for the additive identity,\nOr '1' for the multiplicative identity.\n"
 #define ARGV_ONE_INSTRUCTION "Please provide as first argument the modulus of the group (in decimal notation).\n"
@@ -42,8 +42,8 @@ void QUIT_ON_ARGV_TWO_ERROR(char *argv_two) { fprintf(stderr, ARGV_TWO_INSTRUCTI
 } // ^ Used by "main()"
 
 int main(int argc, char **argv) {
-    if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &MOD)) QUIT_ON_ARGV_ONE_ERROR(argv[1]); UL id;
-    if (3 > argc || !STR_could_be_parsed_into_id(argv[2], &id)) QUIT_ON_ARGV_TWO_ERROR(argv[2]);
+    if (2 > argc || !str_represents_ul(argv[1], MOD_LOCATION_REPORT())) QUIT_ON_ARGV_ONE_ERROR(argv[1]); unsigned long id;
+    if (3 > argc || !str_represents_ul(argv[2], &id)) QUIT_ON_ARGV_TWO_ERROR(argv[2]);
     // ^^ Parse the infinite field CAP and group ID
 
     unsigned long count = 0;

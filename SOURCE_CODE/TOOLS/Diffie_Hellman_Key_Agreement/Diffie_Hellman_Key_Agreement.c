@@ -23,6 +23,9 @@
  * If argv[1] is not within the group, notify, and allow to correct
  *
  * Proceeds to calculate and list all subgroup cardinalities. Then asks user for private exponents of Bob and Alice from specified group.
+ *
+ * DEVELOPERS NOTE:
+ * Make this application use "universal_group_library.h"
  */
 #include <stdio.h>
 #include <stdlib.h>
