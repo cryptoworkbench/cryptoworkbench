@@ -89,8 +89,8 @@ unsigned long UL_array_LENGTH(unsigned long **UL_array) { int equation_length = 
 unsigned long polynomial_over_GF(unsigned long **COEFFICIENT_array, unsigned long _x) {
     unsigned long ret_val = ADDITIVE_IDENTITY; unsigned long term_factor = MULTIPLICATIVE_IDENTITY;
     int ONE_LESS_THAN_degree_of_polynomial = UL_array_LENGTH(COEFFICIENT_array);
-    unsigned long i = ONE_LESS_THAN_degree_of_polynomial - 1; do {
-	ret_val = add(ret_val, multiply(term_factor, *COEFFICIENT_array[i])); term_factor = multiply(term_factor, _x); i--;
+    unsigned long i = ONE_LESS_THAN_degree_of_polynomial; do { i--;
+	ret_val = add(ret_val, multiply(term_factor, *COEFFICIENT_array[i])); term_factor = multiply(term_factor, _x);
     } while (i != 0);
     return ret_val;
 }
