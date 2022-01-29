@@ -41,7 +41,7 @@ unsigned long *square_and_multiply_backbone(unsigned long base, unsigned long re
     // In the other cases (where 1 < "exponent"), it will run just the appriopiate amount of times
 
     return backbone;
-} // ^ Used by "exponentiate()", "SINGULAR_polynomial_over_GF()"
+} // ^ Used by "exponentiate()", "polynomial_over_GF()"
 
 unsigned long least_base_TWO_log(unsigned long power_of_TWO) {
     if (power_of_TWO == 0) return 0;
@@ -86,7 +86,7 @@ unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { 
 
 unsigned long UL_array_LENGTH(unsigned long **UL_array) { int equation_length = 0; while (UL_array[equation_length]) equation_length++; return equation_length; }
 
-unsigned long SINGULAR_polynomial_over_GF(unsigned long **COEFFICIENT_array, unsigned long _x) {
+unsigned long polynomial_over_GF(unsigned long **COEFFICIENT_array, unsigned long _x) {
     unsigned long ret_val = ADDITIVE_IDENTITY; unsigned long term_factor = MULTIPLICATIVE_IDENTITY;
     int ONE_LESS_THAN_degree_of_polynomial = UL_array_LENGTH(COEFFICIENT_array);
     unsigned long i = ONE_LESS_THAN_degree_of_polynomial - 1; do {
@@ -95,7 +95,7 @@ unsigned long SINGULAR_polynomial_over_GF(unsigned long **COEFFICIENT_array, uns
     return ret_val;
 }
 
-unsigned long polynomial_over_GF(unsigned long x, int number_of_coefficients, ...) { unsigned long result = 0; unsigned long term_factor = 1;
+unsigned long polynomial_over_GF_variadic(unsigned long x, int number_of_coefficients, ...) { unsigned long result = 0; unsigned long term_factor = 1;
     va_list ap; va_start (ap, number_of_coefficients);
     for (unsigned long i = 0; i < number_of_coefficients; i++) {
 	result = add(result, multiply(term_factor, (va_arg(ap, unsigned long))));
