@@ -9,24 +9,24 @@ void equation_DISCARD(unsigned long **equation) { for (int i = 0; equation[i]; i
 int equation_length(unsigned long **equation) { int equation_length = 0; while (equation[equation_length]) equation_length++; return equation_length; }
 // ^ returns the length of an equation array based on the position of it's ZERO terminating character
 
-unsigned long **equation_initialize(int required_size) {
-    unsigned long **ret_val = (unsigned long **) malloc(sizeof(unsigned long *) * (required_size + 1)); ret_val[required_size] = NULL;
-    for (int i = 0; i < required_size; i++) ret_val[i] = (unsigned long *) malloc(sizeof(unsigned long)); return ret_val;
+unsigned long **UL_array_with_INDEX(int INDEX) {
+    unsigned long **ret_val = (unsigned long **) malloc(sizeof(unsigned long *) * (INDEX + 1)); ret_val[INDEX] = NULL;
+    for (int i = 0; i < INDEX; i++) ret_val[i] = (unsigned long *) malloc(sizeof(unsigned long)); return ret_val;
 }
 
 unsigned long **equation_ADD(unsigned long **equation_ONE, unsigned long **equation_TWO) { int LENGTH_OF_equation_ONE = equation_length(equation_ONE); int LENGTH_OF_equation_TWO = equation_length(equation_TWO);
     if (LENGTH_OF_equation_ONE != LENGTH_OF_equation_TWO) { fprintf(stderr, "equations had different length: %i vs %i", LENGTH_OF_equation_ONE, LENGTH_OF_equation_TWO); exit(-2); }
-    unsigned long **resulting_equation = equation_initialize(LENGTH_OF_equation_ONE);
+    unsigned long **resulting_equation = UL_array_with_INDEX(LENGTH_OF_equation_ONE);
     for (int i = 0; resulting_equation[i]; i++) *resulting_equation[i] = add(*equation_ONE[i], *equation_TWO[i]);
     return resulting_equation;
 } // ^ dep of 'equation_SUBTRACT()'
 
-unsigned long **equation_MULTIPLY(unsigned long **equation, unsigned long multiplier) { unsigned long **resulting_equation = equation_initialize(equation_length(equation));
+unsigned long **equation_MULTIPLY(unsigned long **equation, unsigned long multiplier) { unsigned long **resulting_equation = UL_array_with_INDEX(equation_length(equation));
     for (int i = 0; resulting_equation[i]; i++) *resulting_equation[i] = multiply(*equation[i], multiplier); return resulting_equation;
 }
 
 unsigned long **equation_NEGATIVE(unsigned long **equation) {
-    unsigned long **resulting_equation = equation_initialize(equation_length(equation));
+    unsigned long **resulting_equation = UL_array_with_INDEX(equation_length(equation));
     for (int i = 0; resulting_equation[i]; i++) *resulting_equation[i] = inverse(*equation[i]);
     return resulting_equation;
 } // ^ dep of 'equation_SUBTRACT()'
@@ -57,7 +57,7 @@ unsigned long **coefficient_cancel(unsigned long **equation_ONE, unsigned long *
 }
 
 unsigned long ***equations_ALLOCATE(int K) // 'K' as in "K-n Shamir Secret Sharing"
-{ unsigned long ***equation = (unsigned long ***) malloc(sizeof(unsigned long **) * (K + 1)); equation[K] = NULL; for (int i = 0; i < K; i++) equation[i] = equation_initialize(K); return equation; }
+{ unsigned long ***equation = (unsigned long ***) malloc(sizeof(unsigned long **) * (K + 1)); equation[K] = NULL; for (int i = 0; i < K; i++) equation[i] = UL_array_with_INDEX(K); return equation; }
 // ^ returns an array which is does not contain a terminating character: remember array length in calling application (at least) until initialization of equations!
 
 int equation_amount(unsigned long ***equation) {

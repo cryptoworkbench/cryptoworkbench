@@ -51,11 +51,13 @@ int main(int argc, char **argv) {
     unsigned long **equation_ONE_WITH_TWO = equation_SUBTRACT(equations[0], equations[1]);
     // ^ Prepare equations
 
-    unsigned long a = modular_division(*equation_ONE_WITH_TWO[0], *equation_ONE_WITH_TWO[1]);
-    unsigned long b = subtract(*equations[0][0], multiply(*equations[0][1], a));
+    unsigned long **coefficient = UL_array_with_INDEX(K);
+    *coefficient[0] = modular_division(*equation_ONE_WITH_TWO[0], *equation_ONE_WITH_TWO[1]); // coefficient a
+    *coefficient[1] = subtract(*equations[0][0], multiply(*equations[0][1], *coefficient[0])); // coefficient b
 
     fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", MOD_REPORT());
-    fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", a, b, MOD_REPORT());
-    fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_GF(0, K, b, a));
+    fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", *coefficient[0], *coefficient[1], MOD_REPORT());
+    fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_GF(0, K, *coefficient[1], *coefficient[0])); // 0 = x
+    equation_DISCARD(coefficient);
     equations_DELETE(equations); return 0;
 }
