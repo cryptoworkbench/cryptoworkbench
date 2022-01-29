@@ -223,7 +223,7 @@ unsigned long equation_multiplier(unsigned long **equation_ONE, unsigned long **
     if (*equation_ONE[index] == *equation_TWO[index]) return 1; return modular_division(*equation_ONE[index], inverse(*equation_TWO[index]));
 }
 
-unsigned long **equation_opposite(unsigned long **equation_ONE, unsigned long **equation_TWO, int index) { unsigned long **ret_val;
+unsigned long **coefficient_cancel(unsigned long **equation_ONE, unsigned long **equation_TWO, int index) { unsigned long **ret_val;
     int LENGTH_OF_equation_ONE = equation_length(equation_ONE); if (LENGTH_OF_equation_ONE != equation_length(equation_TWO)) exit(-1);
     if (*equation_ONE[index] != *equation_TWO[index]) ret_val = equation_MULTIPLY(equation_ONE, modular_division(*equation_ONE[index], inverse(*equation_TWO[index])));
     else ret_val = equation_ADD(equation_ONE, equation_NEGATIVE(equation_TWO)); return ret_val;
