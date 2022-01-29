@@ -34,31 +34,29 @@ void argv_ERROR(unsigned long index, char **argv) {
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], MOD_LOCATION_REPORT())) argv_ERROR(1, argv);
     if (8 < argc) { ignored_arguments(argc, argv, 7); argc = 8; } // < complain about unneccesary arguments and forget about them once and for all
-    unsigned long ***equations = equations_ALLOCATE(K);
-    unsigned long **equation_A = equations[0]; unsigned long **equation_B = equations[1]; unsigned long **equation_C = equations[2]; unsigned long **equation_D = equations[3];
-    switch (argc) {
-	case 8: if (!str_represents_ul(argv[7], equation_C[0])) fprintf(stderr, "Failed to interpret argument '%s' as a y variable.\n", argv[7]);
-	case 7: if (!str_represents_ul(argv[6], equation_C[1])) fprintf(stderr, "Failed to interpret argument '%s' as a x variable.\n", argv[6]);
-	case 6: if (!str_represents_ul(argv[5], equation_B[0])) fprintf(stderr, "Failed to interpret argument '%s' as a y coordinate.\n", argv[5]);
-	case 5: if (!str_represents_ul(argv[4], equation_B[1])) fprintf(stderr, "Failed to interpret argument '%s' as a x coordinate.\n", argv[4]);
-	case 4: if (!str_represents_ul(argv[3], equation_A[0])) fprintf(stderr, "Failed to interpret argument '%s' as a y coordinate.\n", argv[3]);
-	case 3: if (!str_represents_ul(argv[2], equation_A[1])) fprintf(stderr, "Failed to interpret argument '%s' as a x coordinate.\n", argv[2]);
+    unsigned long ***equations = equations_ALLOCATE(K); switch (argc) {
+	case 8: if (!str_represents_ul(argv[7], equations[2][0])) fprintf(stderr, "Failed to interpret argument '%s' as a y variable.\n", argv[7]);
+	case 7: if (!str_represents_ul(argv[6], equations[2][1])) fprintf(stderr, "Failed to interpret argument '%s' as a x variable.\n", argv[6]);
+	case 6: if (!str_represents_ul(argv[5], equations[1][0])) fprintf(stderr, "Failed to interpret argument '%s' as a y coordinate.\n", argv[5]);
+	case 5: if (!str_represents_ul(argv[4], equations[1][1])) fprintf(stderr, "Failed to interpret argument '%s' as a x coordinate.\n", argv[4]);
+	case 4: if (!str_represents_ul(argv[3], equations[0][0])) fprintf(stderr, "Failed to interpret argument '%s' as a y coordinate.\n", argv[3]);
+	case 3: if (!str_represents_ul(argv[2], equations[0][1])) fprintf(stderr, "Failed to interpret argument '%s' as a x coordinate.\n", argv[2]);
     }; // ^ Interpret interpretable information
-    fprintf(stdout, "x_1 \u2261 "); if (2 < argc) fprintf(stdout, "%lu\n", *equation_A[1]); else fscanf(stdin, " %lu", equation_A[1]);
-    fprintf(stdout, "y_1 \u2261 "); if (3 < argc) fprintf(stdout, "%lu\n", *equation_A[0]); else fscanf(stdin, " %lu", equation_A[0]); fprintf(stdout, "\n");
-    fprintf(stdout, "x_2 \u2261 "); if (4 < argc) fprintf(stdout, "%lu\n", *equation_B[1]); else fscanf(stdin, " %lu", equation_B[1]);
-    fprintf(stdout, "y_2 \u2261 "); if (5 < argc) fprintf(stdout, "%lu\n", *equation_B[0]); else fscanf(stdin, " %lu", equation_B[0]); fprintf(stdout, "\n");
-    fprintf(stdout, "x_3 \u2261 "); if (4 < argc) fprintf(stdout, "%lu\n", *equation_C[1]); else fscanf(stdin, " %lu", equation_C[1]);
-    fprintf(stdout, "y_3 \u2261 "); if (5 < argc) fprintf(stdout, "%lu\n", *equation_C[0]); else fscanf(stdin, " %lu", equation_C[0]); fprintf(stdout, "\n");
-    *equation_A[2] = exponentiate(*equation_A[1], 2, MOD_REPORT()); *equation_B[2] = exponentiate(*equation_B[1], 2, MOD_REPORT()); *equation_C[2] = exponentiate(*equation_C[1], 2, MOD_REPORT());
+    fprintf(stdout, "x_1 \u2261 "); if (2 < argc) fprintf(stdout, "%lu\n", *equations[0][1]); else fscanf(stdin, " %lu", equations[0][1]);
+    fprintf(stdout, "y_1 \u2261 "); if (3 < argc) fprintf(stdout, "%lu\n", *equations[0][0]); else fscanf(stdin, " %lu", equations[0][0]); fprintf(stdout, "\n");
+    fprintf(stdout, "x_2 \u2261 "); if (4 < argc) fprintf(stdout, "%lu\n", *equations[1][1]); else fscanf(stdin, " %lu", equations[1][1]);
+    fprintf(stdout, "y_2 \u2261 "); if (5 < argc) fprintf(stdout, "%lu\n", *equations[1][0]); else fscanf(stdin, " %lu", equations[1][0]); fprintf(stdout, "\n");
+    fprintf(stdout, "x_3 \u2261 "); if (4 < argc) fprintf(stdout, "%lu\n", *equations[2][1]); else fscanf(stdin, " %lu", equations[2][1]);
+    fprintf(stdout, "y_3 \u2261 "); if (5 < argc) fprintf(stdout, "%lu\n", *equations[2][0]); else fscanf(stdin, " %lu", equations[2][0]); fprintf(stdout, "\n");
+    *equations[0][2] = exponentiate(*equations[0][1], 2, MOD_REPORT()); *equations[1][2] = exponentiate(*equations[1][1], 2, MOD_REPORT()); *equations[2][2] = exponentiate(*equations[2][1], 2, MOD_REPORT());
     // ^ Prepare equations
 
-    unsigned long **equation_A_and_B = equation_SUBTRACT(equation_A, equation_B); unsigned long **equation_B_and_C = equation_SUBTRACT(equation_B, equation_C);
+    unsigned long **equation_A_and_B = equation_SUBTRACT(equations[0], equations[1]); unsigned long **equation_B_and_C = equation_SUBTRACT(equations[1], equations[2]);
     unsigned long **final_linear_equation = equation_opposite(equation_A_and_B, equation_B_and_C, 1);
 
     unsigned long a = modular_division(*final_linear_equation[0], *final_linear_equation[2]) % MOD_REPORT();
     unsigned long b = modular_division(subtract(*equation_A_and_B[0], multiply(*equation_A_and_B[2], a)), *equation_A_and_B[1]) % MOD_REPORT();
-    unsigned long c = subtract(*equation_A[0], add(multiply(b, *equation_A[1]), (multiply(a, exponentiate(*equation_A[1], 2, MOD_REPORT())))));
+    unsigned long c = subtract(*equations[0][0], add(multiply(b, *equations[0][1]), (multiply(a, exponentiate(*equations[0][1], 2, MOD_REPORT())))));
     fprintf(stdout, "Second-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", MOD_REPORT());
     fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(modulus %lu)\n", a, b, c, MOD_REPORT());
 
