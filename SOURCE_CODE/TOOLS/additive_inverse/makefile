@@ -8,4 +8,4 @@
 	gcc -c additive_inverse.c -o .additive_inverse.o
 
 additive_inverse: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .additive_inverse.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .additive_inverse.o -o ../../../WORKBENCH/additive_inverse
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .additive_inverse.o -o ../../../WORKBENCH/additive_inverse && rm .additive_inverse.o

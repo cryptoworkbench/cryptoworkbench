@@ -11,4 +11,4 @@
 	gcc -c 3_n_Shamir_Secret_Sharing.c -o .3_n_Shamir_Secret_Sharing.o
 
 3_n_Shamir_Secret_Sharing: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.SSSS.o .3_n_Shamir_Secret_Sharing.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.SSSS.o .3_n_Shamir_Secret_Sharing.o -o ../../../WORKBENCH/3_n_Shamir_Secret_Sharing
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.SSSS.o .3_n_Shamir_Secret_Sharing.o -o ../../../WORKBENCH/3_n_Shamir_Secret_Sharing && rm .3_n_Shamir_Secret_Sharing.o
