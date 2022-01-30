@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
     // ^ Prepare equations
 
     unsigned long **coefficient = UL_array_of_SIZE(K);
-    *coefficient[0] = mod_division(*equation_ONE_WITH_TWO[0], *equation_ONE_WITH_TWO[1]); // coefficient a
+    *coefficient[0] = mod_divide(*equation_ONE_WITH_TWO[0], *equation_ONE_WITH_TWO[1]); // coefficient a
     *coefficient[1] = mod_subtract(*equation[0][0], mod_multiply(*equation[0][1], *coefficient[0])); // coefficient b
 
     fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", mod_);

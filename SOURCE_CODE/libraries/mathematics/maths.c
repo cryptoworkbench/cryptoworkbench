@@ -14,7 +14,7 @@ unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_) { retur
 unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_) { return (mod_) ? _conditional_field_cap(a * b, mod_) : mod_multiply(a, b); }
 unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_) { return _conditional_field_cap(mod_ - element_of_additive_group, mod_); }
 unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_) { return (mod_) ? _conditional_field_cap(a + _inverse(b, mod_), mod_) : mod_subtract(a, b); }
-unsigned long _division(unsigned long numerator, unsigned long denominator, unsigned long mod_) {
+unsigned long _divide(unsigned long numerator, unsigned long denominator, unsigned long mod_) {
     if (mod_) while (numerator % denominator != 0) numerator += mod_;
     return _conditional_field_cap(numerator / denominator, mod_);
 };
@@ -25,7 +25,7 @@ unsigned long mod_add(unsigned long a, unsigned long b) { return mod_conditional
 unsigned long mod_multiply(unsigned long a, unsigned long b) { return mod_conditional_field_cap(a * b); }
 unsigned long mod_inverse(unsigned long element_of_additive_group) { return mod_conditional_field_cap(mod_ - element_of_additive_group); } // < root of the definition of mod_subtract
 unsigned long mod_subtract(unsigned long a, unsigned long b) { return mod_conditional_field_cap(a + mod_inverse(b)); }
-unsigned long mod_division(unsigned long numerator, unsigned long denominator) { return (mod_) ? _division(numerator, denominator, mod_) : _division(numerator, denominator, 0); }
+unsigned long mod_divide(unsigned long numerator, unsigned long denominator) { return (mod_) ? _divide(numerator, denominator, mod_) : _divide(numerator, denominator, 0); }
 // ^ Wrappers for the previous block of functions which always use the global variable 'mod_'
 
 _group_operation operation_from_ID(unsigned long ID) { return (ID) ? mod_multiply : mod_add; }
