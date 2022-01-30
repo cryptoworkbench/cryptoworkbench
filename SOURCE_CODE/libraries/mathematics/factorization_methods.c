@@ -3,14 +3,14 @@
 #include "factorization_methods.h" // need for function headers
 #include "maths.h" // needed for 'DOWN_ROUNDED_second_root()'
 #include "universal_group_library.h" // needed for 'BUFFER_OF_SIZE()'
-_factorization_method preferred_factorization_ENGINE; _factorization_method preferred_factorization_ENGINE_REPORT() { return preferred_factorization_ENGINE; }
+_factorization_method _preferred_factorization_ENGINE; _factorization_method _REPORT_preferred_factorization_ENGINE() { return _preferred_factorization_ENGINE; }
 
-const char *_preferred_factorization_engine_file = "shared_preferred_factorization_engine"; const char *_A = "a"; const char *_B = "b"; const char *_C = "c"; const char *_D = "d"; const char *_E = "e"; const char *_F = "f";
-const char *_G = "g"; const char *_H = "h"; const char *_a = "efficient_trial_division"; const char *_b = "less_efficient_trial_division"; const char *_c = "trial_division";
-const char *_d = "TABLE_AIDED_efficient_trial_division"; const char *_e = "TABLE_AIDED_less_efficient_trial_division"; const char *_f = "TABLE_AIDED_trial_division";
-const char *_g = "shor_factorization"; const char *_h = "fermats_factorization_method";
+const char *_preferred_factorization_engine_file = "shared_preferred_factorization_engine"; const char *_REPORT_preferred_factorization_engine_file() { return _preferred_factorization_engine_file;}
+const char *_a = "efficient_trial_division"; const char *_b = "less_efficient_trial_division"; const char *_c = "trial_division"; const char *_d = "TABLE_AIDED_efficient_trial_division";
+const char *_e = "TABLE_AIDED_less_efficient_trial_division"; const char *_f = "TABLE_AIDED_trial_division"; const char *_g = "shor_factorization"; const char *_h = "fermats_factorization_method";
 const char *_REPORT_a() { return _a; } const char *_REPORT_b() { return _b; } const char *_REPORT_c() { return _c; } const char *_REPORT_d() { return _d; } const char *_REPORT_e() { return _e; }
-const char *_REPORT_f() { return _f; } const char *_REPORT_g() { return _g; } const char *_REPORT_h() { return _h; } char *preferred_factorization_engine_file_REPORT() { return (char *) _preferred_factorization_engine_file;}
+const char *_REPORT_f() { return _f; } const char *_REPORT_g() { return _g; } const char *_REPORT_h() { return _h; } const char *_A = "a"; const char *_B = "b"; const char *_C = "c"; const char *_D = "d";
+const char *_E = "e"; const char *_F = "f"; const char *_G = "g"; const char *_H = "h";
 // ^ string literals we will be comparing against
 
 struct ordered_pair divisor_pair(unsigned long number, unsigned long DIVISOR_OF_number)
@@ -66,14 +66,14 @@ _factorization_method factorization_method(int SELECTOR) {
 	case 0: return efficient_trial_division; case 1: return LESS_efficient_trial_division; case 2: return LEAST_efficient_trial_division;
 	case 3: return efficient_trial_division_TABLE_AIDED; case 4: return LESS_efficient_trial_division_TABLE_AIDED; case 5: return LEAST_efficient_trial_division_TABLE_AIDED;
 	case 6: return shor_factorization; case 7: return fermat_factorization; default: return NULL; };
-} void SET_preferred_factorization_ENGINE(int SELECTOR) { preferred_factorization_ENGINE = factorization_method(SELECTOR); }
+} void SET_preferred_factorization_ENGINE(int SELECTOR) { _preferred_factorization_ENGINE = factorization_method(SELECTOR); }
 
 struct ordered_pair _factorize(unsigned long number, _factorization_method factorization_ENGINE_to_use)
 { struct ordered_pair factor = divisor_pair(number, factorization_ENGINE_to_use(number)); if (factor.b < factor.a) { ul temp = factor.b; factor.b = factor.a; factor.a = temp; } return factor; }
-// ^ passing as second argument 'preferred_factorization_ENGINE' or 'NULL' yields the same result
+// ^ passing as second argument '_preferred_factorization_ENGINE' or 'NULL' yields the same result
 
 struct ordered_pair factorize(unsigned long number, _factorization_method alternate_choice)
-{ return (alternate_choice) ? divisor_pair(number, alternate_choice(number)) : divisor_pair(number, preferred_factorization_ENGINE(number)); }
+{ return (alternate_choice) ? divisor_pair(number, alternate_choice(number)) : divisor_pair(number, _preferred_factorization_ENGINE(number)); }
 
 
 void FACTORIZATION_METHOD_UNCHOSEN(char *arg) {

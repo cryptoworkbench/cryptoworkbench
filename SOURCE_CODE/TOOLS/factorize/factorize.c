@@ -15,7 +15,7 @@
 
 void domain_display(unsigned long a, unsigned long b) { fprintf(stdout, " and checking for all 'x <= %lu' if x divides %lu.", a, b); }
 
-_factorization_method initialize(unsigned long composite) { _factorization_method preferred_factorization_ENGINE = preferred_factorization_ENGINE_REPORT();
+_factorization_method initialize(unsigned long composite) { _factorization_method preferred_factorization_ENGINE = _REPORT_preferred_factorization_ENGINE();
     if (preferred_factorization_ENGINE == LEAST_efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(composite, 3), composite); }
     else if (preferred_factorization_ENGINE == LESS_efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(composite, 2), composite); }
     else if (preferred_factorization_ENGINE == efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(composite, 1), composite); }
@@ -33,7 +33,7 @@ _factorization_method initialize(unsigned long composite) { _factorization_metho
 int main(int argc, char **argv) { unsigned long composite;
     if (2 > argc || !str_represents_ul(argv[1], &composite)) { fprintf(stderr, COMPOSITE_NOT_INTERPRETABLE EXIT_STATUS_GOODBYE, argv[1], -1); exit(-1); } char *ptr = argv[2];
     if (!ptr) { FILE *file;
-	if (!(file = fopen(preferred_factorization_engine_file_REPORT(), "r"))) { fprintf(stderr, "Couldn't open preferences file '%s'. " EXIT_STATUS_GOODBYE, preferred_factorization_engine_file_REPORT(), -1); exit(-1); }
+	if (!(file = fopen(_REPORT_preferred_factorization_engine_file(), "r"))) { fprintf(stderr, "Couldn't open preferences file '%s'. " EXIT_STATUS_GOODBYE, _REPORT_preferred_factorization_engine_file(), -1); exit(-1); }
 	ptr = BUFFER_OF_SIZE(200); fscanf(file, "%s[^\n]", ptr); fclose(file);
     }
     int SELECTOR = translate_SUBTRACT_ONE(ptr);
@@ -41,7 +41,7 @@ int main(int argc, char **argv) { unsigned long composite;
     else FACTORIZATION_METHOD_UNCHOSEN(ptr); _factorization_method preferred_factorization_method = initialize(composite);
     if (!(argc < 3)) fprintf(stdout, "	(engine specified by terminal argument)"); fprintf(stdout, "\n\n");
 
-    struct ordered_pair factor_a_and_b = factorize(composite, NULL); // <- NULL gives the same just as if 'preferred_factorization_ENGINE_REPORT()' was passed as second argument to this function
+    struct ordered_pair factor_a_and_b = factorize(composite, NULL); // <- NULL gives the same just as if '_REPORT_preferred_factorization_ENGINE()' was passed as second argument to this function
     fprintf(stdout, "%lu = %lu * %lu\n", composite, factor_a_and_b.a, factor_a_and_b.b);
     return 0;
 } // make use use of '
