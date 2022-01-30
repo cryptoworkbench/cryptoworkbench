@@ -19,11 +19,11 @@ int main(int argc, char **argv) {
     // for (ul i = 0; i + 2 < argc; i++) if (!str_represents_ul(argv[i + 2], coefficients[i])) { fprintf(stderr, "%s is not interpretable.\n", argv[i + 2]); return -2; }
     for (ul i = 0; i < number_of_coefficients; i++) if (!str_represents_ul(argv[i + 2], coefficients[i])) { fprintf(stderr, "%s is not interpretable.\n", argv[i + 2]); return -2; }
 
-    fprintf(stdout, "(x, y) : 'y \u2261 ", _REPORT_mod());
+    fprintf(stdout, "(x, y) : 'y \u2261 ", _mod);
     ul i = 0; while (1) {
 	fprintf(stdout, "%lu", *coefficients[i]);
 	if (!coefficients[i + 1]) break; fprintf(stdout, " * x^%lu + ", i); i++;
-    } fprintf(stdout, "	(mod %lu)'\n", _REPORT_mod()); // \u21E8 \u2794 \u279C \u279F \u27A0
+    } fprintf(stdout, "	(mod %lu)'\n", _mod); // \u21E8 \u2794 \u279C \u279F \u27A0
     
-    for (ul x = 0; x < _REPORT_mod(); x++) fprintf(stdout, "(%lu, %lu)\n", x, polynomial_over_GF(coefficients, x)); return 0;
+    for (ul x = 0; x < _mod; x++) fprintf(stdout, "(%lu, %lu)\n", x, polynomial_over_GF(coefficients, x)); return 0;
 }
