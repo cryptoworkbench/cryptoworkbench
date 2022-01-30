@@ -13,7 +13,7 @@ char *_open_prime_table = NULL; char *_REPORT_open_prime_table() { return (char 
 unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? result % mod_OVERRIDE : result; }
 unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? _conditional_field_cap(a + b, mod_OVERRIDE) : mod_add(a, b); }
 unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? _conditional_field_cap(a * b, mod_OVERRIDE) : mod_multiply(a, b); }
-unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_OVERRIDE) { return mod_OVERRIDE - element_of_additive_group; }
+unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_OVERRIDE) { return _conditional_field_cap(mod_OVERRIDE - element_of_additive_group, mod_OVERRIDE); }
 unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? _conditional_field_cap(a + _inverse(b, mod_OVERRIDE), mod_OVERRIDE) : mod_subtract(a, b); }
 unsigned long _division(unsigned long numerator, unsigned long denominator, unsigned long mod_OVERRIDE) {
     if (mod_OVERRIDE) while (numerator % denominator != 0) numerator += mod_OVERRIDE;
@@ -24,7 +24,7 @@ unsigned long _division(unsigned long numerator, unsigned long denominator, unsi
 unsigned long conditional_field_cap(unsigned long result) { return (_mod) ? _conditional_field_cap(result, _mod) : result; }
 unsigned long mod_add(unsigned long a, unsigned long b) { return conditional_field_cap(a + b); }
 unsigned long mod_multiply(unsigned long a, unsigned long b) { return conditional_field_cap(a * b); }
-unsigned long mod_inverse(unsigned long element_of_additive_group) { return _mod - element_of_additive_group; } // < root of the definition of mod_subtract
+unsigned long mod_inverse(unsigned long element_of_additive_group) { return conditional_field_cap(_mod - element_of_additive_group); } // < root of the definition of mod_subtract
 unsigned long mod_subtract(unsigned long a, unsigned long b) { return conditional_field_cap(a + mod_inverse(b)); }
 unsigned long mod_division(unsigned long numerator, unsigned long denominator) { return (_mod) ? _division(numerator, denominator, _mod) : _division(numerator, denominator, 0); }
 // ^ Wrappers for the previous block of functions which always use the global variable '_mod'
