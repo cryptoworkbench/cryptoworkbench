@@ -9,14 +9,14 @@ char *_REPORT_standard_prime_table_filename() { return (char *) _standard_prime_
 char *_open_prime_table = NULL; char *_REPORT_open_prime_table() { return (char *) _open_prime_table; }
 // Two global variables and two functions for access to these global variables in other files/libraries
 
-unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? result % mod_OVERRIDE : result; }
-unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? _conditional_field_cap(a + b, mod_OVERRIDE) : mod_add(a, b); }
-unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? _conditional_field_cap(a * b, mod_OVERRIDE) : mod_multiply(a, b); }
-unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_OVERRIDE) { return _conditional_field_cap(mod_OVERRIDE - element_of_additive_group, mod_OVERRIDE); }
-unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? _conditional_field_cap(a + _inverse(b, mod_OVERRIDE), mod_OVERRIDE) : mod_subtract(a, b); }
-unsigned long _division(unsigned long numerator, unsigned long denominator, unsigned long mod_OVERRIDE) {
-    if (mod_OVERRIDE) while (numerator % denominator != 0) numerator += mod_OVERRIDE;
-    return _conditional_field_cap(numerator / denominator, mod_OVERRIDE);
+unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_) { return (mod_) ? result % mod_ : result; }
+unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_) { return (mod_) ? _conditional_field_cap(a + b, mod_) : mod_add(a, b); }
+unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_) { return (mod_) ? _conditional_field_cap(a * b, mod_) : mod_multiply(a, b); }
+unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_) { return _conditional_field_cap(mod_ - element_of_additive_group, mod_); }
+unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_) { return (mod_) ? _conditional_field_cap(a + _inverse(b, mod_), mod_) : mod_subtract(a, b); }
+unsigned long _division(unsigned long numerator, unsigned long denominator, unsigned long mod_) {
+    if (mod_) while (numerator % denominator != 0) numerator += mod_;
+    return _conditional_field_cap(numerator / denominator, mod_);
 };
 // ^ Basic arithemtic functions for (in)finite field operations
 
