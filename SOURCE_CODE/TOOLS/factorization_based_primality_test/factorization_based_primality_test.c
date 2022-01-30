@@ -20,7 +20,7 @@ int main(int argc, char **argv) { unsigned long potential_prime;
     if (2 > argc || !str_represents_ul(argv[1], &potential_prime)) exit(-1); char *ptr = argv[2];
     if (!ptr) {
 	FILE *file;
-	if (!(file = fopen(_REPORT_preferred_factorization_engine_file(), "r"))) { fprintf(stderr, "Couldn't open preferences file '%s'. "EXIT_STATUS_GOODBYE, _REPORT_preferred_factorization_engine_file(), -1); exit(-1); }
+	if (!(file = fopen(_REPORT_preferred_factorization_engine_file(), "r"))) { fprintf(stderr, "Couldn't open preferences file '%s'. " EXIT_STATUS_GOODBYE, _REPORT_preferred_factorization_engine_file(), -1); exit(-1); }
 	ptr = BUFFER_OF_SIZE(200); fscanf(file, "%s[^\n]", ptr); fclose(file);
     }
     int SELECTOR = translate_SUBTRACT_ONE(ptr);

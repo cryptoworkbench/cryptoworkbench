@@ -32,8 +32,8 @@ _factorization_method initialize(unsigned long composite) {
 
 int main(int argc, char **argv) { unsigned long composite;
     if (2 > argc || !str_represents_ul(argv[1], &composite)) { fprintf(stderr, COMPOSITE_NOT_INTERPRETABLE EXIT_STATUS_GOODBYE, argv[1], -1); exit(-1); } char *ptr = argv[2];
-    if (!ptr) { FILE *file;
-	if (!(file = fopen(_preferred_factorization_engine_file(), "r"))) { fprintf(stderr, "Couldn't open preferences file '%s'. " EXIT_STATUS_GOODBYE, _REPORT_preferred_factorization_engine_file(), -1); exit(-1); }
+    if (!ptr) { FILE *file; const char *preferred_factorization_engine_file = _REPORT_preferred_factorization_engine_file();
+	if (!(file = fopen(preferred_factorization_engine_file, "r"))) { fprintf(stderr, "Couldn't open preferences file '%s'. " EXIT_STATUS_GOODBYE, preferred_factorization_engine_file, -1); exit(-1); }
 	ptr = BUFFER_OF_SIZE(200); fscanf(file, "%s[^\n]", ptr); fclose(file);
     }
     int SELECTOR = translate_SUBTRACT_ONE(ptr);
