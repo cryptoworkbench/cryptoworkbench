@@ -41,7 +41,7 @@ unsigned long **coefficient_cancel(unsigned long **equation_ONE, unsigned long *
 }
 
 unsigned long ***equations_ALLOCATE(int K) // 'K' as in "K-n Shamir Secret Sharing"
-{ unsigned long ***equation = (unsigned long ***) malloc(sizeof(unsigned long **) * (K + 1)); equation[K] = NULL; for (int i = 0; i < K; i++) equation[i] = UL_array_of_SIZE(K); return equation; }
+{ K++; unsigned long ***equation = (unsigned long ***) malloc(sizeof(unsigned long **) * (K + 2)); equation[K] = NULL; for (int i = 0; i < K; i++) equation[i] = UL_array_of_SIZE(K); return equation; }
 // ^ returns an array which is does not contain a terminating character: remember array length in calling application (at least) until initialization of equations!
 
 int equation_amount(unsigned long ***equation) {
