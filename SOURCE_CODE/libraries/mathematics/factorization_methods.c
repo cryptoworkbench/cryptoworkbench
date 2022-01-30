@@ -5,12 +5,12 @@
 #include "universal_group_library.h" // needed for 'BUFFER_OF_SIZE()'
 _factorization_method preferred_factorization_ENGINE; _factorization_method preferred_factorization_ENGINE_REPORT() { return preferred_factorization_ENGINE; }
 
-const char *preferred_factorization_engine_file = "shared_preferred_factorization_engine"; const char *a = "a"; const char *b = "b"; const char *c = "c"; const char *d = "d"; const char *e = "e"; const char *f = "f";
-const char *g = "g"; const char *h = "h"; const char *A = "efficient_trial_division"; const char *B = "less_efficient_trial_division"; const char *C = "trial_division";
-const char *D = "TABLE_AIDED_efficient_trial_division"; const char *E = "TABLE_AIDED_less_efficient_trial_division"; const char *F = "TABLE_AIDED_trial_division";
-const char *G = "shor_factorization"; const char *H = "fermats_factorization_method";
-const char *_REPORT_a() { return A; } const char *_REPORT_b() { return B; } const char *_REPORT_c() { return C; } const char *_REPORT_d() { return D; } const char *_REPORT_e() { return E; }
-const char *_REPORT_f() { return F; } const char *_REPORT_g() { return G; } const char *_REPORT_h() { return H; } char *preferred_factorization_engine_file_REPORT() { return (char *) preferred_factorization_engine_file; }
+const char *_preferred_factorization_engine_file = "shared_preferred_factorization_engine"; const char *a = "a"; const char *b = "b"; const char *c = "c"; const char *d = "d"; const char *e = "e"; const char *f = "f";
+const char *g = "g"; const char *h = "h"; const char *_a = "efficient_trial_division"; const char *_b = "less_efficient_trial_division"; const char *_c = "trial_division";
+const char *_d = "TABLE_AIDED_efficient_trial_division"; const char *_e = "TABLE_AIDED_less_efficient_trial_division"; const char *_f = "TABLE_AIDED_trial_division";
+const char *_g = "shor_factorization"; const char *_h = "fermats_factorization_method";
+const char *_REPORT_a() { return _a; } const char *_REPORT_b() { return _b; } const char *_REPORT_c() { return _c; } const char *_REPORT_d() { return _d; } const char *_REPORT_e() { return _e; }
+const char *_REPORT_f() { return _f; } const char *_REPORT_g() { return _g; } const char *_REPORT_h() { return _h; } char *preferred_factorization_engine_file_REPORT() { return (char *) _preferred_factorization_engine_file;}
 // ^ string literals we will be comparing against
 
 struct ordered_pair divisor_pair(unsigned long number, unsigned long DIVISOR_OF_number)
@@ -78,29 +78,29 @@ struct ordered_pair factorize(unsigned long number, _factorization_method altern
 
 void FACTORIZATION_METHOD_UNCHOSEN(char *arg) {
     fprintf(stderr, "Couldn't understand engine specification '%s', please specify one of the following:\n", arg);
-    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", a, A, b, B, c, C);
-    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", d, D, e, E, f, F);
-    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", g, G, h, H);
+    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", a, _a, b, _b, c, _c);
+    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", d, _d, e, _e, f, _f);
+    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", g, _g, h, _h);
     fprintf(stderr, "\n'%s' is not one of these.\n\n", arg);
     fprintf(stderr, EXIT_STATUS_GOODBYE, -2); exit(-2);
 }
 
 int translate_SUBTRACT_ONE(char *arg) {
-    if (match_variadic(arg, 2, A, a)) return 1;
-    else if (match_variadic(arg, 2, B, b)) return 2;
-    else if (match_variadic(arg, 2, C, c)) return 3;
-    else if (match_variadic(arg, 2, D, d)) return 4;
-    else if (match_variadic(arg, 2, E, e)) return 5;
-    else if (match_variadic(arg, 2, F, f)) return 6;
-    else if (match_variadic(arg, 2, G, g)) return 7;
-    else if (match_variadic(arg, 2, H, h)) return 8;
+    if (match_variadic(arg, 2, _a, a)) return 1;
+    else if (match_variadic(arg, 2, _b, b)) return 2;
+    else if (match_variadic(arg, 2, _c, c)) return 3;
+    else if (match_variadic(arg, 2, _d, d)) return 4;
+    else if (match_variadic(arg, 2, _e, e)) return 5;
+    else if (match_variadic(arg, 2, _f, f)) return 6;
+    else if (match_variadic(arg, 2, _g, g)) return 7;
+    else if (match_variadic(arg, 2, _h, h)) return 8;
     return 0;
 }
 
 int interpret_ENGINE_from_external_file() {
     FILE *file;
-    if (file = fopen(preferred_factorization_engine_file, "r")) {
+    if (file = fopen(_preferred_factorization_engine_file, "r")) {
 	char *BUFFER = BUFFER_OF_SIZE(200);
 	fscanf(file, "%s[^\n]", BUFFER); fclose(file); int SELECTOR = translate_SUBTRACT_ONE(BUFFER); free(BUFFER); return SELECTOR;
-    } fprintf(stderr, "Couldn't open preferences file '%s'. " EXIT_STATUS_GOODBYE, -1, preferred_factorization_engine_file); exit(-1);
+    } fprintf(stderr, "Couldn't open preferences file '%s'. " EXIT_STATUS_GOODBYE, -1, _preferred_factorization_engine_file); exit(-1);
 }
