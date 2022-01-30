@@ -12,7 +12,7 @@ char *_open_prime_table = NULL; char *_REPORT_open_prime_table() { return (char 
 
 unsigned long conditional_field_cap(unsigned long result) { return (mod) ? _conditional_field_cap(result, _REPORT_mod()) : result; }
 unsigned long add(unsigned long a, unsigned long b) { return conditional_field_cap(a + b); }
-unsigned long multiply(unsigned long a, unsigned long b) { return conditional_field_cap(a * b); }
+unsigned long mod_multiply(unsigned long a, unsigned long b) { return conditional_field_cap(a * b); }
 unsigned long inverse(unsigned long element_of_additive_group) { return mod - element_of_additive_group; } // < root of the definition of subtract
 unsigned long subtract(unsigned long a, unsigned long b) { return conditional_field_cap(a + inverse(b)); }
 unsigned long modular_division(unsigned long numerator, unsigned long denominator) { return (mod) ? _modular_division(numerator, denominator, _REPORT_mod()) : _modular_division(numerator, denominator, 0); }
@@ -20,14 +20,14 @@ unsigned long modular_division(unsigned long numerator, unsigned long denominato
 
 unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? result % mod_OVERRIDE : result; }
 unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? _conditional_field_cap(a + b, mod_OVERRIDE) : add(a, b); }
-unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? _conditional_field_cap(a * b, mod_OVERRIDE) : multiply(a, b); }
+unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? _conditional_field_cap(a * b, mod_OVERRIDE) : mod_multiply(a, b); }
 unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_OVERRIDE) { return mod_OVERRIDE - element_of_additive_group; }
 unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? _conditional_field_cap(a + _inverse(b, mod_OVERRIDE), mod_OVERRIDE) : subtract(a, b); }
 unsigned long _modular_division(unsigned long numerator, unsigned long denominator, unsigned long mod_OVERRIDE)
 { if (mod_OVERRIDE) { while (numerator % denominator != 0) numerator += mod_OVERRIDE; return numerator / denominator; } else return numerator / denominator; };
 // ^ Basic arithemtic functions which work the same but with any MOD (maybe it would be interesting to write these recursively?)
 
-_group_operation operation_from_ID(unsigned long ID) { return (ID) ? multiply : add; }
+_group_operation operation_from_ID(unsigned long ID) { return (ID) ? mod_multiply : add; }
 // .^^^ All of the functions needed for "operation_from_ID"
 
 // ^^^ Useful functions for (infinite) field arithmetic
@@ -90,7 +90,7 @@ unsigned long exponentiate(unsigned long base, unsigned long exponent, unsigned 
     unsigned long ret_val = exponentiation_using_backbone(backbone, mininum_log, exponent, mod); free(backbone); return ret_val;
 } // ^ 'N_operation()'
 
-unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return add(a, b); case 1: return multiply(a, b); default: return exponentiate(a, b, mod); }; }
+unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return add(a, b); case 1: return mod_multiply(a, b); default: return exponentiate(a, b, mod); }; }
 
 unsigned long **UL_array_of_SIZE(int INDEX) {
     unsigned long **ret_val = (unsigned long **) malloc(sizeof(unsigned long *) * (INDEX + 1)); ret_val[INDEX] = NULL;
@@ -103,7 +103,7 @@ unsigned long polynomial_over_GF(unsigned long **COEFFICIENT_array, unsigned lon
     unsigned long ret_val = ADDITIVE_IDENTITY; unsigned long term_factor = MULTIPLICATIVE_IDENTITY;
     int ONE_LESS_THAN_degree_of_polynomial = UL_array_LENGTH(COEFFICIENT_array);
     unsigned long i = ONE_LESS_THAN_degree_of_polynomial; do { i--;
-	ret_val = add(ret_val, multiply(term_factor, *COEFFICIENT_array[i])); term_factor = multiply(term_factor, _x);
+	ret_val = add(ret_val, mod_multiply(term_factor, *COEFFICIENT_array[i])); term_factor = mod_multiply(term_factor, _x);
     } while (i != 0);
     return ret_val;
 }

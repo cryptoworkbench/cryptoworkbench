@@ -14,7 +14,7 @@ unsigned long **equation_ADD(unsigned long **equation_ONE, unsigned long **equat
 } // ^ dep of 'equation_SUBTRACT()'
 
 unsigned long **equation_MULTIPLY(unsigned long **equation, unsigned long multiplier) { unsigned long **resulting_equation = UL_array_of_SIZE(UL_array_LENGTH(equation));
-    for (int i = 0; resulting_equation[i]; i++) *resulting_equation[i] = multiply(*equation[i], multiplier); return resulting_equation;
+    for (int i = 0; resulting_equation[i]; i++) *resulting_equation[i] = mod_multiply(*equation[i], multiplier); return resulting_equation;
 }
 
 unsigned long **equation_NEGATIVE(unsigned long **equation) {
