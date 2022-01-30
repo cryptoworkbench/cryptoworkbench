@@ -3,8 +3,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void equation_print(unsigned long **equation) {
-    printf("%lu = ", *equation[0]); int i = 1; while (equation[i]) { printf("%lu + ", *equation[i]); i++; } printf("\n"); }
+void equation_print(unsigned long **equation) { int i = 0;
+    printf("%lu = ", *equation[i]);
+    while (equation[i + 1]) { i++;
+	printf("%lu + ", *equation[i]);
+    } printf("%lu\n", equation[i + 1]);
+}
 
 void equation_DISCARD(unsigned long **equation) { for (int i = 0; equation[i]; i++) free(equation[i]); free(equation); }
 // ^ free()'s an equation
@@ -56,7 +60,7 @@ unsigned long equation_multiplier(unsigned long **equation_ONE, unsigned long **
 unsigned long **coefficient_cancel(unsigned long **equation_ONE, unsigned long **equation_TWO, int index) { unsigned long **ret_val;
     int LENGTH_OF_equation_ONE = equation_length(equation_ONE); if (LENGTH_OF_equation_ONE != equation_length(equation_TWO)) exit(-1);
     if (*equation_ONE[index] != *equation_TWO[index]) ret_val = equation_MULTIPLY(equation_ONE, modular_division(*equation_ONE[index], inverse(*equation_TWO[index])));
-    else ret_val = equation_ADD(equation_ONE, equation_NEGATIVE(equation_TWO)); return ret_val;
+    else ret_val = equation_SUBTRACT(equation_ONE, equation_TWO); return ret_val;
 }
 
 unsigned long ***equations_ALLOCATE(int K) // 'K' as in "K-n Shamir Secret Sharing"

@@ -24,7 +24,7 @@ void argv_ERROR(unsigned long index, char **argv) {
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], _REPORT_LOCATION_OF_mod())) argv_ERROR(1, argv);
     if (8 < argc) { ignored_arguments(argc, argv, 7); argc = 8; } // < complain about unneccesary arguments and forget about them once and for all
-    unsigned long ***equation = equations_ALLOCATE(K); switch (argc) {
+    unsigned long ***equation = equations_ALLOCATE(K + 1); switch (argc) {
 	case 8: if (!str_represents_ul(argv[7], equation[2][0])) fprintf(stderr, "Failed to interpret argument '%s' as a y variable.\n", argv[7]);
 	case 7: if (!str_represents_ul(argv[6], equation[2][1])) fprintf(stderr, "Failed to interpret argument '%s' as a x variable.\n", argv[6]);
 	case 6: if (!str_represents_ul(argv[5], equation[1][0])) fprintf(stderr, "Failed to interpret argument '%s' as a y coordinate.\n", argv[5]);
@@ -39,9 +39,11 @@ int main(int argc, char **argv) {
     fprintf(stdout, "x_3 \u2261 "); if (4 < argc) fprintf(stdout, "%lu\n", *equation[2][1]); else fscanf(stdin, " %lu", equation[2][1]);
     fprintf(stdout, "y_3 \u2261 "); if (5 < argc) fprintf(stdout, "%lu\n", *equation[2][0]); else fscanf(stdin, " %lu", equation[2][0]); fprintf(stdout, "\n");
     *equation[0][2] = exponentiate(*equation[0][1], 2, _REPORT_mod()); *equation[1][2] = exponentiate(*equation[1][1], 2, _REPORT_mod()); *equation[2][2] = exponentiate(*equation[2][1], 2, _REPORT_mod());
+    *equation[0][3] = *equation[1][3] = *equation[2][3] = 1;
     // ^ Prepared initial equations
 
-    unsigned long **equation_ONE_and_TWO = equation_SUBTRACT(equation[0], equation[1]); unsigned long **equation_TWO_and_THREE = equation_SUBTRACT(equation[1], equation[2]);
+    unsigned long **equation_ONE_and_TWO = coefficient_cancel(equation[0], equation[1], 3); 
+    unsigned long **equation_TWO_and_THREE = coefficient_cancel(equation[1], equation[2], 3);
     unsigned long **final_linear_equation = coefficient_cancel(equation_ONE_and_TWO, equation_TWO_and_THREE, 1);
     // ^ Prepared other equations
 
