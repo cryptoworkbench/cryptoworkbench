@@ -53,7 +53,7 @@ unsigned long *square_and_multiply_backbone(unsigned long base, unsigned long re
     // In the other cases (where 1 < "exponent"), it will run just the appriopiate amount of times
 
     return backbone;
-} // ^ Used by "exponentiate()", "polynomial_over_GF()"
+} // ^ Used by "_exponentiate()", "polynomial_over_GF()"
 
 unsigned long least_base_TWO_log(unsigned long power_of_TWO) {
     if (power_of_TWO == 0) return 0;
@@ -75,7 +75,7 @@ unsigned long least_base_TWO_log(unsigned long power_of_TWO) {
 	return_value--;
 
     return return_value;
-} // ^ Used by "exponentiation_using_backbone()", "exponentiate()"
+} // ^ Used by "exponentiation_using_backbone()", "_exponentiate()"
 
 unsigned long exponentiation_using_backbone(unsigned long *residue_list, unsigned long index, unsigned long exponent, unsigned long mod_) {
     unsigned long ret_val = MULTIPLICATIVE_IDENTITY;
@@ -84,14 +84,16 @@ unsigned long exponentiation_using_backbone(unsigned long *residue_list, unsigne
 	exponent -= exponentiate_UNRESTRICTEDLY(2, index);
 	index = least_base_TWO_log(exponent);
     } return ret_val;
-} // ^ Used by "exponentiate()"
+} // ^ Used by "_exponentiate()"
 
-unsigned long exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_) {
+unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_) {
     if (base == 0 || exponent == 0) return 1; unsigned long mininum_log = least_base_TWO_log(exponent); unsigned long *backbone = square_and_multiply_backbone(base, mininum_log, mod_);
     unsigned long ret_val = exponentiation_using_backbone(backbone, mininum_log, exponent, mod_); free(backbone); return ret_val;
 } // ^ 'N_operation()'
 
-unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return mod_add(a, b); case 1: return mod_multiply(a, b); default: return exponentiate(a, b, mod_); }; }
+unsigned long mod_exponentiate(unsigned long base, unsigned long exponent) { return (mod_) ? _exponentiate(base, exponent, mod_) : _exponentiate(base, exponent, 0); } //<apply the square and multiply method (almost) always
+
+unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return mod_add(a, b); case 1: return mod_multiply(a, b); default: return mod_exponentiate(a, b); }; }
 
 unsigned long **UL_array_of_SIZE(int SIZE) {
     unsigned long **ret_val = (unsigned long **) malloc(sizeof(unsigned long *) * (SIZE + 1)); ret_val[SIZE] = NULL;
@@ -182,4 +184,4 @@ FILE *prime_table_open(char *prime_table_filename) {
     return prime_table;
 } void prime_table_close(FILE *prime_table) { fclose(prime_table); _open_prime_table = NULL; }
 
-int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q) { return (odd_prime_q - 1 - exponentiate(odd_prime_p, (odd_prime_q - 1) / 2, odd_prime_q)) ? 1 : -1; }
+int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q) { return (odd_prime_q - 1 - _exponentiate(odd_prime_p, (odd_prime_q - 1) / 2, odd_prime_q)) ? 1 : -1; }

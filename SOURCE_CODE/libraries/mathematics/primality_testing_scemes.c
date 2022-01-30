@@ -15,7 +15,7 @@ int LESS_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST(unsigned long poten
 int LEAST_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST(unsigned long potential_prime) { return (potential_prime - LEAST_efficient_trial_division_TABLE_AIDED(potential_prime)) ? ADDITIVE_IDENTITY : MULTIPLICATIVE_IDENTITY; }
 int shor_factorization_PRIMALITY_TEST(unsigned long potential_prime) { return (potential_prime - shor_factorization(potential_prime)) ? ADDITIVE_IDENTITY : MULTIPLICATIVE_IDENTITY; }
 int fermat_factorization_PRIMALITY_TEST(unsigned long potential_prime) { return (potential_prime - fermat_factorization(potential_prime)) ? ADDITIVE_IDENTITY : MULTIPLICATIVE_IDENTITY; }
-int fermats_DETERMINISTIC_primality_test(unsigned long potential_prime) { for (ul i = 2; i < potential_prime; i++) if (GCD(i, potential_prime) != 1 || 1 != exponentiate(i, potential_prime - 1, potential_prime)) return 0; return 1; }
+int fermats_DETERMINISTIC_primality_test(unsigned long potential_prime) { for (ul i = 2; i < potential_prime; i++) if (GCD(i, potential_prime) != 1 || 1 != _exponentiate(i, potential_prime - 1, potential_prime)) return 0; return 1; }
 // ^ 9 primality tests based on factorization methods
 
 _primality_test primality_test(int SELECTOR) {

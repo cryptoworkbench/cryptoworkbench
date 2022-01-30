@@ -17,6 +17,7 @@ unsigned long mod_multiply(unsigned long a, unsigned long b);
 unsigned long mod_inverse(unsigned long element_of_additive_group); // yields the additive mod_inverse of ul 'element_of_additive_group'
 unsigned long mod_subtract(unsigned long a, unsigned long b);
 unsigned long mod_division(unsigned long member_from_equivalence_class_representing_the_numerator, unsigned long denominator);
+unsigned long mod_exponentiate(unsigned long base, unsigned long exponent);
 
 unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_);
 unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_);
@@ -28,7 +29,7 @@ unsigned long _division(unsigned long numerator, unsigned long denominator, unsi
 typedef unsigned long (*_group_operation) (unsigned long, unsigned long);
 _group_operation operation_from_ID(unsigned long ID);
 
-unsigned long exponentiate(unsigned long base, unsigned long exponent, unsigned long mod);
+unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_);
 unsigned long exponentiate_UNRESTRICTEDLY(unsigned long base, unsigned long exponent); // << normal finite field exponentiation depends upon this ):
 unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID);
 // ^^^ Combine them all
