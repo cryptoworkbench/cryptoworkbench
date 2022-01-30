@@ -37,7 +37,7 @@ unsigned long LEAST_efficient_trial_division(unsigned long composite) { return t
 unsigned long efficient_trial_division_TABLE_AIDED(unsigned long composite) { return trial_division_TABLE_AIDED(composite, trial_limit(composite, 1)); }
 unsigned long LESS_efficient_trial_division_TABLE_AIDED(unsigned long composite) { return trial_division_TABLE_AIDED(composite, trial_limit(composite, 2)); }
 unsigned long LEAST_efficient_trial_division_TABLE_AIDED(unsigned long composite) { return trial_division_TABLE_AIDED(composite, trial_limit(composite, 3)); }
-// ^ trial division methods (all dependencies of 'factorization_method()'
+// ^ trial mod_division methods (all dependencies of 'factorization_method()'
 
 unsigned long shor_factorization(unsigned long presumed_composite) {
     for (unsigned long a_ = 2; a_ <= presumed_composite; a_++) {

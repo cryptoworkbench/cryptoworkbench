@@ -19,7 +19,7 @@ unsigned long **equation_MULTIPLY(unsigned long **equation, unsigned long multip
 
 unsigned long **equation_NEGATIVE(unsigned long **equation) {
     unsigned long **resulting_equation = UL_array_of_SIZE(UL_array_SIZE(equation));
-    for (int i = 0; resulting_equation[i]; i++) *resulting_equation[i] = inverse(*equation[i]);
+    for (int i = 0; resulting_equation[i]; i++) *resulting_equation[i] = mod_inverse(*equation[i]);
     return resulting_equation;
 } // ^ dep of 'equation_SUBTRACT()'
 
@@ -31,12 +31,12 @@ unsigned long **equation_SUBTRACT(unsigned long **equation_ONE, unsigned long **
 
 unsigned long equation_multiplier(unsigned long **equation_ONE, unsigned long **equation_TWO, int index) {
     int LENGTH_OF_equation_ONE = UL_array_SIZE(equation_ONE); if (LENGTH_OF_equation_ONE != UL_array_SIZE(equation_TWO)) exit(-1);
-    if (*equation_ONE[index] == *equation_TWO[index]) return 1; return division(*equation_ONE[index], inverse(*equation_TWO[index]));
+    if (*equation_ONE[index] == *equation_TWO[index]) return 1; return mod_division(*equation_ONE[index], mod_inverse(*equation_TWO[index]));
 }
 
 unsigned long **coefficient_cancel(unsigned long **equation_ONE, unsigned long **equation_TWO, int index) { unsigned long **ret_val;
     int LENGTH_OF_equation_ONE = UL_array_SIZE(equation_ONE); if (LENGTH_OF_equation_ONE != UL_array_SIZE(equation_TWO)) exit(-1);
-    if (*equation_ONE[index] != *equation_TWO[index]) ret_val = equation_MULTIPLY(equation_ONE, division(*equation_ONE[index], inverse(*equation_TWO[index])));
+    if (*equation_ONE[index] != *equation_TWO[index]) ret_val = equation_MULTIPLY(equation_ONE, mod_division(*equation_ONE[index], mod_inverse(*equation_TWO[index])));
     else ret_val = equation_SUBTRACT(equation_ONE, equation_TWO); return ret_val;
 }
 

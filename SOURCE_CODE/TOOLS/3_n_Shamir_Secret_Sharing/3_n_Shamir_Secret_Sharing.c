@@ -54,9 +54,9 @@ int main(int argc, char **argv) {
     unsigned long **final_linear_equation = coefficient_cancel(equation_ONE_and_TWO, equation_TWO_and_THREE, 1);
     // ^ Prepared other equations
 
-    unsigned long **coefficient = UL_array_of_SIZE(K); *coefficient[0] = division(*final_linear_equation[0], *final_linear_equation[2]);
-    *coefficient[1] = division(subtract(*equation_ONE_and_TWO[0], mod_multiply(*equation_ONE_and_TWO[2], *coefficient[0])), *equation_ONE_and_TWO[1]);
-    *coefficient[2] = subtract(*equation[0][0], mod_add(mod_multiply(*coefficient[1], *equation[0][1]), (mod_multiply(*coefficient[0], exponentiate(*equation[0][1], 2, _REPORT_mod())))));
+    unsigned long **coefficient = UL_array_of_SIZE(K); *coefficient[0] = mod_division(*final_linear_equation[0], *final_linear_equation[2]);
+    *coefficient[1] = mod_division(mod_subtract(*equation_ONE_and_TWO[0], mod_multiply(*equation_ONE_and_TWO[2], *coefficient[0])), *equation_ONE_and_TWO[1]);
+    *coefficient[2] = mod_subtract(*equation[0][0], mod_add(mod_multiply(*coefficient[1], *equation[0][1]), (mod_multiply(*coefficient[0], exponentiate(*equation[0][1], 2, _REPORT_mod())))));
     // ^ Put the coefficients into an unsigned long array
 
     fprintf(stdout, "Second-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", _REPORT_mod());

@@ -27,7 +27,7 @@
 #include <stdio.h>
 #include <unistd.h> // 'execvp()'
 #include "../../libraries/functional/string.h" // 'ignored_arguments()'
-#include "../../libraries/mathematics/maths.h" // 'inverse()'
+#include "../../libraries/mathematics/maths.h" // 'mod_inverse()'
 #include "../../libraries/mathematics/SSSS.h"
 #define K 2 // degree of polynomial that is resolved in other to retrieve secret encoded as contant term
 
@@ -48,8 +48,8 @@ int main(int argc, char **argv) {
     // ^ Prepare equations
 
     unsigned long **coefficient = UL_array_of_SIZE(K);
-    *coefficient[0] = division(*equation_ONE_WITH_TWO[0], *equation_ONE_WITH_TWO[1]); // coefficient a
-    *coefficient[1] = subtract(*equation[0][0], mod_multiply(*equation[0][1], *coefficient[0])); // coefficient b
+    *coefficient[0] = mod_division(*equation_ONE_WITH_TWO[0], *equation_ONE_WITH_TWO[1]); // coefficient a
+    *coefficient[1] = mod_subtract(*equation[0][0], mod_multiply(*equation[0][1], *coefficient[0])); // coefficient b
 
     fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", _REPORT_mod());
     fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", *coefficient[0], *coefficient[1], _REPORT_mod());

@@ -5,7 +5,7 @@
 #include "../../libraries/mathematics/maths.h" // 'GCD()'
 
 const char *argv_ONE[] = {"first", "modulus"};
-const char *argv_TWO[] = {"second", "number coprime with the modulus whose multiplicative inverse you want to know"};
+const char *argv_TWO[] = {"second", "number coprime with the modulus whose multiplicative mod_inverse you want to know"};
 
 void argv_ERROR(char **argv, int index) {
     const char **error_specific_message = argv_ONE;
@@ -14,7 +14,7 @@ void argv_ERROR(char **argv, int index) {
     exit(-index);
 } // ^ used by 'main()'
 
-const char *prog_name = "division";
+const char *prog_name = "mod_division";
 
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], _REPORT_LOCATION_OF_mod())) argv_ERROR(argv, 1); ul number_coprime_to_MOD;
@@ -22,7 +22,7 @@ int main(int argc, char **argv) {
     // ^ take in supplied (MANDATORY) arguments
 
     if (GCD_of_arguments != 1) { fprintf(stderr, "%lu shares a factor of %lu with %lu.\n\nTerminating with exit status '-3'.\n", number_coprime_to_MOD, GCD_of_arguments, _REPORT_mod()); exit(-3); }
-    // ^ exit if the number to calculate the multiplicative inverse of is not coprime to the modulus
+    // ^ exit if the number to calculate the multiplicative mod_inverse of is not coprime to the modulus
 
     fprintf(stdout, "Executing external tool '%s':\n", prog_name);
     char *call_to_division[] = {(char *) prog_name, argv[1], "1", argv[2], 0};
