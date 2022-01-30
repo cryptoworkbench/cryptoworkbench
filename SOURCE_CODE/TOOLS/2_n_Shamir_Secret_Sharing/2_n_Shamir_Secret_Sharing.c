@@ -37,27 +37,26 @@ void equation_print(unsigned long **equation) { printf("%lu = ", *equation[0]); 
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], _REPORT_LOCATION_OF_mod())) { printf("%s is not mod!\n", argv[1]); exit(-1); }
     if (6 < argc) { ignored_arguments(argc, argv, 5); argc = 6; } // < complain about unneccesary arguments and forget about them once and for all
-    unsigned long ***equations = equations_ALLOCATE(K); switch (argc) {
-	case 6: if (!str_represents_ul(argv[5], equations[1][0])) fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of second point.\n", argv[5]);
-	case 5: if (!str_represents_ul(argv[4], equations[1][1])) fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of second point.\n", argv[4]);
-	case 4: if (!str_represents_ul(argv[3], equations[0][0])) fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of first point.\n", argv[3]);
-	case 3: if (!str_represents_ul(argv[2], equations[0][1])) fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of first point.\n", argv[2]);
-    };
-    fprintf(stdout, "x_1 \u2261 "); if (2 < argc) fprintf(stdout, "%lu\n", *equations[0][1]); else fscanf(stdin, " %lu", equations[0][1]);
-    fprintf(stdout, "y_1 \u2261 "); if (3 < argc) fprintf(stdout, "%lu\n", *equations[0][0]); else fscanf(stdin, " %lu", equations[0][0]); fprintf(stdout, "\n");
-    fprintf(stdout, "x_2 \u2261 "); if (4 < argc) fprintf(stdout, "%lu\n", *equations[1][1]); else fscanf(stdin, " %lu", equations[1][1]);
-    fprintf(stdout, "y_2 \u2261 "); if (5 < argc) fprintf(stdout, "%lu\n", *equations[1][0]); else fscanf(stdin, " %lu", equations[1][0]); fprintf(stdout, "\n");
-    // unsigned long **equation_ONE_WITH_TWO = coefficient_cancel(equations[0], equations[1], 1);
-    unsigned long **equation_ONE_WITH_TWO = equation_SUBTRACT(equations[0], equations[1]);
+    unsigned long ***equation = equations_ALLOCATE(K + 1); switch (argc) {
+	case 6: if (!str_represents_ul(argv[5], equation[1][0])) fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of second point.\n", argv[5]);
+	case 5: if (!str_represents_ul(argv[4], equation[1][1])) fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of second point.\n", argv[4]);
+	case 4: if (!str_represents_ul(argv[3], equation[0][0])) fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of first point.\n", argv[3]);
+	case 3: if (!str_represents_ul(argv[2], equation[0][1])) fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of first point.\n", argv[2]);
+    }; // ^ interpret interpretable information
+    fprintf(stdout, "x_1 \u2261 "); if (2 < argc) fprintf(stdout, "%lu\n", *equation[0][1]); else fscanf(stdin, " %lu", equation[0][1]);
+    fprintf(stdout, "y_1 \u2261 "); if (3 < argc) fprintf(stdout, "%lu\n", *equation[0][0]); else fscanf(stdin, " %lu", equation[0][0]); fprintf(stdout, "\n");
+    fprintf(stdout, "x_2 \u2261 "); if (4 < argc) fprintf(stdout, "%lu\n", *equation[1][1]); else fscanf(stdin, " %lu", equation[1][1]);
+    fprintf(stdout, "y_2 \u2261 "); if (5 < argc) fprintf(stdout, "%lu\n", *equation[1][0]); else fscanf(stdin, " %lu", equation[1][0]); fprintf(stdout, "\n");
+    *equation[0][K] = *equation[1][K] = 1; unsigned long **equation_ONE_WITH_TWO = coefficient_cancel(equation[0], equation[1], 2);
     // ^ Prepare equations
 
     unsigned long **coefficient = UL_array_with_INDEX(K);
     *coefficient[0] = modular_division(*equation_ONE_WITH_TWO[0], *equation_ONE_WITH_TWO[1]); // coefficient a
-    *coefficient[1] = subtract(*equations[0][0], multiply(*equations[0][1], *coefficient[0])); // coefficient b
+    *coefficient[1] = subtract(*equation[0][0], multiply(*equation[0][1], *coefficient[0])); // coefficient b
 
     fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", _REPORT_mod());
     fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", *coefficient[0], *coefficient[1], _REPORT_mod());
     fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_GF(coefficient, 0)); // 0 = x
     equation_DISCARD(coefficient);
-    equations_DELETE(equations); return 0;
+    equations_DELETE(equation); return 0;
 }
