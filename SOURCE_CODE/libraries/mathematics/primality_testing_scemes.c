@@ -30,3 +30,16 @@ int primality_test_based_on_preferred_factorization_engine(unsigned long potenti
 { return (potential_prime - _preferred_factorization_ENGINE(potential_prime)) ? ADDITIVE_IDENTITY : MULTIPLICATIVE_IDENTITY;}
 void SET_preferred_PRIMALITY_TEST(int SELECTOR) { _preferred_PRIMALITY_TEST = primality_test(SELECTOR); }
 int prime(unsigned long potential_prime, _primality_test alternate_test) { return (alternate_test) ? alternate_test(potential_prime) : _preferred_PRIMALITY_TEST(potential_prime); }
+
+const char *chosen_PRIMALITY_TEST() { initialize_factorization_library(); // < makes available the bewlow pointers
+    if (_preferred_PRIMALITY_TEST == efficient_trial_division_PRIMALITY_TEST) return _a;
+    else if (_preferred_PRIMALITY_TEST == LESS_efficient_trial_division_PRIMALITY_TEST) return _b;
+    else if (_preferred_PRIMALITY_TEST == LEAST_efficient_trial_division_PRIMALITY_TEST) return _c;
+    else if (_preferred_PRIMALITY_TEST == efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return _d;
+    else if (_preferred_PRIMALITY_TEST == LESS_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return _e;
+    else if (_preferred_PRIMALITY_TEST == LEAST_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return _f;
+    else if (_preferred_PRIMALITY_TEST == shor_factorization_PRIMALITY_TEST) return _g;
+    else if (_preferred_PRIMALITY_TEST == fermat_factorization_PRIMALITY_TEST) return _h;
+    return NULL;
+}
+
