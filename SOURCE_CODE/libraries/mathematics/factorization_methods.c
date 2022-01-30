@@ -4,13 +4,20 @@
 #include "maths.h" // needed for 'DOWN_ROUNDED_second_root()'
 #include "universal_group_library.h" // needed for 'BUFFER_OF_SIZE()'
 
-const char *_preferred_factorization_engine_file = "shared_preferred_factorization_engine"; const char *_REPORT_preferred_factorization_engine_file() { return _preferred_factorization_engine_file; }
-const char *_a = "efficient_trial_division"; const char *_b = "less_efficient_trial_division"; const char *_c = "trial_division"; const char *_d = "TABLE_AIDED_efficient_trial_division";
-const char *_e = "TABLE_AIDED_less_efficient_trial_division"; const char *_f = "TABLE_AIDED_trial_division"; const char *_g = "shor_factorization"; const char *_h = "fermats_factorization_method";
-const char *_REPORT_a() { return _a; } const char *_REPORT_b() { return _b; } const char *_REPORT_c() { return _c; } const char *_REPORT_d() { return _d; } const char *_REPORT_e() { return _e; }
-const char *_REPORT_f() { return _f; } const char *_REPORT_g() { return _g; } const char *_REPORT_h() { return _h; } const char *_A = "a"; const char *_B = "b"; const char *_C = "c"; const char *_D = "d";
+const char *_preferred_factorization_engine_file = "shared_preferred_factorization_engine";
+const char *_REPORT_preferred_factorization_engine_file() { return _preferred_factorization_engine_file; }
+const char *__a = "efficient_trial_division"; const char *__b = "less_efficient_trial_division"; const char *__c = "trial_division"; const char *__d = "TABLE_AIDED_efficient_trial_division";
+const char *__e = "TABLE_AIDED_less_efficient_trial_division"; const char *__f = "TABLE_AIDED_trial_division"; const char *__g = "shor_factorization"; const char *__h = "fermats_factorization_method";
+
+const char *_REPORT_a() { return __a; } const char *_REPORT_b() { return __b; } const char *_REPORT_c() { return __c; } const char *_REPORT_d() { return __d; } const char *_REPORT_e() { return __e; }
+const char *_REPORT_f() { return __f; } const char *_REPORT_g() { return __g; } const char *_REPORT_h() { return __h; } const char *_A = "a"; const char *_B = "b"; const char *_C = "c"; const char *_D = "d";
 const char *_E = "e"; const char *_F = "f"; const char *_G = "g"; const char *_H = "h";
 // ^ string literals we will be comparing against
+
+void initialize_factorization_library() {
+    _a = (char *) __a; _b = (char *) __b; _c = (char *) __c; _d = (char *) __d;
+    _e = (char *) __e; _f = (char *) __f; _g = (char *) __g; _h = (char *) __h;
+}
 
 struct ordered_pair divisor_pair(unsigned long number, unsigned long DIVISOR_OF_number)
 { struct ordered_pair pair_of_divisors; pair_of_divisors.b = DIVISOR_OF_number; pair_of_divisors.a = number / pair_of_divisors.b; return pair_of_divisors; }
@@ -77,22 +84,22 @@ struct ordered_pair factorize(unsigned long number, _factorization_method altern
 
 void FACTORIZATION_METHOD_UNCHOSEN(char *arg) {
     fprintf(stderr, "Couldn't understand engine specification '%s', please specify one of the following:\n", arg);
-    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", _A, _a, _B, _b, _C, _c);
-    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", _D, _d, _E, _e, _F, _f);
-    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", _G, _g, _H, _h);
+    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", _A, __a, _B, __b, _C, __c);
+    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", _D, __d, _E, __e, _F, __f);
+    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", _G, __g, _H, __h);
     fprintf(stderr, "\n'%s' is not one of these.\n\n", arg);
     fprintf(stderr, EXIT_STATUS_GOODBYE, -2); exit(-2);
 }
 
 int translate_SUBTRACT_ONE(char *arg) {
-    if (match_variadic(arg, 2, _a, _A)) return 1;
-    else if (match_variadic(arg, 2, _b, _B)) return 2;
-    else if (match_variadic(arg, 2, _c, _C)) return 3;
-    else if (match_variadic(arg, 2, _d, _D)) return 4;
-    else if (match_variadic(arg, 2, _e, _E)) return 5;
-    else if (match_variadic(arg, 2, _f, _F)) return 6;
-    else if (match_variadic(arg, 2, _g, _G)) return 7;
-    else if (match_variadic(arg, 2, _h, _H)) return 8;
+    if (match_variadic(arg, 2, __a, _A)) return 1;
+    else if (match_variadic(arg, 2, __b, _B)) return 2;
+    else if (match_variadic(arg, 2, __c, _C)) return 3;
+    else if (match_variadic(arg, 2, __d, _D)) return 4;
+    else if (match_variadic(arg, 2, __e, _E)) return 5;
+    else if (match_variadic(arg, 2, __f, _F)) return 6;
+    else if (match_variadic(arg, 2, __g, _G)) return 7;
+    else if (match_variadic(arg, 2, __h, _H)) return 8;
     return 0;
 }
 

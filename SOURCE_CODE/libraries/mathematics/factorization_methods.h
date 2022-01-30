@@ -1,5 +1,9 @@
 typedef unsigned long (*_factorization_method) (unsigned long);
 _factorization_method _preferred_factorization_ENGINE;
+
+char *_a; char *_b; char *_c; char *_d; char *_e; char *_f; char *_g; char *_h;
+
+void initialize_factorization_library();
 const char *_REPORT_preferred_factorization_engine_file();
 const char *_REPORT_a(); const char *_REPORT_b(); const char *_REPORT_c(); const char *_REPORT_d(); const char *_REPORT_e(); const char *_REPORT_f(); const char *_REPORT_g(); const char *_REPORT_h();
 // a global function pointer for functions that take an UL and return an UL, that is going to be used for factorization ENGINEs returning the smallest divisor (from N, obviously) of any number greater than 1
