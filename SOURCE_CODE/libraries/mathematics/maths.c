@@ -10,14 +10,6 @@ const char *_standard_prime_table_filename = "shared_prime_table"; char *_REPORT
 char *_open_prime_table = NULL; char *_REPORT_open_prime_table() { return (char *) _open_prime_table; }
 // Two global variables and two functions for access to these global variables in other files/libraries
 
-unsigned long conditional_field_cap(unsigned long result) { return (_mod) ? _conditional_field_cap(result, _REPORT_mod()) : result; }
-unsigned long mod_add(unsigned long a, unsigned long b) { return conditional_field_cap(a + b); }
-unsigned long mod_multiply(unsigned long a, unsigned long b) { return conditional_field_cap(a * b); }
-unsigned long inverse(unsigned long element_of_additive_group) { return _mod - element_of_additive_group; } // < root of the definition of subtract
-unsigned long subtract(unsigned long a, unsigned long b) { return conditional_field_cap(a + inverse(b)); }
-unsigned long modular_division(unsigned long numerator, unsigned long denominator) { return (_mod) ? _modular_division(numerator, denominator, _REPORT_mod()) : _modular_division(numerator, denominator, 0); }
-// ^ Basic arithemtic functions which work on global variable '_mod'
-
 unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? result % mod_OVERRIDE : result; }
 unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? _conditional_field_cap(a + b, mod_OVERRIDE) : mod_add(a, b); }
 unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? _conditional_field_cap(a * b, mod_OVERRIDE) : mod_multiply(a, b); }
@@ -25,7 +17,15 @@ unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mo
 unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? _conditional_field_cap(a + _inverse(b, mod_OVERRIDE), mod_OVERRIDE) : subtract(a, b); }
 unsigned long _modular_division(unsigned long numerator, unsigned long denominator, unsigned long mod_OVERRIDE)
 { if (mod_OVERRIDE) { while (numerator % denominator != 0) numerator += mod_OVERRIDE; return numerator / denominator; } else return numerator / denominator; };
-// ^ Basic arithemtic functions which work the same but with any MOD (maybe it would be interesting to write these recursively?)
+// ^ Basic arithemtic functions for (in)finite field operations
+
+unsigned long conditional_field_cap(unsigned long result) { return (_mod) ? _conditional_field_cap(result, _REPORT_mod()) : result; }
+unsigned long mod_add(unsigned long a, unsigned long b) { return conditional_field_cap(a + b); }
+unsigned long mod_multiply(unsigned long a, unsigned long b) { return conditional_field_cap(a * b); }
+unsigned long inverse(unsigned long element_of_additive_group) { return _mod - element_of_additive_group; } // < root of the definition of subtract
+unsigned long subtract(unsigned long a, unsigned long b) { return conditional_field_cap(a + inverse(b)); }
+unsigned long modular_division(unsigned long numerator, unsigned long denominator) { return (_mod) ? _modular_division(numerator, denominator, _REPORT_mod()) : _modular_division(numerator, denominator, 0); }
+// ^ Wrappers for the previous block of functions which always use the global variable '_mod'
 
 _group_operation operation_from_ID(unsigned long ID) { return (ID) ? mod_multiply : mod_add; }
 // .^^^ All of the functions needed for "operation_from_ID"
