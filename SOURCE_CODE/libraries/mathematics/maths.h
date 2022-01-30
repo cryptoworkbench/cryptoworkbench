@@ -13,7 +13,7 @@ char *_REPORT_open_prime_table(); // < for access in other files to 'char * _ope
 struct ordered_pair { unsigned long a; unsigned long b; };
 
 unsigned long conditional_field_cap(unsigned long result); unsigned long _conditional_field_cap(unsigned long result, unsigned long mod);
-unsigned long add(unsigned long a, unsigned long b);
+unsigned long mod_add(unsigned long a, unsigned long b);
 unsigned long mod_multiply(unsigned long a, unsigned long b);
 unsigned long inverse(unsigned long element_of_additive_group); // yields the additive inverse of ul 'element_of_additive_group'
 unsigned long subtract(unsigned long a, unsigned long b);

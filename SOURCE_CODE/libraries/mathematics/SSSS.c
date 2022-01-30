@@ -9,7 +9,7 @@ void equation_DISCARD(unsigned long **equation) { for (int i = 0; equation[i]; i
 unsigned long **equation_ADD(unsigned long **equation_ONE, unsigned long **equation_TWO) { int LENGTH_OF_equation_ONE = UL_array_LENGTH(equation_ONE); int LENGTH_OF_equation_TWO = UL_array_LENGTH(equation_TWO);
     if (LENGTH_OF_equation_ONE != LENGTH_OF_equation_TWO) { fprintf(stderr, "equations had different length: %i vs %i", LENGTH_OF_equation_ONE, LENGTH_OF_equation_TWO); exit(-2); }
     unsigned long **resulting_equation = UL_array_of_SIZE(LENGTH_OF_equation_ONE);
-    for (int i = 0; resulting_equation[i]; i++) *resulting_equation[i] = add(*equation_ONE[i], *equation_TWO[i]);
+    for (int i = 0; resulting_equation[i]; i++) *resulting_equation[i] = mod_add(*equation_ONE[i], *equation_TWO[i]);
     return resulting_equation;
 } // ^ dep of 'equation_SUBTRACT()'
 

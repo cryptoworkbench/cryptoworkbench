@@ -17,7 +17,7 @@ struct square {
     struct square *next;
 };
 
-void add(struct square **iterator, unsigned long perm_length) {
+void mod_add(struct square **iterator, unsigned long perm_length) {
     while (*iterator != NULL && (*iterator)->perm_length.ULONG != perm_length) iterator = &(*iterator)->next;
     if (*iterator == NULL) {
 	struct square *new_subgroup_order = (struct square *) malloc(sizeof(struct square)); // Create the new order counter
@@ -46,7 +46,7 @@ int main(int argc, char **argv) {
     struct VOID_ptr_ptr_PAIR pair = INITIALIZE_CHANNEL_PTR_pair(); // << Declare a new set of tracers, but this time to create a linked list of generators
     for (unsigned long i = 0; i < M_totient; i++) {
 	fprintf(stdout, "%lu: %lu\n", i, element_array[i]);
-	add((struct square **) pair.iterator, (element_array[i] * element_array[i]) % m);
+	mod_add((struct square **) pair.iterator, (element_array[i] * element_array[i]) % m);
     }
     return 0;
 }
