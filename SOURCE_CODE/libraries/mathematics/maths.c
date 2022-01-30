@@ -92,16 +92,16 @@ unsigned long exponentiate(unsigned long base, unsigned long exponent, unsigned 
 
 unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return mod_add(a, b); case 1: return mod_multiply(a, b); default: return exponentiate(a, b, mod); }; }
 
-unsigned long **UL_array_of_SIZE(int INDEX) {
-    unsigned long **ret_val = (unsigned long **) malloc(sizeof(unsigned long *) * (INDEX + 1)); ret_val[INDEX] = NULL;
-    for (int i = 0; i < INDEX; i++) ret_val[i] = (unsigned long *) malloc(sizeof(unsigned long)); return ret_val;
+unsigned long **UL_array_of_SIZE(int SIZE) {
+    unsigned long **ret_val = (unsigned long **) malloc(sizeof(unsigned long *) * (SIZE + 1)); ret_val[SIZE] = NULL;
+    for (int i = 0; i < SIZE; i++) ret_val[i] = (unsigned long *) malloc(sizeof(unsigned long)); return ret_val;
 }
 
-int UL_array_LENGTH(unsigned long **UL_array) { int equation_length = 0; while (UL_array[equation_length]) equation_length++; return equation_length; }
+int UL_array_SIZE(unsigned long **UL_array) { int ret_val = 0; while (UL_array[ret_val]) ret_val++; return ret_val; }
 
 unsigned long polynomial_over_GF(unsigned long **COEFFICIENT_array, unsigned long _x) {
     unsigned long ret_val = ADDITIVE_IDENTITY; unsigned long term_factor = MULTIPLICATIVE_IDENTITY;
-    int ONE_LESS_THAN_degree_of_polynomial = UL_array_LENGTH(COEFFICIENT_array);
+    int ONE_LESS_THAN_degree_of_polynomial = UL_array_SIZE(COEFFICIENT_array);
     unsigned long i = ONE_LESS_THAN_degree_of_polynomial; do { i--;
 	ret_val = mod_add(ret_val, mod_multiply(term_factor, *COEFFICIENT_array[i])); term_factor = mod_multiply(term_factor, _x);
     } while (i != 0);
