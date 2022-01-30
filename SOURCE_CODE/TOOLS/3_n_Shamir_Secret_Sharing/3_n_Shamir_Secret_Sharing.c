@@ -45,7 +45,7 @@ int main(int argc, char **argv) {
     fprintf(stdout, "y_2 \u2261 "); if (5 < argc) fprintf(stdout, "%lu\n", *equation[1][0]); else fscanf(stdin, " %lu", equation[1][0]); fprintf(stdout, "\n");
     fprintf(stdout, "x_3 \u2261 "); if (4 < argc) fprintf(stdout, "%lu\n", *equation[2][1]); else fscanf(stdin, " %lu", equation[2][1]);
     fprintf(stdout, "y_3 \u2261 "); if (5 < argc) fprintf(stdout, "%lu\n", *equation[2][0]); else fscanf(stdin, " %lu", equation[2][0]); fprintf(stdout, "\n");
-    *equation[0][2] = exponentiate(*equation[0][1], 2, _REPORT_mod()); *equation[1][2] = exponentiate(*equation[1][1], 2, _REPORT_mod()); *equation[2][2] = exponentiate(*equation[2][1], 2, _REPORT_mod());
+    *equation[0][2] = exponentiate(*equation[0][1], 2, _mod); *equation[1][2] = exponentiate(*equation[1][1], 2, _mod); *equation[2][2] = exponentiate(*equation[2][1], 2, _mod);
     *equation[0][3] = *equation[1][3] = *equation[2][3] = 1;
     // ^ Prepared initial equations
 
@@ -56,11 +56,11 @@ int main(int argc, char **argv) {
 
     unsigned long **coefficient = UL_array_of_SIZE(K); *coefficient[0] = mod_division(*final_linear_equation[0], *final_linear_equation[2]);
     *coefficient[1] = mod_division(mod_subtract(*equation_ONE_and_TWO[0], mod_multiply(*equation_ONE_and_TWO[2], *coefficient[0])), *equation_ONE_and_TWO[1]);
-    *coefficient[2] = mod_subtract(*equation[0][0], mod_add(mod_multiply(*coefficient[1], *equation[0][1]), (mod_multiply(*coefficient[0], exponentiate(*equation[0][1], 2, _REPORT_mod())))));
+    *coefficient[2] = mod_subtract(*equation[0][0], mod_add(mod_multiply(*coefficient[1], *equation[0][1]), (mod_multiply(*coefficient[0], exponentiate(*equation[0][1], 2, _mod)))));
     // ^ Put the coefficients into an unsigned long array
 
-    fprintf(stdout, "Second-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", _REPORT_mod());
-    fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(modulus %lu)\n", *coefficient[0], *coefficient[1], *coefficient[2], _REPORT_mod());
+    fprintf(stdout, "Second-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", _mod);
+    fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(modulus %lu)\n", *coefficient[0], *coefficient[1], *coefficient[2], _mod);
     fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_GF(coefficient, 0));
     equations_DELETE(equation); return 0;
     // ^ Finalize program

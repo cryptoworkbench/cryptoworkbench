@@ -7,7 +7,7 @@ cd SOURCE_CODE/TOOLS/additive_inverse && make additive_inverse && echo "#######=
 "
 cd ../modular_exponentiation && make modular_exponentiation && echo "#######===> The following tool has been assemblied/linked: modular_exponentiation
 "
-cd ../modular_division && make modular_division && echo "#######===> The following tool has been assemblied/linked: modular_division
+cd ../divide && make divide && echo "#######===> The following tool has been assemblied/linked: divide
 "
 cd ../multiplicative_inverse && make multiplicative_inverse && echo "#######===> The following tool has been assemblied/linked: multiplicative_inverse
 "

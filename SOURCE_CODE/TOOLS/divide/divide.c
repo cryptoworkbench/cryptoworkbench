@@ -23,9 +23,9 @@ void arg_not_parsable(char **argv, int index) { const char *error_specific_messa
 }
 
 int main(int argc, char **argv) {
-    if (2 > argc || !str_represents_ul(argv[1], _REPORT_LOCATION_OF_mod())) arg_not_parsable(argv, 1); unsigned long denominator;
+    if (2 > argc || !str_represents_ul(argv[1], &_mod)) arg_not_parsable(argv, 1); unsigned long denominator;
     if (3 > argc || !str_represents_ul(argv[2], &denominator)) arg_not_parsable(argv, 2); unsigned long numerator;
     if (4 > argc || !str_represents_ul(argv[3], &numerator)) arg_not_parsable(argv, 3);
-    fprintf(stdout, "%lu / %lu \u2261 %lu (mod %lu)\n", denominator, numerator, mod_division(denominator, numerator), _REPORT_mod());
+    fprintf(stdout, "%lu / %lu \u2261 %lu (mod %lu)\n", denominator, numerator, mod_division(denominator, numerator), _mod);
     return 0;
 }

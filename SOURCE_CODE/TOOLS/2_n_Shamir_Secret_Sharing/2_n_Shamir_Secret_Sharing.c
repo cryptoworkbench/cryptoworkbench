@@ -1,3 +1,12 @@
+/* DEVELOPER NOTICE #1:
+ * In this program '_mod' does not appear, therefor I use '_REPORT_LOCATION_OF_mod()' here.
+ */
+
+/* DEVELOPER NOTICE #0:
+ * Supplying a point with coordinate x = 0, the general formula still seems to work for 2-n SSSS.
+ * I wrote '3_n_Shamir_Secret_Sharing.c' in a similar manner but for 3-n SSSS it seems to be the case that this is not always the case. (and it is if I wrote it properly).
+ */
+
 /* A first degree polynomial function is obviously of the form:
  * "f(x) = A * X^1 + B * X^0"
  *
@@ -18,11 +27,6 @@
  * The program then:
  * #1). Determines 'A' again (verifies* 'A') from these two specified points [* verification by program termination: if 'A' calculated again is not the same, the program terminates; THIS PROOF CONCEPT]
  * #2). Determines "f(0)" using the Mod value and this set of coordinates. This equates to the calculation of the linear equation (first degree polynomial) parameter 'B'
- */
-
-/* Complimentary developers notes:
- * Supplying a point with coordinate x = 0, the general formula still seems to work for 2-n SSSS.
- * I wrote '3_n_Shamir_Secret_Sharing.c' in a similar manner but for 3-n SSSS it seems to be the case that this is not always the case. (and it is if I wrote it properly).
  */
 #include <stdio.h>
 #include <unistd.h> // 'execvp()'

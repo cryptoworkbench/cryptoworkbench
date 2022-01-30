@@ -3,8 +3,7 @@
 
 #include <stdio.h>
 #include "../../libraries/functional/string.h" // needed for 'str_represents_ul()'
-#include "../../libraries/mathematics/maths.h" // needed for 'mod_inverse()'
-unsigned long _mod;
+#include "../../libraries/mathematics/maths.h" // needed for '_mod', 'mod_inverse()'
 
 const char *GENERIC_parsing_error = "%s is not something I am able to understand as a number:\n";
 const char *MOD_parsing_error = "Please provide as first argument the modulus.";
