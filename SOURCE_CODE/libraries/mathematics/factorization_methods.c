@@ -5,8 +5,8 @@
 #include "universal_group_library.h" // needed for 'BUFFER_OF_SIZE()'
 _factorization_method preferred_factorization_ENGINE; _factorization_method preferred_factorization_ENGINE_REPORT() { return preferred_factorization_ENGINE; }
 
-const char *_preferred_factorization_engine_file = "shared_preferred_factorization_engine"; const char *a = "a"; const char *b = "b"; const char *c = "c"; const char *d = "d"; const char *e = "e"; const char *f = "f";
-const char *g = "g"; const char *h = "h"; const char *_a = "efficient_trial_division"; const char *_b = "less_efficient_trial_division"; const char *_c = "trial_division";
+const char *_preferred_factorization_engine_file = "shared_preferred_factorization_engine"; const char *_A = "a"; const char *_B = "b"; const char *_C = "c"; const char *_D = "d"; const char *_E = "e"; const char *_F = "f";
+const char *_G = "g"; const char *_H = "h"; const char *_a = "efficient_trial_division"; const char *_b = "less_efficient_trial_division"; const char *_c = "trial_division";
 const char *_d = "TABLE_AIDED_efficient_trial_division"; const char *_e = "TABLE_AIDED_less_efficient_trial_division"; const char *_f = "TABLE_AIDED_trial_division";
 const char *_g = "shor_factorization"; const char *_h = "fermats_factorization_method";
 const char *_REPORT_a() { return _a; } const char *_REPORT_b() { return _b; } const char *_REPORT_c() { return _c; } const char *_REPORT_d() { return _d; } const char *_REPORT_e() { return _e; }
@@ -78,22 +78,22 @@ struct ordered_pair factorize(unsigned long number, _factorization_method altern
 
 void FACTORIZATION_METHOD_UNCHOSEN(char *arg) {
     fprintf(stderr, "Couldn't understand engine specification '%s', please specify one of the following:\n", arg);
-    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", a, _a, b, _b, c, _c);
-    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", d, _d, e, _e, f, _f);
-    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", g, _g, h, _h);
+    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", _A, _a, _B, _b, _C, _c);
+    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", _D, _d, _E, _e, _F, _f);
+    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", _G, _g, _H, _h);
     fprintf(stderr, "\n'%s' is not one of these.\n\n", arg);
     fprintf(stderr, EXIT_STATUS_GOODBYE, -2); exit(-2);
 }
 
 int translate_SUBTRACT_ONE(char *arg) {
-    if (match_variadic(arg, 2, _a, a)) return 1;
-    else if (match_variadic(arg, 2, _b, b)) return 2;
-    else if (match_variadic(arg, 2, _c, c)) return 3;
-    else if (match_variadic(arg, 2, _d, d)) return 4;
-    else if (match_variadic(arg, 2, _e, e)) return 5;
-    else if (match_variadic(arg, 2, _f, f)) return 6;
-    else if (match_variadic(arg, 2, _g, g)) return 7;
-    else if (match_variadic(arg, 2, _h, h)) return 8;
+    if (match_variadic(arg, 2, _a, _A)) return 1;
+    else if (match_variadic(arg, 2, _b, _B)) return 2;
+    else if (match_variadic(arg, 2, _c, _C)) return 3;
+    else if (match_variadic(arg, 2, _d, _D)) return 4;
+    else if (match_variadic(arg, 2, _e, _E)) return 5;
+    else if (match_variadic(arg, 2, _f, _F)) return 6;
+    else if (match_variadic(arg, 2, _g, _G)) return 7;
+    else if (match_variadic(arg, 2, _h, _H)) return 8;
     return 0;
 }
 
