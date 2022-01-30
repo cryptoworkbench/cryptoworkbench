@@ -7,8 +7,8 @@ cd SOURCE_CODE/TOOLS/additive_inverse && make additive_inverse && echo "#######=
 "
 cd ../modular_exponentiation && make modular_exponentiation && echo "#######===> The following tool has been assemblied/linked: modular_exponentiation
 "
-cd ../finite_field_division && make finite_field_division && echo "#######===> The following tool has been assemblied/linked: finite_field_division
-" # ^-- The tool 'finite_field_division' is a dependency of 'multiplicative_inverse' -->
+cd ../modular_division && make modular_division && echo "#######===> The following tool has been assemblied/linked: modular_division
+"
 cd ../multiplicative_inverse && make multiplicative_inverse && echo "#######===> The following tool has been assemblied/linked: multiplicative_inverse
 "
 echo "#######===> THE FOLLOWING BASIC TOOLS HAVE BEEN ASSEMBLED/LINKED: -->                         <===#######

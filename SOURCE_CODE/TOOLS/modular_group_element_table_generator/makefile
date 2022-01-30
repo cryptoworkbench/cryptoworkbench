@@ -14,4 +14,4 @@
 	gcc -c modular_group_element_table_generator.c -o .modular_group_element_table_generator.o
 
 modular_group_element_table_generator: ../../libraries/functional/.string.o ../../libraries/mathematics/.universal_group_library.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o .modular_group_element_table_generator.o
-	gcc ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.universal_group_library.o ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o .modular_group_element_table_generator.o -o ../../../WORKBENCH/modular_group_element_table_generator && rm .modular_group_element_table_generator.o
+	gcc ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.universal_group_library.o ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o .modular_group_element_table_generator.o -o ../../../WORKBENCH/modular_group_element_table_generator

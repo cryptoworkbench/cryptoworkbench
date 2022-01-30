@@ -3,7 +3,6 @@
 #include <sys/wait.h> // 'waitpid()'
 #include "../../libraries/functional/string.h" // 'str_represents_ul()'
 #include "../../libraries/mathematics/maths.h" // 'GCD()'
-ul mod; // < Handle library inclusions ^^
 
 const char *argv_ONE[] = {"first", "modulus"};
 const char *argv_TWO[] = {"second", "number coprime with the modulus whose multiplicative inverse you want to know"};
@@ -15,14 +14,14 @@ void argv_ERROR(char **argv, int index) {
     exit(-index);
 } // ^ used by 'main()'
 
-const char *prog_name = "finite_field_division";
+const char *prog_name = "modular_division";
 
-int main(int argc, char **argv) { // 'ul mod' is at line 4
-    if (2 > argc || !str_represents_ul(argv[1], &mod)) argv_ERROR(argv, 1); ul number_coprime_to_MOD;
-    if (3 > argc || !str_represents_ul(argv[2], &number_coprime_to_MOD)) argv_ERROR(argv, 2); ul GCD_of_arguments = GCD(number_coprime_to_MOD, mod);
+int main(int argc, char **argv) {
+    if (2 > argc || !str_represents_ul(argv[1], _REPORT_LOCATION_OF_mod())) argv_ERROR(argv, 1); ul number_coprime_to_MOD;
+    if (3 > argc || !str_represents_ul(argv[2], &number_coprime_to_MOD)) argv_ERROR(argv, 2); ul GCD_of_arguments = GCD(number_coprime_to_MOD, _REPORT_mod());
     // ^ take in supplied (MANDATORY) arguments
 
-    if (GCD_of_arguments != 1) { fprintf(stderr, "%lu shares a factor of %lu with %lu.\n\nTerminating with exit status '-3'.\n", number_coprime_to_MOD, GCD_of_arguments, mod); exit(-3); }
+    if (GCD_of_arguments != 1) { fprintf(stderr, "%lu shares a factor of %lu with %lu.\n\nTerminating with exit status '-3'.\n", number_coprime_to_MOD, GCD_of_arguments, _REPORT_mod()); exit(-3); }
     // ^ exit if the number to calculate the multiplicative inverse of is not coprime to the modulus
 
     fprintf(stdout, "Executing external tool '%s':\n", prog_name);

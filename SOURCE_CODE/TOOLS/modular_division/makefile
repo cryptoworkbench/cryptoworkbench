@@ -8,4 +8,4 @@
 	gcc -c modular_division.c -o .modular_division.o
 
 modular_division: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .modular_division.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .modular_division.o -o ../../../WORKBENCH/modular_division && rm .modular_division
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .modular_division.o -o ../../../WORKBENCH/modular_division
