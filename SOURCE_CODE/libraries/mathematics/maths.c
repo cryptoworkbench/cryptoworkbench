@@ -10,15 +10,26 @@ const char *_standard_prime_table_filename = "shared_prime_table"; char *REPORT_
 char *_open_prime_table = NULL; char *REPORT_open_prime_table() { return (char *) _open_prime_table; }
 // Two global variables and two functions for access to these global variables in other files/libraries
 
-unsigned long conditional_field_cap(unsigned long result) { return (mod) ? result % mod : result; } // < Return result if there is no N_quotient, otherwise apply modular arithmetic
+unsigned long conditional_field_cap(unsigned long result) { return (mod) ? _conditional_field_cap(result, _REPORT_mod()) : result; }
 unsigned long add(unsigned long a, unsigned long b) { return conditional_field_cap(a + b); }
 unsigned long multiply(unsigned long a, unsigned long b) { return conditional_field_cap(a * b); }
+unsigned long inverse(unsigned long element_of_additive_group) { return mod - element_of_additive_group; } // < root of the definition of subtract
+unsigned long subtract(unsigned long a, unsigned long b) { return conditional_field_cap(a + inverse(b)); }
+unsigned long modular_division(unsigned long numerator, unsigned long denominator) { return (mod) ? _modular_division(numerator, denominator, _REPORT_mod()) : _modular_division(numerator, denominator, 0); }
+// ^ Basic arithemtic functions which work on global variable 'mod'
+
+unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? result % mod_OVERRIDE : result; }
+unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? _conditional_field_cap(a + b, mod_OVERRIDE) : add(a, b); }
+unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? _conditional_field_cap(a * b, mod_OVERRIDE) : multiply(a, b); }
+unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_OVERRIDE) { return mod_OVERRIDE - element_of_additive_group; }
+unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE) { return (mod_OVERRIDE) ? _conditional_field_cap(a + _inverse(b, mod_OVERRIDE), mod_OVERRIDE) : subtract(a, b); }
+unsigned long _modular_division(unsigned long numerator, unsigned long denominator, unsigned long mod_OVERRIDE)
+{ if (mod_OVERRIDE) { while (numerator % denominator != 0) numerator += mod_OVERRIDE; return numerator / denominator; } else return numerator / denominator; };
+// ^ Basic arithemtic functions which work the same but with any MOD (maybe it would be interesting to write these recursively?)
+
 _group_operation operation_from_ID(unsigned long ID) { return (ID) ? multiply : add; }
 // .^^^ All of the functions needed for "operation_from_ID"
 
-unsigned long inverse(unsigned long element_of_additive_group) { return mod - element_of_additive_group; } // < root of the definition of subtract
-unsigned long subtract(unsigned long a, unsigned long b) { return conditional_field_cap(a + inverse(b)); }
-unsigned long modular_division(unsigned long numerator, unsigned long denominator) { while (numerator % denominator != 0) numerator += mod; return numerator / denominator; }
 // ^^^ Useful functions for (infinite) field arithmetic
 
 unsigned long exponentiate_UNRESTRICTEDLY(unsigned long base, unsigned long exponent) {
@@ -33,8 +44,8 @@ unsigned long *square_and_multiply_backbone(unsigned long base, unsigned long re
     unsigned long *backbone = (unsigned long *) malloc(sizeof(unsigned long) * (required_base_two_log + 1));
     unsigned long iterator = ADDITIVE_IDENTITY; 
 
-    backbone[iterator] = conditional_field_cap(base);
-    while (iterator < required_base_two_log) { backbone[iterator + 1] = multiply(backbone[iterator], backbone[iterator]); iterator++; }
+    backbone[iterator] = _conditional_field_cap(base, mod);
+    while (iterator < required_base_two_log) { backbone[iterator + 1] = _multiply(backbone[iterator], backbone[iterator], mod); iterator++; }
     // ^^ Regarding this second line:
     // In the case where the variable "exponent" was 0, this function would not be called
     // In the case where the variable "exponent" is 1, the while loop will not run
@@ -68,7 +79,7 @@ unsigned long least_base_TWO_log(unsigned long power_of_TWO) {
 unsigned long exponentiation_using_backbone(unsigned long *residue_list, unsigned long index, unsigned long exponent, unsigned long mod) {
     unsigned long ret_val = MULTIPLICATIVE_IDENTITY;
     while (exponent != 0) {
-	ret_val = multiply(ret_val, residue_list[index]);
+	ret_val = _multiply(ret_val, residue_list[index], mod);
 	exponent -= exponentiate_UNRESTRICTEDLY(2, index);
 	index = least_base_TWO_log(exponent);
     } return ret_val;

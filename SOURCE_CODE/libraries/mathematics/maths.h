@@ -12,13 +12,19 @@ char *REPORT_open_prime_table(); // < for access in other files to 'char * _open
 
 struct ordered_pair { unsigned long a; unsigned long b; };
 
-typedef ul* UL_ptr;
-
-unsigned long conditional_field_cap(unsigned long result);
+unsigned long conditional_field_cap(unsigned long result); unsigned long _conditional_field_cap(unsigned long result, unsigned long mod);
 unsigned long add(unsigned long a, unsigned long b);
-unsigned long subtract(unsigned long a, unsigned long b);
-unsigned long inverse(unsigned long element_of_additive_group); // yields the additive inverse of ul 'element_of_additive_group'
 unsigned long multiply(unsigned long a, unsigned long b);
+unsigned long inverse(unsigned long element_of_additive_group); // yields the additive inverse of ul 'element_of_additive_group'
+unsigned long subtract(unsigned long a, unsigned long b);
+unsigned long modular_division(unsigned long member_from_equivalence_class_representing_the_numerator, unsigned long denominator);
+
+unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_OVERRIDE);
+unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE);
+unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE);
+unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_OVERRIDE);
+unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE);
+unsigned long _modular_division(unsigned long numerator, unsigned long denominator, unsigned long mod_OVERRIDE);
 
 typedef unsigned long (*_group_operation) (unsigned long, unsigned long);
 _group_operation operation_from_ID(unsigned long ID);
@@ -49,7 +55,6 @@ unsigned long multiplicative_inverse(unsigned long a);
 
 /* Two functions for modular exponentiation */
 unsigned long least_base_TWO_log(unsigned long power_of_TWO);
-unsigned long modular_division(unsigned long member_from_equivalence_class_representing_the_numerator, unsigned long denominator);
 unsigned long **UL_array_of_SIZE(int INDEX);
 int UL_array_LENGTH(unsigned long **UL_array);
 unsigned long polynomial_over_GF(unsigned long **coefficient, unsigned long _x); // < array of coefficient pointers needs to be in reversed order to how polynomials are usually written in standard form
