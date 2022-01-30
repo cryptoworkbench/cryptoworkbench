@@ -14,7 +14,7 @@ void argv_ERROR(char **argv, int index) {
     exit(-index);
 } // ^ used by 'main()'
 
-const char *prog_name = "modular_division";
+const char *prog_name = "division";
 
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], _REPORT_LOCATION_OF_mod())) argv_ERROR(argv, 1); ul number_coprime_to_MOD;
@@ -25,12 +25,12 @@ int main(int argc, char **argv) {
     // ^ exit if the number to calculate the multiplicative inverse of is not coprime to the modulus
 
     fprintf(stdout, "Executing external tool '%s':\n", prog_name);
-    char *call_to_modular_division[] = {(char *) prog_name, argv[1], "1", argv[2], 0};
-    pid_t modular_division_PID = fork(); if (modular_division_PID == -1) { exit(-11); } // < Fork
-    if (!modular_division_PID) execvp(call_to_modular_division[0], call_to_modular_division);
-    int modular_division_exit_status_RAW; waitpid(modular_division_PID, &modular_division_exit_status_RAW, 0); // < wait for the child process to finish
+    char *call_to_division[] = {(char *) prog_name, argv[1], "1", argv[2], 0};
+    pid_t division_PID = fork(); if (division_PID == -1) { exit(-11); } // < Fork
+    if (!division_PID) execvp(call_to_division[0], call_to_division);
+    int division_exit_status_RAW; waitpid(division_PID, &division_exit_status_RAW, 0); // < wait for the child process to finish
 
-    int modular_division_exit_status = WEXITSTATUS(modular_division_exit_status_RAW);
-    if (modular_division_exit_status) fprintf(stdout, "%s returned with exit status '%i': something went wrong.\n");
+    int division_exit_status = WEXITSTATUS(division_exit_status_RAW);
+    if (division_exit_status) fprintf(stdout, "%s returned with exit status '%i': something went wrong.\n");
     return 0;
 }

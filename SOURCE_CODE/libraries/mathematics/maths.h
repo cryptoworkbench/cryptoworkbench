@@ -17,14 +17,14 @@ unsigned long mod_add(unsigned long a, unsigned long b);
 unsigned long mod_multiply(unsigned long a, unsigned long b);
 unsigned long inverse(unsigned long element_of_additive_group); // yields the additive inverse of ul 'element_of_additive_group'
 unsigned long subtract(unsigned long a, unsigned long b);
-unsigned long modular_division(unsigned long member_from_equivalence_class_representing_the_numerator, unsigned long denominator);
+unsigned long division(unsigned long member_from_equivalence_class_representing_the_numerator, unsigned long denominator);
 
 unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_OVERRIDE);
 unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE);
 unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE);
 unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_OVERRIDE);
 unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_OVERRIDE);
-unsigned long _modular_division(unsigned long numerator, unsigned long denominator, unsigned long mod_OVERRIDE);
+unsigned long _division(unsigned long numerator, unsigned long denominator, unsigned long mod_OVERRIDE);
 
 typedef unsigned long (*_group_operation) (unsigned long, unsigned long);
 _group_operation operation_from_ID(unsigned long ID);

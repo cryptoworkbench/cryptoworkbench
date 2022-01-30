@@ -19,8 +19,8 @@ char *symbol[] = {"m", "a", "b", "cardinality of field", "_base_Point.x", "_base
 struct coordinates { unsigned long x; unsigned long y; };
 struct coordinates _base_Point;
 
-unsigned long modular_division(unsigned long numerator, unsigned long denominator) { while (numerator % denominator != 0) numerator += m; return (numerator / denominator) % m; }
-unsigned long m_inv(unsigned long inv_of_inv) { return modular_division(1, inv_of_inv); } // << dependend upon ^^
+unsigned long division(unsigned long numerator, unsigned long denominator) { while (numerator % denominator != 0) numerator += m; return (numerator / denominator) % m; }
+unsigned long m_inv(unsigned long inv_of_inv) { return division(1, inv_of_inv); } // << dependend upon ^^
 unsigned long inv(unsigned long inv_of_inv) { return m - (inv_of_inv % m); }
 
 unsigned long y_calculate(unsigned long slope, unsigned long previous_x, unsigned long new_x, unsigned long previous_y) { return (((slope * ((previous_x + inv(new_x)) % m)) % m) + inv(previous_y)) % m; }
@@ -38,8 +38,8 @@ struct coordinates *point_addition(struct coordinates *p, struct coordinates *q)
     if (!(p && q)) { if (p) return p; else if (q) return q; return NULL; } // < return point when combining with ID
     else if ((p->y != q->y || p->x == 0) && p->x == q->x) { return NULL; } // < return ID upon adding inverses and upon doubling points with x = 0
     struct coordinates *r = (struct coordinates *) malloc(sizeof(struct coordinates)); unsigned long s;
-    if (p->x == q->x && p->y == q->y) s = modular_division(((3 * ((p->x * p->x) % m) % m) + a) % m, (2 * p->y) % m);
-    else s = modular_division(((p->y + (m - q->y)) % m), ((p->x + (m - q->x)) % m));
+    if (p->x == q->x && p->y == q->y) s = division(((3 * ((p->x * p->x) % m) % m) + a) % m, (2 * p->y) % m);
+    else s = division(((p->y + (m - q->y)) % m), ((p->x + (m - q->x)) % m));
     r->x = (((s * s) % m) + inv((p->x + q->x) % m)) % m; r->y = (((s * ((p->x + inv(r->x)) % m)) % m) + inv(p->y)) % m; return r;
 }
 
