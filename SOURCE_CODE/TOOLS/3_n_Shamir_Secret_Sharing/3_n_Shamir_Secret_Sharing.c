@@ -1,9 +1,16 @@
-/* This is a proof of concept for 3-n Shamir Secret Sharing (which is based on 2-nd degree polynomials over finite fields).
+/* This is my attemp at implementing 3-n Shamir Secret Sharing.
  *
  * This little project has been inspired by:
  * 1). https://www.youtube.com/watch?v=iFY5SyY3IMQ	"Secret Sharing Explained Visually" (yt channel "Art of the Problem")
  * 2). https://www.youtube.com/watch?v=K54ildEW9-Q	"How to keep an open secret with mathematics." (yt channel "Stand-up Maths")
  * 3). https://www.youtube.com/watch?v=ohc1futhFYM	"Equation of Parabola Given 3 Points (System of Equations)" (yt channel "Mario's Math Tutoring")
+ *
+ * HOWEVER, this code does not always work properly. Consider the following two arguments:
+ * 1). polynomial_over_GF 13 9 7 5  && 3_n_Shamir_Secret_Sharing 13 1 8 2 3 3 3	
+ * 2). polynomial_over_GF 13 9 7 5  && 3_n_Shamir_Secret_Sharing 13 1 8 2 3 4 8
+ *
+ * The first runs properly and correctly gives you the three variables needed.
+ * The second does not.
  */
 #include <stdio.h>
 #include <stdlib.h> // 'exit()'
