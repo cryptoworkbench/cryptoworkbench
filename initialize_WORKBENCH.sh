@@ -18,14 +18,14 @@ echo "#######===> THE FOLLOWING BASIC TOOLS HAVE BEEN ASSEMBLED/LINKED: -->     
 ~ multiplicative_inverse
 " # ^-- Notify end of first stage of compilation.
 
-cd ../polynomial_function_over_a_GF && make polynomial_function_over_a_GF && echo "#######===> The following tool has been assemblied/linked: polynomial_function_over_a_GF
+cd ../polynomial_over_GF && make polynomial_over_GF && echo "#######===> The following tool has been assemblied/linked: polynomial_over_GF
 "
 cd ../2_n_Shamir_Secret_Sharing && make 2_n_Shamir_Secret_Sharing && echo "#######===> The following tool has been assemblied/linked: 2_n_Shamir_Secret_Sharing
 "
 cd ../3_n_Shamir_Secret_Sharing && make 3_n_Shamir_Secret_Sharing && echo "#######===> The following tool has been assemblied/linked: 3_n_Shamir_Secret_Sharing
 "
 echo "#######===> SOME TOOLS FOR EXPLORING SHAMIR'S SECRET SHARING SCEME HAVE BEEN ASSEMBLED/LINKED: -->  <===#######
-~ polynomial_function_over_a_GF
+~ polynomial_over_GF
 ~ 2_n_Shamir_Secret_Sharing
 ~ 3_n_Shamir_Secret_Sharing
 " # ^-- Notify end of second stage of compilation.

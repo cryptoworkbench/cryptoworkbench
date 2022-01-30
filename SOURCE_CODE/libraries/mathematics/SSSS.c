@@ -3,13 +3,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-void equation_print(unsigned long **equation) { int i = 0;
-    printf("%lu = ", *equation[i]);
-    while (equation[i + 1]) { i++;
-	printf("%lu + ", *equation[i]);
-    } printf("%lu\n", equation[i + 1]);
-}
-
 void equation_DISCARD(unsigned long **equation) { for (int i = 0; equation[i]; i++) free(equation[i]); free(equation); }
 // ^ free()'s an equation
 
@@ -44,13 +37,6 @@ unsigned long **equation_SUBTRACT(unsigned long **equation_ONE, unsigned long **
     return resulting_equation;
 }
 
-void equation_DISPLAY(unsigned long **equation) { int LENGTH_OF_equation = equation_length(equation); 
-    char ch = 'a'; int i = LENGTH_OF_equation; printf("%lu = ", *equation[0]);
-    do { i--;
-	printf("%c%lu", ch, *equation[i]); 
-	if (i == 1) break; printf(" + "); ch++;
-    } while (1); printf("\n");
-}
 
 unsigned long equation_multiplier(unsigned long **equation_ONE, unsigned long **equation_TWO, int index) {
     int LENGTH_OF_equation_ONE = equation_length(equation_ONE); if (LENGTH_OF_equation_ONE != equation_length(equation_TWO)) exit(-1);
