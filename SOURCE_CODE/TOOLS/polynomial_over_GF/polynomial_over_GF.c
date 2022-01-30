@@ -6,7 +6,7 @@
 #include "../../libraries/mathematics/maths.h" // 'SINGULAR_polynomial_over_GF()'
 
 int main(int argc, char **argv) {
-    if (2 > argc || !str_represents_ul(argv[1], _REPORT_LOCATION_OF_mod())) { fprintf(stderr, "%s is not mod!\n", argv[1]); exit(-1); } unsigned long x;
+    if (2 > argc || !str_represents_ul(argv[1], &_mod)) { fprintf(stderr, "%s is not mod!\n", argv[1]); exit(-1); } unsigned long x;
     // ^^ Process mandatory variables
 
     unsigned long number_of_coefficients;

@@ -1,7 +1,3 @@
-/* DEVELOPER NOTICE #1:
- * In this program '_mod' does not appear, therefor I use '_REPORT_LOCATION_OF_mod()' here.
- */
-
 /* DEVELOPER NOTICE #0:
  * Supplying a point with coordinate x = 0, the general formula still seems to work for 2-n SSSS.
  * I wrote '3_n_Shamir_Secret_Sharing.c' in a similar manner but for 3-n SSSS it seems to be the case that this is not always the case. (and it is if I wrote it properly).
@@ -36,7 +32,7 @@
 #define K 2 // degree of polynomial that is resolved in other to retrieve secret encoded as contant term
 
 int main(int argc, char **argv) {
-    if (2 > argc || !str_represents_ul(argv[1], _REPORT_LOCATION_OF_mod())) { printf("%s is not mod!\n", argv[1]); exit(-1); }
+    if (2 > argc || !str_represents_ul(argv[1], &_mod)) { printf("%s is not mod!\n", argv[1]); exit(-1); }
     if (6 < argc) { ignored_arguments(argc, argv, 5); argc = 6; } // < complain about unneccesary arguments and forget about them once and for all
     unsigned long ***equation = equations_ALLOCATE(K); switch (argc) {
 	case 6: if (!str_represents_ul(argv[5], equation[1][0])) fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of second point.\n", argv[5]);

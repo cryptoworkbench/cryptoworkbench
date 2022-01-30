@@ -17,7 +17,7 @@ void argv_ERROR(char **argv, int index) {
 const char *prog_name = "mod_division";
 
 int main(int argc, char **argv) {
-    if (2 > argc || !str_represents_ul(argv[1], _REPORT_LOCATION_OF_mod())) argv_ERROR(argv, 1); ul number_coprime_to_MOD;
+    if (2 > argc || !str_represents_ul(argv[1], &_mod)) argv_ERROR(argv, 1); ul number_coprime_to_MOD;
     if (3 > argc || !str_represents_ul(argv[2], &number_coprime_to_MOD)) argv_ERROR(argv, 2); ul GCD_of_arguments = GCD(number_coprime_to_MOD, _REPORT_mod());
     // ^ take in supplied (MANDATORY) arguments
 
