@@ -4,15 +4,15 @@
 #include "../../libraries/mathematics/factorization_methods.h" // needed for 'translate_SUBTRACT_ONE()'
 #include "../../libraries/mathematics/primality_testing_scemes.h" // needed for 'SET_preferred_PRIMALITY_TEST()', 'FACTORIZATION_METHOD_UNCHOSEN()'
 
-const char *chosen_PRIMALITY_TEST() { _primality_test preferred_PRIMALITY_TEST = _REPORT_preferred_PRIMALITY_TEST();
-    if (preferred_PRIMALITY_TEST == efficient_trial_division_PRIMALITY_TEST) return _REPORT_a();
-    else if (preferred_PRIMALITY_TEST == LESS_efficient_trial_division_PRIMALITY_TEST) return _REPORT_b();
-    else if (preferred_PRIMALITY_TEST == LEAST_efficient_trial_division_PRIMALITY_TEST) return _REPORT_c();
-    else if (preferred_PRIMALITY_TEST == efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return _REPORT_d();
-    else if (preferred_PRIMALITY_TEST == LESS_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return _REPORT_e();
-    else if (preferred_PRIMALITY_TEST == LEAST_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return _REPORT_f();
-    else if (preferred_PRIMALITY_TEST == shor_factorization_PRIMALITY_TEST) return _REPORT_g();
-    else if (preferred_PRIMALITY_TEST == fermat_factorization_PRIMALITY_TEST) return _REPORT_h();
+const char *chosen_PRIMALITY_TEST() {
+    if (_preferred_PRIMALITY_TEST == efficient_trial_division_PRIMALITY_TEST) return _REPORT_a();
+    else if (_preferred_PRIMALITY_TEST == LESS_efficient_trial_division_PRIMALITY_TEST) return _REPORT_b();
+    else if (_preferred_PRIMALITY_TEST == LEAST_efficient_trial_division_PRIMALITY_TEST) return _REPORT_c();
+    else if (_preferred_PRIMALITY_TEST == efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return _REPORT_d();
+    else if (_preferred_PRIMALITY_TEST == LESS_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return _REPORT_e();
+    else if (_preferred_PRIMALITY_TEST == LEAST_efficient_trial_division_TABLE_AIDED_PRIMALITY_TEST) return _REPORT_f();
+    else if (_preferred_PRIMALITY_TEST == shor_factorization_PRIMALITY_TEST) return _REPORT_g();
+    else if (_preferred_PRIMALITY_TEST == fermat_factorization_PRIMALITY_TEST) return _REPORT_h();
     return NULL;
 }
 
