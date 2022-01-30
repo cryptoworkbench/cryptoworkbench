@@ -30,11 +30,11 @@ unsigned long exponentiate_UNRESTRICTEDLY(unsigned long base, unsigned long expo
 } // ^ Used by "exponentiate_using_backbone()", "exponentiate()"
 
 unsigned long *square_and_multiply_backbone(unsigned long base, unsigned long required_base_two_log, unsigned long mod) {
-    ul *backbone = (unsigned long *) malloc(sizeof(unsigned long) * (required_base_two_log + 1));
-    ul iterator = ADDITIVE_IDENTITY; 
+    unsigned long *backbone = (unsigned long *) malloc(sizeof(unsigned long) * (required_base_two_log + 1));
+    unsigned long iterator = ADDITIVE_IDENTITY; 
 
-    backbone[iterator] = base % mod;
-    while (iterator < required_base_two_log) { backbone[iterator + 1] = (backbone[iterator] * backbone[iterator]) % mod; iterator++; }
+    backbone[iterator] = conditional_field_cap(base);
+    while (iterator < required_base_two_log) { backbone[iterator + 1] = multiply(backbone[iterator], backbone[iterator]); iterator++; }
     // ^^ Regarding this second line:
     // In the case where the variable "exponent" was 0, this function would not be called
     // In the case where the variable "exponent" is 1, the while loop will not run
@@ -66,21 +66,18 @@ unsigned long least_base_TWO_log(unsigned long power_of_TWO) {
 } // ^ Used by "exponentiation_using_backbone()", "exponentiate()"
 
 unsigned long exponentiation_using_backbone(unsigned long *residue_list, unsigned long index, unsigned long exponent, unsigned long mod) {
-    ul return_value = MULTIPLICATIVE_IDENTITY;
+    unsigned long ret_val = MULTIPLICATIVE_IDENTITY;
     while (exponent != 0) {
-	return_value *= residue_list[index]; return_value %= mod;
+	ret_val = multiply(ret_val, residue_list[index]);
 	exponent -= exponentiate_UNRESTRICTEDLY(2, index);
 	index = least_base_TWO_log(exponent);
-    } return return_value;
+    } return ret_val;
 } // ^ Used by "exponentiate()"
 
-unsigned long exponentiate(unsigned long base, unsigned long exponent, unsigned long mod) { if (mod == 0) return exponentiate_UNRESTRICTEDLY(base, exponent);
-    if (base == 0 || exponent == 0) return 1;
-    unsigned long mininum_log = least_base_TWO_log(exponent);
-    unsigned long *backbone = square_and_multiply_backbone(base, mininum_log, mod);
-    ul exponentiation_RESULT = exponentiation_using_backbone(backbone, mininum_log, exponent, mod);
-    free(backbone); return exponentiation_RESULT;
-} // ^ Used by N_operation
+unsigned long exponentiate(unsigned long base, unsigned long exponent, unsigned long mod) {
+    if (base == 0 || exponent == 0) return 1; unsigned long mininum_log = least_base_TWO_log(exponent); unsigned long *backbone = square_and_multiply_backbone(base, mininum_log, mod);
+    unsigned long ret_val = exponentiation_using_backbone(backbone, mininum_log, exponent, mod); free(backbone); return ret_val;
+} // ^ 'N_operation()'
 
 unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return add(a, b); case 1: return multiply(a, b); default: return exponentiate(a, b, mod); }; }
 
@@ -153,12 +150,12 @@ unsigned long DOWN_ROUNDED_second_root(unsigned long number) { struct ordered_pa
 
 char *sieve_of_eratosthenes(unsigned long limit) {
     char *ret_val = (char *) malloc(sizeof(char) * (limit - 1)); // we allocate a spot less because I do not see the number one as a prime, or perhaps because it isn't ... ... ...
-    ul i; for (i = 2; i <= limit; i++) ret_val[i - 2] = 1; for (i = 2; i * i <= limit; i++) for (ul j = i; j * i <= limit; j++) ret_val[(j * i) - 2] = 0;
+    unsigned long i; for (i = 2; i <= limit; i++) ret_val[i - 2] = 1; for (i = 2; i * i <= limit; i++) for (unsigned long j = i; j * i <= limit; j++) ret_val[(j * i) - 2] = 0;
     return ret_val;
 } // ^ supposed to be used in conjunction with 'primes_printed_from_sieve_array_to_FS()'
 
-unsigned long primes_printed_from_sieve_array_to_FS(char *sieve, unsigned long limit, FILE *FS) { ul ret_val = ADDITIVE_IDENTITY;
-    for (ul i = 2; i < limit; i++) if (sieve[i - 2]) { fprintf(FS, "%lu\n", i); ret_val++; } free(sieve); // it is quintisentially a difficult problem to predict the last prime in the sieve unfortunately
+unsigned long primes_printed_from_sieve_array_to_FS(char *sieve, unsigned long limit, FILE *FS) { unsigned long ret_val = ADDITIVE_IDENTITY;
+    for (unsigned long i = 2; i < limit; i++) if (sieve[i - 2]) { fprintf(FS, "%lu\n", i); ret_val++; } free(sieve); // it is quintisentially a difficult problem to predict the last prime in the sieve unfortunately
     return ret_val;
 }
 
