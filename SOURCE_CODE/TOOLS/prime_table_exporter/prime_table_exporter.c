@@ -11,10 +11,10 @@ void error_and_exit(char *argv_one) { int exit_status = - 1;
 }
 
 int main(int argc, char **argv) {
-    if (2 > argc || !str_represents_ul(argv[1], &_mod)) error_and_exit(argv[1]); char *output_filename = _REPORT_standard_prime_table_filename();
+    if (2 > argc || !str_represents_ul(argv[1], &mod_)) error_and_exit(argv[1]); char *output_filename = _REPORT_standard_prime_table_filename();
     if (2 < argc) output_filename = argv[2];
     // ^ Deal with user input
 
     FILE *FS_to_external_prime_table = fopen(output_filename, "w"); // overwritten if already exists: outputting to the same output file again with a lesser 'mod' shrinks the prime table
-    fprintf(stdout, "Exported %lu primes to external file '%s' (which is all primes less than %lu).\n", primes_printed_from_sieve_array_to_FS(sieve_of_eratosthenes(_mod), _mod, FS_to_external_prime_table), output_filename, _mod); fclose(FS_to_external_prime_table); return 0;
+    fprintf(stdout, "Exported %lu primes to external file '%s' (which is all primes less than %lu).\n", primes_printed_from_sieve_array_to_FS(sieve_of_eratosthenes(mod_), mod_, FS_to_external_prime_table), output_filename, mod_); fclose(FS_to_external_prime_table); return 0;
 }

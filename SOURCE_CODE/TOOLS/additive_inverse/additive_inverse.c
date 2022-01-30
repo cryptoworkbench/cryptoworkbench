@@ -3,7 +3,7 @@
 
 #include <stdio.h>
 #include "../../libraries/functional/string.h" // needed for 'str_represents_ul()'
-#include "../../libraries/mathematics/maths.h" // needed for '_mod', 'mod_inverse()'
+#include "../../libraries/mathematics/maths.h" // needed for 'mod_', 'mod_inverse()'
 
 const char *GENERIC_parsing_error = "%s is not something I am able to understand as a number:\n";
 const char *MOD_parsing_error = "Please provide as first argument the modulus.";
@@ -24,10 +24,10 @@ void arg_not_parsable(char **argv, int index) { const char *error_specific_messa
 }
 
 int main(int argc, char **argv) {
-    if (2 > argc || !str_represents_ul(argv[1], &_mod)) arg_not_parsable(argv, 1); unsigned long inverse_of_additve_inverse;
+    if (2 > argc || !str_represents_ul(argv[1], &mod_)) arg_not_parsable(argv, 1); unsigned long inverse_of_additve_inverse;
     if (3 > argc || !str_represents_ul(argv[2], &inverse_of_additve_inverse)) arg_not_parsable(argv, 2);
     unsigned long additive_inverse = mod_inverse(inverse_of_additve_inverse);
-    fprintf(stdout, "x - %lu \u2261 x + %lu (mod %lu)\n\n", inverse_of_additve_inverse, additive_inverse, _mod);
-    fprintf(stdout, "The additive inverse of %lu under modulus %lu arithmetic is %lu.\n", inverse_of_additve_inverse, _mod, additive_inverse);
+    fprintf(stdout, "x - %lu \u2261 x + %lu (mod %lu)\n\n", inverse_of_additve_inverse, additive_inverse, mod_);
+    fprintf(stdout, "The additive inverse of %lu under modulus %lu arithmetic is %lu.\n", inverse_of_additve_inverse, mod_, additive_inverse);
     return 0;
 }

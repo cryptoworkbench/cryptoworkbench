@@ -32,7 +32,7 @@
 #define K 2 // degree of polynomial that is resolved in other to retrieve secret encoded as contant term
 
 int main(int argc, char **argv) {
-    if (2 > argc || !str_represents_ul(argv[1], &_mod)) { printf("%s is not mod!\n", argv[1]); exit(-1); }
+    if (2 > argc || !str_represents_ul(argv[1], &mod_)) { printf("%s is not mod!\n", argv[1]); exit(-1); }
     if (6 < argc) { ignored_arguments(argc, argv, 5); argc = 6; } // < complain about unneccesary arguments and forget about them once and for all
     unsigned long ***equation = equations_ALLOCATE(K); switch (argc) {
 	case 6: if (!str_represents_ul(argv[5], equation[1][0])) fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of second point.\n", argv[5]);
@@ -51,8 +51,8 @@ int main(int argc, char **argv) {
     *coefficient[0] = mod_division(*equation_ONE_WITH_TWO[0], *equation_ONE_WITH_TWO[1]); // coefficient a
     *coefficient[1] = mod_subtract(*equation[0][0], mod_multiply(*equation[0][1], *coefficient[0])); // coefficient b
 
-    fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", _mod);
-    fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", *coefficient[0], *coefficient[1], _mod);
+    fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", mod_);
+    fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", *coefficient[0], *coefficient[1], mod_);
     fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_GF(coefficient, 0)); // 0 = x
     equation_DISCARD(coefficient);
     equations_DELETE(equation); return 0;

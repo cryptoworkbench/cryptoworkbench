@@ -20,13 +20,13 @@ unsigned long _division(unsigned long numerator, unsigned long denominator, unsi
 };
 // ^ Basic arithemtic functions for (in)finite field operations
 
-unsigned long conditional_field_cap(unsigned long result) { return (_mod) ? _conditional_field_cap(result, _mod) : result; }
+unsigned long conditional_field_cap(unsigned long result) { return (mod_) ? _conditional_field_cap(result, mod_) : result; }
 unsigned long mod_add(unsigned long a, unsigned long b) { return conditional_field_cap(a + b); }
 unsigned long mod_multiply(unsigned long a, unsigned long b) { return conditional_field_cap(a * b); }
-unsigned long mod_inverse(unsigned long element_of_additive_group) { return conditional_field_cap(_mod - element_of_additive_group); } // < root of the definition of mod_subtract
+unsigned long mod_inverse(unsigned long element_of_additive_group) { return conditional_field_cap(mod_ - element_of_additive_group); } // < root of the definition of mod_subtract
 unsigned long mod_subtract(unsigned long a, unsigned long b) { return conditional_field_cap(a + mod_inverse(b)); }
-unsigned long mod_division(unsigned long numerator, unsigned long denominator) { return (_mod) ? _division(numerator, denominator, _mod) : _division(numerator, denominator, 0); }
-// ^ Wrappers for the previous block of functions which always use the global variable '_mod'
+unsigned long mod_division(unsigned long numerator, unsigned long denominator) { return (mod_) ? _division(numerator, denominator, mod_) : _division(numerator, denominator, 0); }
+// ^ Wrappers for the previous block of functions which always use the global variable 'mod_'
 
 _group_operation operation_from_ID(unsigned long ID) { return (ID) ? mod_multiply : mod_add; }
 // .^^^ All of the functions needed for "operation_from_ID"
@@ -41,12 +41,12 @@ unsigned long exponentiate_UNRESTRICTEDLY(unsigned long base, unsigned long expo
     return exponentiation_RESULT;
 } // ^ Used by "exponentiate_using_backbone()", "exponentiate()"
 
-unsigned long *square_and_multiply_backbone(unsigned long base, unsigned long required_base_two_log, unsigned long _mod) {
+unsigned long *square_and_multiply_backbone(unsigned long base, unsigned long required_base_two_log, unsigned long mod_) {
     unsigned long *backbone = (unsigned long *) malloc(sizeof(unsigned long) * (required_base_two_log + 1));
     unsigned long iterator = ADDITIVE_IDENTITY; 
 
-    backbone[iterator] = _conditional_field_cap(base, _mod);
-    while (iterator < required_base_two_log) { backbone[iterator + 1] = _multiply(backbone[iterator], backbone[iterator], _mod); iterator++; }
+    backbone[iterator] = _conditional_field_cap(base, mod_);
+    while (iterator < required_base_two_log) { backbone[iterator + 1] = _multiply(backbone[iterator], backbone[iterator], mod_); iterator++; }
     // ^^ Regarding this second line:
     // In the case where the variable "exponent" was 0, this function would not be called
     // In the case where the variable "exponent" is 1, the while loop will not run
@@ -77,21 +77,21 @@ unsigned long least_base_TWO_log(unsigned long power_of_TWO) {
     return return_value;
 } // ^ Used by "exponentiation_using_backbone()", "exponentiate()"
 
-unsigned long exponentiation_using_backbone(unsigned long *residue_list, unsigned long index, unsigned long exponent, unsigned long _mod) {
+unsigned long exponentiation_using_backbone(unsigned long *residue_list, unsigned long index, unsigned long exponent, unsigned long mod_) {
     unsigned long ret_val = MULTIPLICATIVE_IDENTITY;
     while (exponent != 0) {
-	ret_val = _multiply(ret_val, residue_list[index], _mod);
+	ret_val = _multiply(ret_val, residue_list[index], mod_);
 	exponent -= exponentiate_UNRESTRICTEDLY(2, index);
 	index = least_base_TWO_log(exponent);
     } return ret_val;
 } // ^ Used by "exponentiate()"
 
-unsigned long exponentiate(unsigned long base, unsigned long exponent, unsigned long _mod) {
-    if (base == 0 || exponent == 0) return 1; unsigned long mininum_log = least_base_TWO_log(exponent); unsigned long *backbone = square_and_multiply_backbone(base, mininum_log, _mod);
-    unsigned long ret_val = exponentiation_using_backbone(backbone, mininum_log, exponent, _mod); free(backbone); return ret_val;
+unsigned long exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_) {
+    if (base == 0 || exponent == 0) return 1; unsigned long mininum_log = least_base_TWO_log(exponent); unsigned long *backbone = square_and_multiply_backbone(base, mininum_log, mod_);
+    unsigned long ret_val = exponentiation_using_backbone(backbone, mininum_log, exponent, mod_); free(backbone); return ret_val;
 } // ^ 'N_operation()'
 
-unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return mod_add(a, b); case 1: return mod_multiply(a, b); default: return exponentiate(a, b, _mod); }; }
+unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return mod_add(a, b); case 1: return mod_multiply(a, b); default: return exponentiate(a, b, mod_); }; }
 
 unsigned long **UL_array_of_SIZE(int SIZE) {
     unsigned long **ret_val = (unsigned long **) malloc(sizeof(unsigned long *) * (SIZE + 1)); ret_val[SIZE] = NULL;
@@ -147,9 +147,9 @@ unsigned long extended_gcd(unsigned long a, unsigned long b, unsigned long *x, u
 
 unsigned long multiplicative_inverse(unsigned long a) { // Yield a^-1 mod b
     unsigned long x, y;
-    extended_gcd(a, _mod, &x, &y);
+    extended_gcd(a, mod_, &x, &y);
 
-    return _mod + x;
+    return mod_ + x;
 }
 
 unsigned long least_common_multiple(unsigned long a, unsigned long b) {
