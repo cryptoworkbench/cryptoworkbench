@@ -7,8 +7,8 @@
 
 typedef unsigned long ul;
 unsigned long _REPORT_mod(); unsigned long *_REPORT_LOCATION_OF_mod();
-char *REPORT_standard_prime_table_filename(); // < for access in other files to 'const char pointer standard_prime_table_filename'.
-char *REPORT_open_prime_table(); // < for access in other files to 'char * _opened_prime_table' (which gets initialied to NULL).
+char *_REPORT_standard_prime_table_filename(); // < for access in other files to 'const char pointer standard_prime_table_filename'.
+char *_REPORT_open_prime_table(); // < for access in other files to 'char * _opened_prime_table' (which gets initialied to NULL).
 
 struct ordered_pair { unsigned long a; unsigned long b; };
 

@@ -57,7 +57,7 @@ echo "#######===> SOME MORE TOOLS HAVE BEEN ASSEMBLED/LINKED: -->               
 " # ^-- Notify end of third stage of compilation.
 
 # ALSO FIX THIS ONE!: cd ../Wipe_ARCHIVE && make Wipe_ARCHIVE && echo "#######===> The following tool has been assemblied/linked: Wipe_ARCHIVE
-"
+#"
 cd ../View_LOGBOOK && make View_LOGBOOK && echo "#######===> The following tool has been assemblied/linked: View_LOGBOOK
 "
 echo "#######===> THE LABORATORY HOUSEHOLD EXECUTABLES HAVE BEEN ASSEMBLED/LINKED, NAMELY: -->             <===#######

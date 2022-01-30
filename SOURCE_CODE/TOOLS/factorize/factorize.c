@@ -20,11 +20,11 @@ _factorization_method initialize(unsigned long composite) { _factorization_metho
     else if (preferred_factorization_ENGINE == LESS_efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(composite, 2), composite); }
     else if (preferred_factorization_ENGINE == efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(composite, 1), composite); }
     else if (preferred_factorization_ENGINE == LEAST_efficient_trial_division_TABLE_AIDED)
-    { fprintf(stdout, "Using prime table aided trial division (with '%s')", REPORT_standard_prime_table_filename()); domain_display(trial_limit(composite, 3), composite); }
+    { fprintf(stdout, "Using prime table aided trial division (with '%s')", _REPORT_standard_prime_table_filename()); domain_display(trial_limit(composite, 3), composite); }
     else if (preferred_factorization_ENGINE == LESS_efficient_trial_division_TABLE_AIDED)
-    { fprintf(stdout, "Using prime table aided trial division (with '%s')", REPORT_standard_prime_table_filename()); domain_display(trial_limit(composite, 2), composite); }
+    { fprintf(stdout, "Using prime table aided trial division (with '%s')", _REPORT_standard_prime_table_filename()); domain_display(trial_limit(composite, 2), composite); }
     else if (preferred_factorization_ENGINE == efficient_trial_division_TABLE_AIDED)
-    { fprintf(stdout, "Using prime table aided trial division (with '%s')", REPORT_standard_prime_table_filename()); domain_display(trial_limit(composite, 1), composite); }
+    { fprintf(stdout, "Using prime table aided trial division (with '%s')", _REPORT_standard_prime_table_filename()); domain_display(trial_limit(composite, 1), composite); }
     else if (preferred_factorization_ENGINE == shor_factorization) { fprintf(stdout, "Applying Shor's factorization algorithm for quantum computers."); }
     else fprintf(stdout, "Using Fermat's factorization method.");
     return preferred_factorization_ENGINE;
