@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
     *equation[0][K] = *equation[1][K] = 1; unsigned long **equation_ONE_WITH_TWO = coefficient_cancel(equation[0], equation[1], 2);
     // ^ Prepare equations
 
-    unsigned long **coefficient = UL_array_with_INDEX(K);
+    unsigned long **coefficient = UL_array_of_SIZE(K);
     *coefficient[0] = modular_division(*equation_ONE_WITH_TWO[0], *equation_ONE_WITH_TWO[1]); // coefficient a
     *coefficient[1] = subtract(*equation[0][0], multiply(*equation[0][1], *coefficient[0])); // coefficient b
 

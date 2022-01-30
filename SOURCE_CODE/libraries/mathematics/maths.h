@@ -50,6 +50,7 @@ unsigned long multiplicative_inverse(unsigned long a);
 /* Two functions for modular exponentiation */
 unsigned long least_base_TWO_log(unsigned long power_of_TWO);
 unsigned long modular_division(unsigned long member_from_equivalence_class_representing_the_numerator, unsigned long denominator);
+int UL_array_LENGTH(unsigned long **UL_array);
 unsigned long polynomial_over_GF(unsigned long **coefficient, unsigned long _x); // < array of coefficient pointers needs to be in reversed order to how polynomials are usually written in standard form
 unsigned long least_common_multiple(unsigned long a, unsigned long b);
 struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *to_be_updated, unsigned long minimum);
