@@ -91,8 +91,18 @@ unsigned long exponentiation_using_backbone(unsigned long *residue_list, unsigne
 } // ^ Used by "_exponentiate()"
 
 unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_) {
-    if (base == 0 || exponent == 0) return 1; unsigned long mininum_log = least_base_TWO_log(exponent); unsigned long *backbone = square_and_multiply_backbone(base, mininum_log, mod_);
-    unsigned long ret_val = exponentiation_using_backbone(backbone, mininum_log, exponent, mod_); free(backbone); return ret_val;
+    if (base == 0 || exponent == 0) return 1;
+    unsigned long minimum_log = least_base_TWO_log(exponent);
+    unsigned long *backbone = (unsigned long *) malloc(sizeof(unsigned long) * (minimum_log + 1));
+    unsigned long i = ADDITIVE_IDENTITY; backbone[i] = _conditional_field_cap(base, mod_); while (i < minimum_log) { backbone[i + 1] = _multiply(backbone[i], backbone[i], mod_); i++; }
+    // ^ Make the backbone
+
+    unsigned long ret_val = MULTIPLICATIVE_IDENTITY;
+    while (exponent != 0) {
+	ret_val = _multiply(ret_val, backbone[minimum_log], mod_);
+	exponent -= __HIDDEN__regular_exponentiation_function(2, minimum_log);
+	minimum_log = least_base_TWO_log(exponent);
+    } free(backbone); return ret_val;
 } // ^ 'N_operation()'
 
 
