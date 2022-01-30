@@ -30,9 +30,6 @@
 #include "../../libraries/mathematics/maths.h" // 'inverse()'
 #include "../../libraries/mathematics/SSSS.h"
 #define K 2 // degree of polynomial that is resolved in other to retrieve secret encoded as contant term
-#define EXTERNAL_PROGRAM "polynomial_function_map_over_GF"
-
-void equation_print(unsigned long **equation) { printf("%lu = ", *equation[0]); int i = 1; while (equation[i]) { printf("%lu + ", *equation[i]); i++; } printf("c"); }
 
 int main(int argc, char **argv) {
     if (2 > argc || !str_represents_ul(argv[1], _REPORT_LOCATION_OF_mod())) { printf("%s is not mod!\n", argv[1]); exit(-1); }

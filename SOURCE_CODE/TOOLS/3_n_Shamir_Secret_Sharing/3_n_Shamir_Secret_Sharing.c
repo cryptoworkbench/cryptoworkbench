@@ -12,20 +12,11 @@
 #include "../../libraries/mathematics/SSSS.h"
 #define K 3
 
-unsigned long a, b, c;
-
-void C_reduce() { if (c >= _REPORT_mod()) { c%=_REPORT_mod(); fprintf(stdout, "The secret has been reduced by mod %lu into the congruent secret %lu.\n\n", _REPORT_mod(), c); } }
-
 char *one = "%s is not a suitable value for the field modulus!\n\nExiting '-%lu'.\n";
-char *two = "%s is not a suitable value for the second-degree polynomial parameter 'a'!\n\nExiting '-%lu'.\n";
-char *three = "%s is not a suitable value for the second-degree polynomial parameter 'b'!\n\nExiting '-%lu'.\n";
-char *intermediate_error = "The value that I inferred from coordinate points for variable '%c' did not correspond to the variable '%c' that was used to plot the points. %lu != %lu. Exiting '-%lu'.\n";
 
 void argv_ERROR(unsigned long index, char **argv) {
     char *error; switch (index) {
-	case 1: error = one; break;
-	case 2: error = two; break;
-	case 3: error = three;
+	case 1: error = one;
     }; fprintf(stderr, error, argv[index], index);
     exit(-index);
 }

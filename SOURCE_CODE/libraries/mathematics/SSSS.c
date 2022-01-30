@@ -3,6 +3,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+void equation_print(unsigned long **equation) {
+    printf("%lu = ", *equation[0]); int i = 1; while (equation[i]) { printf("%lu + ", *equation[i]); i++; } printf("\n"); }
+
 void equation_DISCARD(unsigned long **equation) { for (int i = 0; equation[i]; i++) free(equation[i]); free(equation); }
 // ^ free()'s an equation
 
