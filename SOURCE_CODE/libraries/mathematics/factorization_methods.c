@@ -4,7 +4,6 @@
 #include "maths.h" // needed for 'DOWN_ROUNDED_second_root()'
 #include "universal_group_library.h" // needed for 'BUFFER_OF_SIZE()'
 
-_factorization_method _REPORT_preferred_factorization_ENGINE() { return _preferred_factorization_ENGINE; }
 const char *_preferred_factorization_engine_file = "shared_preferred_factorization_engine"; const char *_REPORT_preferred_factorization_engine_file() { return _preferred_factorization_engine_file; }
 const char *_a = "efficient_trial_division"; const char *_b = "less_efficient_trial_division"; const char *_c = "trial_division"; const char *_d = "TABLE_AIDED_efficient_trial_division";
 const char *_e = "TABLE_AIDED_less_efficient_trial_division"; const char *_f = "TABLE_AIDED_trial_division"; const char *_g = "shor_factorization"; const char *_h = "fermats_factorization_method";
