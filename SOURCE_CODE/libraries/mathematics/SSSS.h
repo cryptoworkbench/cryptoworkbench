@@ -1,6 +1,5 @@
 /* The reason I make this library is because I want to make a general K-n SSSS program. */
 void equation_DISCARD(unsigned long **equation);
-unsigned long **UL_array_of_SIZE(int INDEX);
 unsigned long **equation_ADD(unsigned long **equation_ONE, unsigned long **equation_TWO);
 unsigned long **equation_MULTIPLY(unsigned long **equation, unsigned long multiplier);
 unsigned long **equation_NEGATIVE(unsigned long **equation);

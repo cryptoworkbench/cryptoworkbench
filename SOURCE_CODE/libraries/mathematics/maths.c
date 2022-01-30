@@ -81,6 +81,11 @@ unsigned long exponentiate(unsigned long base, unsigned long exponent, unsigned 
 
 unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return add(a, b); case 1: return multiply(a, b); default: return exponentiate(a, b, mod); }; }
 
+unsigned long **UL_array_of_SIZE(int INDEX) {
+    unsigned long **ret_val = (unsigned long **) malloc(sizeof(unsigned long *) * (INDEX + 1)); ret_val[INDEX] = NULL;
+    for (int i = 0; i < INDEX; i++) ret_val[i] = (unsigned long *) malloc(sizeof(unsigned long)); return ret_val;
+}
+
 int UL_array_LENGTH(unsigned long **UL_array) { int equation_length = 0; while (UL_array[equation_length]) equation_length++; return equation_length; }
 
 unsigned long polynomial_over_GF(unsigned long **COEFFICIENT_array, unsigned long _x) {

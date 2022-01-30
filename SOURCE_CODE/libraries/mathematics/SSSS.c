@@ -6,11 +6,6 @@
 void equation_DISCARD(unsigned long **equation) { for (int i = 0; equation[i]; i++) free(equation[i]); free(equation); }
 // ^ free()'s an equation
 
-unsigned long **UL_array_of_SIZE(int INDEX) {
-    unsigned long **ret_val = (unsigned long **) malloc(sizeof(unsigned long *) * (INDEX + 1)); ret_val[INDEX] = NULL;
-    for (int i = 0; i < INDEX; i++) ret_val[i] = (unsigned long *) malloc(sizeof(unsigned long)); return ret_val;
-}
-
 unsigned long **equation_ADD(unsigned long **equation_ONE, unsigned long **equation_TWO) { int LENGTH_OF_equation_ONE = UL_array_LENGTH(equation_ONE); int LENGTH_OF_equation_TWO = UL_array_LENGTH(equation_TWO);
     if (LENGTH_OF_equation_ONE != LENGTH_OF_equation_TWO) { fprintf(stderr, "equations had different length: %i vs %i", LENGTH_OF_equation_ONE, LENGTH_OF_equation_TWO); exit(-2); }
     unsigned long **resulting_equation = UL_array_of_SIZE(LENGTH_OF_equation_ONE);
