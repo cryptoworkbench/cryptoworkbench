@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdarg.h>
 #define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
 #define PRIME_TABLE_UNAVAILABLE_ERROR "Failed to open the prime table '%s'.\n\n"
@@ -13,11 +10,11 @@ struct ordered_pair { unsigned long a; unsigned long b; };
 
 unsigned long mod_conditional_field_cap(unsigned long result); unsigned long _conditional_field_cap(unsigned long result, unsigned long mod);
 unsigned long mod_add(unsigned long a, unsigned long b);
-unsigned long mod_multiply(unsigned long a, unsigned long b);
-unsigned long mod_inverse(unsigned long element_of_additive_group); // yields the additive mod_inverse of ul 'element_of_additive_group'
+unsigned long mod_inverse(unsigned long element_of_additive_group); // 1).
 unsigned long mod_subtract(unsigned long a, unsigned long b);
+unsigned long mod_multiply(unsigned long a, unsigned long b);
 unsigned long mod_divide(unsigned long member_from_equivalence_class_representing_the_numerator, unsigned long denominator);
-unsigned long mod_exponentiate(unsigned long base, unsigned long exponent);
+unsigned long mod_exponentiate(unsigned long base, unsigned long exponent); // 2).
 
 unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_);
 unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_);
@@ -30,7 +27,7 @@ typedef unsigned long (*_group_operation) (unsigned long, unsigned long);
 _group_operation operation_from_ID(unsigned long ID);
 
 unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_);
-unsigned long exponentiate_UNRESTRICTEDLY(unsigned long base, unsigned long exponent); // << normal finite field exponentiation depends upon this ):
+unsigned long __exponentiate_UNCAPPED(unsigned long base, unsigned long exponent); // < a regular procedural exponentiation function which is at the base of all exponentiation done through the project
 unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID);
 // ^^^ Combine them all
 
@@ -41,19 +38,6 @@ unsigned long totient(unsigned long a);
 
 unsigned long extended_gcd(unsigned long a, unsigned long b, unsigned long *x, unsigned long *y);
 unsigned long multiplicative_inverse(unsigned long a);
-
-/* A simple exponentiation function which raises base to exponent.
- * 
- * Date type inputs are both unsigned, so we only need to watch these two potential exceptions:
- * Base is equal to the additive identity (0), in this case the resulting number from the exponentiation is always 0, because 0 multiplied by itself any amount of times will equal 0.
- * Base is equal to the multiplicative identity (1), in this case the resulting number from the exponentiation is always 1, because 1 multiplied by itself any amount of times will equal 1.
- *
- * Both I have been cognizant of in the design of this exponentiation function.
- *
- * Ps.
- * Returns the multiplicative identity when the exponent is 0.*/
-
-/* Two functions for modular exponentiation */
 unsigned long least_base_TWO_log(unsigned long power_of_TWO);
 unsigned long **UL_array_of_SIZE(int SIZE);
 int UL_array_SIZE(unsigned long **UL_array);
@@ -67,3 +51,8 @@ unsigned long primes_printed_from_sieve_array_to_FS(char *sieve, unsigned long l
 FILE *prime_table_open(char *prime_table_filename); // < I want this to eventually try to cooperate with the logbook instead of stderr
 void prime_table_close(FILE *prime_table); // < closes FS and resets char * variable '_open_prime_table' to NULL
 int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q);
+
+/* Supplemantary notes:
+ * 1). The multiplicative inverse is very different from the additive inverse, check the function 'multiplicative_inverse' for this problem.
+ * 2). _exponentiate() always uses the square and multiply method
+ */

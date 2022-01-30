@@ -50,7 +50,7 @@ unsigned long shor_factorization(unsigned long presumed_composite) {
 	unsigned long _GCD = GCD(presumed_composite, a_); if (_GCD != 1) return _GCD;
 	// ^ return when we find a number less than 'presumed_composite' which proves that 'presumed_composite' has a divisor greater than one (namely, the divisor it shared in common with this number)
 	unsigned long period_of_a_ = 1; for (unsigned long a_power = a_; a_power != MULTIPLICATIVE_IDENTITY; a_power *= a_, a_power %= presumed_composite) period_of_a_++; if (period_of_a_ % 2 == 1) continue;
-	unsigned long a_power = exponentiate_UNRESTRICTEDLY(a_, period_of_a_ / 2); if (presumed_composite == a_power + 1) continue; return GCD(presumed_composite, a_power + 1);
+	unsigned long a_power = _exponentiate(a_, period_of_a_ / 2, 0); if (presumed_composite == a_power + 1) continue; return GCD(presumed_composite, a_power + 1);
     }
 } // dependency of 'factorization_method()'
 

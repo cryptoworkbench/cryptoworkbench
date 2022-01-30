@@ -1,8 +1,11 @@
 /* This library contains all the math functions which are not verbose.
  *
  * See the header file for function descriptions. */
-#include "maths.h" // needed for function headers and for the definition PRIME_TABLE_UNAVAILABLE_ERROR
-#include "../functional/string.h" // needed for the definition EXIT_STATUS_GOODBYE
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include "maths.h"
+#include "../functional/string.h"
 
 const char *_standard_prime_table_filename = "shared_prime_table";
 char *_REPORT_standard_prime_table_filename() { return (char *) _standard_prime_table_filename; }
@@ -11,9 +14,9 @@ char *_open_prime_table = NULL; char *_REPORT_open_prime_table() { return (char 
 
 unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_) { return (mod_) ? result % mod_ : result; }
 unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_) { return (mod_) ? _conditional_field_cap(a + b, mod_) : mod_add(a, b); }
-unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_) { return (mod_) ? _conditional_field_cap(a * b, mod_) : mod_multiply(a, b); }
 unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_) { return _conditional_field_cap(mod_ - element_of_additive_group, mod_); }
 unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_) { return (mod_) ? _conditional_field_cap(a + _inverse(b, mod_), mod_) : mod_subtract(a, b); }
+unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_) { return (mod_) ? _conditional_field_cap(a * b, mod_) : mod_multiply(a, b); }
 unsigned long _divide(unsigned long numerator, unsigned long denominator, unsigned long mod_) {
     if (mod_) while (numerator % denominator != 0) numerator += mod_;
     return _conditional_field_cap(numerator / denominator, mod_);
@@ -26,6 +29,7 @@ unsigned long mod_multiply(unsigned long a, unsigned long b) { return mod_condit
 unsigned long mod_inverse(unsigned long element_of_additive_group) { return mod_conditional_field_cap(mod_ - element_of_additive_group); } // < root of the definition of mod_subtract
 unsigned long mod_subtract(unsigned long a, unsigned long b) { return mod_conditional_field_cap(a + mod_inverse(b)); }
 unsigned long mod_divide(unsigned long numerator, unsigned long denominator) { return (mod_) ? _divide(numerator, denominator, mod_) : _divide(numerator, denominator, 0); }
+unsigned long mod_exponentiate(unsigned long base, unsigned long exponent) { return (mod_) ? _exponentiate(base, exponent, mod_) : _exponentiate(base, exponent, 0); }
 // ^ Wrappers for the previous block of functions which always use the global variable 'mod_'
 
 _group_operation operation_from_ID(unsigned long ID) { return (ID) ? mod_multiply : mod_add; }
@@ -33,7 +37,7 @@ _group_operation operation_from_ID(unsigned long ID) { return (ID) ? mod_multipl
 
 // ^^^ Useful functions for (infinite) field arithmetic
 
-unsigned long exponentiate_UNRESTRICTEDLY(unsigned long base, unsigned long exponent) {
+unsigned long __exponentiate_UNCAPPED(unsigned long base, unsigned long exponent) {
     unsigned long exponentiation_RESULT = (0 < base);
     for (unsigned long iter = 0; iter < exponent; iter++)
 	exponentiation_RESULT *= base;
@@ -81,7 +85,7 @@ unsigned long exponentiation_using_backbone(unsigned long *residue_list, unsigne
     unsigned long ret_val = MULTIPLICATIVE_IDENTITY;
     while (exponent != 0) {
 	ret_val = _multiply(ret_val, residue_list[index], mod_);
-	exponent -= exponentiate_UNRESTRICTEDLY(2, index);
+	exponent -= __exponentiate_UNCAPPED(2, index);
 	index = least_base_TWO_log(exponent);
     } return ret_val;
 } // ^ Used by "_exponentiate()"
@@ -91,7 +95,6 @@ unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned
     unsigned long ret_val = exponentiation_using_backbone(backbone, mininum_log, exponent, mod_); free(backbone); return ret_val;
 } // ^ 'N_operation()'
 
-unsigned long mod_exponentiate(unsigned long base, unsigned long exponent) { return (mod_) ? _exponentiate(base, exponent, mod_) : _exponentiate(base, exponent, 0); } //<apply the square and multiply method (almost) always
 
 unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return mod_add(a, b); case 1: return mod_multiply(a, b); default: return mod_exponentiate(a, b); }; }
 
