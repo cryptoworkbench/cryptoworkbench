@@ -33,17 +33,17 @@ unsigned long mod_exponentiate(unsigned long base, unsigned long exponent) { ret
 // ^ Wrappers for the previous block of functions which always use the global variable 'mod_'
 
 _group_operation operation_from_ID(unsigned long ID) { return (ID) ? mod_multiply : mod_add; }
-// .^^^ All of the functions needed for "operation_from_ID"
 
-// ^^^ Useful functions for (infinite) field arithmetic
-
-unsigned long __exponentiate_UNCAPPED(unsigned long base, unsigned long exponent) {
-    unsigned long exponentiation_RESULT = (0 < base);
-    for (unsigned long iter = 0; iter < exponent; iter++)
-	exponentiation_RESULT *= base;
-
-    return exponentiation_RESULT;
-} // ^ Used by "exponentiate_using_backbone()", "exponentiate()"
+unsigned long __HIDDEN__regular_exponentiation_function(unsigned long base, unsigned long exponent)
+{ unsigned long exponentiation_RESULT = (0 < base); for (unsigned long iter = 0; iter < exponent; iter++) exponentiation_RESULT *= base; return exponentiation_RESULT; } 
+// ^ This function is needed in order to be able to perform the square and multiply method also every time for INfinite field arithmetic.
+// |
+// | The corresponding function header is commented out in the header file because I wish to try to develop this repository taking advantage of the square and multiply method
+// | as much as possible. I think this is better (more scalable).
+// |
+// | TO SUM IT ALL UP:
+// | '_exponentiate(base, exponent, 0)' makes use of the square and multiply method in order to exponentiate without taking a mod at each step, and
+// | '__HIDDEN__regular_exponentiation_function(base, exponent)' is just a regular procedural exponentiation function.
 
 unsigned long *square_and_multiply_backbone(unsigned long base, unsigned long required_base_two_log, unsigned long mod_) {
     unsigned long *backbone = (unsigned long *) malloc(sizeof(unsigned long) * (required_base_two_log + 1));
@@ -85,7 +85,7 @@ unsigned long exponentiation_using_backbone(unsigned long *residue_list, unsigne
     unsigned long ret_val = MULTIPLICATIVE_IDENTITY;
     while (exponent != 0) {
 	ret_val = _multiply(ret_val, residue_list[index], mod_);
-	exponent -= __exponentiate_UNCAPPED(2, index);
+	exponent -= __HIDDEN__regular_exponentiation_function(2, index);
 	index = least_base_TWO_log(exponent);
     } return ret_val;
 } // ^ Used by "_exponentiate()"

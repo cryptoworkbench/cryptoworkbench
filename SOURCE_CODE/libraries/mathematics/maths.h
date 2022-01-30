@@ -1,3 +1,5 @@
+/* When a commented-out line only contains one function header, this function is within the maths.c file but should not be used by functions outside of maths.c
+ */
 #define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
 #define PRIME_TABLE_UNAVAILABLE_ERROR "Failed to open the prime table '%s'.\n\n"
@@ -27,7 +29,8 @@ typedef unsigned long (*_group_operation) (unsigned long, unsigned long);
 _group_operation operation_from_ID(unsigned long ID);
 
 unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_);
-unsigned long __exponentiate_UNCAPPED(unsigned long base, unsigned long exponent); // < a regular procedural exponentiation function which is at the base of all exponentiation done through the project
+// unsigned long __HIDDEN__regular_exponentiation_function(unsigned long base, unsigned long exponent); // < a regular procedural exponentiation function which is at the base of all exponentiation done through the project
+
 unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID);
 // ^^^ Combine them all
 
