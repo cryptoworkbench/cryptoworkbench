@@ -14,4 +14,4 @@
 	gcc -c factorization_based_primality_test.c -o .factorization_based_primality_test.o
 
 factorization_based_primality_test: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.primality_testing_scemes.o .factorization_based_primality_test.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.primality_testing_scemes.o .factorization_based_primality_test.o -o ../../../WORKBENCH/factorization_based_primality_test && rm .factorization_based_primality_test.o
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.primality_testing_scemes.o .factorization_based_primality_test.o -o ../../../WORKBENCH/factorization_based_primality_test
