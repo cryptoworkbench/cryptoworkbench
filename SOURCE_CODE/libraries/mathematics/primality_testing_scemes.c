@@ -6,8 +6,7 @@
 #include "primality_testing_scemes.h"
 #include "maths.h" // needed for 'ADDITIVE_IDENTITY', 'MULTIPLICATIVE_IDENTITY'
 #include "factorization_methods.h" // needed for the definition of function pointer type _factorization_method
-_factorization_method preferred_factorization_ENGINE; // needed because of 'factization_methods.h'
-_primality_test preferred_PRIMALITY_TEST; _primality_test preferred_PRIMALITY_TEST_REPORT() { return preferred_PRIMALITY_TEST; }
+_primality_test _preferred_PRIMALITY_TEST; _primality_test _REPORT_preferred_PRIMALITY_TEST() { return _preferred_PRIMALITY_TEST; }
 
 int efficient_trial_division_PRIMALITY_TEST(unsigned long potential_prime) { return (potential_prime - efficient_trial_division(potential_prime)) ? ADDITIVE_IDENTITY : MULTIPLICATIVE_IDENTITY; }
 int LESS_efficient_trial_division_PRIMALITY_TEST(unsigned long potential_prime) { return (potential_prime - LESS_efficient_trial_division(potential_prime)) ? ADDITIVE_IDENTITY : MULTIPLICATIVE_IDENTITY; }
@@ -28,6 +27,7 @@ _primality_test primality_test(int SELECTOR) {
 } // ^ A similar function for returning pointers to primality test functions in 'primality_testing_scemes.c' as there was a function for returning pointers to factorization functions in 'factorization.h':
 /// Only difference now is that there are 9 primality tests, while there were 8 factorization algorithms; this discrapency is not accounted for
 
-int primality_test_based_on_preferred_factorization_engine(unsigned long potential_prime) { return (potential_prime - preferred_factorization_ENGINE(potential_prime)) ? ADDITIVE_IDENTITY : MULTIPLICATIVE_IDENTITY; }
-void SET_preferred_PRIMALITY_TEST(int SELECTOR) { preferred_PRIMALITY_TEST = primality_test(SELECTOR); }
-int prime(unsigned long potential_prime, _primality_test alternate_test) { return (alternate_test) ? alternate_test(potential_prime) : preferred_PRIMALITY_TEST(potential_prime); }
+int primality_test_based_on_preferred_factorization_engine(unsigned long potential_prime)
+{ _factorization_method preferred_factorization_ENGINE = _REPORT_preferred_factorization_ENGINE(); return (potential_prime - preferred_factorization_ENGINE(potential_prime)) ? ADDITIVE_IDENTITY : MULTIPLICATIVE_IDENTITY;}
+void SET_preferred_PRIMALITY_TEST(int SELECTOR) { _preferred_PRIMALITY_TEST = primality_test(SELECTOR); }
+int prime(unsigned long potential_prime, _primality_test alternate_test) { return (alternate_test) ? alternate_test(potential_prime) : _preferred_PRIMALITY_TEST(potential_prime); }

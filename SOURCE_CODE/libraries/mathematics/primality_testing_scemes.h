@@ -1,4 +1,4 @@
-typedef int (*_primality_test) (unsigned long); _primality_test preferred_PRIMALITY_TEST_REPORT();
+typedef int (*_primality_test) (unsigned long); _primality_test _REPORT_preferred_PRIMALITY_TEST();
 
 int efficient_trial_division_PRIMALITY_TEST(unsigned long potential_prime);
 int LESS_efficient_trial_division_PRIMALITY_TEST(unsigned long potential_prime);
