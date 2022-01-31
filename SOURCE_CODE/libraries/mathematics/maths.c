@@ -14,6 +14,7 @@ char *_open_prime_table = NULL; char *_REPORT_open_prime_table() { return (char 
 
 unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_) { return (mod_) ? result % mod_ : result;
 } unsigned long mod_conditional_field_cap(unsigned long result) { return (mod_) ? _conditional_field_cap(result, mod_) : result; }
+// ^ 
 
 unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a + b, mod_);
 } unsigned long mod_add(unsigned long a, unsigned long b) { return _add(a, b, mod_); }
@@ -27,57 +28,29 @@ unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_) { 
 unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a * b, mod_);
 } unsigned long mod_multiply(unsigned long a, unsigned long b) { return mod_conditional_field_cap(a * b); } 
 
-unsigned long _divide(unsigned long numerator, unsigned long denominator, unsigned long mod_) {
-    if (mod_) while (numerator % denominator != 0) numerator += mod_;
+unsigned long _divide(unsigned long numerator, unsigned long denominator, unsigned long mod_) { if (mod_) while (numerator % denominator != 0) numerator += mod_;
     return _conditional_field_cap(numerator / denominator, mod_);
 } unsigned long mod_divide(unsigned long numerator, unsigned long denominator) { return (mod_) ? _divide(numerator, denominator, mod_) : _divide(numerator, denominator, mod_); }
 
 
-
-_group_operation operation_from_ID(unsigned long ID) { return (ID) ? mod_multiply : mod_add; }
-
-unsigned long __HIDDEN__regular_exponentiation_function(unsigned long base, unsigned long exponent)
+unsigned long exponentiate(unsigned long base, unsigned long exponent)
 { unsigned long exponentiation_RESULT = (0 < base); for (unsigned long iter = 0; iter < exponent; iter++) exponentiation_RESULT *= base; return exponentiation_RESULT; } 
-// ^ This function is needed in order to be able to perform the square and multiply method also every time for INfinite field arithmetic.
-// |
-// | The corresponding function header is commented out in the header file because I wish to try to develop this repository taking advantage of the square and multiply method
-// | as much as possible. I think this is better (more scalable).
-// |
-// | TO SUM IT ALL UP:
-// | '_exponentiate(base, exponent, 0)' makes use of the square and multiply method in order to exponentiate without taking a mod at each step, and
-// | '__HIDDEN__regular_exponentiation_function(base, exponent)' is just a regular procedural exponentiation function.
 
 unsigned long least_base_TWO_log(unsigned long power_of_TWO) {
-    if (power_of_TWO == 0) return 0;
-    unsigned long return_value = ADDITIVE_IDENTITY; // Initialize the logarithm of the base 2 exponentiation (the additive correspondence in the isomorphish)
-    unsigned long multiplicative_accumulator = MULTIPLICATIVE_IDENTITY; // Initialize the variable on which we will perform base 2 exponentiation (the multiplicative corrspondence in the isomorphish)
-
-    // Find the first power of 2 which is not smaller than power_of_TWO
-    while (multiplicative_accumulator < power_of_TWO) {
-	multiplicative_accumulator *= 2;
-	return_value++;
-    }
-
-    // If the first power of 2 which is not smaller than "power_of_TWO", is equal to the power_of_TWO, then the power_of_TWO is a power of two, and all is set and done.
-    //
-    // If however, as will be in most cases, the first power of two which is not smaller than 'power_of_TWO' is actually greater than 'power_of_TWO', we over-estimated.
-    //
-    // In this case 'multiplicative_accumulator' over 2 ('multiplicative_accumulator / 2' in code) will be less than power_of_TWO, but also the greatest power of two which still fits power_of_TWO.
-    if (multiplicative_accumulator > power_of_TWO)
-	return_value--;
-
-    return return_value;
+    if (power_of_TWO == 0) return 0; unsigned long return_value = ADDITIVE_IDENTITY; unsigned long multiplicative_accumulator = MULTIPLICATIVE_IDENTITY;
+    while (multiplicative_accumulator < power_of_TWO) { multiplicative_accumulator *= 2; return_value++; } if (multiplicative_accumulator > power_of_TWO) return_value--; return return_value;
 } // ^ Used by "exponentiation_using_backbone()", "_exponentiate()"
 
 unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_) {
     if (base == 0 || exponent == 0) return 1; unsigned long minimum_log = least_base_TWO_log(exponent); unsigned long *backbone = (unsigned long *) malloc(sizeof(unsigned long) * (minimum_log + 1));
     unsigned long i = ADDITIVE_IDENTITY; backbone[i] = _conditional_field_cap(base, mod_); while (i < minimum_log) { backbone[i + 1] = _multiply(backbone[i], backbone[i], mod_); i++; }
     unsigned long ret_val = MULTIPLICATIVE_IDENTITY;
-    while (exponent != 0) { ret_val = _multiply(ret_val, backbone[minimum_log], mod_); exponent -= __HIDDEN__regular_exponentiation_function(2, minimum_log); minimum_log = least_base_TWO_log(exponent); } free(backbone);
-    return ret_val;
+    while (exponent != 0) { ret_val = _multiply(ret_val, backbone[minimum_log], mod_); exponent -= exponentiate(2, minimum_log); minimum_log = least_base_TWO_log(exponent); } free(backbone); return ret_val;
 } unsigned long mod_exponentiate(unsigned long base, unsigned long exponent) { return (mod_) ? _exponentiate(base, exponent, mod_) : _exponentiate(base, exponent, mod_); }
 
 unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return mod_add(a, b); case 1: return mod_multiply(a, b); default: return mod_exponentiate(a, b); }; }
+
+_group_operation operation_from_ID(unsigned long ID) { return (ID) ? mod_multiply : mod_add; }
 
 unsigned long **UL_array_of_SIZE(int SIZE) {
     unsigned long **ret_val = (unsigned long **) malloc(sizeof(unsigned long *) * (SIZE + 1)); ret_val[SIZE] = NULL;
