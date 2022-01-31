@@ -12,7 +12,7 @@ void error_and_exit(char *argv_one) { int exit_status = - 1;
 }
 
 int main(int argc, char **argv) { unsigned long mod;
-    if (2 > argc || !str_represents_ul(argv[1], &mod)) error_and_exit(argv[1]);
+    if (!str_represents_ul(argv[1], &mod)) error_and_exit(argv[1]);
     fprintf(stdout, "\nPrinted %lu primes.\n", primes_printed_from_sieve_array_to_FS(sieve_of_eratosthenes(mod), mod, stdout));
     return 0;
 }

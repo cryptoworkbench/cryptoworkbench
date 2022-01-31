@@ -42,8 +42,8 @@ void QUIT_ON_ARGV_TWO_ERROR(char *argv_two) { fprintf(stderr, ARGV_TWO_INSTRUCTI
 } // ^ Used by "main()"
 
 int main(int argc, char **argv) { unsigned long mod; mod_ = &mod;
-    if (2 > argc || !str_represents_ul(argv[1], &mod)) QUIT_ON_ARGV_ONE_ERROR(argv[1]); unsigned long id;
-    if (3 > argc || !str_represents_ul(argv[2], &id)) QUIT_ON_ARGV_TWO_ERROR(argv[2]);
+    if (!str_represents_ul(argv[1], &mod)) QUIT_ON_ARGV_ONE_ERROR(argv[1]); unsigned long id;
+    if (!str_represents_ul(argv[2], &id)) QUIT_ON_ARGV_TWO_ERROR(argv[2]);
     // ^^ Parse the infinite field CAP and group ID
 
     unsigned long count = 0;
