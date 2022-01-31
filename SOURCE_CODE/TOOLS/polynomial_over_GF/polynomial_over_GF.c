@@ -5,8 +5,8 @@
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h" // 'SINGULAR_polynomial_over_GF()'
 
-int main(int argc, char **argv) {
-    if (2 > argc || !str_represents_ul(argv[1], &mod_)) { fprintf(stderr, "%s is not mod!\n", argv[1]); exit(-1); } unsigned long x;
+int main(int argc, char **argv) { ul mod; mod_ = &mod;
+    if (2 > argc || !str_represents_ul(argv[1], &mod)) { fprintf(stderr, "%s is not mod!\n", argv[1]); exit(-1); } unsigned long x;
     // ^^ Process mandatory variables
 
     unsigned long number_of_coefficients;
@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
     unsigned long i = 0; while (1) {
 	fprintf(stdout, "%lu", *coefficients[i]);
 	if (!coefficients[i + 1]) break; fprintf(stdout, " * x^%lu + ", i); i++;
-    } fprintf(stdout, "	(mod %lu)'\n", mod_); // \u21E8 \u2794 \u279C \u279F \u27A0
+    } fprintf(stdout, "	(mod %lu)'\n", mod); // \u21E8 \u2794 \u279C \u279F \u27A0
     
-    for (unsigned long x = 0; x < mod_; x++) fprintf(stdout, "(%lu, %lu)\n", x, mod_polynomial(coefficients, x)); return 0;
-}
+    for (unsigned long x = 0; x < mod; x++) fprintf(stdout, "(%lu, %lu)\n", x, mod_polynomial(coefficients, x));
+    return 0; }

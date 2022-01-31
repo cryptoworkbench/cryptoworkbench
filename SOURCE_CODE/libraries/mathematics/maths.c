@@ -12,26 +12,20 @@ char *_REPORT_standard_prime_table_filename() { return (char *) _standard_prime_
 char *_open_prime_table = NULL; char *_REPORT_open_prime_table() { return (char *) _open_prime_table; }
 // Two global variables and two functions for access to these global variables in other files/libraries
 
-unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_) { return (mod_) ? result % mod_ : result;
-} unsigned long mod_conditional_field_cap(unsigned long result) { return (mod_) ? _conditional_field_cap(result, mod_) : result; }
-// ^^ 'mod_conditional_field_cap' is a wrapper for '_conditional_field_cap' which applies the global mod value 'mod_', same pattern follows below
-
-unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a + b, mod_);
-} unsigned long mod_add(unsigned long a, unsigned long b) { return _add(a, b, mod_); }
-
-unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_) { return (mod_) ? _conditional_field_cap(element_of_additive_group, mod_) : mod_inverse(element_of_additive_group); 
-} unsigned long mod_inverse(unsigned long element_of_additive_group) { return mod_ - mod_conditional_field_cap(element_of_additive_group); } // < root of the definition of mod_subtract
-
-unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_) { return (mod_) ? _conditional_field_cap(a + _inverse(b, mod_), mod_) : mod_subtract(a, b);
-} unsigned long mod_subtract(unsigned long a, unsigned long b) { return mod_conditional_field_cap(a + mod_inverse(b)); }
-
-unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a * b, mod_);
-} unsigned long mod_multiply(unsigned long a, unsigned long b) { return mod_conditional_field_cap(a * b); } 
-
-unsigned long _divide(unsigned long numerator, unsigned long denominator, unsigned long mod_) { if (mod_) while (numerator % denominator != 0) numerator += mod_;
-    return _conditional_field_cap(numerator / denominator, mod_);
-} unsigned long mod_divide(unsigned long numerator, unsigned long denominator) { return (mod_) ? _divide(numerator, denominator, mod_) : _divide(numerator, denominator, mod_); }
-
+unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_) { return (mod_) ? result % mod_ : result; }
+unsigned long mod_conditional_field_cap(unsigned long result) { return (*mod_) ? _conditional_field_cap(result, *mod_) : result; }
+unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a + b, mod_); }
+unsigned long mod_add(unsigned long a, unsigned long b) { return _add(a, b, *mod_); }
+unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_) { return _conditional_field_cap(element_of_additive_group, mod_); }
+unsigned long mod_inverse(unsigned long element_of_additive_group) { return _inverse(element_of_additive_group, *mod_); }
+unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a + _inverse(b, mod_), mod_); }
+unsigned long mod_subtract(unsigned long a, unsigned long b) { return _subtract(a, b, *mod_); }
+unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a * b, mod_); }
+unsigned long mod_multiply(unsigned long a, unsigned long b) { return mod_conditional_field_cap(a * b); } 
+unsigned long _divide(unsigned long numerator, unsigned long denominator, unsigned long mod_)
+{ if (mod_) while (numerator % denominator != 0) numerator += mod_; return _conditional_field_cap(numerator / denominator, mod_); }
+unsigned long mod_divide(unsigned long numerator, unsigned long denominator) { return _divide(numerator, denominator, *mod_); }
+// ^ some functions and their wrappers
 
 unsigned long exponentiate(unsigned long base, unsigned long exponent)
 { unsigned long exponentiation_RESULT = (0 < base); for (unsigned long iter = 0; iter < exponent; iter++) exponentiation_RESULT *= base; return exponentiation_RESULT; } 
@@ -46,7 +40,7 @@ unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned
     unsigned long i = ADDITIVE_IDENTITY; backbone[i] = _conditional_field_cap(base, mod_); while (i < minimum_log) { backbone[i + 1] = _multiply(backbone[i], backbone[i], mod_); i++; }
     unsigned long ret_val = MULTIPLICATIVE_IDENTITY;
     while (exponent != 0) { ret_val = _multiply(ret_val, backbone[minimum_log], mod_); exponent -= exponentiate(2, minimum_log); minimum_log = least_base_TWO_log(exponent); } free(backbone); return ret_val;
-} unsigned long mod_exponentiate(unsigned long base, unsigned long exponent) { return (mod_) ? _exponentiate(base, exponent, mod_) : _exponentiate(base, exponent, mod_); }
+} unsigned long mod_exponentiate(unsigned long base, unsigned long exponent) { return _exponentiate(base, exponent, *mod_); }
 
 unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return mod_add(a, b); case 1: return mod_multiply(a, b); default: return mod_exponentiate(a, b); }; }
 
@@ -89,6 +83,7 @@ unsigned long totient(unsigned long a) {
     return totient;
 }
 
+/*
 unsigned long extended_gcd(unsigned long a, unsigned long b, unsigned long *x, unsigned long *y) {
     if (a == 0) {
 	*x = 0;
@@ -110,7 +105,7 @@ unsigned long multiplicative_inverse(unsigned long a) { // Yield a^-1 mod b
     extended_gcd(a, mod_, &x, &y);
 
     return mod_ + x;
-}
+} */
 
 unsigned long least_common_multiple(unsigned long a, unsigned long b) {
     unsigned long least_common_multiple = a; if (a < b) least_common_multiple = b;

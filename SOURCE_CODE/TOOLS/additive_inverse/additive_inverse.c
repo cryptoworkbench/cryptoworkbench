@@ -23,11 +23,11 @@ void arg_not_parsable(char **argv, int index) { const char *error_specific_messa
     exit(-index); // < & finally terminate with stderr promised exit status
 }
 
-int main(int argc, char **argv) {
-    if (2 > argc || !str_represents_ul(argv[1], &mod_)) arg_not_parsable(argv, 1); unsigned long inverse_of_additve_inverse;
+int main(int argc, char **argv) { unsigned long mod; mod_ = &mod;
+    if (2 > argc || !str_represents_ul(argv[1], &mod)) arg_not_parsable(argv, 1); unsigned long inverse_of_additve_inverse;
     if (3 > argc || !str_represents_ul(argv[2], &inverse_of_additve_inverse)) arg_not_parsable(argv, 2);
     unsigned long additive_inverse = mod_inverse(inverse_of_additve_inverse);
-    fprintf(stdout, "x - %lu \u2261 x + %lu (mod %lu)\n\n", inverse_of_additve_inverse, additive_inverse, mod_);
-    fprintf(stdout, "The additive inverse of %lu under modulus %lu arithmetic is %lu.\n", inverse_of_additve_inverse, mod_, additive_inverse);
+    fprintf(stdout, "x - %lu \u2261 x + %lu (mod %lu)\n\n", inverse_of_additve_inverse, additive_inverse, mod);
+    fprintf(stdout, "The additive inverse of %lu under modulus %lu arithmetic is %lu.\n", inverse_of_additve_inverse, mod, additive_inverse);
     return 0;
 }
