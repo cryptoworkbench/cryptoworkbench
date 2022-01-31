@@ -45,20 +45,6 @@ unsigned long __HIDDEN__regular_exponentiation_function(unsigned long base, unsi
 // | '_exponentiate(base, exponent, 0)' makes use of the square and multiply method in order to exponentiate without taking a mod at each step, and
 // | '__HIDDEN__regular_exponentiation_function(base, exponent)' is just a regular procedural exponentiation function.
 
-unsigned long *square_and_multiply_backbone(unsigned long base, unsigned long required_base_two_log, unsigned long mod_) {
-    unsigned long *backbone = (unsigned long *) malloc(sizeof(unsigned long) * (required_base_two_log + 1));
-    unsigned long iterator = ADDITIVE_IDENTITY; 
-
-    backbone[iterator] = _conditional_field_cap(base, mod_);
-    while (iterator < required_base_two_log) { backbone[iterator + 1] = _multiply(backbone[iterator], backbone[iterator], mod_); iterator++; }
-    // ^^ Regarding this second line:
-    // In the case where the variable "exponent" was 0, this function would not be called
-    // In the case where the variable "exponent" is 1, the while loop will not run
-    // In the other cases (where 1 < "exponent"), it will run just the appriopiate amount of times
-
-    return backbone;
-} // ^ Used by "_exponentiate()", "polynomial_over_GF()"
-
 unsigned long least_base_TWO_log(unsigned long power_of_TWO) {
     if (power_of_TWO == 0) return 0;
     unsigned long return_value = ADDITIVE_IDENTITY; // Initialize the logarithm of the base 2 exponentiation (the additive correspondence in the isomorphish)
@@ -80,15 +66,6 @@ unsigned long least_base_TWO_log(unsigned long power_of_TWO) {
 
     return return_value;
 } // ^ Used by "exponentiation_using_backbone()", "_exponentiate()"
-
-unsigned long exponentiation_using_backbone(unsigned long *residue_list, unsigned long index, unsigned long exponent, unsigned long mod_) {
-    unsigned long ret_val = MULTIPLICATIVE_IDENTITY;
-    while (exponent != 0) {
-	ret_val = _multiply(ret_val, residue_list[index], mod_);
-	exponent -= __HIDDEN__regular_exponentiation_function(2, index);
-	index = least_base_TWO_log(exponent);
-    } return ret_val;
-} // ^ Used by "_exponentiate()"
 
 unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_) {
     if (base == 0 || exponent == 0) return 1;
