@@ -32,7 +32,7 @@ unsigned long exponentiate(unsigned long base, unsigned long exponent)
 unsigned long least_base_TWO_log(unsigned long power_of_TWO) {
     if (power_of_TWO == 0) return 0; unsigned long return_value = ADDITIVE_IDENTITY; unsigned long multiplicative_accumulator = MULTIPLICATIVE_IDENTITY;
     while (multiplicative_accumulator < power_of_TWO) { multiplicative_accumulator *= 2; return_value++; } if (multiplicative_accumulator > power_of_TWO) return_value--; return return_value;
-} // ^ Used by "exponentiation_using_backbone()", "_exponentiate()"
+}
 
 unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_) {
     if (base == 0 || exponent == 0) return 1; unsigned long minimum_log = least_base_TWO_log(exponent); unsigned long *backbone = (unsigned long *) malloc(sizeof(unsigned long) * (minimum_log + 1));
@@ -52,15 +52,10 @@ unsigned long **UL_array_of_SIZE(int SIZE) {
 
 int UL_array_SIZE(unsigned long **UL_array) { int ret_val = 0; while (UL_array[ret_val]) ret_val++; return ret_val; }
 
-unsigned long mod_polynomial(unsigned long **COEFFICIENT_array, unsigned long _x) { // < array of coefficient pointers needs to be in reversed order to how polynomials are usually written in standard form
-    unsigned long ret_val = ADDITIVE_IDENTITY; unsigned long term_factor = MULTIPLICATIVE_IDENTITY; unsigned long i = UL_array_SIZE(COEFFICIENT_array);
-    do { i--; ret_val = mod_add(ret_val, mod_multiply(term_factor, *COEFFICIENT_array[i])); term_factor = mod_multiply(term_factor, _x); } while (i != 0); return ret_val;
-}
-
 unsigned long _polynomial(unsigned long **COEFFICIENT_array, unsigned long _x, unsigned long mod_) {
     unsigned long ret_val = ADDITIVE_IDENTITY; unsigned long term_factor = MULTIPLICATIVE_IDENTITY; unsigned long i = UL_array_SIZE(COEFFICIENT_array);
     do { i--; ret_val = _add(ret_val, _multiply(term_factor, *COEFFICIENT_array[i], mod_), mod_); term_factor = _multiply(term_factor, _x, mod_); } while (i != 0); return ret_val;
-}
+} unsigned long mod_polynomial(unsigned long **COEFFICIENT_array, unsigned long _x) { return _polynomial(COEFFICIENT_array, _x, *mod_); }
 
 unsigned long GCD(unsigned long a, unsigned long b) {
     unsigned long remainder = a % b;
