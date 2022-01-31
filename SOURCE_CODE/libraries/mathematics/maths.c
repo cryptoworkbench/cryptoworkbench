@@ -77,7 +77,6 @@ unsigned long totient(unsigned long a) {
     return totient;
 }
 
-/*
 unsigned long extended_gcd(unsigned long a, unsigned long b, unsigned long *x, unsigned long *y) {
     if (a == 0) {
 	*x = 0;
@@ -96,10 +95,13 @@ unsigned long extended_gcd(unsigned long a, unsigned long b, unsigned long *x, u
 
 unsigned long multiplicative_inverse(unsigned long a) { // Yield a^-1 mod b
     unsigned long x, y;
-    extended_gcd(a, mod_, &x, &y);
+    extended_gcd(a, *mod_, &x, &y);
 
-    return mod_ + x;
-} */
+    // return x; // doesn't work
+    // return mod_conditional_field_cap(x); // doesn't work
+    return mod_conditional_field_cap(*mod_ + x); // works // return (*mod_ + x) % *mod_; // also works
+    // return x % *mod_; // doesn't work
+}
 
 unsigned long least_common_multiple(unsigned long a, unsigned long b) {
     unsigned long least_common_multiple = a; if (a < b) least_common_multiple = b;
