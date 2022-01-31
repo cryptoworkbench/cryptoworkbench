@@ -14,7 +14,7 @@ char *_open_prime_table = NULL; char *_REPORT_open_prime_table() { return (char 
 
 unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_) { return (mod_) ? result % mod_ : result;
 } unsigned long mod_conditional_field_cap(unsigned long result) { return (mod_) ? _conditional_field_cap(result, mod_) : result; }
-// ^ 
+// ^^ 'mod_conditional_field_cap' is a wrapper for '_conditional_field_cap' which applies the global mod value 'mod_', same pattern follows below
 
 unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a + b, mod_);
 } unsigned long mod_add(unsigned long a, unsigned long b) { return _add(a, b, mod_); }
