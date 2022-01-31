@@ -10,9 +10,9 @@ const char *numerator_parsing_error = "Please provide as third argument the nume
 const char *local_switch(int INDEX) { switch (INDEX) { case 1: return MOD_parsing_error; case 2: return denominator_parsing_error; case 3: return numerator_parsing_error; }; }
 
 unsigned long mod; int main(int argc, char **argv) { mod_ = &mod; local_error_selector = local_switch;
-    if (!str_represents_ul(argv[1], &mod)) arg_not_parsable(argv, 1); unsigned long denominator;
-    if (!str_represents_ul(argv[2], &denominator)) arg_not_parsable(argv, 2); unsigned long numerator;
-    if (!str_represents_ul(argv[3], &numerator)) arg_not_parsable(argv, 3);
+    if (!str_represents_ul(argv[1], &mod)) arg_does_not_represent_ul(argv, 1); unsigned long denominator;
+    if (!str_represents_ul(argv[2], &denominator)) arg_does_not_represent_ul(argv, 2); unsigned long numerator;
+    if (!str_represents_ul(argv[3], &numerator)) arg_does_not_represent_ul(argv, 3);
     fprintf(stdout, "%lu / %lu \u2261 %lu (mod %lu)\n", denominator, numerator, mod_divide(denominator, numerator), mod);
     return 0;
 }

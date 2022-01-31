@@ -41,4 +41,4 @@ unsigned long *str_represents_ul(char *STRING, unsigned long *UL_PTR);
  * Returns "VOID" if "STRING" is not parsable as a base-10 number.
  */
 void ignored_arguments(int argc, char **argv, int used_arguments);
-void arg_not_parsable(char **argv, int index);
+void arg_does_not_represent_ul(char **argv, int index);

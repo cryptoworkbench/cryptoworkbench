@@ -175,7 +175,7 @@ void ignored_arguments(int argc, char **argv, int used_arguments) {
 	fprintf(stdout, "\n"); fprintf(stderr, "\n"); }
 }
 
-void arg_not_parsable(char **argv, int index) {
+void arg_does_not_represent_ul(char **argv, int index) {
     const char *error_specific_message = local_error_selector(index);
     fprintf(stderr, GENERIC_PARSING_ERROR "%s\n\n" EXIT_STATUS_GOODBYE, argv[index], error_specific_message, -index); exit(-index);
 }

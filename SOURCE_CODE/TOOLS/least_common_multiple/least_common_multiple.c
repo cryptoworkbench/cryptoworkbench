@@ -8,8 +8,8 @@ const char *variable_b_ERROR = "please provide as second argument the second num
 const char *local_switch(int INDEX) { switch (INDEX) { case 1: return variable_a_ERROR; case 2: return variable_b_ERROR; }; }
 
 int main(int argc, char **argv) { local_error_selector = local_switch; unsigned long a;
-    if (!str_represents_ul(argv[1], &a)) arg_not_parsable(argv, 1); unsigned long b;
-    if (!str_represents_ul(argv[2], &b)) arg_not_parsable(argv, 2);
+    if (!str_represents_ul(argv[1], &a)) arg_does_not_represent_ul(argv, 1); unsigned long b;
+    if (!str_represents_ul(argv[2], &b)) arg_does_not_represent_ul(argv, 2);
     fprintf(stdout, "The least common multiple of %lu and %lu is %lu.\n", a, b, least_common_multiple(a, b));
     return 0;
 }
