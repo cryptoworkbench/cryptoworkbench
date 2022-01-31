@@ -38,7 +38,7 @@ int main(int argc, char **argv) { unsigned long mod; mod_ = &mod;
     fprintf(stdout, "y_2 \u2261 "); if (5 < argc) fprintf(stdout, "%lu\n", *equation[1][0]); else fscanf(stdin, " %lu", equation[1][0]); fprintf(stdout, "\n");
     fprintf(stdout, "x_3 \u2261 "); if (4 < argc) fprintf(stdout, "%lu\n", *equation[2][1]); else fscanf(stdin, " %lu", equation[2][1]);
     fprintf(stdout, "y_3 \u2261 "); if (5 < argc) fprintf(stdout, "%lu\n", *equation[2][0]); else fscanf(stdin, " %lu", equation[2][0]); fprintf(stdout, "\n");
-    *equation[0][2] = _exponentiate(*equation[0][1], 2, mod); *equation[1][2] = _exponentiate(*equation[1][1], 2, mod); *equation[2][2] = _exponentiate(*equation[2][1], 2, mod);
+    *equation[0][2] = mod_exponentiate(*equation[0][1], 2); *equation[1][2] = mod_exponentiate(*equation[1][1], 2); *equation[2][2] = mod_exponentiate(*equation[2][1], 2);
     *equation[0][3] = *equation[1][3] = *equation[2][3] = 1;
     // ^ Prepared initial equations
 

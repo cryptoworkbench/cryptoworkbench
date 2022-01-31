@@ -1,5 +1,6 @@
 /* When a commented-out line only contains one function header, this function is within the maths.c file but should not be used by functions outside of maths.c
  */
+#include <stdio.h>
 #define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
 #define PRIME_TABLE_UNAVAILABLE_ERROR "Failed to open the prime table '%s'.\n\n"

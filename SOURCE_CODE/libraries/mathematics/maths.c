@@ -1,7 +1,6 @@
 /* This library contains all the math functions which are not verbose.
  *
  * See the header file for function descriptions. */
-#include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>
 #include "maths.h"
