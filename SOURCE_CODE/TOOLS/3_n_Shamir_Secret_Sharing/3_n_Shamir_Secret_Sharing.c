@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
 
     fprintf(stdout, "Second-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", mod_);
     fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(modulus %lu)\n", *coefficient[0], *coefficient[1], *coefficient[2], mod_);
-    fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_GF(coefficient, 0));
+    fprintf(stdout, "\nThe shared secret was '%lu'.\n", mod_polynomial(coefficient, 0));
     equations_DELETE(equation); return 0;
     // ^ Finalize program
 }

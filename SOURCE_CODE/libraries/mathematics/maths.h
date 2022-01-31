@@ -16,14 +16,16 @@ unsigned long mod_inverse(unsigned long element_of_additive_group); // 1).
 unsigned long mod_subtract(unsigned long a, unsigned long b);
 unsigned long mod_multiply(unsigned long a, unsigned long b);
 unsigned long mod_divide(unsigned long member_from_equivalence_class_representing_the_numerator, unsigned long denominator);
+unsigned long mod_polynomial(unsigned long **coefficient, unsigned long _x); // < array of coefficient pointers needs to be in reversed order to how polynomials are usually written in standard form
 unsigned long mod_exponentiate(unsigned long base, unsigned long exponent); // 2).
 
 unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_);
 unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_);
-unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_);
 unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_);
 unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_);
+unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_);
 unsigned long _divide(unsigned long numerator, unsigned long denominator, unsigned long mod_);
+unsigned long _polynomial(unsigned long **COEFFICIENT_array, unsigned long _x, unsigned long mod);
 
 typedef unsigned long (*_group_operation) (unsigned long, unsigned long);
 _group_operation operation_from_ID(unsigned long ID);
@@ -44,7 +46,6 @@ unsigned long multiplicative_inverse(unsigned long a);
 unsigned long least_base_TWO_log(unsigned long power_of_TWO);
 unsigned long **UL_array_of_SIZE(int SIZE);
 int UL_array_SIZE(unsigned long **UL_array);
-unsigned long polynomial_over_GF(unsigned long **coefficient, unsigned long _x); // < array of coefficient pointers needs to be in reversed order to how polynomials are usually written in standard form
 unsigned long least_common_multiple(unsigned long a, unsigned long b);
 struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *to_be_updated, unsigned long minimum);
 unsigned long DOWN_ROUNDED_second_root(unsigned long number);

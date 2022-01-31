@@ -13,10 +13,10 @@ char *_open_prime_table = NULL; char *_REPORT_open_prime_table() { return (char 
 // Two global variables and two functions for access to these global variables in other files/libraries
 
 unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_) { return (mod_) ? result % mod_ : result; }
-unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_) { return (mod_) ? _conditional_field_cap(a + b, mod_) : mod_add(a, b); }
-unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_) { return _conditional_field_cap(mod_ - element_of_additive_group, mod_); }
+unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a + b, mod_); }
+unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_) { return (mod_) ? _conditional_field_cap(element_of_additive_group, mod_) : mod_inverse(element_of_additive_group);  }
 unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_) { return (mod_) ? _conditional_field_cap(a + _inverse(b, mod_), mod_) : mod_subtract(a, b); }
-unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_) { return (mod_) ? _conditional_field_cap(a * b, mod_) : mod_multiply(a, b); }
+unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a * b, mod_); }
 unsigned long _divide(unsigned long numerator, unsigned long denominator, unsigned long mod_) {
     if (mod_) while (numerator % denominator != 0) numerator += mod_;
     return _conditional_field_cap(numerator / denominator, mod_);
@@ -24,12 +24,12 @@ unsigned long _divide(unsigned long numerator, unsigned long denominator, unsign
 // ^ Basic arithemtic functions for (in)finite field operations
 
 unsigned long mod_conditional_field_cap(unsigned long result) { return (mod_) ? _conditional_field_cap(result, mod_) : result; }
-unsigned long mod_add(unsigned long a, unsigned long b) { return mod_conditional_field_cap(a + b); }
+unsigned long mod_add(unsigned long a, unsigned long b) { return _add(a, b, mod_); }
 unsigned long mod_multiply(unsigned long a, unsigned long b) { return mod_conditional_field_cap(a * b); }
-unsigned long mod_inverse(unsigned long element_of_additive_group) { return mod_conditional_field_cap(mod_ - element_of_additive_group); } // < root of the definition of mod_subtract
+unsigned long mod_inverse(unsigned long element_of_additive_group) { return mod_ - mod_conditional_field_cap(element_of_additive_group); } // < root of the definition of mod_subtract
 unsigned long mod_subtract(unsigned long a, unsigned long b) { return mod_conditional_field_cap(a + mod_inverse(b)); }
-unsigned long mod_divide(unsigned long numerator, unsigned long denominator) { return (mod_) ? _divide(numerator, denominator, mod_) : _divide(numerator, denominator, 0); }
-unsigned long mod_exponentiate(unsigned long base, unsigned long exponent) { return (mod_) ? _exponentiate(base, exponent, mod_) : _exponentiate(base, exponent, 0); }
+unsigned long mod_divide(unsigned long numerator, unsigned long denominator) { return (mod_) ? _divide(numerator, denominator, mod_) : _divide(numerator, denominator, mod_); }
+unsigned long mod_exponentiate(unsigned long base, unsigned long exponent) { return (mod_) ? _exponentiate(base, exponent, mod_) : _exponentiate(base, exponent, mod_); }
 // ^ Wrappers for the previous block of functions which always use the global variable 'mod_'
 
 _group_operation operation_from_ID(unsigned long ID) { return (ID) ? mod_multiply : mod_add; }
@@ -82,7 +82,6 @@ unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned
     } free(backbone); return ret_val;
 } // ^ 'N_operation()'
 
-
 unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return mod_add(a, b); case 1: return mod_multiply(a, b); default: return mod_exponentiate(a, b); }; }
 
 unsigned long **UL_array_of_SIZE(int SIZE) {
@@ -92,13 +91,14 @@ unsigned long **UL_array_of_SIZE(int SIZE) {
 
 int UL_array_SIZE(unsigned long **UL_array) { int ret_val = 0; while (UL_array[ret_val]) ret_val++; return ret_val; }
 
-unsigned long polynomial_over_GF(unsigned long **COEFFICIENT_array, unsigned long _x) {
-    unsigned long ret_val = ADDITIVE_IDENTITY; unsigned long term_factor = MULTIPLICATIVE_IDENTITY;
-    int ONE_LESS_THAN_degree_of_polynomial = UL_array_SIZE(COEFFICIENT_array);
-    unsigned long i = ONE_LESS_THAN_degree_of_polynomial; do { i--;
-	ret_val = mod_add(ret_val, mod_multiply(term_factor, *COEFFICIENT_array[i])); term_factor = mod_multiply(term_factor, _x);
-    } while (i != 0);
-    return ret_val;
+unsigned long mod_polynomial(unsigned long **COEFFICIENT_array, unsigned long _x) {
+    unsigned long ret_val = ADDITIVE_IDENTITY; unsigned long term_factor = MULTIPLICATIVE_IDENTITY; unsigned long i = UL_array_SIZE(COEFFICIENT_array);
+    do { i--; ret_val = mod_add(ret_val, mod_multiply(term_factor, *COEFFICIENT_array[i])); term_factor = mod_multiply(term_factor, _x); } while (i != 0); return ret_val;
+}
+
+unsigned long _polynomial(unsigned long **COEFFICIENT_array, unsigned long _x, unsigned long mod_) {
+    unsigned long ret_val = ADDITIVE_IDENTITY; unsigned long term_factor = MULTIPLICATIVE_IDENTITY; unsigned long i = UL_array_SIZE(COEFFICIENT_array);
+    do { i--; ret_val = _add(ret_val, _multiply(term_factor, *COEFFICIENT_array[i], mod_), mod_); term_factor = _multiply(term_factor, _x, mod_); } while (i != 0); return ret_val;
 }
 
 unsigned long GCD(unsigned long a, unsigned long b) {

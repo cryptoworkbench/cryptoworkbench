@@ -53,7 +53,7 @@ int main(int argc, char **argv) {
 
     fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", mod_);
     fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", *coefficient[0], *coefficient[1], mod_);
-    fprintf(stdout, "\nThe shared secret was '%lu'.\n", polynomial_over_GF(coefficient, 0)); // 0 = x
+    fprintf(stdout, "\nThe shared secret was '%lu'.\n", mod_polynomial(coefficient, 0)); // 0 = x
     equation_DISCARD(coefficient);
     equations_DELETE(equation); return 0;
 }
