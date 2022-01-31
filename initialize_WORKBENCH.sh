@@ -3,6 +3,8 @@
 mkdir WORKBENCH/
 mkdir WORKBENCH/ARCHIVE
 clear && echo "########### ASSEMBLY LINE ROLLING ! #######=====>"
+cd SOURCE_CODE/TOOLS/equivalence_class && make equivalence_class && echo "#######===> The following tool has been assemblied/linked: additive_inverse
+"
 cd SOURCE_CODE/TOOLS/additive_inverse && make additive_inverse && echo "#######===> The following tool has been assemblied/linked: additive_inverse
 "
 cd ../modular_exponentiation && make modular_exponentiation && echo "#######===> The following tool has been assemblied/linked: modular_exponentiation
@@ -12,6 +14,7 @@ cd ../divide && make divide && echo "#######===> The following tool has been ass
 cd ../multiplicative_inverse && make multiplicative_inverse && echo "#######===> The following tool has been assemblied/linked: multiplicative_inverse
 "
 echo "#######===> THE FOLLOWING BASIC TOOLS HAVE BEEN ASSEMBLED/LINKED: -->                         <===#######
+~ equivalence_class
 ~ additive_inverse
 ~ modular_exponentiation
 ~ finite_field_division
