@@ -43,7 +43,7 @@ unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned
 
 unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return mod_add(a, b); case 1: return mod_multiply(a, b); default: return mod_exponentiate(a, b); }; }
 
-_group_operation operation_from_ID(unsigned long ID) { return (ID) ? mod_multiply : mod_add; }
+mod_group_operation operation_from_ID(unsigned long ID) { return (ID) ? mod_multiply : mod_add; }
 
 unsigned long **UL_array_of_SIZE(int SIZE) {
     unsigned long **ret_val = (unsigned long **) malloc(sizeof(unsigned long *) * (SIZE + 1)); ret_val[SIZE] = NULL;

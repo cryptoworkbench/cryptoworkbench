@@ -20,7 +20,7 @@ typedef array_piece *table_type; // << Belongs to this one above
 // ^^ Declare variable types
 
 unsigned long cardinality, generator_count;
-_group_operation group_operation;
+mod_group_operation group_operation;
 table_type LOOKUP_table;
 FILE *main_fs;
 struct offset_values *shifts;

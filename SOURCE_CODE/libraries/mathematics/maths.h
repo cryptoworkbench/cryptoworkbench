@@ -3,7 +3,7 @@
 #define MULTIPLICATIVE_IDENTITY 1
 #define PRIME_TABLE_UNAVAILABLE_ERROR "Failed to open the prime table '%s'.\n\n"
 
-typedef unsigned long (*_group_operation) (unsigned long, unsigned long);
+typedef unsigned long (*mod_group_operation) (unsigned long, unsigned long);
 typedef unsigned long ul;
 
 unsigned long *mod_; 
@@ -32,7 +32,7 @@ unsigned long mod_polynomial(unsigned long **coefficient, unsigned long _x);
 unsigned long mod_exponentiate(unsigned long base, unsigned long exponent); // wrapper function follows
 unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID); // (< combine them all!)
 
-_group_operation operation_from_ID(unsigned long ID);
+mod_group_operation operation_from_ID(unsigned long ID);
 
 /* ### OLD FUNCTIONS: */
 unsigned long GCD(unsigned long a, unsigned long b);
