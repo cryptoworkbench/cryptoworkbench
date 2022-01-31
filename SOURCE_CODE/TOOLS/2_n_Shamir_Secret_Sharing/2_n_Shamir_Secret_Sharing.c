@@ -1,3 +1,10 @@
+/* DEVELOPER NOTICE #1:
+ * executing 'clear && polynomial_plot 13 9 7 && 2_n_Shamir_Secret_Sharing 13 1 3 4 4'
+ *
+ * Gives a curious result:
+ * a is calculated incorrectly but b is calculated correctly (a will be 4 instead of 9).
+ */
+
 /* DEVELOPER NOTICE #0:
  * Supplying a point with coordinate x = 0, the general formula still seems to work for 2-n SSSS.
  * I wrote '3_n_Shamir_Secret_Sharing.c' in a similar manner but for 3-n SSSS it seems to be the case that this is not always the case. (and it is if I wrote it properly).
@@ -31,8 +38,8 @@
 #include "../../libraries/mathematics/SSSS.h"
 #define K 2 // degree of polynomial that is resolved in other to retrieve secret encoded as contant term
 
-int main(int argc, char **argv) {
-    if (2 > argc || !str_represents_ul(argv[1], &mod_)) { printf("%s is not mod!\n", argv[1]); exit(-1); }
+unsigned long mod; int main(int argc, char **argv) { mod_ = &mod;
+    if (2 > argc || !str_represents_ul(argv[1], mod_)) { printf("%s is not mod!\n", argv[1]); exit(-1); }
     if (6 < argc) { ignored_arguments(argc, argv, 5); argc = 6; } // < complain about unneccesary arguments and forget about them once and for all
     unsigned long ***equation = equations_ALLOCATE(K); switch (argc) {
 	case 6: if (!str_represents_ul(argv[5], equation[1][0])) fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of second point.\n", argv[5]);
@@ -51,8 +58,8 @@ int main(int argc, char **argv) {
     *coefficient[0] = mod_divide(*equation_ONE_WITH_TWO[0], *equation_ONE_WITH_TWO[1]); // coefficient a
     *coefficient[1] = mod_subtract(*equation[0][0], mod_multiply(*equation[0][1], *coefficient[0])); // coefficient b
 
-    fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", mod_);
-    fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", *coefficient[0], *coefficient[1], mod_);
+    fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", mod);
+    fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", *coefficient[0], *coefficient[1], mod);
     fprintf(stdout, "\nThe shared secret was '%lu'.\n", mod_polynomial(coefficient, 0)); // 0 = x
     equation_DISCARD(coefficient);
     equations_DELETE(equation); return 0;

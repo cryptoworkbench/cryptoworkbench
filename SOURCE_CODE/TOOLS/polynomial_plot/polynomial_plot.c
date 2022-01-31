@@ -6,7 +6,7 @@
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h" // 'SINGULAR_polynomial_over_GF()'
 
-int main(int argc, char **argv) { unsigned long mod; mod_ = &mod;
+unsigned long mod; int main(int argc, char **argv) { mod_ = &mod;
     if (2 > argc || !str_represents_ul(argv[1], &mod)) { fprintf(stderr, "%s is not mod!\n", argv[1]); exit(-1); }
     // ^^ Process mandatory variables
 
@@ -22,7 +22,7 @@ int main(int argc, char **argv) { unsigned long mod; mod_ = &mod;
     if (mod) fprintf(stdout, "	(mod %lu)", mod); fprintf(stdout, "\n\n");
 
     unsigned long range_bound = mod;
-    fprintf(stdout, "Number of coordinates to plot: ");
+    fprintf(stdout, "Number of coordinates that follow: ");
     if (!(*mod_)) fscanf(stdin, "%lu", &range_bound);
     else fprintf(stdout, "%lu\n", range_bound);
 
