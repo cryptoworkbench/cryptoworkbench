@@ -13,22 +13,25 @@ cd ../divide && make divide && echo "#######===> The following tool has been ass
 "
 cd ../multiplicative_inverse && make multiplicative_inverse && echo "#######===> The following tool has been assemblied/linked: multiplicative_inverse
 "
+cd ../group_operation && make group_operation && echo "#######===> The following tool has been assemblied/linked: group_operation
+"
 echo "#######===> THE FOLLOWING BASIC TOOLS HAVE BEEN ASSEMBLED/LINKED: -->                         <===#######
 ~ equivalence_class
 ~ additive_inverse
 ~ modular_exponentiation
 ~ finite_field_division
 ~ multiplicative_inverse
+~ group_operation
 " # ^-- Notify end of first stage of compilation.
 
-cd ../polynomial_plot && make polynomial_plot && echo "#######===> The following tool has been assemblied/linked: polynomial_plot
+cd ../plot_polynomial && make plot_polynomial && echo "#######===> The following tool has been assemblied/linked: plot_polynomial
 "
 cd ../2_n_Shamir_Secret_Sharing && make 2_n_Shamir_Secret_Sharing && echo "#######===> The following tool has been assemblied/linked: 2_n_Shamir_Secret_Sharing
 "
 cd ../3_n_Shamir_Secret_Sharing && make 3_n_Shamir_Secret_Sharing && echo "#######===> The following tool has been assemblied/linked: 3_n_Shamir_Secret_Sharing
 "
 echo "#######===> SOME TOOLS FOR EXPLORING SHAMIR'S SECRET SHARING SCEME HAVE BEEN ASSEMBLED/LINKED: -->  <===#######
-~ polynomial_plot
+~ plot_polynomial
 ~ 2_n_Shamir_Secret_Sharing
 ~ 3_n_Shamir_Secret_Sharing
 " # ^-- Notify end of second stage of compilation.

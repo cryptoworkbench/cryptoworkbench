@@ -3,12 +3,14 @@
 #include <stdarg.h>
 // ^^^ Necessary library inclusions that are needed in "string.c"
 
+#define GENERIC_PARSING_ERROR "%s is not something I am able to understand as a number:\n"
 #define EXIT_STATUS_GOODBYE "Terminating with exit status '%i'. Goodbye.\n"
 #define STRING_TERMINATING_CHARACTER 0
 #define NUMERIC_BASE 10
 #define ASCII_BASE 48
 // ^^^ Necessary definitions that are needed in "string.c"
 
+typedef const char *(*_error_selector) (int); _error_selector local_error_selector;
 char *BUFFER_OF_SIZE(unsigned int SIZE);
 
 /* Returns an unsigned long containing the number of characters in the string pointed at by variable 'string_pointer' of type 'constant char *' */
@@ -39,3 +41,4 @@ unsigned long *str_represents_ul(char *STRING, unsigned long *UL_PTR);
  * Returns "VOID" if "STRING" is not parsable as a base-10 number.
  */
 void ignored_arguments(int argc, char **argv, int used_arguments);
+void arg_not_parsable(char **argv, int index);

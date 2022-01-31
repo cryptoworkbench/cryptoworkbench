@@ -169,14 +169,13 @@ unsigned long *str_represents_ul(char *str, unsigned long *UL_PTR) {
 }
 
 void ignored_arguments(int argc, char **argv, int used_arguments) {
-    ul difference = argc - 1 - used_arguments;
-    if (difference) {
+    ul difference = argc - 1 - used_arguments; if (difference) {
 	fprintf(stderr, "The following %lu unused argument(s) were unneccesary: ", difference);
-	do {fprintf(stderr, "%s", argv[used_arguments + 1]);
-	    used_arguments++; if (used_arguments + 1 == argc) break;
-	    fprintf(stderr, ", ");
-	} while (1);
-	fprintf(stdout, "\n"); // Need one newline in the output anyways
-	fprintf(stderr, "\n"); // Also need one newline in the (potential) error file
-    }
+	do {fprintf(stderr, "%s", argv[used_arguments + 1]); used_arguments++; if (used_arguments + 1 == argc) break; fprintf(stderr, ", "); } while (1);
+	fprintf(stdout, "\n"); fprintf(stderr, "\n"); }
+}
+
+void arg_not_parsable(char **argv, int index) {
+    const char *error_specific_message = local_error_selector(index);
+    fprintf(stderr, GENERIC_PARSING_ERROR "%s\n\n" EXIT_STATUS_GOODBYE, argv[index], error_specific_message, -index); exit(-index);
 }
