@@ -146,9 +146,9 @@ unsigned long INFINITE_exponentiation(unsigned long base, unsigned long logarith
     return exponentiation_RESULT;
 }
 
-unsigned long *str_represents_ul(char *str, unsigned long *UL_PTR) {
+unsigned long *str_represents_ul(char *str, unsigned long *UL_PTR) { // if (!str) return NULL;
     unsigned long length_of_string = 0; do {
-	if (str[length_of_string] >= ASCII_BASE && str[length_of_string] < ASCII_BASE + 10) length_of_string++;
+	if (str && str[length_of_string] >= ASCII_BASE && str[length_of_string] < ASCII_BASE + 10) length_of_string++;
 	else return NULL;
     } while (str[length_of_string] != STRING_TERMINATING_CHARACTER);
     // ^^^ Checks to see if the proposed char array at index is even parsable as an unsigned long, returns NULL if not

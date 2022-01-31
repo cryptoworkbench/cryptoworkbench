@@ -39,7 +39,7 @@
 #define K 2 // degree of polynomial that is resolved in other to retrieve secret encoded as contant term
 
 unsigned long mod; int main(int argc, char **argv) { mod_ = &mod;
-    if (2 > argc || !str_represents_ul(argv[1], mod_)) { printf("%s is not mod!\n", argv[1]); exit(-1); }
+    if (!str_represents_ul(argv[1], mod_)) { printf("%s is not mod!\n", argv[1]); exit(-1); }
     if (6 < argc) { ignored_arguments(argc, argv, 5); argc = 6; } // < complain about unneccesary arguments and forget about them once and for all
     unsigned long ***equation = equations_ALLOCATE(K); switch (argc) {
 	case 6: if (!str_represents_ul(argv[5], equation[1][0])) fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of second point.\n", argv[5]);
