@@ -52,7 +52,7 @@ unsigned long **UL_array_of_SIZE(int SIZE) {
 
 int UL_array_SIZE(unsigned long **UL_array) { int ret_val = 0; while (UL_array[ret_val]) ret_val++; return ret_val; }
 
-unsigned long mod_polynomial(unsigned long **COEFFICIENT_array, unsigned long _x) {
+unsigned long mod_polynomial(unsigned long **COEFFICIENT_array, unsigned long _x) { // < array of coefficient pointers needs to be in reversed order to how polynomials are usually written in standard form
     unsigned long ret_val = ADDITIVE_IDENTITY; unsigned long term_factor = MULTIPLICATIVE_IDENTITY; unsigned long i = UL_array_SIZE(COEFFICIENT_array);
     do { i--; ret_val = mod_add(ret_val, mod_multiply(term_factor, *COEFFICIENT_array[i])); term_factor = mod_multiply(term_factor, _x); } while (i != 0); return ret_val;
 }

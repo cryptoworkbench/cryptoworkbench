@@ -1,41 +1,38 @@
-/* When a commented-out line only contains one function header, this function is within the maths.c file but should not be used by functions outside of maths.c
- */
 #include <stdio.h>
 #define ADDITIVE_IDENTITY 0
 #define MULTIPLICATIVE_IDENTITY 1
 #define PRIME_TABLE_UNAVAILABLE_ERROR "Failed to open the prime table '%s'.\n\n"
 
-typedef unsigned long ul; unsigned long *mod_; 
+typedef unsigned long (*_group_operation) (unsigned long, unsigned long);
+typedef unsigned long ul;
+
+unsigned long *mod_; 
+
 char *_REPORT_standard_prime_table_filename(); // < for access in other files to 'const char pointer standard_prime_table_filename'.
 char *_REPORT_open_prime_table(); // < for access in other files to 'char * _opened_prime_table' (which gets initialied to NULL).
 
 struct ordered_pair { unsigned long a; unsigned long b; };
 
-unsigned long mod_conditional_field_cap(unsigned long result); unsigned long _conditional_field_cap(unsigned long result, unsigned long mod);
-unsigned long mod_add(unsigned long a, unsigned long b);
-unsigned long mod_inverse(unsigned long element_of_additive_group); // 1).
-unsigned long mod_subtract(unsigned long a, unsigned long b);
-unsigned long mod_multiply(unsigned long a, unsigned long b);
-unsigned long mod_divide(unsigned long member_from_equivalence_class_representing_the_numerator, unsigned long denominator);
-unsigned long mod_polynomial(unsigned long **coefficient, unsigned long _x); // < array of coefficient pointers needs to be in reversed order to how polynomials are usually written in standard form
-unsigned long mod_exponentiate(unsigned long base, unsigned long exponent); // 2).
-
+unsigned long exponentiate(unsigned long base, unsigned long exponent); // wrapper function follows
+unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_);
 unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_);
 unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_);
 unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_);
 unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_);
 unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_);
 unsigned long _divide(unsigned long numerator, unsigned long denominator, unsigned long mod_);
-unsigned long _polynomial(unsigned long **COEFFICIENT_array, unsigned long _x, unsigned long mod);
+unsigned long _polynomial(unsigned long **COEFFICIENT_array, unsigned long _x, unsigned long mod); // wrapper functions follow
+unsigned long mod_conditional_field_cap(unsigned long result); unsigned long _conditional_field_cap(unsigned long result, unsigned long mod);
+unsigned long mod_add(unsigned long a, unsigned long b);
+unsigned long mod_inverse(unsigned long element_of_additive_group);
+unsigned long mod_subtract(unsigned long a, unsigned long b);
+unsigned long mod_multiply(unsigned long a, unsigned long b);
+unsigned long mod_divide(unsigned long member_from_equivalence_class_representing_the_numerator, unsigned long denominator);
+unsigned long mod_polynomial(unsigned long **coefficient, unsigned long _x);
+unsigned long mod_exponentiate(unsigned long base, unsigned long exponent); // wrapper function follows
+unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID); // (< combine them all!)
 
-typedef unsigned long (*_group_operation) (unsigned long, unsigned long);
 _group_operation operation_from_ID(unsigned long ID);
-
-unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_);
-// unsigned long __HIDDEN__regular_exponentiation_function(unsigned long base, unsigned long exponent); // < a regular procedural exponentiation function which is at the base of all exponentiation done through the project
-
-unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID);
-// ^^^ Combine them all
 
 /* ### OLD FUNCTIONS: */
 unsigned long GCD(unsigned long a, unsigned long b);
