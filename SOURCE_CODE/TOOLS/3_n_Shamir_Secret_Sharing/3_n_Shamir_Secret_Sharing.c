@@ -4,6 +4,14 @@
  * 1). https://www.youtube.com/watch?v=iFY5SyY3IMQ	"Secret Sharing Explained Visually" (yt channel "Art of the Problem")
  * 2). https://www.youtube.com/watch?v=K54ildEW9-Q	"How to keep an open secret with mathematics." (yt channel "Stand-up Maths")
  * 3). https://www.youtube.com/watch?v=ohc1futhFYM	"Equation of Parabola Given 3 Points (System of Equations)" (yt channel "Mario's Math Tutoring")
+ *
+ * Didn't work with:
+ * 17 7 2 6 2 15 11
+ *
+ * But should have yielded:
+ * a = 15, b = 9, c = 3
+ *
+ * Yields a floating point exception instead.
  */
 #include <stdio.h>
 #include <stdlib.h> // 'exit()'
@@ -22,7 +30,7 @@ void argv_ERROR(unsigned long index, char **argv) {
 }
 
 int main(int argc, char **argv) { unsigned long mod; mod_ = &mod;
-    if (2 > argc || !str_represents_ul(argv[1], &mod)) argv_ERROR(1, argv);
+    if (2 > argc || !str_represents_ul(argv[1], mod_)) argv_ERROR(1, argv);
     if (8 < argc) { ignored_arguments(argc, argv, 7); argc = 8; } // < complain about unneccesary arguments and forget about them once and for all
     unsigned long ***equation = equations_ALLOCATE(K); switch (argc) {
 	case 8: if (!str_represents_ul(argv[7], equation[2][0])) fprintf(stderr, "Failed to interpret argument '%s' as a y variable.\n", argv[7]);
@@ -40,12 +48,12 @@ int main(int argc, char **argv) { unsigned long mod; mod_ = &mod;
     fprintf(stdout, "y_3 \u2261 "); if (5 < argc) fprintf(stdout, "%lu\n", *equation[2][0]); else fscanf(stdin, " %lu", equation[2][0]); fprintf(stdout, "\n");
     *equation[0][2] = mod_exponentiate(*equation[0][1], 2); *equation[1][2] = mod_exponentiate(*equation[1][1], 2); *equation[2][2] = mod_exponentiate(*equation[2][1], 2);
     *equation[0][3] = *equation[1][3] = *equation[2][3] = 1;
-    // ^ Prepared initial equations
+    // ^ Prepare initial equations
 
     unsigned long **equation_ONE_and_TWO = coefficient_cancel(equation[0], equation[1], 3); 
     unsigned long **equation_TWO_and_THREE = coefficient_cancel(equation[1], equation[2], 3);
     unsigned long **final_linear_equation = coefficient_cancel(equation_ONE_and_TWO, equation_TWO_and_THREE, 1);
-    // ^ Prepared other equations
+    // ^ Prepare other equations
 
     unsigned long **coefficient = UL_array_of_SIZE(K); *coefficient[0] = mod_divide(*final_linear_equation[0], *final_linear_equation[2]);
     *coefficient[1] = mod_divide(mod_subtract(*equation_ONE_and_TWO[0], mod_multiply(*equation_ONE_and_TWO[2], *coefficient[0])), *equation_ONE_and_TWO[1]);

@@ -17,14 +17,14 @@ int main(int argc, char **argv) { unsigned long mod; mod_ = &mod;
     for (i = 0; i < number_of_coefficients; i++) coefficient[i] = (unsigned long *) malloc(sizeof(unsigned long)); coefficient[number_of_coefficients] = NULL;
     for (i = 0; i < number_of_coefficients; i++) if (!str_represents_ul(argv[i + 2], coefficient[i])) { fprintf(stderr, "%s is not interpretable.\n", argv[i + 2]); return -2; }
     
-    fprintf(stdout, "(x, y) : 'y \u2261 ");
-    i = 0; while (1) { fprintf(stdout, "%lu", *coefficient[i]); if (!coefficient[i + 1]) break; fprintf(stdout, " * x^%lu + ", i); i++; } fprintf(stdout, "	(mod %lu)'\n", mod);
+    fprintf(stdout, "Plotting polynomial with coefficients:\n");
+    i = 0; char symbol = 'a'; while (1) { fprintf(stdout, "%c = %lu", symbol, *coefficient[i]); if (!coefficient[i + 1]) break; i++; symbol++; fprintf(stdout, ", "); }
+    if (mod) fprintf(stdout, "	(mod %lu)", mod); fprintf(stdout, "\n\n");
 
     unsigned long range_bound = mod;
-    if (!(*mod_)) {
-	fprintf(stdout, "\nPlease tell me how many coordinates to plot (starting from x = 0): ");
-	fscanf(stdin, "%lu", &range_bound);
-    }
+    fprintf(stdout, "Number of coordinates to plot: ");
+    if (!(*mod_)) fscanf(stdin, "%lu", &range_bound);
+    else fprintf(stdout, "%lu\n", range_bound);
 
     for (unsigned long x = 0; x < range_bound; x++) fprintf(stdout, "(%lu, %lu)\n", x, _polynomial(coefficient, x, *mod_));
     free(coefficient); return 0; }
