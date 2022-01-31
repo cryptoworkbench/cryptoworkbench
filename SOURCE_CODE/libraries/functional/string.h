@@ -3,7 +3,7 @@
 #include <stdarg.h>
 // ^^^ Necessary library inclusions that are needed in "string.c"
 
-#define GENERIC_PARSING_ERROR "%s is not something I am able to understand as a number:\n"
+#define GENERIC_PARSING_ERROR "'%s' is not something I am able to understand as a number:\n"
 #define EXIT_STATUS_GOODBYE "Terminating with exit status '%i'. Goodbye.\n"
 #define STRING_TERMINATING_CHARACTER 0
 #define NUMERIC_BASE 10
