@@ -29,7 +29,7 @@ void argv_ERROR(unsigned long index, char **argv) {
     exit(-index);
 }
 
-int main(int argc, char **argv) { unsigned long mod; mod_ = &mod;
+unsigned long mod; int main(int argc, char **argv) { mod_ = &mod;
     if (2 > argc || !str_represents_ul(argv[1], mod_)) argv_ERROR(1, argv);
     if (8 < argc) { ignored_arguments(argc, argv, 7); argc = 8; } // < complain about unneccesary arguments and forget about them once and for all
     unsigned long ***equation = equations_ALLOCATE(K); switch (argc) {
@@ -63,6 +63,4 @@ int main(int argc, char **argv) { unsigned long mod; mod_ = &mod;
     fprintf(stdout, "Second-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", mod);
     fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(modulus %lu)\n", *coefficient[0], *coefficient[1], *coefficient[2], mod);
     fprintf(stdout, "\nThe shared secret was '%lu'.\n", mod_polynomial(coefficient, 0));
-    equations_DELETE(equation); return 0;
-    // ^ Finalize program
-}
+    equations_DELETE(equation); return 0; } // < Finalize program
