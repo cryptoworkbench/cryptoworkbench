@@ -47,7 +47,7 @@ cd ../factorize && make factorize && echo "#######===> The following tool has be
 "
 cd ../factorization_based_primality_test && make factorization_based_primality_test && echo "#######===> The following tool has been assemblied/linked: factorization_based_primality_test
 "
-cd ../modular_group_element_table_generator && make modular_group_element_table_generator && echo "#######===> The following tool has been assemblied/linked: modular_group_element_table_generator
+cd ../group_element_table_generator && make group_element_table_generator && echo "#######===> The following tool has been assemblied/linked: group_element_table_generator
 "
 # FIX THIS ONE!: cd ../subgroup_examplifier && make subgroup_examplifier && echo "#######===> The following tool has been assemblied/linked: subgroup_examplifier
 #"

@@ -10,7 +10,12 @@
 #define ASCII_BASE 48
 // ^^^ Necessary definitions that are needed in "string.c"
 
+char *arg;
+typedef void (*_error_selector) (); // this we will use for 'error_message'
 typedef const char *(*arg_error_selector) (int); arg_error_selector local_error_selector;
+
+void error_message(_error_selector error_explainer, int termination_status);
+
 char *BUFFER_OF_SIZE(unsigned int SIZE);
 
 /* Returns an unsigned long containing the number of characters in the string pointed at by variable 'string_pointer' of type 'constant char *' */
