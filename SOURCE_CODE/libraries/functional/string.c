@@ -5,8 +5,11 @@
  * The warning for an implicit declaration of "_exponentiate" during "gcc -c string.c -o .string.o" can be ignored. Just include .maths.o in the linking process.
  * */
 #include "string.h"
-#include "../mathematics/maths.h" // must be in this file or else compiler complaints
+#include "../mathematics/maths.h" // 'exponentiation()'
 #include <stdio.h>
+
+// void error_message(int SELECTOR, int termination_status) { fprintf(stderr, "An error occurred:\n"); display_error(SELECTOR); fprintf(stderr, EXIT_STATUS_GOODBYE, termination_status); exit(termination_status); }
+// ^^ never used (<<< REMOVE WHEN TESTED ^)
 
 char *BUFFER_OF_SIZE(unsigned int SIZE) {
     char *return_value = (char *) malloc(sizeof(char) * SIZE);
@@ -138,14 +141,6 @@ char *str_from_ul(unsigned long a, unsigned long min_out_length) { // Works!
     } return unsigned_long_as_string;
 }
 
-unsigned long INFINITE_exponentiation(unsigned long base, unsigned long logarithm) {
-    unsigned long exponentiation_RESULT = (0 < base);
-    for (unsigned long iter = 0; iter < logarithm; iter++)
-	exponentiation_RESULT *= base;
-
-    return exponentiation_RESULT;
-}
-
 unsigned long *str_represents_ul(char *str, unsigned long *UL_PTR) { if (!str) return NULL;
     unsigned long length_of_string = 0; do {
 	if (str[length_of_string] >= ASCII_BASE && str[length_of_string] < ASCII_BASE + 10) length_of_string++;
@@ -159,10 +154,10 @@ unsigned long *str_represents_ul(char *str, unsigned long *UL_PTR) { if (!str) r
     // char *current_character = &(str[length_of_string - 1]);
     char *current_character = (str + (length_of_string - 1));
     while (current_character != str) {
-	str_as_UL += ((unsigned int) *current_character - ASCII_BASE) * INFINITE_exponentiation(NUMERIC_BASE, iteration_count);
+	str_as_UL += ((unsigned int) *current_character - ASCII_BASE) * exponentiate(NUMERIC_BASE, iteration_count);
 	iteration_count++; // Update the iteration count (appriopiate log)
 	current_character = (current_character - 1); // Move back one character
-    } str_as_UL += (*current_character - ASCII_BASE) * (INFINITE_exponentiation(NUMERIC_BASE, length_of_string - 1));
+    } str_as_UL += (*current_character - ASCII_BASE) * (exponentiate(NUMERIC_BASE, length_of_string - 1));
 
     *UL_PTR = str_as_UL; // <<< Inserts the parsed variable into the INSERTMENT_SLOTH (see header file "string.h")
     return UL_PTR;
