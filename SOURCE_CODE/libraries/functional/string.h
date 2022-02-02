@@ -3,7 +3,7 @@
 #include <stdarg.h>
 // ^^^ Necessary library inclusions that are needed in "string.c"
 
-#define GENERIC_PARSING_ERROR "'%s' is not something I am able to understand as a number:\n"
+#define GENERIC_PARSING_ERROR "'%s' is not something I am able to understand as a suitable number;"
 #define EXIT_STATUS_GOODBYE "Terminating with exit status '%i'. Goodbye.\n"
 #define STRING_TERMINATING_CHARACTER 0
 #define NUMERIC_BASE 10
@@ -41,4 +41,4 @@ unsigned long *str_represents_ul(char *STRING, unsigned long *UL_PTR);
  * Returns "VOID" if "STRING" is not parsable as a base-10 number.
  */
 void ignored_arguments(int argc, char **argv, int used_arguments);
-void arg_does_not_represent_ul(char **argv, int index);
+void str_does_not_represent_suitable_ul(char **argv, int index);

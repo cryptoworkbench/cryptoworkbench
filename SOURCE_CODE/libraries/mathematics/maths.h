@@ -7,12 +7,13 @@ typedef unsigned long (*mod_group_operation) (unsigned long, unsigned long);
 typedef unsigned long (*_group_operation) (unsigned long, unsigned long, unsigned long);
 typedef unsigned long ul;
 
-unsigned long *mod_; 
+unsigned long *mod_; // functions that start with 'mod_' use this global variable
 
 char *_REPORT_standard_prime_table_filename(); // < for access in other files to 'const char pointer standard_prime_table_filename'.
 char *_REPORT_open_prime_table(); // < for access in other files to 'char * _opened_prime_table' (which gets initialied to NULL).
 
 struct ordered_pair { unsigned long a; unsigned long b; };
+struct ordered_pair _isomorphism();
 
 unsigned long exponentiate(unsigned long base, unsigned long exponent); // wrapper function follows
 unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_);

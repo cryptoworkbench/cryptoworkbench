@@ -1,10 +1,12 @@
 #define ELEMENT_EXPORTER "modular_group_element_table_generator"
 #define FILENAME_BODY "_group_of_integers_modulus_"
-#define LOGBOOK_PATH ".LOGBOOK" // << This will be the logbook filename in "WORKBENCH/"
+#define LOGBOOK_PATH "logbook" // << This will be the logbook filename in "WORKBENCH/"
 #define LOGBOOK_FORMULA "%s: "// <<< This will be the name of the program printing to the logbook prepended to the line the program appends (to this logbook)
 #define ARCHIVE_FOLDER "ARCHIVE/"
 #define FORK_ERROR "Failed to split up myself into two daughter processes so that I could dedicate one part of my being to securing the group."
 #define FILE_DESCRIPTOR_ERROR "Failed to rewrite the file descriptor of child process."
+
+unsigned long *id_; // functions that start with 'id_' use this global variable
 
 static char *argv_ZERO;
 static FILE *logbook_fs;
