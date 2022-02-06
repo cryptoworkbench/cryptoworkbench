@@ -41,8 +41,7 @@ void open_and_append_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_li
 }
 
 FILE *open_group(char *prog_NAME, char *mod, unsigned long id) {
-    argv_ZERO = prog_NAME;
-    // ^^ Set the gobal variable "argv_ZERO" based on what was passed on to this function as "argv[0]"
+    argv_ZERO = prog_NAME; // set the gobal variable "argv_ZERO" based on what was passed on to this function as "argv[0]"
 
     if ( !(logbook_fs = fopen(LOGBOOK_PATH, "a"))) { fprintf(stderr, "Failed to open logbook!\n"); exit(-10); }
     // ^^ Exit when the logbook won't open
@@ -76,6 +75,7 @@ FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, cons
 
 	sprintf(LINE, "%s using " ELEMENT_EXPORTER, argv_ZERO); // << Use LINE in order to send along a special "argv[0]" to "group_exporter"
 	char *ELEMENT_EXPORTER_argv[] = {LINE, group_MOD, (char *) numerical_denomination, 0};
+	printf("opening:\n%s %s %s\n", ELEMENT_EXPORTER_argv[0], ELEMENT_EXPORTER_argv[1], ELEMENT_EXPORTER_argv[2]);
 	// ^^ Prepare the char pointer array "group_exporter" will receive as "char *argv[]" (a.k.a. "char **argv")
 
 	int fd[2]; if (pipe(fd) == -1) { fprintf(stderr, "Failed to open pipe.\n"); exit(-1); } // < Open pipe
@@ -89,9 +89,10 @@ FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, cons
 	// ^^ Fix a new file descriptor
 
 	FILE *NEEDED_FILE = fopen(path_to_FILE, "w"); // << Create a filestream for the file we are about to create
-	unsigned long element; while (fscanf(group_exporter_STDOUT, "%lu\n", &element) == 1) fprintf(NEEDED_FILE, "%lu\n", element); fclose(NEEDED_FILE);
+	unsigned long element; while (fscanf(group_exporter_STDOUT, "%lu\n", &element) == 1) { fprintf(NEEDED_FILE, "%lu\n", element); } fclose(NEEDED_FILE);
 	// ^^ Extract elements from "group_exporter" output and "fprintf()" them into an empty file with the appropiate name
 
+	printf("YAA\n");
 	int ELEMENT_EXPORTER_exit_status_RAW;
 	waitpid(group_exporter_PID, &ELEMENT_EXPORTER_exit_status_RAW, 0);
 	// ^^ Wait for the child process to finish
