@@ -51,6 +51,8 @@ mod_group_operation operation_from_ID(unsigned long ID) { return (ID) ? mod_mult
 mod_group_operation _finite_group_operation(unsigned long ID) { return (ID) ? mod_multiply : mod_add; }
 mod_group_operation id_finite_group_operation() { return _finite_group_operation(*id_); }
 
+unsigned long GF_combi(unsigned long a, unsigned long b) { return (*id_) ? mod_multiply(a, b) : mod_add(a, b); }
+
 unsigned long **UL_array_of_SIZE(int SIZE) {
     unsigned long **ret_val = (unsigned long **) malloc(sizeof(unsigned long *) * (SIZE + 1)); ret_val[SIZE] = NULL;
     for (int i = 0; i < SIZE; i++) ret_val[i] = (unsigned long *) malloc(sizeof(unsigned long)); return ret_val;
