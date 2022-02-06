@@ -7,6 +7,8 @@
 #include "../functional/string.h"
 #include "universal_group_library.h"
 
+char *path_to_FILE;
+
 const char *additive_signs[] = {"0", "+", "addition", "additions", "additive", 0};
 const char *multiplicative_signs[] = {"1", "*", "multiplication", "multiplications", "multiplicative", 0};
 int identity_SELECTOR(char *arg) { if (strcmp(arg, additive_signs[0]) == 0) return 0; else if (strcmp(arg, multiplicative_signs[0]) == 0) return 1; else if (strcmp(arg, additive_signs[1]) == 0) return 2;
@@ -65,7 +67,7 @@ FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, cons
     // ^ open peacefully
 
     else {
-	sprintf(LINE, "Could not to open '%s'", path_to_FILE); append_to_LOGBOOK(LINE);
+	sprintf(LINE, "Could not open '%s'", path_to_FILE); append_to_LOGBOOK(LINE);
 	// ^^ Explain that the needed file does not exist 
 
 	sprintf(LINE, "Assuming the 'ARCHIVE/' folder was there and it wasn't a permission thing, I will try to use '"ELEMENT_EXPORTER"' to autonomously archive \u2115%s%s", group_MOD, symbol);
@@ -104,11 +106,8 @@ FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, cons
     // ^ force open
 }
 
-void close_group(char *group_CAP, const char *symbol_to_use, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", group_CAP, symbol_to_use, path_to_FILE); append_to_LOGBOOK(BUFFER); fclose(opened_group);
+void close_group(char *mod, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
+    sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", mod, id_as_operation_symbol(), path_to_FILE); append_to_LOGBOOK(BUFFER); fclose(opened_group);
     sprintf(BUFFER, "Closed '%s'", path_to_FILE); free(path_to_FILE); append_to_LOGBOOK(BUFFER); free(BUFFER); close_logbook();
-}
-
-void close_logbook() {
-    fclose(logbook_fs);
-}
+} void close_logbook() { fclose(logbook_fs); }
+// ^ ^ close group and logbook
