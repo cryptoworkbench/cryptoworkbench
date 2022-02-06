@@ -7,7 +7,7 @@ void **open_CHANNEL() {
     return source; }
 // ^^ Open source
 
-struct VOID_ptr_ptr_PAIR INITIALIZE_CHANNEL_PTR_pair() {
+struct VOID_ptr_ptr_PAIR initialize_CHANNEL_ptr_pair() {
     struct VOID_ptr_ptr_PAIR ret_val; ret_val.iterator = ret_val.head = open_CHANNEL();
     return ret_val;
 }

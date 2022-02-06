@@ -40,18 +40,14 @@ void open_and_append_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_li
     fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", prog_NAME, TO_BE_APPENDED_logbook_line); fflush(logbook_fs);
 }
 
-FILE *open_group(char *prog_NAME, char *mod, unsigned long id) {
-    argv_ZERO = prog_NAME; // set the gobal variable "argv_ZERO" based on what was passed on to this function as "argv[0]"
-
+FILE *open_group(char **argv) { argv_ZERO = argv[0];
     if ( !(logbook_fs = fopen(LOGBOOK_PATH, "a"))) { fprintf(stderr, "Failed to open logbook!\n"); exit(-10); }
     // ^^ Exit when the logbook won't open
 
-    const char *group_ID = _as_number(id);
-    const char *adjective = _as_adjective(id);
-    const char *operation_symbol = _as_operation_symbol(id);
-    // ^^ Prepare the char pointers "open_group_as_INNER()" needs
+    const char *operation_symbol = id_as_operation_symbol(); const char *adjective = id_as_adjective(); const char *group_ID = id_as_number();
+    // ^^ Prepare the char pointers that 'open_group_as_INNER' feeds on
 
-    return open_group_INNER(mod, group_ID, adjective, operation_symbol, BUFFER_OF_SIZE(200));
+    return open_group_INNER(argv[1], argv[2], adjective, operation_symbol, BUFFER_OF_SIZE(200));
 }
 
 FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, const char *adjective, const char *symbol, char *LINE) {
@@ -66,6 +62,8 @@ FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, cons
     // ### Begin program operation ===>
     FILE *group_fs = NULL;
     if (group_fs = fopen(path_to_FILE, "r")) { sprintf(LINE, "Successfully opened '%s'", path_to_FILE); append_to_LOGBOOK(LINE); free(LINE); }
+    // ^ open peacefully
+
     else {
 	sprintf(LINE, "Could not to open '%s'", path_to_FILE); append_to_LOGBOOK(LINE);
 	// ^^ Explain that the needed file does not exist 
@@ -75,7 +73,6 @@ FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, cons
 
 	sprintf(LINE, "%s using " ELEMENT_EXPORTER, argv_ZERO); // << Use LINE in order to send along a special "argv[0]" to "group_exporter"
 	char *ELEMENT_EXPORTER_argv[] = {LINE, group_MOD, (char *) numerical_denomination, 0};
-	printf("opening:\n%s %s %s\n", ELEMENT_EXPORTER_argv[0], ELEMENT_EXPORTER_argv[1], ELEMENT_EXPORTER_argv[2]);
 	// ^^ Prepare the char pointer array "group_exporter" will receive as "char *argv[]" (a.k.a. "char **argv")
 
 	int fd[2]; if (pipe(fd) == -1) { fprintf(stderr, "Failed to open pipe.\n"); exit(-1); } // < Open pipe
@@ -92,19 +89,19 @@ FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, cons
 	unsigned long element; while (fscanf(group_exporter_STDOUT, "%lu\n", &element) == 1) { fprintf(NEEDED_FILE, "%lu\n", element); } fclose(NEEDED_FILE);
 	// ^^ Extract elements from "group_exporter" output and "fprintf()" them into an empty file with the appropiate name
 
-	printf("YAA\n");
 	int ELEMENT_EXPORTER_exit_status_RAW;
 	waitpid(group_exporter_PID, &ELEMENT_EXPORTER_exit_status_RAW, 0);
 	// ^^ Wait for the child process to finish
 
 	int ELEMENT_EXPORTER_exit_status = WEXITSTATUS(ELEMENT_EXPORTER_exit_status_RAW);
-	if (ELEMENT_EXPORTER_exit_status && (group_fs = fopen(path_to_FILE, "r"))) {
+	if (!ELEMENT_EXPORTER_exit_status && (group_fs = fopen(path_to_FILE, "r"))) {
 	    sprintf(LINE, ELEMENT_EXPORTER " returned an exit status of '%i' \u21D2 \u2115%s%s should be registered now", ELEMENT_EXPORTER_exit_status, group_MOD, symbol);
 	    append_to_LOGBOOK(LINE);
 	} else {
 	    sprintf(LINE, "FATAL ERROR: failed to create the required registry file using '"ELEMENT_EXPORTER"'");
 	    append_to_LOGBOOK(LINE); exit(0);
 	} } return group_fs;
+    // ^ force open
 }
 
 void close_group(char *group_CAP, const char *symbol_to_use, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
