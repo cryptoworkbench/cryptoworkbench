@@ -36,6 +36,9 @@ unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID); /
 
 _group_operation _operation_from_ID(unsigned long ID); mod_group_operation operation_from_ID(unsigned long ID);
 mod_group_operation _finite_group_operation(unsigned long ID); mod_group_operation id_finite_group_operation();
+int part_of_group(unsigned long number);
+
+unsigned long F_combi(unsigned long a, unsigned long b);
 unsigned long GF_combi(unsigned long a, unsigned long b);
 /* ### OLD FUNCTIONS: */
 unsigned long GCD(unsigned long a, unsigned long b);

@@ -51,6 +51,20 @@ mod_group_operation operation_from_ID(unsigned long ID) { return (ID) ? mod_mult
 mod_group_operation _finite_group_operation(unsigned long ID) { return (ID) ? mod_multiply : mod_add; }
 mod_group_operation id_finite_group_operation() { return _finite_group_operation(*id_); }
 
+int part_of_group(unsigned long number) {
+    if (*mod_ == 0 && *id_ != 0) return 1;
+    // ^ every unsigned long is a part of the infinite field of natural numbers
+
+    if (*id_ == 0 && number < *mod_) return 1; // additive group
+    else if (GCD(number, *mod_) == 1) return 1; // multiplicative group
+    return 0; // not part of one of the four above covered groups
+}
+
+unsigned long F_combi(unsigned long a, unsigned long b) {
+    if (*mod_) { switch (*id_) { case 0: return mod_add(a, b); case 1: return mod_multiply(a, b); }; }
+    else if (*id_) return _multiply(a, b, 0); return _add(a, b, 0);
+}
+
 unsigned long GF_combi(unsigned long a, unsigned long b) { return (*id_) ? mod_multiply(a, b) : mod_add(a, b); }
 
 unsigned long **UL_array_of_SIZE(int SIZE) {
