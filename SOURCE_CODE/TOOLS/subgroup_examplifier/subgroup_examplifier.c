@@ -1,7 +1,7 @@
 /* Development progress:
  * This will be a rewrite of 'DEPRECATED_subgroup_examplifier/subgroup_examplifier.c'
  *
- * So far, so good.
+ * Running with 21 1 will give a "malloc(): invalid_size (unsorted)"
  */
 #include <stdio.h>
 #include <stdlib.h>
