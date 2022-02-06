@@ -15,7 +15,7 @@ struct LL_ { struct LL_ *next; unsigned long e; };
 struct vertibrae { char *ASCII; unsigned long ulong; unsigned long perm_length; unsigned long *permutation; };
 // ^^ type definitions
 
-struct ordered_pair *offset; char *unparsed_arg_; struct vertibrae *LOOKUP_table; unsigned long group_cardinality_ = 0; unsigned long generator_count = 0;
+struct ordered_pair *offset; char *unparsed_arg_; struct vertibrae *LOOKUP_table; unsigned long group_cardinality_ = 0; unsigned long generator_count = 0; unsigned long index_of_first_gen;
 // ^ global variable definitions
 
 void identity_error() { fprintf(stderr, "\nFailed to understand '%s' as the identity element of any additive group (which is always zero) or any multiplicative group (which is always one).\n\n", unparsed_arg_); }
@@ -25,6 +25,14 @@ _error_selector arg_error(int SELECTOR) { switch(SELECTOR) { case 1: return mod_
 
 unsigned long LOOKUP(unsigned long number) { for (unsigned long index = 0; index < group_cardinality_; index++) if (LOOKUP_table[index].ulong == number) return index; }
 // ^ only call for existing elements
+
+unsigned long general_lookup(unsigned long *array, unsigned long array_size, unsigned long number) {
+    for (unsigned long i = 0; i < array_size; i++) if (array[i] == number) return i; }
+// ^ also only call for existing elements
+
+unsigned long generator_lookup(unsigned long number) {
+    for (ul i = 0; i < group_cardinality_; i++) if (LOOKUP_table[LOOKUP_table[index_of_first_gen].permutation[i]].ulong == number) return i;
+}
 
 void insert(struct LL_ ***tracer_location, unsigned long new_ulong) {
     struct LL_ *new_LL_element = (struct LL_ *) malloc(sizeof(struct LL_)); new_LL_element->e = new_ulong; new_LL_element->next = NULL; // create and initialize new element
@@ -38,12 +46,25 @@ struct VOID_ptr_ptr_PAIR group_elements_LL(char **argv) { FILE *ELEMENT_database
 }
 
 unsigned long *array_from_LL(struct LL_ **head_TRACER, unsigned long *required_array_size) {
+    printf("array size: %lu\n", *required_array_size);
     struct LL_ *iter; if (!(iter = (struct LL_ *) _close_CHANNEL((void **) head_TRACER))) return NULL;
+    // for (; iter; iter = iter->next) { printf("%lu\n", iter->e); }
     unsigned long *ulong_array = (unsigned long *) malloc(sizeof(unsigned long) * *required_array_size);
+
     for (unsigned long i = 0; i < *required_array_size; i++) {
 	struct LL_ *process = iter; ulong_array[i] = process->e;
+	printf("%lu, ", ulong_array[i]);
 	iter = process->next; free(process);
-    } return ulong_array;
+    }
+
+    /*
+    unsigned long i = 0;
+    do {struct LL_ *process = iter; ulong_array[i] = process->e;
+	// printf("%lu, ", ulong_array[i]);
+	iter = process->next; free(process); i++;
+    } while (iter);
+    */
+    return ulong_array;
 }
 
 unsigned long *yield_subgroup(unsigned long index) {
@@ -77,11 +98,33 @@ unsigned long *second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) {
     // destroy the linear linked list 'LINEAR_element_LL' whilst registering its values into LOOKUP_table ^
 
     struct VOID_ptr_ptr_PAIR generator_LL_pair = initialize_CHANNEL_ptr_pair(); // << Declare a new set of tracers, but this time to create a linked list of generators
-    for (iter = 0; iter < group_cardinality_; iter++) {
-	LOOKUP_table[iter].permutation = yield_subgroup(iter); // << Loop over the array one more time
+
+    iter = 0; do { LOOKUP_table[iter].permutation = yield_subgroup(iter); if (LOOKUP_table[iter].perm_length == group_cardinality_)
+	{ insert((struct LL_ ***) &generator_LL_pair.iterator, iter); generator_count++; break; } iter++;
+    } while (iter < group_cardinality_); if (iter == group_cardinality_) return NULL; index_of_first_gen = iter;
+    // find index of the first generator ^
+
+    for (iter++; iter < group_cardinality_; iter++) {
+	LOOKUP_table[iter].perm_length = (group_cardinality_ / GCD(generator_lookup(LOOKUP_table[iter].ulong), group_cardinality_));
 	if (LOOKUP_table[iter].perm_length == group_cardinality_) { insert((struct LL_ ***) &generator_LL_pair.iterator, iter); generator_count++; }
+	LOOKUP_table[iter].permutation = malloc(sizeof(unsigned long) * LOOKUP_table[iter].perm_length);
+
+	unsigned long j = 0;
+	unsigned long generated_element = LOOKUP_table[iter].permutation[j] = *id_;
+	for (unsigned long j = 0; j < LOOKUP_table[iter].perm_length; j++) {
+	    generated_element = LOOKUP_table[iter].permutation[j + 1] = GF_combi(generated_element, LOOKUP_table[iter].ulong);
+	    // printf("%lu, ", LOOKUP_table[LOOKUP_table[iter].permutation[j + 1]].ulong);
+	} // printf("\n");
     }
 
+    printf("SO FAR SO GOOD. number of gens: %lu\n", generator_count);
+    /* THIS WORKS BUT FOR SOME REASON IT DOES NOT WORK IN 'array_from_LL':
+    struct LL_ *lol = *generator_LL_pair.head;
+    for (; lol; lol = lol->next) {
+	printf("%lu\n", lol->e);
+    }
+    */
+    return NULL;
     return array_from_LL((struct LL_ **) generator_LL_pair.head, &generator_count);
 }
 
