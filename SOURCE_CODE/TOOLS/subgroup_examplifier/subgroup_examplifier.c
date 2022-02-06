@@ -28,5 +28,6 @@ int main(int argc, char **argv) { unsigned long *mod = (unsigned long *) malloc(
     if (10 == (*SELECTOR = identity_SELECTOR(unparsed_arg))) error_message(arg_error(2), -2); unsigned long *id = (unsigned long *) malloc(sizeof(unsigned long)); *id = identity_(*SELECTOR); id_ = id;
     // ^ process terminal arguments and prepare library variables
 
-    for (int i = 0; i < *mod_; i++) if (part_of_group(i)) subgroup(i); return 0;
+    for (int i = *id_; i < *mod_; i++) if (*id_ == ADDITIVE_IDENTITY || GCD(i, *mod_) == 1) subgroup(i);
+    return 0;
 }
