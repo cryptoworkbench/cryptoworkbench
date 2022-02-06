@@ -7,17 +7,28 @@
 #include "../functional/string.h"
 #include "universal_group_library.h"
 
-unsigned long *STR_could_be_parsed_into_id(char *STR, unsigned long *id) {
-    if (match(STR, additive_signs)) { *id = 0; return id; }
-    else if (match(STR, multiplicative_signs)) { *id = 1; return id; }
-    else return NULL;
-}
+const char *additive_signs[] = {"0", "+", "addition", "additions", "additive", 0};
+const char *multiplicative_signs[] = {"1", "*", "multiplication", "multiplications", "multiplicative", 0};
+int identity_SELECTOR(char *arg) { if (strcmp(arg, additive_signs[0]) == 0) return 0; else if (strcmp(arg, multiplicative_signs[0]) == 0) return 1; else if (strcmp(arg, additive_signs[1]) == 0) return 2;
+    else if (strcmp(arg, multiplicative_signs[1]) == 0) return 3; else if (strcmp(arg, additive_signs[2]) == 0) return 4; else if (strcmp(arg, multiplicative_signs[2]) == 0) return 5;
+    else if (strcmp(arg, additive_signs[3]) == 0) return 6; else if (strcmp(arg, multiplicative_signs[3]) == 0) return 7; else if (strcmp(arg, additive_signs[4]) == 0) return 8;
+    else if (strcmp(arg, multiplicative_signs[4]) == 0) return 9; return 10;
+} unsigned long identity_(int SELECTOR) { return (SELECTOR % 2) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY ; }
+// ^^ functions for figuring out what identity element to start the subgroups with
 
-const char *ID_denoted_numerically(ul id) { return (id) ? multiplicative_signs[0] : additive_signs[0]; }
-const char *ID_denoted_by_operation_symbol(ul id) { return (id) ? multiplicative_signs[1] : additive_signs[1]; }
-const char *ID_proNOUNced(ul id) { return (id) ? multiplicative_signs[2] : additive_signs[2]; }
-const char *ID_proNOUNSed(ul id) { return (id) ? multiplicative_signs[3] : additive_signs[3]; }
-const char *operation_ADJECTIVE_from_ID(ul id) { return (id) ? multiplicative_signs[4] : additive_signs[4]; }
+const char *_as_number(unsigned long id) { return (id) ? multiplicative_signs[0] : additive_signs[0]; }
+const char *_as_operation_symbol(unsigned long id) { return (id) ? multiplicative_signs[1] : additive_signs[1]; }
+const char *_as_noun(unsigned long id) { return (id) ? multiplicative_signs[2] : additive_signs[2]; }
+const char *_as_nouns(unsigned long id) { return (id) ? multiplicative_signs[3] : additive_signs[3]; }
+const char *_as_adjective(unsigned long id) { return (id) ? multiplicative_signs[4] : additive_signs[4]; }
+// ^ returns one of the names
+
+const char *id_as_number() { return _as_number(*id_); }
+const char *id_as_operation_symbol() { return _as_operation_symbol(*id_); }
+const char *id_as_noun() { return _as_noun(*id_); }
+const char *id_as_nouns() { return _as_nouns(*id_); }
+const char *id_as_adjective() { return _as_adjective(*id_); }
+// ^ wrapper for the above block of five functions
 
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line) {
     fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", argv_ZERO, TO_BE_APPENDED_logbook_line);
@@ -36,9 +47,9 @@ FILE *open_group(char *prog_NAME, char *mod, unsigned long id) {
     if ( !(logbook_fs = fopen(LOGBOOK_PATH, "a"))) { fprintf(stderr, "Failed to open logbook!\n"); exit(-10); }
     // ^^ Exit when the logbook won't open
 
-    const char *group_ID = ID_denoted_numerically(id);
-    const char *adjective = operation_ADJECTIVE_from_ID(id);
-    const char *operation_symbol = ID_denoted_by_operation_symbol(id);
+    const char *group_ID = _as_number(id);
+    const char *adjective = _as_adjective(id);
+    const char *operation_symbol = _as_operation_symbol(id);
     // ^^ Prepare the char pointers "open_group_as_INNER()" needs
 
     return open_group_INNER(mod, group_ID, adjective, operation_symbol, BUFFER_OF_SIZE(200));

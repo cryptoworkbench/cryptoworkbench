@@ -7,7 +7,7 @@ typedef unsigned long (*mod_group_operation) (unsigned long, unsigned long);
 typedef unsigned long (*_group_operation) (unsigned long, unsigned long, unsigned long);
 typedef unsigned long ul;
 
-unsigned long *mod_; // functions that start with 'mod_' use this global variable
+unsigned long *mod_, *id_; // < a function that starts with one of these works with one of these
 
 char *_REPORT_standard_prime_table_filename(); // < for access in other files to 'const char pointer standard_prime_table_filename'.
 char *_REPORT_open_prime_table(); // < for access in other files to 'char * _opened_prime_table' (which gets initialied to NULL).
@@ -33,7 +33,9 @@ unsigned long mod_divide(unsigned long member_from_equivalence_class_representin
 unsigned long mod_polynomial(unsigned long **coefficient, unsigned long _x);
 unsigned long mod_exponentiate(unsigned long base, unsigned long exponent); // wrapper function follows
 unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID); // (< combine them all!)
+
 _group_operation _operation_from_ID(unsigned long ID); mod_group_operation operation_from_ID(unsigned long ID);
+mod_group_operation _finite_group_operation(unsigned long ID); mod_group_operation id_finite_group_operation();
 
 /* ### OLD FUNCTIONS: */
 unsigned long GCD(unsigned long a, unsigned long b);

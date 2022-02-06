@@ -11,7 +11,7 @@ char *_REPORT_standard_prime_table_filename() { return (char *) _standard_prime_
 char *_open_prime_table = NULL; char *_REPORT_open_prime_table() { return (char *) _open_prime_table; }
 // Two global variables and two functions for access to these global variables in other files/libraries
 
-struct ordered_pair _isomorphism() { struct ordered_pair ret_val = {0, 1}; return ret_val; }
+struct ordered_pair _isomorphism() { struct ordered_pair ret_val = { ADDITIVE_IDENTITY, MULTIPLICATIVE_IDENTITY }; return ret_val; }
 
 unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_) { return (mod_) ? result % mod_ : result; }
 unsigned long mod_conditional_field_cap(unsigned long result) { return (*mod_) ? _conditional_field_cap(result, *mod_) : result; }
@@ -47,6 +47,9 @@ unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { 
 
 _group_operation _operation_from_ID(unsigned long ID) { return (ID) ? _multiply : _add; }
 mod_group_operation operation_from_ID(unsigned long ID) { return (ID) ? mod_multiply : mod_add; }
+
+mod_group_operation _finite_group_operation(unsigned long ID) { return (ID) ? mod_multiply : mod_add; }
+mod_group_operation id_finite_group_operation() { return _finite_group_operation(*id_); }
 
 unsigned long **UL_array_of_SIZE(int SIZE) {
     unsigned long **ret_val = (unsigned long **) malloc(sizeof(unsigned long *) * (SIZE + 1)); ret_val[SIZE] = NULL;

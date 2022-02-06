@@ -6,25 +6,15 @@
 #define FORK_ERROR "Failed to split up myself into two daughter processes so that I could dedicate one part of my being to securing the group."
 #define FILE_DESCRIPTOR_ERROR "Failed to rewrite the file descriptor of child process."
 
-unsigned long *id_; // functions that start with 'id_' use this global variable
-
-static char *argv_ZERO;
-static FILE *logbook_fs;
-static char *path_to_FILE;
+char *argv_ZERO;
+FILE *logbook_fs;
+char *path_to_FILE;
 // ^^ Variable definitions
 
-static const char *additive_signs[] = {"0", "+", "addition", "additions", "additive"};
-static const char *multiplicative_signs[] = {"1", "*", "multiplication", "multiplications", "multiplicative"};
-// ^^ Even though the internet adviced against it, I like to have these in "universal_group_library.h"
-
-unsigned long *STR_could_be_parsed_into_id(char *STR, unsigned long *ID);
-/* ^^ Returns "NULL" upon parsing failure, otherwise parses "0" or "1" into their respective ENUM equivalents (a.k.a. representations) within this struct that is abbreviated "group_OBJ" */
-
-const char *ID_denoted_numerically(unsigned long ID);
-const char *ID_denoted_by_operation_symbol(unsigned long ID);
-const char *ID_proNOUNced(unsigned long ID);
-const char *ID_proNOUNSed(unsigned long ID);
-const char *operation_ADJECTIVE_from_ID(unsigned long ID);
+int identity_SELECTOR(char *arg);
+unsigned long identity_(int SELECTOR);
+const char *_as_number(unsigned long ID); const char *_as_operation_symbol(unsigned long ID); const char *_as_noun(unsigned long ID); const char *_as_nouns(unsigned long ID); const char *_as_adjective(unsigned long ID);
+const char *id_as_number(); const char *id_as_operation_symbol(); const char *id_as_noun(); const char *id_as_nouns(); const char *id_as_adjective();
 
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line);
 void open_and_append_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line);
