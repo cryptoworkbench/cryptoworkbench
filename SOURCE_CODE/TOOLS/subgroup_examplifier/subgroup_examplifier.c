@@ -96,21 +96,13 @@ unsigned long *second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) { 
     { struct LL_ *process = LINEAR_element_LL; LOOKUP_table[iter].ulong = process->e; LOOKUP_table[iter].ASCII = str_from_ul(LOOKUP_table[iter].ulong, cell_width); LINEAR_element_LL = process->next; free(process); }
     // destroy the linear linked list 'LINEAR_element_LL' whilst registering its values into LOOKUP_table ^
 
-    iter = 0; do {LOOKUP_table[iter].permutation = yield_subgroup(iter); if (LOOKUP_table[iter].perm_length == group_cardinality_) break; iter++; } while (iter < group_cardinality_);
-    if (iter + 1 == group_cardinality_) return ret_val; generator_count++; index_of_FIRST_GEN = iter; // detect if we happen to have calculated the entire thing, if so, respond appriopiately <
-    // calculate permutations until a generator is found ^
-
+    iter = 0; do { LOOKUP_table[iter].permutation = yield_subgroup(iter); if (LOOKUP_table[iter].perm_length == group_cardinality_) break; iter++; } while (iter < group_cardinality_);
+    if (iter + 1 == group_cardinality_) return ret_val; generator_count++; index_of_FIRST_GEN = iter;
     for (iter = index_of_FIRST_GEN + 1; iter < group_cardinality_; iter++) LOOKUP_table[iter].perm_length = (group_cardinality_ / GCD(base_FIRST_GEN_descrete_log_of_(LOOKUP_table[iter].ulong), group_cardinality_));
-    // calculate permutations lengths of remaining permutations ^
-
-    for (iter = index_of_FIRST_GEN + 1; iter < group_cardinality_; iter++) if (LOOKUP_table[iter].perm_length == group_cardinality_) generator_count++; // count successive generators <
-    // count the number of generators ^
+    for (iter = index_of_FIRST_GEN + 1; iter < group_cardinality_; iter++) if (LOOKUP_table[iter].perm_length == group_cardinality_) generator_count++;
 
     ret_val = (unsigned long *) malloc(sizeof(unsigned long) * generator_count);
-    unsigned long generator = 0; for (iter = index_of_FIRST_GEN; iter < group_cardinality_; iter++) { if (LOOKUP_table[iter].perm_length == group_cardinality_) { ret_val[generator] = iter; generator++; } }
-
-    // do { if (LOOKUP_table[iter].perm_length == group_cardinality_) { ret_val[generator] = iter; generator++; } iter++; } while (group_cardinality_ > iter);
-    // create an array with the indices of the generators (which in main could appriopiately be called 'generator_array') ^
+    for (unsigned long generator = 0, iter = index_of_FIRST_GEN; generator < generator_count; generator++, iter++) { while (LOOKUP_table[iter].perm_length != group_cardinality_) iter++; ret_val[generator] = iter; }
 
     // Calculate remaining permutations using subgroup cardinality information which can be derived now that we have found a generator
     for (iter = index_of_FIRST_GEN + 1; iter < group_cardinality_; iter++) {
