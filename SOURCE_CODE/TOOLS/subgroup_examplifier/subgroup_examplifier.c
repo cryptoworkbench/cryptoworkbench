@@ -111,11 +111,11 @@ unsigned long *second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) {
     // NEXT BLOCK OF CODE
     for (iter++; iter < group_cardinality_; iter++) {
 	LOOKUP_table[iter].perm_length = (group_cardinality_ / GCD(generator_lookup(LOOKUP_table[iter].ulong), group_cardinality_));
-	LOOKUP_table[iter].permutation = malloc(sizeof(unsigned long) * LOOKUP_table[iter].perm_length + 1);
+	LOOKUP_table[iter].permutation = malloc(sizeof(unsigned long) * (LOOKUP_table[iter].perm_length + 1));
 	if (LOOKUP_table[iter].perm_length == group_cardinality_) { generator_count++; insert((struct LL_ ***) &generator_LL_pair.iterator, iter); }
 
 	unsigned long j = 0;
-	unsigned long generated_element = LOOKUP_table[iter].permutation[j] = *id_;
+	unsigned long generated_element = LOOKUP_table[iter].permutation[j] = LOOKUP(*id_);
 	do {j++;
 	    LOOKUP_table[iter].permutation[j] = LOOKUP(GF_combi(LOOKUP_table[LOOKUP_table[iter].permutation[j - 1]].ulong, LOOKUP_table[iter].ulong));
 	} while (j < LOOKUP_table[iter].perm_length);
