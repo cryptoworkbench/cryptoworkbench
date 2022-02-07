@@ -100,16 +100,12 @@ unsigned long *second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) { 
     if (iter + 1 == group_cardinality_) return ret_val; generator_count++; index_of_FIRST_GEN = iter;
     for (iter = index_of_FIRST_GEN + 1; iter < group_cardinality_; iter++) LOOKUP_table[iter].perm_length = (group_cardinality_ / GCD(base_FIRST_GEN_descrete_log_of_(LOOKUP_table[iter].ulong), group_cardinality_));
     for (iter = index_of_FIRST_GEN + 1; iter < group_cardinality_; iter++) if (LOOKUP_table[iter].perm_length == group_cardinality_) generator_count++;
-
-    ret_val = (unsigned long *) malloc(sizeof(unsigned long) * generator_count);
+    for (iter = index_of_FIRST_GEN + 1; iter < group_cardinality_; iter++) { LOOKUP_table[iter].permutation = malloc(sizeof(unsigned long) * (LOOKUP_table[iter].perm_length + 1));
+	unsigned long j = 0; LOOKUP_table[iter].permutation[j] = index_within_LOOKUP_TABLE(*id_); for (; j + 1 < LOOKUP_table[iter].perm_length; j++)
+	    LOOKUP_table[iter].permutation[j + 1] = index_within_LOOKUP_TABLE(GF_combi(LOOKUP_table[LOOKUP_table[iter].permutation[j]].ulong, LOOKUP_table[iter].ulong));
+    } ret_val = (unsigned long *) malloc(sizeof(unsigned long) * generator_count);
     for (unsigned long generator = 0, iter = index_of_FIRST_GEN; generator < generator_count; generator++, iter++) { while (LOOKUP_table[iter].perm_length != group_cardinality_) iter++; ret_val[generator] = iter; }
-
-    // Calculate remaining permutations using subgroup cardinality information which can be derived now that we have found a generator
-    for (iter = index_of_FIRST_GEN + 1; iter < group_cardinality_; iter++) {
-	LOOKUP_table[iter].permutation = malloc(sizeof(unsigned long) * (LOOKUP_table[iter].perm_length + 1));
-	unsigned long j = 0; LOOKUP_table[iter].permutation[j] = index_within_LOOKUP_TABLE(*id_);
-	for (; j + 1 < LOOKUP_table[iter].perm_length; j++) LOOKUP_table[iter].permutation[j + 1] = index_within_LOOKUP_TABLE(GF_combi(LOOKUP_table[LOOKUP_table[iter].permutation[j]].ulong, LOOKUP_table[iter].ulong));
-    } return ret_val;
+    return ret_val;
 }
 
 int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigned long)); unparsed_arg_ = argv[1];
