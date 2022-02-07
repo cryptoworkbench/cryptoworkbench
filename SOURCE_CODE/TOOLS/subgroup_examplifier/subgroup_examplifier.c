@@ -89,22 +89,22 @@ unsigned long *second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) { 
     LOOKUP_table = (struct vertibrae *) malloc(sizeof(struct vertibrae) * group_cardinality_); 
     // allocate LOOKUP_table's swap of memory ^
 
-    unsigned long iter;
+    unsigned long index;
     // initialize the iterator
 
-    for (iter = 0; iter < group_cardinality_; iter++)
-    { struct LL_ *process = LINEAR_element_LL; LOOKUP_table[iter].ulong = process->e; LOOKUP_table[iter].ASCII = str_from_ul(LOOKUP_table[iter].ulong, cell_width); LINEAR_element_LL = process->next; free(process); }
+    for (index = 0; index < group_cardinality_; index++)
+    { struct LL_ *process = LINEAR_element_LL; LOOKUP_table[index].ulong = process->e; LOOKUP_table[index].ASCII = str_from_ul(LOOKUP_table[index].ulong, cell_width); LINEAR_element_LL = process->next; free(process); }
     // destroy the linear linked list 'LINEAR_element_LL' whilst registering its values into LOOKUP_table ^
 
-    iter = 0; do { LOOKUP_table[iter].permutation = yield_subgroup(iter); if (LOOKUP_table[iter].perm_length == group_cardinality_) break; iter++; } while (iter < group_cardinality_);
-    if (iter + 1 == group_cardinality_) return ret_val; generator_count++; index_of_FIRST_GEN = iter;
-    for (iter = index_of_FIRST_GEN + 1; iter < group_cardinality_; iter++) LOOKUP_table[iter].perm_length = (group_cardinality_ / GCD(base_FIRST_GEN_descrete_log_of_(LOOKUP_table[iter].ulong), group_cardinality_));
-    for (iter = index_of_FIRST_GEN + 1; iter < group_cardinality_; iter++) if (LOOKUP_table[iter].perm_length == group_cardinality_) generator_count++;
-    for (iter = index_of_FIRST_GEN + 1; iter < group_cardinality_; iter++) { LOOKUP_table[iter].permutation = malloc(sizeof(unsigned long) * (LOOKUP_table[iter].perm_length + 1));
-	unsigned long j = 0; LOOKUP_table[iter].permutation[j] = index_within_LOOKUP_TABLE(*id_); for (; j + 1 < LOOKUP_table[iter].perm_length; j++)
-	    LOOKUP_table[iter].permutation[j + 1] = index_within_LOOKUP_TABLE(GF_combi(LOOKUP_table[LOOKUP_table[iter].permutation[j]].ulong, LOOKUP_table[iter].ulong));
+    index = 0; do { LOOKUP_table[index].permutation = yield_subgroup(index); if (LOOKUP_table[index].perm_length == group_cardinality_) break; index++; } while (index < group_cardinality_);
+    if (index + 1 == group_cardinality_) return ret_val; generator_count++; index_of_FIRST_GEN = index;
+    for (index = index_of_FIRST_GEN + 1; index < group_cardinality_; index++) LOOKUP_table[index].perm_length = (group_cardinality_ / GCD(base_FIRST_GEN_descrete_log_of_(LOOKUP_table[index].ulong), group_cardinality_));
+    for (index = index_of_FIRST_GEN + 1; index < group_cardinality_; index++) if (LOOKUP_table[index].perm_length == group_cardinality_) generator_count++;
+    for (index = index_of_FIRST_GEN + 1; index < group_cardinality_; index++) { LOOKUP_table[index].permutation = malloc(sizeof(unsigned long) * (LOOKUP_table[index].perm_length + 1));
+	unsigned long j = 0; LOOKUP_table[index].permutation[j] = index_within_LOOKUP_TABLE(*id_); for (; j + 1 < LOOKUP_table[index].perm_length; j++)
+	    LOOKUP_table[index].permutation[j + 1] = index_within_LOOKUP_TABLE(GF_combi(LOOKUP_table[LOOKUP_table[index].permutation[j]].ulong, LOOKUP_table[index].ulong));
     } ret_val = (unsigned long *) malloc(sizeof(unsigned long) * generator_count);
-    for (unsigned long generator = 0, iter = index_of_FIRST_GEN; generator < generator_count; generator++, iter++) { while (LOOKUP_table[iter].perm_length != group_cardinality_) iter++; ret_val[generator] = iter; }
+    for (unsigned long generator = 0, index = index_of_FIRST_GEN; generator < generator_count; generator++, index++) { while (LOOKUP_table[index].perm_length != group_cardinality_) index++; ret_val[generator] = index; }
     return ret_val;
 }
 
