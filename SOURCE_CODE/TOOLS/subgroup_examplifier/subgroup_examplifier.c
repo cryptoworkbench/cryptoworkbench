@@ -104,11 +104,14 @@ unsigned long *second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) {
     if (iter + 1 == group_cardinality_) return NULL; index_of_FIRST_GEN = iter;
     // ^^^ Detect it if we happen to have calculates the entire thing, IF SO, return "NULL" in order to signify that there should be no 'generator_array', ELSE, initialize base_FIRST_GEN_descrete_log_of_
 
-    // Calculate remaining permutations using subgroup cardinality information which can be derived now that we have found a generator
-    for (index_of_FIRST_GEN + 1; iter < group_cardinality_; iter++) {
+    for (iter = index_of_FIRST_GEN + 1; iter < group_cardinality_; iter++) {
 	LOOKUP_table[iter].perm_length = (group_cardinality_ / GCD(base_FIRST_GEN_descrete_log_of_(LOOKUP_table[iter].ulong), group_cardinality_));
-	LOOKUP_table[iter].permutation = malloc(sizeof(unsigned long) * (LOOKUP_table[iter].perm_length + 1));
 	if (LOOKUP_table[iter].perm_length == group_cardinality_) INSERT_generator(iter); // Insert successive generators
+    }
+
+    // Calculate remaining permutations using subgroup cardinality information which can be derived now that we have found a generator
+    for (iter = index_of_FIRST_GEN + 1; iter < group_cardinality_; iter++) {
+	LOOKUP_table[iter].permutation = malloc(sizeof(unsigned long) * (LOOKUP_table[iter].perm_length + 1));
 	unsigned long j = 0; LOOKUP_table[iter].permutation[j] = index_within_LOOKUP_TABLE(*id_);
 	for (; j + 1 < LOOKUP_table[iter].perm_length; j++) LOOKUP_table[iter].permutation[j + 1] = index_within_LOOKUP_TABLE(GF_combi(LOOKUP_table[iter].ulong, LOOKUP_table[LOOKUP_table[iter].permutation[j]].ulong));
     } return array_from_LL((struct LL_ **) generator_LL_pair.head, &generator_count);
