@@ -126,7 +126,8 @@ int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigne
 
     unsigned long *generator_array = second_MAIN(group_elements_LL(argv)); int i;
     for (i = offset->a; i < offset->a + group_cardinality_; i++) { print_permutation(i % group_cardinality_); fprintf(stdout, "\n"); }
-    fprintf(stdout, "\nGenerators (%lu):\n", generator_count);
-    for (i = 0; i < generator_count; i++) { print_permutation(generator_array[i]); fprintf(stdout, "\n"); }
+    if (generator_array) {
+	fprintf(stdout, "\nGenerators (%lu):\n", generator_count); for (i = 0; i < generator_count; i++) { print_permutation(generator_array[i]); fprintf(stdout, "\n"); }
+    } else fprintf(stdout, "\nNo generators are presents in this group.\n");
     return 0;
 }
