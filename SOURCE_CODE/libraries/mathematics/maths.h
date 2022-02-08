@@ -50,6 +50,7 @@ unsigned long multiplicative_inverse(unsigned long a);
 unsigned long least_base_TWO_log(unsigned long power_of_TWO);
 unsigned long **UL_array_of_SIZE(int SIZE);
 int UL_array_SIZE(unsigned long **UL_array);
+unsigned long INDEX_within_UL_array(unsigned long *UL_array, unsigned long UL_array_SIZE, unsigned long number);
 unsigned long least_common_multiple(unsigned long a, unsigned long b);
 struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *to_be_updated, unsigned long minimum);
 unsigned long DOWN_ROUNDED_second_root(unsigned long number);

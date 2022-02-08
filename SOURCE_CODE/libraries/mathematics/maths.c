@@ -74,6 +74,23 @@ unsigned long **UL_array_of_SIZE(int SIZE) {
 
 int UL_array_SIZE(unsigned long **UL_array) { int ret_val = 0; while (UL_array[ret_val]) ret_val++; return ret_val; }
 
+unsigned long INDEX_within_UL_array(unsigned long *UL_array, unsigned long UL_array_SIZE, unsigned long number) {
+    // printf("N: %lu ", number);
+    for (unsigned long INDEX = 0; INDEX < UL_array_SIZE; INDEX++) {
+	if (UL_array[INDEX] == number) return INDEX;
+    }
+}
+
+/*
+void print_permutation(unsigned long index) {
+    fprintf(stdout, "<%s> = {", lookup_table->ASCII[index]);
+    unsigned long i = 0; do {
+	fprintf(stdout, "%s", lookup_table->ASCII[lookup_table->permutation[index][i]]); i++;
+	if (i == lookup_table->perm_length[index]) break;
+	else fprintf(stdout, ", ");
+    } while (1); fprintf(stdout, "}\n");
+} */
+
 unsigned long _polynomial(unsigned long **COEFFICIENT_array, unsigned long _x, unsigned long mod_) {
     unsigned long ret_val = ADDITIVE_IDENTITY; unsigned long term_factor = MULTIPLICATIVE_IDENTITY; unsigned long i = UL_array_SIZE(COEFFICIENT_array);
     do { i--; ret_val = _add(ret_val, _multiply(term_factor, *COEFFICIENT_array[i], mod_), mod_); term_factor = _multiply(term_factor, _x, mod_); } while (i != 0); return ret_val;
