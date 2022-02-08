@@ -96,13 +96,12 @@ int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigne
 
     unsigned long generator_count = second_MAIN(group_elements_LL(argv));
     for (unsigned long index = 0; index < group_cardinality_; index++) print_permutation(index);
-    if (generator_count && group_cardinality_) {
-	fprintf(stdout, "\nGenerators (%lu):\n", generator_count);
+    if (group_cardinality_) fprintf(stdout, "\n");
+    if (!generator_count) { fprintf(stdout, "No generators are presents in this group.\n"); return 0; }
+    fprintf(stdout, "Generators (%lu):\n", generator_count);
+    if (generator_count - (generator_count % 2)) {
 	for (unsigned long printed_gens = 0, index = offset->a; printed_gens < generator_count; index = _add(index, 1, group_cardinality_))
-	{ while (lookup_table->perm_length[index] != group_cardinality_) index = _add(index, 1, group_cardinality_); print_permutation(index); printed_gens++; } }
-    else if (generator_count) {
-	fprintf(stdout, "In the multiplicative field of integers modulus 1, there is only one element: '0', which:\n~ Acts as the additive identity\n~ Is the field's multiplicative identity\n~ Happens to generate the group\n");
-    }
-    else fprintf(stdout, "\nNo generators are presents in this group.\n");
+	{ while (lookup_table->perm_length[index] != group_cardinality_) index = _add(index, 1, group_cardinality_); print_permutation(index); printed_gens++; }
+    } else fprintf(stdout, "<0> = {0}\n");
     return 0;
 }
