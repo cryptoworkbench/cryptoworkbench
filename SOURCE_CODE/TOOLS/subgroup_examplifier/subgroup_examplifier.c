@@ -1,6 +1,5 @@
-/* To do's:
- * ~ Make the program complain upon saying the modulus is 0 (can't work with infinite groups whose infinite subgroups are all of infinite size!)
- * ~ Make the program recognize 1 1
+/* Program description:
+ * Examplifies subgroups. Feed it a modulus and a group identity as command-line arguments and it will examplify all subgroups within specified group. It also lists the generators that are within the group.
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,8 +13,8 @@ struct LL_ { struct LL_ *next; unsigned long e; };
 struct crux { unsigned long *base_permutation; char **ASCII; unsigned long **permutation; unsigned long *perm_length; };
 // ^^ type definitions
 
-struct ordered_pair *offset; char *unparsed_arg_; struct crux *lookup_table; unsigned long group_cardinality_ = 0; unsigned long generator_count = 0; unsigned long FIRST_GEN; unsigned long *permutation_of_FIRST_GEN;
-//     ^ global variables          ^                           ^                           ^                                     ^                                  ^
+struct ordered_pair *offset; char *unparsed_arg_; struct crux *lookup_table; unsigned long group_cardinality_ = 0; unsigned long *permutation_of_FIRST_GEN;
+//     ^ global variables          ^                           ^                           ^                                      ^
 
 void invalid_group_parameters() { fprintf(stderr, "\nInvalid group parameters!\n\n"); }
 void identity_error() { fprintf(stderr, "\nFailed to understand '%s' as the identity element of any additive group (which is always zero) or any multiplicative group (which is always one).\n\n", unparsed_arg_); }
@@ -94,6 +93,7 @@ int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigne
 	    case 4: if (!str_represents_ul(argv[3], &offset->b)) fprintf(stderr, "Failed to interpret horizontal table offset. Defaulting to not using any.\n");
 	    default: if (!(*id_)) { offset->a %= *mod_; offset->b %= *mod_; } };
     } if (!(*mod_) || !(*mod_ - 1) && *id_) error_message(error_selector(3), -3);
+    // process terminal arguments ^
 
     unsigned long generator_count = second_MAIN(group_elements_LL(argv));
     for (unsigned long index = 0; index < group_cardinality_; index++) print_permutation(index); if (group_cardinality_) fprintf(stdout, "\n");
@@ -102,6 +102,8 @@ int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigne
 	for (unsigned long printed_gens = 0, index = offset->a; printed_gens < generator_count; index = _add(index, 1, group_cardinality_))
 	{ while (lookup_table->perm_length[index] != group_cardinality_) index = _add(index, 1, group_cardinality_); print_permutation(index); printed_gens++; }
     } else fprintf(stdout, "There are no generators in this group.\n");
+    // examplify subgroups and list generators ^
+
     for (unsigned long i = 0; i < group_cardinality_; i++) { free(lookup_table->permutation[i]); free(lookup_table->ASCII[i]); }
-    if (*id_) free(lookup_table->base_permutation); free(lookup_table->perm_length); return 0;
+    if (*id_) free(lookup_table->base_permutation); free(id_); free(mod_); free(lookup_table->perm_length); return 0;
 }
