@@ -92,7 +92,7 @@ int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigne
 	    case 5: if (!str_represents_ul(argv[4], &offset->a)) fprintf(stderr, "Failed to interpret vertical table offset. Defaulting to not using any.\n");
 	    case 4: if (!str_represents_ul(argv[3], &offset->b)) fprintf(stderr, "Failed to interpret horizontal table offset. Defaulting to not using any.\n");
 	    default: if (!(*id_)) { offset->a %= *mod_; offset->b %= *mod_; } };
-    } if (!(*mod_) || !(*mod_ - 1) && *id_) error_message(error_selector(3), -3);
+    } if (!(*mod_) || !(*mod_ - 1) && *id_) { free(offset); error_message(error_selector(3), -3); }
     // process terminal arguments ^
 
     unsigned long generator_count = second_MAIN(group_elements_LL(argv));
@@ -104,6 +104,7 @@ int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigne
     } else fprintf(stdout, "There are no generators in this group.\n");
     // examplify subgroups and list generators ^
 
-    for (unsigned long i = 0; i < group_cardinality_; i++) { free(lookup_table->permutation[i]); free(lookup_table->ASCII[i]); }
-    if (*id_) free(lookup_table->base_permutation); free(id_); free(mod_); free(lookup_table->perm_length); return 0;
+    free(offset); free(mod_);
+    for (unsigned long i = 0; i < group_cardinality_; i++) { free(lookup_table->permutation[i]); free(lookup_table->ASCII[i]); } free(lookup_table->perm_length);
+    if (*id_) free(lookup_table->base_permutation); free(id_); free(lookup_table); return 0;
 }
