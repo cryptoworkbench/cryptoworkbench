@@ -1,3 +1,5 @@
+/* Does not seem to work for the additive groups mod 1, 2, 3
+ */
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../libraries/functional/string.h"
@@ -24,11 +26,11 @@ void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
     *tracer_location = (struct LL_ **) **tracer_location; // update tracer
 }
 
-void print_permutation(unsigned long *permutation, unsigned long size) {
-    fprintf(stdout, "<%s> = {", lookup_table->ASCII[permutation[1]]);
+void print_permutation(unsigned long index) {
+    fprintf(stdout, "<%s> = {", lookup_table->ASCII[index]);
     unsigned long i = 0; do {
-	fprintf(stdout, "%s", lookup_table->ASCII[permutation[i]]); i++;
-	if (i == size) break;
+	fprintf(stdout, "%s", lookup_table->ASCII[lookup_table->permutation[index][i]]); i++;
+	if (i == lookup_table->perm_length[index]) break;
 	else fprintf(stdout, ", ");
     } while (1); fprintf(stdout, "}\n");
 }
@@ -55,30 +57,29 @@ unsigned long *yield_subgroup(unsigned long index) {
     return array_from_LL((struct LL_ **) permutation_LL_pair.head, &lookup_table->perm_length[index]);
 }
 
-unsigned long finish(unsigned long index) { unsigned long ret_val = 1;
+unsigned long finish(unsigned long index) { unsigned long generator_count = 1;
     for (index; index < group_cardinality_; index++) {
 	unsigned long discrete_log = INDEX_within_UL_array(permutation_of_FIRST_GEN, group_cardinality_, INDEX_within_UL_array(lookup_table->base_permutation, group_cardinality_, lookup_table->base_permutation[index]));
-	lookup_table->perm_length[index] = (group_cardinality_ / GCD(discrete_log, group_cardinality_)); if (lookup_table->perm_length[index] == group_cardinality_) ret_val++;
+	lookup_table->perm_length[index] = (group_cardinality_ / GCD(discrete_log, group_cardinality_)); if (lookup_table->perm_length[index] == group_cardinality_) generator_count++;
 	lookup_table->permutation[index] = malloc(sizeof(unsigned long) * lookup_table->perm_length[index]);
 	unsigned long j = 0; lookup_table->permutation[index][j] = INDEX_within_UL_array(lookup_table->base_permutation, group_cardinality_, lookup_table->base_permutation[0]);
 	for (; j + 1 < lookup_table->perm_length[index]; j++) lookup_table->permutation[index][j + 1]
-	    = INDEX_within_UL_array( lookup_table->base_permutation, group_cardinality_, GF_combi(lookup_table->base_permutation[index], lookup_table->base_permutation[lookup_table->permutation[index][j]]));
-    } return ret_val;
+	    = INDEX_within_UL_array(lookup_table->base_permutation, group_cardinality_, GF_combi(lookup_table->base_permutation[index], lookup_table->base_permutation[lookup_table->permutation[index][j]]));
+    } return generator_count;
 }
 
-unsigned long second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) { unsigned long ret_val = 0; unsigned long cell_width = char_in_val(((struct LL_ *) element_CHANNEL_PTR_pair.iterator)->e);
+unsigned long second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) { unsigned long cell_width = char_in_val(((struct LL_ *) element_CHANNEL_PTR_pair.iterator)->e);
     lookup_table = (struct crux *) malloc(sizeof(struct crux)); permutation_of_FIRST_GEN = lookup_table->base_permutation = array_from_LL((struct LL_ **) element_CHANNEL_PTR_pair.head, &group_cardinality_);
     lookup_table->permutation = (unsigned long **) malloc(sizeof(unsigned long *) * group_cardinality_); lookup_table->perm_length = (unsigned long *) malloc(sizeof(unsigned long) * group_cardinality_);
     lookup_table->ASCII = (char **) malloc(sizeof(char *) * group_cardinality_); unsigned long index = 0;
     for (; index < group_cardinality_; index++) lookup_table->ASCII[index] = str_from_ul(lookup_table->base_permutation[index], cell_width);
     // initialize everything ^^
 
-    if (*id_) { index = 0; do { lookup_table->permutation[index] = yield_subgroup(index); if (lookup_table->perm_length[index] == group_cardinality_) { ret_val++; break; } index++; } while (index < group_cardinality_);
-	if (index == group_cardinality_) return ret_val; permutation_of_FIRST_GEN = lookup_table->permutation[index]; return finish(index + 1); }
+    if (*id_) { index = 0; do { lookup_table->permutation[index] = yield_subgroup(index); if (lookup_table->perm_length[index] == group_cardinality_) break; index++; } while (index < group_cardinality_);
+	if (index == group_cardinality_) return 0; permutation_of_FIRST_GEN = lookup_table->permutation[index]; return finish(index + 1); }
     else {
-	lookup_table->perm_length[0] = 1; *(lookup_table->permutation[0] = malloc(sizeof(unsigned long *))) = lookup_table->base_permutation[0]; // set the perm identity (element's) permutation <
-	lookup_table->perm_length[1] = group_cardinality_; lookup_table->permutation[1] = lookup_table->base_permutation;
-	return finish(2);
+	lookup_table->perm_length[0] = 1; *(lookup_table->permutation[0] = malloc(sizeof(unsigned long *))) = lookup_table->base_permutation[0];
+	lookup_table->perm_length[1] = group_cardinality_; lookup_table->permutation[1] = lookup_table->base_permutation; return finish(2);
     }
 }
 
@@ -93,10 +94,10 @@ int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigne
     } // process terminal arguments ^
 
     unsigned long generator_count = second_MAIN(group_elements_LL(argv));
-    for (unsigned long index = 0; index < group_cardinality_; index++) print_permutation(lookup_table->permutation[index], lookup_table->perm_length[index]);
+    for (unsigned long index = 0; index < group_cardinality_; index++) print_permutation(index);
     if (generator_count) fprintf(stdout, "\nGenerators (%lu):\n", generator_count); else fprintf(stdout, "\nNo generators are presents in this group.\n");
     for (unsigned long printed_gens = 0, index = offset->a; printed_gens < generator_count; index = _add(index, 1, group_cardinality_)) { 
 	while (lookup_table->perm_length[index] != group_cardinality_) index = _add(index, 1, group_cardinality_);
-	print_permutation(lookup_table->permutation[index], lookup_table->perm_length[index]); printed_gens++;
+	print_permutation(index); printed_gens++;
     } return 0;
 }
