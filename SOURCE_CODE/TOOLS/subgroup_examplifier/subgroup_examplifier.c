@@ -33,7 +33,7 @@ void print_permutation(unsigned long index) {
 	fprintf(stdout, "%s", LOOKUP_table[LOOKUP_table[index].permutation[(i + offset->b) % LOOKUP_table[index].perm_length]].ASCII); i++;
 	if (i == LOOKUP_table[index].perm_length) break;
 	else fprintf(stdout, ", ");
-    } while (1); fprintf(stdout, "}");
+    } while (1); fprintf(stdout, "}\n");
 }
 
 unsigned long index_within_LOOKUP_TABLE(unsigned long number) { for (unsigned long index = 0; index < group_cardinality_; index++) if (LOOKUP_table[index].ulong == number) return index; }
@@ -121,18 +121,13 @@ int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigne
 	    default: if (!(*id_)) { offset->a %= *mod_; offset->b %= *mod_; } };
     } // <^ get all information needed ^^
 
-    unsigned long generator_count = second_MAIN(group_elements_LL(argv)); unsigned long i;
-
-    for (i = offset->a; i < offset->a + group_cardinality_; i++) {
-	print_permutation(i % group_cardinality_);
-	fprintf(stdout, "\n");
-    }
-
+    unsigned long generator_count = second_MAIN(group_elements_LL(argv));
+    unsigned long i = offset->a; do { print_permutation(i); i = _add(i, 1, group_cardinality_); } while (i != offset->a);
     if (generator_count) {
 	fprintf(stdout, "\nGenerators (%lu):\n", generator_count);
 	for (unsigned long printed_gens = 0, i = offset->a; printed_gens < generator_count; i++) {
 	    while (LOOKUP_table[i].perm_length != group_cardinality_) i = _add(i, 1, group_cardinality_);
-	    print_permutation(i); fprintf(stdout, "\n"); printed_gens++;
+	    print_permutation(i); printed_gens++;
 	}
     } else fprintf(stdout, "\nNo generators are presents in this group.\n");
     return 0;
