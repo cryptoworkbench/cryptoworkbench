@@ -130,8 +130,8 @@ int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigne
 
     if (generator_count) {
 	fprintf(stdout, "\nGenerators (%lu):\n", generator_count);
-	for (i = offset->a; i < offset->a + group_cardinality_; i++) {
-	    if (LOOKUP_table[i % group_cardinality_].perm_length == group_cardinality_) { print_permutation(i % group_cardinality_); fprintf(stdout, "\n"); }
+	for (unsigned long printed_gens = 0, i = offset->a; printed_gens < generator_count; i++) {
+	    if (LOOKUP_table[i % group_cardinality_].perm_length == group_cardinality_) { print_permutation(i % group_cardinality_); fprintf(stdout, "\n"); printed_gens++; }
 	}
     /*
 	i = offset->a;
