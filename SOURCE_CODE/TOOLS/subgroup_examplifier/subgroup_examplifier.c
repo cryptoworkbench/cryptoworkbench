@@ -92,16 +92,18 @@ int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigne
 	    case 5: if (!str_represents_ul(argv[4], &offset->a)) fprintf(stderr, "Failed to interpret vertical table offset. Defaulting to not using any.\n");
 	    case 4: if (!str_represents_ul(argv[3], &offset->b)) fprintf(stderr, "Failed to interpret horizontal table offset. Defaulting to not using any.\n");
 	    default: if (!(*id_)) { offset->a %= *mod_; offset->b %= *mod_; } };
-    } // process terminal arguments ^
+    } if (!(*mod_)) { fprintf(stdout, "Finite computers cannot handle infinite groups! (since to divide by 0 is to not divide at all, to mod by 0 is to not mod at all!)\n"); exit(-3); }
+    // process terminal arguments ^
+
+    if (*id_ && *mod_ == 1) { fprintf(stdout, "1 generator is present within field:\n", generator_count); fprintf(stdout, "<0> = {0}\n"); return 0; }
 
     unsigned long generator_count = second_MAIN(group_elements_LL(argv));
     for (unsigned long index = 0; index < group_cardinality_; index++) print_permutation(index); if (group_cardinality_) fprintf(stdout, "\n");
-    if (0 < generator_count) {
-	fprintf(stdout, "Generators (%lu):\n", generator_count);
-	if (generator_count % 2 == 0) {
-	    for (unsigned long printed_gens = 0, index = offset->a; printed_gens < generator_count; index = _add(index, 1, group_cardinality_))
-	    { while (lookup_table->perm_length[index] != group_cardinality_) index = _add(index, 1, group_cardinality_); print_permutation(index); printed_gens++; }
-	} else fprintf(stdout, "<0> = {0}\n");
-    } else fprintf(stdout, "There are no generators in this group.");
-    return 0;
+    if (generator_count) {
+	fprintf(stdout, "%lu generators are present in this group:\n", generator_count);
+	for (unsigned long printed_gens = 0, index = offset->a; printed_gens < generator_count; index = _add(index, 1, group_cardinality_))
+	{ while (lookup_table->perm_length[index] != group_cardinality_) index = _add(index, 1, group_cardinality_); print_permutation(index); printed_gens++; }
+    } else fprintf(stdout, "There are no generators in this group.\n");
+    for (unsigned long i = 0; i < group_cardinality_; i++) { free(lookup_table->permutation[i]); free(lookup_table->ASCII[i]); }
+    if (*id_) free(lookup_table->base_permutation); free(lookup_table->perm_length); return 0;
 }
