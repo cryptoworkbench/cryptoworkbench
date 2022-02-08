@@ -17,9 +17,10 @@ struct crux { unsigned long *base_permutation; char **ASCII; unsigned long **per
 struct ordered_pair *offset; char *unparsed_arg_; struct crux *lookup_table; unsigned long group_cardinality_ = 0; unsigned long generator_count = 0; unsigned long FIRST_GEN; unsigned long *permutation_of_FIRST_GEN;
 //     ^ global variables          ^                           ^                           ^                                     ^                                  ^
 
+void invalid_group_parameters() { fprintf(stderr, "\nInvalid group parameters!\n\n"); }
 void identity_error() { fprintf(stderr, "\nFailed to understand '%s' as the identity element of any additive group (which is always zero) or any multiplicative group (which is always one).\n\n", unparsed_arg_); }
 void mod_error() { fprintf(stderr, "\nFailed to understand '%s' as the modulus value of any group to examplify.\n\n", unparsed_arg_); }
-_error_selector arg_error(int SELECTOR) { switch(SELECTOR) { case 1: return mod_error; case 2: return identity_error; }; }
+_error_selector error_selector(int SELECTOR) { switch(SELECTOR) { case 1: return mod_error; case 2: return identity_error; case 3: return invalid_group_parameters; }; }
 // ^^^ error functions
 
 void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
@@ -85,8 +86,8 @@ unsigned long second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) { u
 }
 
 int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigned long)); unparsed_arg_ = argv[1];
-    if (!str_represents_ul(unparsed_arg_, mod_)) error_message(arg_error(1), -1); int *SELECTOR = (int *) malloc(sizeof(int)); unparsed_arg_ = argv[2];
-    if (10 == (*SELECTOR = identity_SELECTOR(unparsed_arg_))) error_message(arg_error(2), -2); id_ = (unsigned long *) malloc(sizeof(unsigned long)); *id_ = identity_(*SELECTOR); free(SELECTOR);
+    if (!str_represents_ul(unparsed_arg_, mod_)) error_message(error_selector(1), -1); int *SELECTOR = (int *) malloc(sizeof(int)); unparsed_arg_ = argv[2];
+    if (10 == (*SELECTOR = identity_SELECTOR(unparsed_arg_))) error_message(error_selector(2), -2); id_ = (unsigned long *) malloc(sizeof(unsigned long)); *id_ = identity_(*SELECTOR); free(SELECTOR);
     offset = (struct ordered_pair *) malloc(sizeof(struct ordered_pair)); offset->a = offset->b = 0; // member a will hold y offset, member b will hold x offset
     if (argc != 3) { switch (argc) {
 	    case 5: if (!str_represents_ul(argv[4], &offset->a)) fprintf(stderr, "Failed to interpret vertical table offset. Defaulting to not using any.\n");
@@ -94,13 +95,13 @@ int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigne
 	    default: if (!(*id_)) { offset->a %= *mod_; offset->b %= *mod_; } };
     } if (!(*mod_)) { fprintf(stdout, "Finite computers cannot handle infinite groups! (since to divide by 0 is to not divide at all, to mod by 0 is to not mod at all!)\n"); exit(-3); }
     // process terminal arguments ^
-
-    if (*id_ && *mod_ == 1) { fprintf(stdout, "1 generator is present within field:\n", generator_count); fprintf(stdout, "<0> = {0}\n"); return 0; }
+    if (!(*mod_) || !(*mod_ - 1) && *id_) error_message(error_selector(3), -3);
+    // if (*id_ && *mod_ == 1) { fprintf(stdout, "1 generator is present within field:\n", generator_count); fprintf(stdout, "<0> = {0}\n"); return 0; }
 
     unsigned long generator_count = second_MAIN(group_elements_LL(argv));
     for (unsigned long index = 0; index < group_cardinality_; index++) print_permutation(index); if (group_cardinality_) fprintf(stdout, "\n");
     if (generator_count) {
-	fprintf(stdout, "%lu generators are present in this group:\n", generator_count);
+	fprintf(stdout, "%lu generators are present in this \u2115%s%s \u2191:\n", generator_count, argv[1], id_as_operation_symbol());
 	for (unsigned long printed_gens = 0, index = offset->a; printed_gens < generator_count; index = _add(index, 1, group_cardinality_))
 	{ while (lookup_table->perm_length[index] != group_cardinality_) index = _add(index, 1, group_cardinality_); print_permutation(index); printed_gens++; }
     } else fprintf(stdout, "There are no generators in this group.\n");
