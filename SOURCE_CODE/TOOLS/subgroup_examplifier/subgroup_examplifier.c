@@ -118,8 +118,8 @@ int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigne
     if (argc != 3) { switch (argc) {
 	    case 5: if (!str_represents_ul(argv[4], &offset->a)) fprintf(stderr, "Failed to interpret vertical table offset. Defaulting to not using any.\n");
 	    case 4: if (!str_represents_ul(argv[3], &offset->b)) fprintf(stderr, "Failed to interpret horizontal table offset. Defaulting to not using any.\n");
-	    default: if (!(*id_)) { offset->a %= *mod_; offset->b %= *mod_; } };
-    } // <^ get all information needed ^^
+	    default: if (!(*id_)) { offset->a %= *mod_; offset->b %= *mod_; } }; }
+    // process terminal arguments ^
 
     unsigned long generator_count = second_MAIN(group_elements_LL(argv));
     unsigned long i = offset->a; do { print_permutation(i); i = _add(i, 1, group_cardinality_); } while (i != offset->a);
