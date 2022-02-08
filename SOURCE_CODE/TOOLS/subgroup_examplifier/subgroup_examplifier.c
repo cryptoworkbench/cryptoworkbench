@@ -131,17 +131,9 @@ int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigne
     if (generator_count) {
 	fprintf(stdout, "\nGenerators (%lu):\n", generator_count);
 	for (unsigned long printed_gens = 0, i = offset->a; printed_gens < generator_count; i++) {
-	    if (LOOKUP_table[i % group_cardinality_].perm_length == group_cardinality_) { print_permutation(i % group_cardinality_); fprintf(stdout, "\n"); printed_gens++; }
+	    while (LOOKUP_table[i].perm_length != group_cardinality_) i = _add(i, 1, group_cardinality_);
+	    print_permutation(i); fprintf(stdout, "\n"); printed_gens++;
 	}
-    /*
-	i = offset->a;
-	for (unsigned long printed_generators = 0; printed_generators != generator_count; i = _add(i, 1, group_cardinality_), generator_count++) {
-	    while (LOOKUP_table[i % group_cardinality_].perm_length != group_cardinality_) i = _add(i, 1, group_cardinality_);
-	    printf("printed gens: %lu\nFound a gen: %lu\n", printed_generators, LOOKUP_table[i % group_cardinality_].ulong);
-	    printed_generators++;
-	    if (printed_generators == generator_count) break;
-	}
-	*/
     } else fprintf(stdout, "\nNo generators are presents in this group.\n");
     return 0;
 }
