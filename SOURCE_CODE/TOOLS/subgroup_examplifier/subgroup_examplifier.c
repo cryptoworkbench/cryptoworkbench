@@ -1,4 +1,6 @@
-/* Does not seem to work for the additive groups mod 1, 2, 3
+/* To do's:
+ * ~ Make the program complain upon saying the modulus is 0 (can't work with infinite groups whose infinite subgroups are all of infinite size!)
+ * ~ Make the program recognize 1 1
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -71,16 +73,15 @@ unsigned long finish(unsigned long index) { unsigned long generator_count = 1;
 unsigned long second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) { unsigned long cell_width = char_in_val(((struct LL_ *) element_CHANNEL_PTR_pair.iterator)->e);
     lookup_table = (struct crux *) malloc(sizeof(struct crux)); permutation_of_FIRST_GEN = lookup_table->base_permutation = array_from_LL((struct LL_ **) element_CHANNEL_PTR_pair.head, &group_cardinality_);
     lookup_table->permutation = (unsigned long **) malloc(sizeof(unsigned long *) * group_cardinality_); lookup_table->perm_length = (unsigned long *) malloc(sizeof(unsigned long) * group_cardinality_);
-    lookup_table->ASCII = (char **) malloc(sizeof(char *) * group_cardinality_); unsigned long index = 0;
+    lookup_table->perm_length[0] = 1; *(lookup_table->permutation[0] = malloc(sizeof(unsigned long *))) = 0; lookup_table->ASCII = (char **) malloc(sizeof(char *) * group_cardinality_); unsigned long index = 0;
     for (; index < group_cardinality_; index++) lookup_table->ASCII[index] = str_from_ul(lookup_table->base_permutation[index], cell_width);
-    // initialize everything ^^
+    // set the identity element
 
-    if (*id_) { index = 0; do { lookup_table->permutation[index] = yield_subgroup(index); if (lookup_table->perm_length[index] == group_cardinality_) break; index++; } while (index < group_cardinality_);
-	if (index == group_cardinality_) return 0; permutation_of_FIRST_GEN = lookup_table->permutation[index]; return finish(index + 1); }
-    else {
-	lookup_table->perm_length[0] = 1; *(lookup_table->permutation[0] = malloc(sizeof(unsigned long *))) = lookup_table->base_permutation[0];
-	lookup_table->perm_length[1] = group_cardinality_; lookup_table->permutation[1] = lookup_table->base_permutation; return finish(2);
+    if (*id_) {
+	for (index = 1; index < group_cardinality_; index++) { lookup_table->permutation[index] = yield_subgroup(index); if (lookup_table->perm_length[index] == group_cardinality_) break; }
+	if (index == group_cardinality_) return 0; permutation_of_FIRST_GEN = lookup_table->permutation[index]; return finish(index + 1);
     }
+    else { lookup_table->perm_length[1] = group_cardinality_; lookup_table->permutation[1] = lookup_table->base_permutation; return finish(2); }
 }
 
 int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigned long)); unparsed_arg_ = argv[1];
@@ -95,9 +96,13 @@ int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigne
 
     unsigned long generator_count = second_MAIN(group_elements_LL(argv));
     for (unsigned long index = 0; index < group_cardinality_; index++) print_permutation(index);
-    if (generator_count) fprintf(stdout, "\nGenerators (%lu):\n", generator_count); else fprintf(stdout, "\nNo generators are presents in this group.\n");
-    for (unsigned long printed_gens = 0, index = offset->a; printed_gens < generator_count; index = _add(index, 1, group_cardinality_)) { 
-	while (lookup_table->perm_length[index] != group_cardinality_) index = _add(index, 1, group_cardinality_);
-	print_permutation(index); printed_gens++;
-    } return 0;
+    if (generator_count && group_cardinality_) {
+	fprintf(stdout, "\nGenerators (%lu):\n", generator_count);
+	for (unsigned long printed_gens = 0, index = offset->a; printed_gens < generator_count; index = _add(index, 1, group_cardinality_))
+	{ while (lookup_table->perm_length[index] != group_cardinality_) index = _add(index, 1, group_cardinality_); print_permutation(index); printed_gens++; } }
+    else if (generator_count) {
+	fprintf(stdout, "In the multiplicative field of integers modulus 1, there is only one element: '0', which:\n~ Acts as the additive identity\n~ Is the field's multiplicative identity\n~ Happens to generate the group\n");
+    }
+    else fprintf(stdout, "\nNo generators are presents in this group.\n");
+    return 0;
 }
