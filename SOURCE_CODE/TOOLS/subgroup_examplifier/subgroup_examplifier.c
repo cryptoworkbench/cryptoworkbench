@@ -103,7 +103,7 @@ unsigned long second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) { u
     for (index = index_of_FIRST_GEN + 1; index < group_cardinality_; index++) {
 	LOOKUP_table[index].perm_length = (group_cardinality_ / GCD(base_FIRST_GEN_descrete_log_of_(LOOKUP_table[index].ulong), group_cardinality_));
 	if (LOOKUP_table[index].perm_length == group_cardinality_) ret_val++;
-	LOOKUP_table[index].permutation = malloc(sizeof(unsigned long) * (LOOKUP_table[index].perm_length + 1));
+	LOOKUP_table[index].permutation = malloc(sizeof(unsigned long) * (LOOKUP_table[index].perm_length));
 	unsigned long j = 0; LOOKUP_table[index].permutation[j] = index_within_LOOKUP_TABLE(*id_);
 	for (; j + 1 < LOOKUP_table[index].perm_length; j++) LOOKUP_table[index].permutation[j + 1] = index_within_LOOKUP_TABLE(GF_combi(LOOKUP_table[LOOKUP_table[index].permutation[j]].ulong, LOOKUP_table[index].ulong));
     }
