@@ -95,13 +95,13 @@ int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigne
     } // process terminal arguments ^
 
     unsigned long generator_count = second_MAIN(group_elements_LL(argv));
-    for (unsigned long index = 0; index < group_cardinality_; index++) print_permutation(index);
-    if (group_cardinality_) fprintf(stdout, "\n");
-    if (!generator_count) { fprintf(stdout, "No generators are presents in this group.\n"); return 0; }
-    fprintf(stdout, "Generators (%lu):\n", generator_count);
-    if (generator_count - (generator_count % 2)) {
-	for (unsigned long printed_gens = 0, index = offset->a; printed_gens < generator_count; index = _add(index, 1, group_cardinality_))
-	{ while (lookup_table->perm_length[index] != group_cardinality_) index = _add(index, 1, group_cardinality_); print_permutation(index); printed_gens++; }
-    } else fprintf(stdout, "<0> = {0}\n");
+    for (unsigned long index = 0; index < group_cardinality_; index++) print_permutation(index); if (group_cardinality_) fprintf(stdout, "\n");
+    if (0 < generator_count) {
+	fprintf(stdout, "Generators (%lu):\n", generator_count);
+	if (generator_count % 2 == 0) {
+	    for (unsigned long printed_gens = 0, index = offset->a; printed_gens < generator_count; index = _add(index, 1, group_cardinality_))
+	    { while (lookup_table->perm_length[index] != group_cardinality_) index = _add(index, 1, group_cardinality_); print_permutation(index); printed_gens++; }
+	} else fprintf(stdout, "<0> = {0}\n");
+    } else fprintf(stdout, "There are no generators in this group.");
     return 0;
 }
