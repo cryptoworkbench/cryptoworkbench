@@ -93,15 +93,12 @@ int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigne
 	    case 5: if (!str_represents_ul(argv[4], &offset->a)) fprintf(stderr, "Failed to interpret vertical table offset. Defaulting to not using any.\n");
 	    case 4: if (!str_represents_ul(argv[3], &offset->b)) fprintf(stderr, "Failed to interpret horizontal table offset. Defaulting to not using any.\n");
 	    default: if (!(*id_)) { offset->a %= *mod_; offset->b %= *mod_; } };
-    } if (!(*mod_)) { fprintf(stdout, "Finite computers cannot handle infinite groups! (since to divide by 0 is to not divide at all, to mod by 0 is to not mod at all!)\n"); exit(-3); }
-    // process terminal arguments ^
-    if (!(*mod_) || !(*mod_ - 1) && *id_) error_message(error_selector(3), -3);
-    // if (*id_ && *mod_ == 1) { fprintf(stdout, "1 generator is present within field:\n", generator_count); fprintf(stdout, "<0> = {0}\n"); return 0; }
+    } if (!(*mod_) || !(*mod_ - 1) && *id_) error_message(error_selector(3), -3);
 
     unsigned long generator_count = second_MAIN(group_elements_LL(argv));
     for (unsigned long index = 0; index < group_cardinality_; index++) print_permutation(index); if (group_cardinality_) fprintf(stdout, "\n");
     if (generator_count) {
-	fprintf(stdout, "%lu generators are present in this \u2115%s%s \u2191:\n", generator_count, argv[1], id_as_operation_symbol());
+	fprintf(stdout, "%lu generators are present within \u2115/\u2115%s%s:\n", generator_count, argv[1], id_as_operation_symbol());
 	for (unsigned long printed_gens = 0, index = offset->a; printed_gens < generator_count; index = _add(index, 1, group_cardinality_))
 	{ while (lookup_table->perm_length[index] != group_cardinality_) index = _add(index, 1, group_cardinality_); print_permutation(index); printed_gens++; }
     } else fprintf(stdout, "There are no generators in this group.\n");
