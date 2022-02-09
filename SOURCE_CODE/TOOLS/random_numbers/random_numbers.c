@@ -17,5 +17,5 @@ int main(int argc, char **argv) { unsigned long upper_bound; unparsed_arg = argv
     if (!str_represents_ul(unparsed_arg, &quantity)) error_message(error_selector(2), -2);
     // interpret terminal arguments ^
 
-    open_urandom(); unsigned long i = 1; do { fprintf(stdout, "Random number %lu: %lu\n", i, urandom_number(upper_bound)); i++; } while (i != quantity); close_urandom(); return 0; }
+    open_urandom(); unsigned long i = 1; do { fprintf(stdout, "Random number %lu: %lu\n", i, urandom_number(upper_bound)); i++; } while (i != quantity + 1); close_urandom(); return 0; }
     // get specified amount of random numbers from '/dev/urandom' and return peacefully
