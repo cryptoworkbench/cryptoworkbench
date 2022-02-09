@@ -158,7 +158,7 @@ unsigned long *str_represents_ul(char *str, unsigned long *UL_PTR) { if (!str) r
 }
 
 void ignored_arguments(int argc, char **argv, int used_arguments) {
-    ul difference = argc - 1 - used_arguments; if (difference) {
+    unsigned long difference = argc - 1 - used_arguments; if (difference) {
 	fprintf(stderr, "The following %lu unused argument(s) were unneccesary: ", difference);
 	do {fprintf(stderr, "%s", argv[used_arguments + 1]); used_arguments++; if (used_arguments + 1 == argc) break; fprintf(stderr, ", "); } while (1);
 	fprintf(stdout, "\n"); fprintf(stderr, "\n"); }
