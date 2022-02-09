@@ -16,7 +16,11 @@ struct crux { unsigned long *base_permutation; char **ASCII; unsigned long **per
 struct ordered_pair *offset; char *unparsed_arg_; struct crux *lookup_table; unsigned long group_cardinality_ = 0; unsigned long *permutation_of_FIRST_GEN;
 //     ^ global variables          ^                           ^                           ^                                      ^
 
-void invalid_group_parameters() { fprintf(stderr, "\nInvalid group parameters!\n\n"); }
+void invalid_group_parameters() {
+    fprintf(stderr, "\nInvalid group parameters: ");
+    if (!(*mod_)) fprintf(stderr, "the modulus cannot be 0!");
+    else fprintf(stderr, "for multiplicative groups the modulus needs to be at least 2! (since multiplicative groups do not include the element '0')");
+    fprintf(stderr, "\n\n"); free(mod_); free(id_); }
 void identity_error() { fprintf(stderr, "\nFailed to understand '%s' as the identity element of any additive group (which is always zero) or any multiplicative group (which is always one).\n\n", unparsed_arg_); }
 void mod_error() { fprintf(stderr, "\nFailed to understand '%s' as the modulus value of any group to examplify.\n\n", unparsed_arg_); }
 _error_selector error_selector(int SELECTOR) { switch(SELECTOR) { case 1: return mod_error; case 2: return identity_error; case 3: return invalid_group_parameters; }; }
