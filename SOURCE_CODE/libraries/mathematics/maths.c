@@ -188,35 +188,14 @@ void chinese_remainder_theorem_COPRIME_ERROR() { fprintf(stderr, "not all coprim
 _error_selector chinese_remainder_theorem_ERROR_SELECTOR(int i) { return chinese_remainder_theorem_COPRIME_ERROR; }
 */
 
-void iso_b(ul b) {
-    printf("isomorphism.b: %lu\n", b);
-}
+unsigned long chinese_remainder_theorem(unsigned long remainder, unsigned long **moduli, unsigned long modulis) { unsigned long i, j;
+    for (i = 0; i < modulis; i++) for (j = i + 1; j < modulis; j++) 
+	{ if (GCD(*moduli[i], *moduli[j]) != 1) { fprintf(stderr, "Function 'chinese_remainder_theorem()' failed. Not all moduli were coprime.\n"); exit(-10); } } // want to use error_message() here
+   // fail to cooperate unless all moduli are coprime  
 
-unsigned long chinese_remainder_theorem(unsigned long remainder, unsigned long **moduli, unsigned long modulis) {
-    for (unsigned long i = 0; i < modulis; i++) for (unsigned long j = i + 1; j < modulis; j++)
-	{ if (GCD(*moduli[i], *moduli[j]) != 1) { fprintf(stderr, "Function 'chinese_remainder_theorem()' failed. Not all moduli were coprime.\n"); exit(-10); } }
-    fprintf(stdout, "All moduli were coprime.\n");
-    // fail to cooperate unless all moduli were coprime ^
-
-    struct ordered_pair isomorphism = _isomorphism(); // < a will be accumulator
-    unsigned long index;
-    for (index = 0; index < modulis; index++, isomorphism.b = MULTIPLICATIVE_IDENTITY) {
-	printf("\nWorking on the term that zaps %lu under mod %lu.\n", remainder, *moduli[index]);
-	isomorphism.b *= remainder; iso_b(isomorphism.b); // add the remainder <
-	for (unsigned long jndex = 0; jndex < modulis; jndex++) if (*moduli[index] != *moduli[jndex]) { isomorphism.b *= *moduli[jndex]; iso_b(isomorphism.b); } // add the other moduli <
-
-	unsigned long i = isomorphism.b % *moduli[index];
-	//                ^             ^
-	if (i != remainder) {
-	    if (i != 1) { // check to see if we are done <
-		unsigned long mult_inv = _divide(1, i, *moduli[index]);
-		printf("%lu != %lu and %lu != %lu	calculating the multiplicative inverse of %lu --> %lu\n", i, remainder, i, 1, i, mult_inv);
-		isomorphism.b *= mult_inv;
-	    } isomorphism.b *= remainder;
-	}
-
-	isomorphism.a += isomorphism.b;
-	printf("term: %lu", isomorphism.b); if (isomorphism.b % *moduli[index] == remainder) printf("	(checked)\n");
-	printf("terms: %lu\n", isomorphism.a);
+    struct ordered_pair isomorphism = _isomorphism();
+    for (i = 0; i < modulis; i++, isomorphism.b = MULTIPLICATIVE_IDENTITY) { isomorphism.b *= remainder;
+	for (j = 0; j < modulis; j++) if (*moduli[i] != *moduli[j]) { isomorphism.b *= *moduli[j]; } unsigned long reduced_term = isomorphism.b % *moduli[i];
+	if (reduced_term != remainder) if (reduced_term != 1) isomorphism.b *= _divide(1, reduced_term, *moduli[i]); isomorphism.b *= remainder; isomorphism.a += isomorphism.b;
     } return isomorphism.a;
 }
