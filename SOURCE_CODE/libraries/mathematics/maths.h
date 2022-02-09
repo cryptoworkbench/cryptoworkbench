@@ -60,7 +60,9 @@ unsigned long primes_printed_from_sieve_array_to_FS(char *sieve, unsigned long l
 FILE *prime_table_open(char *prime_table_filename); // < I want this to eventually try to cooperate with the logbook instead of stderr
 void prime_table_close(FILE *prime_table); // < closes FS and resets char * variable '_open_prime_table' to NULL
 int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q);
-unsigned long random_number(unsigned long upper_bound);
+void open_urandom();
+void close_urandom();
+unsigned long urandom_number(unsigned long upper_bound);
 
 /* Supplemantary notes:
  * 1). The multiplicative inverse is very different from the additive inverse, check the function 'multiplicative_inverse' for this problem.

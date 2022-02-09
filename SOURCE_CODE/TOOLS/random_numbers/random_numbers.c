@@ -4,7 +4,7 @@
 #include "../../libraries/mathematics/maths.h"
 // library inclusions ^
 
-char *unparsed_arg; unsigned long mod;
+char *unparsed_arg;
 // global variable declarations ^
 
 void quantity_error() { fprintf(stderr, "\nFailed to interpet '%s' as amount of random numbers to generate.\n\n", unparsed_arg); }
@@ -17,9 +17,5 @@ int main(int argc, char **argv) { unsigned long upper_bound; unparsed_arg = argv
     if (!str_represents_ul(unparsed_arg, &quantity)) error_message(error_selector(2), -2);
     // interpret terminal arguments ^
 
-    // for (unsigned long i = 1; i != quantity + 1; i++) fprintf(stdout, "Random number %lu: %lu\n", i, random_number(upper_bound));
-    unsigned long i = 1; do {
-	fprintf(stdout, "Random number %lu: %lu\n", i, random_number(upper_bound)); i++;
-    } while (i != quantity);
-    return 0; }
+    open_urandom(); unsigned long i = 1; do { fprintf(stdout, "Random number %lu: %lu\n", i, urandom_number(upper_bound)); i++; } while (i != quantity); close_urandom(); return 0; }
     // get specified amount of random numbers from '/dev/urandom' and return peacefully

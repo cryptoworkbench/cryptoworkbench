@@ -6,6 +6,7 @@
 #include "maths.h"
 #include "../functional/string.h"
 
+FILE *entropy_source = NULL;
 const char *_standard_prime_table_filename = "shared_prime_table";
 char *_REPORT_standard_prime_table_filename() { return (char *) _standard_prime_table_filename; }
 char *_open_prime_table = NULL; char *_REPORT_open_prime_table() { return (char *) _open_prime_table; }
@@ -174,7 +175,10 @@ FILE *prime_table_open(char *prime_table_filename) {
 
 int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q) { return (odd_prime_q - 1 - _exponentiate(odd_prime_p, (odd_prime_q - 1) / 2, odd_prime_q)) ? 1 : -1; }
 
-unsigned long random_number(unsigned long upper_bound) {
-    FILE *entropy_source = fopen("/dev/urandom", "r"); unsigned long ret_val; fread(&ret_val, sizeof(unsigned long), 1, entropy_source); fclose(entropy_source);
+void open_urandom() { entropy_source = fopen("/dev/urandom", "r"); }
+void close_urandom() { fclose(entropy_source); }
+
+unsigned long urandom_number(unsigned long upper_bound) {
+    unsigned long ret_val; fread(&ret_val, sizeof(unsigned long), 1, entropy_source);
     ret_val = _conditional_field_cap(ret_val, upper_bound); return ret_val;
 }
