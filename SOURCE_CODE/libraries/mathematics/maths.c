@@ -173,3 +173,8 @@ FILE *prime_table_open(char *prime_table_filename) {
 } void prime_table_close(FILE *prime_table) { fclose(prime_table); _open_prime_table = NULL; }
 
 int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q) { return (odd_prime_q - 1 - _exponentiate(odd_prime_p, (odd_prime_q - 1) / 2, odd_prime_q)) ? 1 : -1; }
+
+unsigned long random_number(unsigned long upper_bound) {
+    FILE *entropy_source = fopen("/dev/urandom", "r"); unsigned long ret_val; fread(&ret_val, sizeof(unsigned long), 1, entropy_source); fclose(entropy_source);
+    ret_val = _conditional_field_cap(ret_val, upper_bound); return ret_val;
+}
