@@ -5,7 +5,9 @@ mkdir WORKBENCH/ARCHIVE
 clear && echo "########### ASSEMBLY LINE ROLLING ! #######=====>"
 cd SOURCE_CODE/TOOLS/equivalence_class && make equivalence_class && echo "#######===> The following tool has been assemblied/linked: additive_inverse
 "
-cd SOURCE_CODE/TOOLS/additive_inverse && make additive_inverse && echo "#######===> The following tool has been assemblied/linked: additive_inverse
+cd ../random_numbers && make random_numbers && echo "#######===> The following tool has been assemblied/linked: random_numbers
+"
+cd ../additive_inverse && make additive_inverse && echo "#######===> The following tool has been assemblied/linked: additive_inverse
 "
 cd ../modular_exponentiation && make modular_exponentiation && echo "#######===> The following tool has been assemblied/linked: modular_exponentiation
 "
@@ -19,6 +21,7 @@ cd ../group_operation && make group_operation && echo "#######===> The following
 "
 echo "#######===> THE FOLLOWING BASIC TOOLS HAVE BEEN ASSEMBLED/LINKED: -->                         <===#######
 ~ equivalence_class
+~ random numbers
 ~ additive_inverse
 ~ modular_exponentiation
 ~ finite_field_division
