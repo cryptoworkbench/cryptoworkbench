@@ -12,15 +12,15 @@ struct LL_ { unsigned long e; struct LL_ *next; };
 unsigned long group_cardinality_;
 // global variables ^
 
-void coprime_ERROR()
-{ fprintf(stderr, "\nprovide instead of '%s' a number coprime to %lu.\n\n", unparsed_arg, *mod_); free(mod_); }
-
+void RESULT_ERROR() { fprintf(stderr, "\nAlice and Bob did not derive the same shared secret.\n\n"); }
+void coprime_ERROR() { fprintf(stderr, "\nprovide instead of '%s' a number coprime to %lu.\n\n", unparsed_arg, *mod_); free(mod_); }
 _error_selector error_selector(int SELECTOR) {
     switch (SELECTOR) {
 	case 1: fprintf(stdout, "Please provide as first argument a modulus specifying the multiplicative group to use.\n\n"); free(mod_); return str_not_parsable_as_number; 
 	case 2: fprintf(stdout, "Please provide as second argument an element within \u2115/%s\u2115* to perform modular exponentiation upon (preferably a generator).\n\n", argvv[1]); return coprime_ERROR;
 	case 3: fprintf(stdout, "Please provide as third argument Bob's secret key.\n\n"); return coprime_ERROR;
 	case 4: fprintf(stdout, "Please provide as fourth argument Alice's secret key.\n\n"); return coprime_ERROR;
+	case 5: return RESULT_ERROR;
     };
 } // error functions ^
 
@@ -56,23 +56,28 @@ int main(int argc, char **argv) { argvv = argv; mod_ = (unsigned long *) malloc(
 		iso.a); // < figure out UNICODE symbol for totient
 	char y_or_n; fscanf(stdin, " %c", &y_or_n); if (y_or_n == 'n' || y_or_n == 'N') exit(-1);
     } // detect when the permutation basis does not cover the group ^
-    fprintf(stdout, "Publicly agreed-upon variables:\n");
-    fprintf(stdout, "Choice of multiplicative group: \u2115/%s\u2115*\n", argv[1]);
-    fprintf(stdout, "Choice of element within multiplicative group: %lu\n", argv[1], generator);
+    fprintf(stdout, "Alice and Bob promise each other to use as modulus the value %s	(a.k.a. they're using the multiplicative group \u2115/%s\u2115).\n", argv[1], argv[1]);
+    // fprintf(stdout, "They also both promise '%lu' as base for their modular exponentiation.\n", argv[1], mod_conditional_field_cap(generator) , argv[1]);
 
-    fprintf(stdout, "\nBob's secret key: %lu", priv_bob);
-    fprintf(stdout, "\nAlice's secret key: %lu\n", priv_alice);
+    fprintf(stdout, "\nBob's private key: %lu", priv_bob);
+    fprintf(stdout, "\nAlice's private key: %lu\n", priv_alice);
 
-    unsigned long pub_bob;
-    fprintf(stdout, "\nBob's shared key:\n%lu ^ %lu \u2261 %lu	(mod %lu)\n", generator, priv_bob, (pub_bob = mod_exponentiate(generator, priv_bob)), *mod_);
+    unsigned long pub_bob; fprintf(stdout, "\nBob's public key:\n%lu^%lu \u2261 %lu	(mod %lu)\n", generator, priv_bob, (pub_bob = mod_exponentiate(generator, priv_bob)), *mod_);
+    unsigned long pub_alice; fprintf(stdout, "\nAlice's public key:\n%lu^%lu \u2261 %lu	(mod %lu)\n", generator, priv_alice, (pub_alice = mod_exponentiate(generator, priv_alice)), *mod_);
+    // calculate public key's
 
-    unsigned long pub_alice;
-    fprintf(stdout, "\nAlice's shared key:\n%lu ^ %lu \u2261 %lu	(mod %lu)\n", generator, priv_alice, (pub_alice = mod_exponentiate(generator, priv_alice)), *mod_);
+    fprintf(stdout, "\nBob receives Alice's public key '%lu'.\n", pub_alice);
+    fprintf(stdout, "Alice receives Bob's public key '%lu'.\n", pub_bob);
 
-    free(mod_); return 0; }
-/* Exit statuses:
+    unsigned long SS_according_to_Bob; fprintf(stdout, "\nBob calculates '%lu ^ %lu \u2261 %lu'.\n", pub_alice, priv_bob, (SS_according_to_Bob = mod_exponentiate(pub_alice, priv_bob)));
+    unsigned long SS_according_to_Alice; fprintf(stdout, "Alice calculates '%lu ^ %lu \u2261 %lu'.\n", pub_bob, priv_alice, (SS_according_to_Alice = mod_exponentiate(pub_bob, priv_alice)));
+
+    free(mod_); if (SS_according_to_Bob != SS_according_to_Alice) error_message(error_selector(5), -5);
+    return 0; }
+/* Termination status legend:
  * -1: 'argv[1]' not parsable as number
  * -2: 'argv[2]' not parsable as number or number not coprime to 'argv[1]'
  * -3: 'argv[3]' not parsable as number or number not coprime to 'argv[1]'
  * -4: 'argv[4]' not parsable as number or number not coprime to 'argv[1]'
+ * -5: Alice and Bob did not derive the same key. Key exchange failed.
  */
