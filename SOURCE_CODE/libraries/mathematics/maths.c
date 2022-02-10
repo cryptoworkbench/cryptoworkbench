@@ -178,9 +178,9 @@ FILE *prime_table_open(char *prime_table_filename) {
 int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q) { return (odd_prime_q - 1 - _exponentiate(odd_prime_p, (odd_prime_q - 1) / 2, odd_prime_q)) ? 1 : -1; }
 
 void open_urandom() { entropy_source = fopen("/dev/urandom", "r"); }
-void close_urandom() { fclose(entropy_source); }
+void close_urandom() { if (entropy_source) fclose(entropy_source); }
 
-unsigned long urandom_number(unsigned long upper_bound) {
+unsigned long urandom_number(unsigned long upper_bound) { if (!(entropy_source)) open_urandom();
     unsigned long ret_val; fread(&ret_val, sizeof(unsigned long), 1, entropy_source);
     ret_val = _conditional_field_cap(ret_val, upper_bound); return ret_val;
 }

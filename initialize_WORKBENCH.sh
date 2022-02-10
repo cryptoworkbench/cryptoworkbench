@@ -60,12 +60,8 @@ cd ../factorization_based_primality_test && make factorization_based_primality_t
 "
 cd ../group_element_table_generator && make group_element_table_generator && echo "#######===> The following tool has been assemblied/linked: group_element_table_generator
 "
-# FIX THIS ONE!: cd ../subgroup_examplifier && make subgroup_examplifier && echo "#######===> The following tool has been assemblied/linked: subgroup_examplifier
-#"
-# cd ../Diffie_Hellman_Key_Agreement && make Diffie_Hellman_Key_Agreement && echo "#######===> The following tool has been assemblied/linked: Diffie_Hellman_Key_Agreement
-#"
-# cd ../cayley_table_generator && make cayley_table_generator && echo "#######===> The following tool has been assemblied/linked: cayley_table_generator
-#"
+cd ../subgroup_examplifier && make subgroup_examplifier && echo "#######===> The following tool has been assemblied/linked: subgroup_examplifier
+"
 echo "#######===> SOME MORE TOOLS HAVE BEEN ASSEMBLED/LINKED: -->                                         <===#######
 ~ sieve_of_eratosthenes
 ~ prime_table_exporter
@@ -74,8 +70,7 @@ echo "#######===> SOME MORE TOOLS HAVE BEEN ASSEMBLED/LINKED: -->               
 ~ subgroup_examplifier
 ~ Diffie_Hellman_Key_Agreement
 ~ cayley_table_generator
-" # ^-- Notify end of third stage of compilation.
-
+"
 # ALSO FIX THIS ONE!: cd ../Wipe_ARCHIVE && make Wipe_ARCHIVE && echo "#######===> The following tool has been assemblied/linked: Wipe_ARCHIVE
 #"
 cd ../View_LOGBOOK && make View_LOGBOOK && echo "#######===> The following tool has been assemblied/linked: View_LOGBOOK
