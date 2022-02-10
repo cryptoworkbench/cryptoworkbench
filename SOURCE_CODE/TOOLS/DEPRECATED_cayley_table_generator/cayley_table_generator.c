@@ -21,7 +21,7 @@
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
-UL MODULUS;
+unsigned long MODULUS;
 // ^^ Handle library inclusions
 
 #define RESET "\033[0m"
