@@ -1,181 +1,82 @@
-/* Current program operations:
- * Takes a file from ~/crypto_lab/registry/ specified by argv[1]
- *
- * If the appropiate file is not present in "./../registry/", generates this file using "~/crypto_lab/instruments/group_examplifier argv[1] > ./../registry" (handled by registry_functions)
- *
- * Opens this file anyway.
- *
- * Proceeds to calculate and list all subgroup cardinalities. Then asks user for private exponents of Bob and Alice from specified group.
- *
- * Proceeds on to perform an example Diffie-Hellman key-agreement.
- *
- * INTENTED PROGRAM OPERATIONS:
- * Takes a file from ~/crypto_lab/registry/ specified by argv[1]
- *
- * If the appropiate file is not present in "./../registry/", generates this file using "~/crypto_lab/instruments/group_examplifier argv[1] > ./../registry" (handled by registry_functions)
- *
- * Opens this file anyway.
- *
- * Tries to interpret argv[1] (if specified) as an appropiate generator for example.
- *
- * If argv[1] is within the group, good, proceed.
- *
- * If argv[1] is not within the group, notify, and allow to correct
- *
- * Proceeds to calculate and list all subgroup cardinalities. Then asks user for private exponents of Bob and Alice from specified group.
- *
- * DEVELOPERS NOTE:
- * Make this application use "universal_group_library.h"
+/* This will be a rewrite of ../Diffie_Hellman_Key_Agreement
  */
 #include <stdio.h>
-#include <stdlib.h>
-#include "../../libraries/mathematics/maths.h"
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
-#include "../../libraries/functional/LOGBOOK_library.h"
-// ^^ LIBRARY INCLUSIONS
+#include "../../libraries/mathematics/maths.h"
+#include "../../libraries/mathematics/universal_group_library.h"
 
-#define ADDITIVE_IDENTITY 0
-#define MULTIPLICATIVE_IDENTITY 1
-// ^^ MATHEMATICAL DEFINITIONS
+struct LL_ { unsigned long e; struct LL_ *next; };
+// type definitions ^
 
-const char *name = "multiplicative_group_of_integers_modulo_";
-const char *base_question = "Please pick an element from this group to use as base (generator): ";
-// ^^ NECESSARY DATA
+unsigned long group_cardinality_;
+// global variables ^
 
-struct group_element { unsigned long value; struct group_element *next; }; // <<< For use with triple ref pointers
-unsigned long group_modulus;
-// ^^ PROGRAM VARIABLES
+void RESULT_ERROR() { fprintf(stderr, "\nAlice and Bob did not derive the same shared secret.\n\n"); }
+void coprime_ERROR() { fprintf(stderr, "\nprovide instead of '%s' a number coprime to %lu.\n\n", unparsed_arg, *mod_); free(mod_); }
+_error_selector error_selector(int SELECTOR) {
+    switch (SELECTOR) {
+	case 1: fprintf(stdout, "Please provide as first argument a modulus specifying the multiplicative group to use.\n\n"); free(mod_); return str_not_parsable_as_number; 
+	case 2: fprintf(stdout, "Please provide as second argument an element within \u2115/%s\u2115* to perform modular exponentiation upon (preferably a generator).\n\n", argvv[1]); return coprime_ERROR;
+	case 3: fprintf(stdout, "Please provide as third argument Bob's secret key.\n\n"); return coprime_ERROR;
+	case 4: fprintf(stdout, "Please provide as fourth argument Alice's secret key.\n\n"); return coprime_ERROR;
+	case 5: return RESULT_ERROR;
+    };
+} // error functions ^
 
-void insert(struct group_element **channel, unsigned long group_element) {
-    struct group_element *new_element = (struct group_element *) malloc(sizeof(struct group_element));
-    new_element->value = group_element;
-
-    while (*channel) // <<< Find the last insertion
-	channel = &(*channel)->next;
-
-    *channel = new_element; // <<< Place new element in 'next' field of the last insertion
+void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
+    struct LL_ *new_LL_element = (struct LL_ *) malloc(sizeof(struct LL_)); new_LL_element->e = new_ulong; new_LL_element->next = NULL; // create and initialize new element
+    while (**tracer_location) *tracer_location = &(***tracer_location).next; **tracer_location = new_LL_element; // add this new element at the end
+    *tracer_location = (struct LL_ **) **tracer_location; // update tracer
 }
 
-struct group_element *ll_from_file(FILE *input_file, struct group_element **channel) {
-    unsigned long group_element;
-    while (fscanf(input_file, "%lu\n", &group_element) == 1) 
-	insert(channel, group_element);
-    // ^^^ Establish lineair linked list containing all group elements using the triple ref technique
-
-    struct group_element *last_element, *first_element;
-    last_element = first_element = (struct group_element *) disintermediate( (void **) channel);
-    while (last_element->next) last_element = last_element->next;
-    last_element->next = first_element;
-    // ^^^ Take out of the end product a singly-linked list that is circular and destroy any intermediary memory used
-
-    return first_element;
+struct VOID_ptr_ptr_PAIR group_elements_LL(char **argv) { FILE *ELEMENT_database = open_group(argv); struct VOID_ptr_ptr_PAIR element_CHANNEL_ptr_pair = initialize_CHANNEL_ptr_pair(); unsigned long group_ELEMENT;
+    while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { INSERT((struct LL_ ***) &element_CHANNEL_ptr_pair.iterator, group_ELEMENT); group_cardinality_++; } close_group(argv[1], ELEMENT_database);
+    return element_CHANNEL_ptr_pair;
 }
 
-unsigned long length(unsigned long element) {
-    unsigned long sub_order = ADDITIVE_IDENTITY;
-    unsigned long iter = MULTIPLICATIVE_IDENTITY;
-    do {iter = (iter * element) % group_modulus;
-	sub_order++;
-    } while (iter != MULTIPLICATIVE_IDENTITY); 
+unsigned long group_cardinality_;
+int main(int argc, char **argv) { argvv = argv; mod_ = (unsigned long *) malloc(sizeof(unsigned long)); unparsed_arg = argv[1];
+    if (2 > argc || !str_represents_ul(unparsed_arg, mod_)) error_message(error_selector(1), -1); unparsed_arg = argv[2]; unsigned long generator;
+    if (3 > argc || !str_represents_ul(unparsed_arg, &generator) || !coprime(generator, *mod_)) error_message(error_selector(2), -2); unparsed_arg = argv[3]; unsigned long priv_bob;
+    if (4 > argc || !str_represents_ul(unparsed_arg, &priv_bob) || !coprime(priv_bob, *mod_)) error_message(error_selector(3), -3); unparsed_arg = argv[4]; unsigned long priv_alice;
+    if (5 > argc || !str_represents_ul(unparsed_arg, &priv_alice) || !coprime(priv_alice, *mod_)) error_message(error_selector(4), -4);
+    // take in needed variables ^
 
-    return sub_order;
-}
+    group_cardinality_ = totient(*mod_); struct ordered_pair iso = _isomorphism(); do { iso.b = mod_multiply(iso.b, generator); iso.a++; if (iso.b == MULTIPLICATIVE_IDENTITY) break; } while (1);
+    if (iso.a != group_cardinality_) {
+	fprintf(stderr, "WARNING: %s only generates 1/%lu of \u2115/%s\u2115*  (tot(%s) / %lu = %lu / %lu = %lu), continue? (ans 'n' of 'N' for exit): ",
+		argv[2],
+		group_cardinality_ / iso.a,
+		argv[1],
+		argv[1],
+		group_cardinality_ / iso.a,
+		group_cardinality_,
+		group_cardinality_ / iso.a,
+		iso.a); // < figure out UNICODE symbol for totient
+	char y_or_n; fscanf(stdin, " %c", &y_or_n); if (y_or_n == 'n' || y_or_n == 'N') exit(-1);
+    } // detect when the permutation basis does not cover the group ^
+    fprintf(stdout, "Alice and Bob use \u2115/%s\u2115*. They take '%lu' as exponentiation basis. Diffie-Hellman key exchange follows:\n", argv[1], mod_conditional_field_cap(generator));
+    fprintf(stdout, "Bob's private key: %lu\n", priv_bob);
+    fprintf(stdout, "Alice's private key: %lu\n", priv_alice);
 
-unsigned long present(struct group_element *ll, unsigned long element) {
-    struct group_element *iter = ll; do {
-	if (element == iter->value)
-	    return element;
-	iter = iter->next;
-    } while (iter != ll);
+    unsigned long pub_bob; fprintf(stdout, "\nBob's public key:\n%lu^%lu \u2261 %lu	(mod %lu)\n", generator, priv_bob, (pub_bob = mod_exponentiate(generator, priv_bob)), *mod_);
+    unsigned long pub_alice; fprintf(stdout, "\nAlice's public key:\n%lu^%lu \u2261 %lu	(mod %lu)\n", generator, priv_alice, (pub_alice = mod_exponentiate(generator, priv_alice)), *mod_);
+    // calculate public key's
 
-    return 0;
-}
+    fprintf(stdout, "\nBob receives Alice's public key '%lu'.\n", pub_alice);
+    fprintf(stdout, "Alice receives Bob's public key '%lu'.\n", pub_bob);
 
-int main(int argc, char **argv) {
-    if (argc == 2) { group_modulus = ul_from_str(argv[1]); }
-    // ^^^ Interpret group modulus from the first terminal argument
-    
-    else { fprintf(stderr, "Wrong argument count.\n\nExiting '-1'.\n"); return -1; }
-    // ^^^ Or exit upon wrong argument count.
+    unsigned long SS_according_to_Bob; fprintf(stdout, "\nBob calculates '%lu ^ %lu \u2261 %lu'.\n", pub_alice, priv_bob, (SS_according_to_Bob = mod_exponentiate(pub_alice, priv_bob)));
+    unsigned long SS_according_to_Alice; fprintf(stdout, "Alice calculates '%lu ^ %lu \u2261 %lu'.\n", pub_bob, priv_alice, (SS_according_to_Alice = mod_exponentiate(pub_bob, priv_alice))); free(mod_);
 
-    struct group_prams *group = (struct group_prams *) malloc(sizeof(struct group_prams));
-    group->ID = MULTIPLICATIVE_IDENTITY;
-    group->CAP = group_modulus;
-    char *path_to_filename; char *group_CAP; FILE *ELEMENT_database = open_group(argv[0], group, &path_to_filename, &group_CAP); free(group);
-    struct group_element *group_ll = ll_from_file(ELEMENT_database, (struct group_element **) sub_ordinator());
-    // ^^ Get group from file
-
-    close_group(argv[0], group_CAP, symbol_to_use(group->ID), path_to_filename, ELEMENT_database);
-    // ^^^ Notify logbook we got group from file
-
-    struct group_element *iter = group_ll; do {
-	unsigned long order = length(iter->value);
-	fprintf(stdout, "|<%lu>| = %lu\n", iter->value, order);
-	iter = iter->next;
-    } while (iter != group_ll);
-    // ^^^ Display group in stdout
-
-    unsigned long base = 0; while (!base) {
-	fprintf(stdout, "\nPlease pick an element from this group to use as a base number: ");
-	fscanf(stdin, "%lu", &base);
-	base = present(group_ll, base); }
-    // ^^^ Determine base number
-
-    fprintf(stdout, "\n");
-    unsigned long private_alice = 0; while (!private_alice) {
-	fprintf(stdout, "Generator: %lu\n", base);
-	fprintf(stdout, "Alice's private exponent: ");
-	fscanf(stdin, "%lu", &private_alice);
-	private_alice = present(group_ll, private_alice); }
-    // ^^^ Determine private_alice
-
-    fprintf(stdout, "\n");
-    unsigned long private_bob = 0; while (!private_bob) {
-	fprintf(stdout, "Generator: %lu\n", base);
-	fprintf(stdout, "Alice's secret exponent: %lu\n", private_alice);
-	fprintf(stdout, "Bob's private exponent: ");
-	fscanf(stdin, "%lu", &private_bob);
-	private_bob = present(group_ll, private_bob); }
-    // ^^^ Determine private_bob
-
-    fprintf(stdout, "\n# PUBLICLY AGREED-UPON VARIABLES:\n# ~ Multiplicative group: <\u2124/%lu\u2124, *>\n# ~ Base number: %lu\n", group_modulus, base);
-    fprintf(stdout, "#\n# SECRET VARIABLES:\n# ~ Alice's secret exponent: %lu\n# ~ Bob's secret exponent: %lu\n", private_alice, private_bob);
-    // ^^^ Display selected variables
-
-    fprintf(stdout, "#\n# Calculation Alice makes before communication:\n");
-    unsigned long public_alice = FINITE_N_exponentiation(base, private_alice, group_modulus);
-    fprintf(stdout, "# ~ %lu^%lu \u2261 %lu (%% %lu)\n", base, private_alice, public_alice, group_modulus);
-    // ^^^ Display calculation on Alice's side
-
-    fprintf(stdout, "#\n# Calculation Bob makes before communication:\n");
-    unsigned long public_bob = FINITE_N_exponentiation(base, private_bob, group_modulus);
-    fprintf(stdout, "# ~ %lu^%lu \u2261 %lu (%% %lu)", base, private_bob, public_bob, group_modulus);
-    // ^^^ Display calculation on Bob's side
-
-    fprintf(stdout, "\n#\n# INFORMATION COMMUNICATED OVER OPEN CHANNEL:\n# ~ Information from Alice to Bob: '%lu'\n# ~ Information from Bob to Alice: '%lu'\n", public_alice, public_bob);
-    // ^^^ Simulate open channel communication
-
-    fprintf(stdout, "#\n# Calculation Alice makes after communication with Bob:\n");
-    unsigned long mutual_alice = FINITE_N_exponentiation(public_bob, private_alice, group_modulus);
-    fprintf(stdout, "# ~ %lu^%lu \u2261 %lu (%% %lu)", public_bob, private_alice, mutual_alice, group_modulus);
-
-    fprintf(stdout, "\n#\n# Calculation Bob makes after communication with Alice:\n");
-    unsigned long mutual_bob = FINITE_N_exponentiation(public_alice, private_bob, group_modulus);
-    fprintf(stdout, "# ~ %lu^%lu \u2261 %lu (%% %lu)", public_alice, private_bob, mutual_bob, group_modulus);
-
-    if (mutual_bob == mutual_alice) {
-	fprintf(stdout, "\n#\n##### KEY AGREEMENT SUCCESSFULL ! =====>\n#####\n##### Alice and Bob mutually arrived at the shared secret '%lu' <=====", mutual_bob);
-	fprintf(stdout, "\n###\n### Try to figure out '%lu' with the information below!\n###\n## INFORMATION KNOWN TO EVE WHO'S BEEN LISTING ON THE OPEN COMMUNICATION CHANNEL ALL ALONG:", mutual_bob);
-	fprintf(stdout, "\n## ~ Multiplicative group of integers used: <\u2124/%lu\u2124>", group_modulus);
-	fprintf(stdout, "\n## ~ Base number (generator): %lu", base);
-	fprintf(stdout, "\n## ~ \u2203 x \u2208 <\u2124/%lu\u2124, *> : %lu^x \u2261 %lu (%% %lu)", group_modulus, base, public_alice, group_modulus);
-	fprintf(stdout, "\n## ~ \u2203 y \u2208 <\u2124/%lu\u2124, *> : %lu^y \u2261 %lu (%% %lu)", group_modulus, base, public_bob, group_modulus);
-	fprintf(stdout, "\n##");
-	fprintf(stdout, "\n## NOTICE HOW EVE IS UNABLE TO FIGURE OUT '%lu' WITHOUT THE SECRET VALUES 'x' and 'y'\n", mutual_bob);
-	exit(0);;
-    } else {
-	fprintf(stderr, "\n#\n##### Calculation unsuccessfull, unknown error occured.\n#\n#Exiting '-3'.\n");
-	exit(-3);
-    }
-}
+    if (SS_according_to_Bob == SS_according_to_Alice)
+    { fprintf(stdout, "\nBoth derived %lu by combining the other's public key with their own private key: KEY EXCHANGE COMPLETE.\n", SS_according_to_Bob); return 0; }
+    else error_message(error_selector(5), -5); }
+/* Termination status legend:
+ * -1: 'argv[1]' not parsable as number
+ * -2: 'argv[2]' not parsable as number or number not coprime to 'argv[1]'
+ * -3: 'argv[3]' not parsable as number or number not coprime to 'argv[1]'
+ * -4: 'argv[4]' not parsable as number or number not coprime to 'argv[1]'
+ * -5: Alice and Bob did not derive the same key. Key exchange failed.
+ */
