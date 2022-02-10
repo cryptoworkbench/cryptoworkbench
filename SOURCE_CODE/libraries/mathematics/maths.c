@@ -183,19 +183,8 @@ unsigned long urandom_number(unsigned long upper_bound) {
     ret_val = _conditional_field_cap(ret_val, upper_bound); return ret_val;
 }
 
-/*
-void chinese_remainder_theorem_COPRIME_ERROR() { fprintf(stderr, "not all coprimes."); }
-_error_selector chinese_remainder_theorem_ERROR_SELECTOR(int i) { return chinese_remainder_theorem_COPRIME_ERROR; }
-*/
-
-unsigned long chinese_remainder_theorem(unsigned long remainder, unsigned long **moduli, unsigned long modulis) { unsigned long i, j;
-    for (i = 0; i < modulis; i++) for (j = i + 1; j < modulis; j++) 
-	{ if (GCD(*moduli[i], *moduli[j]) != 1) { fprintf(stderr, "Function 'chinese_remainder_theorem()' failed. Not all moduli were coprime.\n"); exit(-10); } } // want to use error_message() here
-   // fail to cooperate unless all moduli are coprime  
-
-    struct ordered_pair isomorphism = _isomorphism();
-    for (i = 0; i < modulis; i++, isomorphism.b = MULTIPLICATIVE_IDENTITY) { isomorphism.b *= remainder;
-	for (j = 0; j < modulis; j++) if (*moduli[i] != *moduli[j]) { isomorphism.b *= *moduli[j]; } unsigned long reduced_term = isomorphism.b % *moduli[i];
-	if (reduced_term != remainder) if (reduced_term != 1) isomorphism.b *= _divide(1, reduced_term, *moduli[i]); isomorphism.b *= remainder; isomorphism.a += isomorphism.b;
-    } return isomorphism.a;
+unsigned long chinese_remainder_theorem(unsigned long remainder, unsigned long **moduli, unsigned long modulis) {
+    struct ordered_pair isomorphism = _isomorphism(); for (unsigned long i = 0; i < modulis; i++, isomorphism.b = remainder)
+    { for (unsigned long j = 0; j < modulis; j++) if (*moduli[i] != *moduli[j]) { isomorphism.b *= *moduli[j]; } unsigned long reduced_term = isomorphism.b % *moduli[i];
+	if (reduced_term != remainder) if (reduced_term != 1) isomorphism.b *= _divide(1, reduced_term, *moduli[i]); isomorphism.b *= remainder; isomorphism.a += isomorphism.b; } return isomorphism.a;
 }

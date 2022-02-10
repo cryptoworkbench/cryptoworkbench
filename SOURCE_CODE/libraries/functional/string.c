@@ -10,7 +10,6 @@
 
 void error_message(_error_selector error_explainer, int termination_status)
 { fprintf(stderr, "The following error occurred;"); error_explainer(); fprintf(stderr, EXIT_STATUS_GOODBYE, termination_status); exit(termination_status); }
-// ^^ never used (<<< REMOVE WHEN TESTED ^)
 
 char *BUFFER_OF_SIZE(unsigned int SIZE) {
     char *return_value = (char *) malloc(sizeof(char) * SIZE);
