@@ -22,11 +22,5 @@ int main(int argc, char **argv) { unparsed_arg = argv[1]; unsigned long remainde
     for (i = 0; i < moduli; i++) array_of_moduli[i] = (unsigned long *) malloc(sizeof(unsigned long));
     for (i = 0; i < moduli; i++) if (!str_represents_ul(argv[2 + i], array_of_moduli[i])) error_message(arg_error(2), - (2 + i)); // take in all information < ^^^
     for (i = 0; i < moduli; i++) for (unsigned long j = i + 1; j < moduli; j++) { if (GCD(*array_of_moduli[i], *array_of_moduli[j]) != 1) error_message(arg_error(3), -3); }
-    // checks to see if the chinese remainder theorem can help solve the supplied system of congruences ^^ 
-    unsigned long ans = chinese_remainder_theorem(remainder, array_of_moduli, moduli); // ans++; // #1
-    fprintf(stdout, "According to chinese_remainder_theorem() the solution to this system of congruences is %lu.", ans);
-    for (i = 0; i < moduli; i++) if (ans % *array_of_moduli[i] != remainder) error_message(arg_error(4), -4); fprintf(stdout, "\n");
-    for (i = 0; i < moduli; i++) free(array_of_moduli[i]); free(array_of_moduli); return 0; }
-/* # 1:
- * 	Re-enable to see RESULT_ERROR in action. Yields an interresting result; displays the correct error, but seems to execute line 27 therafter.
- */
+    unsigned long ans = chinese_remainder_theorem(remainder, array_of_moduli, moduli); fprintf(stdout, "According to chinese_remainder_theorem() the solution to this system of congruences is %lu.\n", ans); fflush(stdout);
+    for (i = 0; i < moduli; i++) if (ans % *array_of_moduli[i] != remainder) error_message(arg_error(4), -4); for (i = 0; i < moduli; i++) free(array_of_moduli[i]); free(array_of_moduli); return 0; }

@@ -8,4 +8,4 @@
 	gcc -c chinese_remainder_theorem.c -o .chinese_remainder_theorem.o
 
 chinese_remainder_theorem: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .chinese_remainder_theorem.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .chinese_remainder_theorem.o -o chinese_remainder_theorem
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .chinese_remainder_theorem.o -o ../../../WORKBENCH/chinese_remainder_theorem

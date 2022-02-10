@@ -19,6 +19,8 @@ cd ../least_common_multiple && make least_common_multiple && echo "#######===> T
 "
 cd ../group_operation && make group_operation && echo "#######===> The following tool has been assemblied/linked: group_operation
 "
+cd ../chinese_remainder_theorem && make chinese_remainder_theorem && echo "#######===> The following tool has been assemblied/linked: chinese_remainder_theorem
+"
 echo "#######===> THE FOLLOWING BASIC TOOLS HAVE BEEN ASSEMBLED/LINKED: -->                         <===#######
 ~ equivalence_class
 ~ random numbers
@@ -28,6 +30,7 @@ echo "#######===> THE FOLLOWING BASIC TOOLS HAVE BEEN ASSEMBLED/LINKED: -->     
 ~ multiplicative_inverse
 ~ least_common_multiple
 ~ group_operation
+~ chinese_remainder_theorem
 " # ^-- Notify end of first stage of compilation.
 
 cd ../plot_polynomial && make plot_polynomial && echo "#######===> The following tool has been assemblied/linked: plot_polynomial
