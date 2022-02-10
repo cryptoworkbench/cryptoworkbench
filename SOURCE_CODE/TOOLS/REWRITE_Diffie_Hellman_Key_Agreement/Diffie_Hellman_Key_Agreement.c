@@ -56,7 +56,7 @@ int main(int argc, char **argv) { argvv = argv; mod_ = (unsigned long *) malloc(
 		iso.a); // < figure out UNICODE symbol for totient
 	char y_or_n; fscanf(stdin, " %c", &y_or_n); if (y_or_n == 'n' || y_or_n == 'N') exit(-1);
     } // detect when the permutation basis does not cover the group ^
-    fprintf(stdout, "Alice and Bob promise each other to use as modulus the value %s	(a.k.a. they're using the multiplicative group \u2115/%s\u2115).\n", argv[1], argv[1]);
+    fprintf(stdout, "Alice and Bob promise each other to use as %s as the modulus	(a.k.a. they deploy the group multiplicative group \u2115/%s\u2115*).\n", argv[1], argv[1]);
     // fprintf(stdout, "They also both promise '%lu' as base for their modular exponentiation.\n", argv[1], mod_conditional_field_cap(generator) , argv[1]);
 
     fprintf(stdout, "\nBob's private key: %lu", priv_bob);
