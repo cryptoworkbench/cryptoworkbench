@@ -53,7 +53,7 @@ int main(int argc, char **argv) { argvv = argv; mod_ = (unsigned long *) malloc(
 		group_cardinality_ / iso.a,
 		group_cardinality_,
 		group_cardinality_ / iso.a,
-		iso.a); // < figure out UNICODE symbol for totient
+		iso.a); // < figure out UNICODE symbol for totient, also make it display the percentage instead of the fraction 'group_cardinality_ / iso.a'
 	char y_or_n; fscanf(stdin, " %c", &y_or_n); if (y_or_n == 'n' || y_or_n == 'N') exit(-1);
     } // detect when the permutation basis does not cover the group ^
     fprintf(stdout, "Alice and Bob use \u2115/%s\u2115*. They take '%lu' as exponentiation basis. Diffie-Hellman key exchange follows:\n", argv[1], mod_conditional_field_cap(generator));
