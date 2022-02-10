@@ -12,7 +12,7 @@
 struct LL_ { unsigned long e; struct LL_ *next; };
 // type definitions ^
 
-unsigned long group_cardinality_;
+STRUCT_DH_parameters *DH_parameters; unsigned long group_cardinality_;
 // global variables ^
 
 void RESULT_ERROR() { fprintf(stderr, "\nAlice and Bob did not derive the same shared secret.\n\n"); }
@@ -39,14 +39,14 @@ struct VOID_ptr_ptr_PAIR group_elements_LL(char **argv) { FILE *ELEMENT_database
 }
 
 unsigned long group_cardinality_;
-int main(int argc, char **argv) { argvv = argv; mod_ = (unsigned long *) malloc(sizeof(unsigned long)); unparsed_arg = argv[1];
-    if (2 > argc || !str_represents_ul(unparsed_arg, mod_)) error_message(error_selector(1), -1); unparsed_arg = argv[2]; unsigned long generator;
-    if (3 > argc || !str_represents_ul(unparsed_arg, &generator) || !coprime(generator, *mod_)) error_message(error_selector(2), -2); unparsed_arg = argv[3]; unsigned long priv_bob;
+int main(int argc, char **argv) { argvv = argv; DH_parameters = (STRUCT_DH_parameters *) malloc(sizeof(STRUCT_DH_parameters)); mod_ = &DH_parameters->a; unparsed_arg = argv[1];
+    if (2 > argc || !str_represents_ul(unparsed_arg, &DH_parameters->a)) error_message(error_selector(1), -1); unparsed_arg = argv[2];
+    if (3 > argc || !str_represents_ul(unparsed_arg, &DH_parameters->b) || !coprime(DH_parameters->b, *mod_)) error_message(error_selector(2), -2); unparsed_arg = argv[3]; unsigned long priv_bob;
     if (4 > argc || !str_represents_ul(unparsed_arg, &priv_bob) || !coprime(priv_bob, *mod_)) priv_bob = urandom_number(*mod_); unparsed_arg = argv[4]; unsigned long priv_alice;
     if (5 > argc || !str_represents_ul(unparsed_arg, &priv_alice) || !coprime(priv_alice, *mod_)) priv_alice = urandom_number(*mod_); close_urandom();
     // take in needed variables ^
 
-    group_cardinality_ = totient(*mod_); struct ordered_pair iso = _isomorphism(); do { iso.b = mod_multiply(iso.b, generator); iso.a++; if (iso.b == MULTIPLICATIVE_IDENTITY) break; } while (1);
+    group_cardinality_ = totient(*mod_); struct ordered_pair iso = _isomorphism(); do { iso.b = mod_multiply(iso.b, DH_parameters->b); iso.a++; if (iso.b == MULTIPLICATIVE_IDENTITY) break; } while (1);
     if (iso.a != group_cardinality_) {
 	fprintf(stderr, "WARNING: %s only generates 1/%lu of \u2115/%s\u2115*  (tot(%s) / %lu = %lu / %lu = %lu), continue? ('n' of 'N' for exit): ",
 		argv[2],
@@ -59,12 +59,12 @@ int main(int argc, char **argv) { argvv = argv; mod_ = (unsigned long *) malloc(
 		iso.a); // < figure out UNICODE symbol for totient, also make it display the percentage instead of the fraction 'group_cardinality_ / iso.a'
 	char y_or_n; fscanf(stdin, " %c", &y_or_n); if (y_or_n == 'n' || y_or_n == 'N') exit(-1);
     } // detect when the permutation basis does not cover the group ^
-    fprintf(stdout, "Alice and Bob use \u2115/%s\u2115* with %lu as generator.\n\nDiffie-Hellman key exchange example:\n", argv[1], mod_conditional_field_cap(generator));
+    fprintf(stdout, "Alice and Bob use %lu within \u2115/%s\u2115*.\n\nDiffie-Hellman key exchange example:\n", mod_conditional_field_cap(DH_parameters->b), argv[1]);
     fprintf(stdout, "Bob's private key: %lu\n", priv_bob);
     fprintf(stdout, "Alice's private key: %lu\n", priv_alice);
 
-    unsigned long pub_bob; fprintf(stdout, "\nBob's public key:\n%lu^%lu \u2261 %lu	(mod %lu)\n", generator, priv_bob, (pub_bob = mod_exponentiate(generator, priv_bob)), *mod_);
-    unsigned long pub_alice; fprintf(stdout, "\nAlice's public key:\n%lu^%lu \u2261 %lu	(mod %lu)\n", generator, priv_alice, (pub_alice = mod_exponentiate(generator, priv_alice)), *mod_);
+    unsigned long pub_bob; fprintf(stdout, "\nBob's public key:\n%lu^%lu \u2261 %lu	(mod %lu)\n", DH_parameters->b, priv_bob, (pub_bob = DH_public_key(DH_parameters, priv_bob)), *mod_);
+    unsigned long pub_alice; fprintf(stdout, "\nAlice's public key:\n%lu^%lu \u2261 %lu	(mod %lu)\n", DH_parameters->b, priv_alice, (pub_alice = DH_public_key(DH_parameters, priv_alice)), *mod_);
     // calculate public key's
 
     fprintf(stdout, "\nBob receives Alice's public key '%lu'.\n", pub_alice);

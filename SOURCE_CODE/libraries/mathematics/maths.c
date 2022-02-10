@@ -44,6 +44,9 @@ unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned
     while (exponent != 0) { ret_val = _multiply(ret_val, backbone[minimum_log], mod_); exponent -= exponentiate(2, minimum_log); minimum_log = least_base_TWO_log(exponent); } free(backbone); return ret_val;
 } unsigned long mod_exponentiate(unsigned long base, unsigned long exponent) { return _exponentiate(base, exponent, *mod_); }
 
+unsigned long DH_public_key(STRUCT_DH_parameters *DH_parameters, unsigned long DH_private_key) { return _exponentiate(DH_parameters->b, DH_private_key, DH_parameters->a); }
+void print_DH_parameters(STRUCT_DH_parameters *DH_parameters, FILE *fs) { fprintf(fs, "(\u2115/%lu\u2115*, %lu)", DH_parameters->a, DH_parameters->b); }
+
 unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return mod_add(a, b); case 1: return mod_multiply(a, b); default: return mod_exponentiate(a, b); }; }
 
 _group_operation _operation_from_ID(unsigned long ID) { return (ID) ? _multiply : _add; }
@@ -76,21 +79,10 @@ unsigned long **UL_array_of_SIZE(int SIZE) {
 int UL_array_SIZE(unsigned long **UL_array) { int ret_val = 0; while (UL_array[ret_val]) ret_val++; return ret_val; }
 
 unsigned long INDEX_within_UL_array(unsigned long *UL_array, unsigned long UL_array_SIZE, unsigned long number) {
-    // printf("N: %lu ", number);
     for (unsigned long INDEX = 0; INDEX < UL_array_SIZE; INDEX++) {
 	if (UL_array[INDEX] == number) return INDEX;
     }
 }
-
-/*
-void print_permutation(unsigned long index) {
-    fprintf(stdout, "<%s> = {", lookup_table->ASCII[index]);
-    unsigned long i = 0; do {
-	fprintf(stdout, "%s", lookup_table->ASCII[lookup_table->permutation[index][i]]); i++;
-	if (i == lookup_table->perm_length[index]) break;
-	else fprintf(stdout, ", ");
-    } while (1); fprintf(stdout, "}\n");
-} */
 
 unsigned long _polynomial(unsigned long **COEFFICIENT_array, unsigned long _x, unsigned long mod_) {
     unsigned long ret_val = ADDITIVE_IDENTITY; unsigned long term_factor = MULTIPLICATIVE_IDENTITY; unsigned long i = UL_array_SIZE(COEFFICIENT_array);
