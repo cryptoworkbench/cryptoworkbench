@@ -1,6 +1,6 @@
 /* Solves a system of congruences using the maths library function chinese_remainder_theorem().
  *
- * Check for moduli congruences is done in main and not within chinese_remainder_theorem() itself.
+ * The answer if checked at line 30.
  */
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h"
@@ -21,7 +21,17 @@ int main(int argc, char **argv) { unparsed_arg = argv[1]; unsigned long remainde
     unsigned long moduli = argc - 2; unsigned long **array_of_moduli = (unsigned long **) malloc(sizeof(unsigned long *) * moduli); unsigned long i;
     for (i = 0; i < moduli; i++) array_of_moduli[i] = (unsigned long *) malloc(sizeof(unsigned long));
     for (i = 0; i < moduli; i++) if (!str_represents_ul(argv[2 + i], array_of_moduli[i])) error_message(arg_error(2), - (2 + i)); // take in all information < ^^^
+    // parse remainder and congruences (moduli) from terminal arguments ^
+
     for (i = 0; i < moduli; i++) for (unsigned long j = i + 1; j < moduli; j++) { if (GCD(*array_of_moduli[i], *array_of_moduli[j]) != 1) error_message(arg_error(3), -3); }
+    // check to see if all moduli are coprime to each other ^
+
     unsigned long ans = chinese_remainder_theorem(remainder, array_of_moduli, moduli);
     for (i = 0; i < moduli; i++) { if (ans % *array_of_moduli[i] != remainder) error_message(arg_error(4), -4); fprintf(stdout, "%lu \u2261 %lu (mod %lu)\n", ans, remainder, *array_of_moduli[i]); }
-    for (i = 0; i < moduli; i++) free(array_of_moduli[i]); free(array_of_moduli); return 0; }
+    // verify the result from chinese_remainder_theorem() ^
+
+    for (i = 0; i < moduli; i++) free(array_of_moduli[i]); free(array_of_moduli);
+    // free all allocated memory ^
+
+    return 0;
+}

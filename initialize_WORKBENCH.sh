@@ -15,11 +15,15 @@ cd ../divide && make divide && echo "#######===> The following tool has been ass
 "
 cd ../multiplicative_inverse && make multiplicative_inverse && echo "#######===> The following tool has been assemblied/linked: multiplicative_inverse
 "
+cd ../greatest_common_divisor && make greatest_common_divisor && echo "#######===> The following tool has been assemblied/linked: greatest_common_divisor
+"
 cd ../least_common_multiple && make least_common_multiple && echo "#######===> The following tool has been assemblied/linked: least_common_multiple
 "
 cd ../group_operation && make group_operation && echo "#######===> The following tool has been assemblied/linked: group_operation
 "
 cd ../system_of_congruences && make system_of_congruences && echo "#######===> The following tool has been assemblied/linked: system_of_congruences
+"
+cd ../Diffie_Hellman_Key_Agreement && make Diffie_Hellman_Key_Agreement && echo "#######===> The following tool has been assemblied/linked: Diffie_Hellman_Key_Agreement
 "
 echo "#######===> THE FOLLOWING BASIC TOOLS HAVE BEEN ASSEMBLED/LINKED: -->                         <===#######
 ~ equivalence_class
@@ -28,11 +32,12 @@ echo "#######===> THE FOLLOWING BASIC TOOLS HAVE BEEN ASSEMBLED/LINKED: -->     
 ~ modular_exponentiation
 ~ finite_field_division
 ~ multiplicative_inverse
+~ greatest_common_divisor
 ~ least_common_multiple
 ~ group_operation
 ~ system_of_congruences
-" # ^-- Notify end of first stage of compilation.
-
+~ Diffie_Hellman_Key_Agreement
+"
 cd ../plot_polynomial && make plot_polynomial && echo "#######===> The following tool has been assemblied/linked: plot_polynomial
 "
 cd ../2_n_Shamir_Secret_Sharing && make 2_n_Shamir_Secret_Sharing && echo "#######===> The following tool has been assemblied/linked: 2_n_Shamir_Secret_Sharing

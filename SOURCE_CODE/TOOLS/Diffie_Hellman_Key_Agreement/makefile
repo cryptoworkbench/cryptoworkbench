@@ -14,4 +14,4 @@
 	gcc -c Diffie_Hellman_Key_Agreement.c -o .Diffie_Hellman_Key_Agreement.o
 
 Diffie_Hellman_Key_Agreement: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.universal_group_library.o .Diffie_Hellman_Key_Agreement.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.universal_group_library.o .Diffie_Hellman_Key_Agreement.o -o Diffie_Hellman_Key_Agreement
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.universal_group_library.o .Diffie_Hellman_Key_Agreement.o -o ../../../WORKBENCH/Diffie_Hellman_Key_Agreement
