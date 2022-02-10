@@ -179,8 +179,8 @@ unsigned long urandom_number(unsigned long upper_bound) { if (!(entropy_source))
     ret_val = _conditional_field_cap(ret_val, upper_bound); return ret_val;
 }
 
-unsigned long chinese_remainder_theorem(unsigned long remainder, unsigned long **moduli, unsigned long modulis) {
-    struct ordered_pair isomorphism = _isomorphism(); for (unsigned long i = 0; i < modulis; i++, isomorphism.b = remainder)
-    { for (unsigned long j = 0; j < modulis; j++) if (*moduli[i] != *moduli[j]) { isomorphism.b *= *moduli[j]; } unsigned long reduced_term = isomorphism.b % *moduli[i];
-	if (reduced_term != remainder) if (reduced_term != 1) isomorphism.b *= _divide(1, reduced_term, *moduli[i]); isomorphism.b *= remainder; isomorphism.a += isomorphism.b; } return isomorphism.a;
+unsigned long chinese_remainder_theorem(unsigned long remainder, unsigned long **moduli, unsigned long modulis) { struct ordered_pair isomorphism = _isomorphism();
+    for (unsigned long i = 0; i < modulis; i++, isomorphism.a += isomorphism.b, isomorphism.b = remainder) { for (unsigned long j = 0; j < modulis; j++) if (*moduli[i] != *moduli[j]) isomorphism.b *= *moduli[j];
+	    unsigned long reduced_term = isomorphism.b % *moduli[i]; if (reduced_term != remainder) if (reduced_term != 1) isomorphism.b *= _divide(1, reduced_term, *moduli[i]); isomorphism.b *= remainder;
+    } return isomorphism.a;
 }
