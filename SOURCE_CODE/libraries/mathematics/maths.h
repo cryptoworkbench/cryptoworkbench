@@ -42,6 +42,8 @@ unsigned long F_combi(unsigned long a, unsigned long b);
 unsigned long GF_combi(unsigned long a, unsigned long b);
 /* ### OLD FUNCTIONS: */
 unsigned long GCD(unsigned long a, unsigned long b);
+int coprime(unsigned long a, unsigned long b);
+unsigned long UNRESTRICTED_GCD(unsigned long **array, unsigned long array_size);
 unsigned long totient(unsigned long a);
 // ^^^ Calculates the GCD using a procedural implementation of the euclidean algorithm: ^^ Order of inputs does not matter.
 
@@ -63,7 +65,6 @@ int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q);
 void open_urandom();
 void close_urandom();
 unsigned long urandom_number(unsigned long upper_bound);
-int coprime(unsigned long a, unsigned long b);
 
 /*
 void chinese_remainder_theorem_COPRIME_ERROR();
