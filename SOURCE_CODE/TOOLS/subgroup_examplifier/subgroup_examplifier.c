@@ -51,16 +51,16 @@ unsigned long *array_from_LL(struct LL_ **head_TRACER, unsigned long *required_a
     for (unsigned long i = 0; i < *required_array_size; i++) { struct LL_ *process = iter; ulong_array[i] = process->e; iter = process->next; free(process); } return ulong_array;
 }
 
-unsigned long *yield_subgroup(unsigned long index) {
+unsigned long manual_calculation_of_permutation_length(unsigned long index) { unsigned long ret_val = 0;
     struct VOID_ptr_ptr_PAIR permutation_LL_pair = initialize_CHANNEL_ptr_pair();
-    lookup_table->perm_length[index] = 0;
 
     unsigned long generated_element = *id_; do {
 	unsigned long SPECIFIC_INDEX = INDEX_within_UL_array(lookup_table->base_permutation, group_cardinality_, generated_element);
-	INSERT((struct LL_ ***) &permutation_LL_pair.iterator, SPECIFIC_INDEX); lookup_table->perm_length[index]++;
+	INSERT((struct LL_ ***) &permutation_LL_pair.iterator, SPECIFIC_INDEX); ret_val++;
 	generated_element = GF_combi(generated_element, lookup_table->base_permutation[index]);
     } while (generated_element != *id_);
-    return array_from_LL((struct LL_ **) permutation_LL_pair.head, &lookup_table->perm_length[index]);
+    lookup_table->permutation[index] = array_from_LL((struct LL_ **) permutation_LL_pair.head, &ret_val);
+    return ret_val;
 }
 
 unsigned long finish(unsigned long index) { unsigned long generator_count = 1;
@@ -79,13 +79,9 @@ unsigned long second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) { u
     lookup_table->permutation = (unsigned long **) malloc(sizeof(unsigned long *) * group_cardinality_); lookup_table->perm_length = (unsigned long *) malloc(sizeof(unsigned long) * group_cardinality_);
     lookup_table->perm_length[0] = 1; *(lookup_table->permutation[0] = malloc(sizeof(unsigned long *))) = 0; lookup_table->ASCII = (char **) malloc(sizeof(char *) * group_cardinality_); unsigned long index = 0;
     for (; index < group_cardinality_; index++) lookup_table->ASCII[index] = str_from_ul(lookup_table->base_permutation[index], cell_width);
-    // set the identity element
-
-    if (*id_) {
-	for (index = 1; index < group_cardinality_; index++) { lookup_table->permutation[index] = yield_subgroup(index); if (lookup_table->perm_length[index] == group_cardinality_) break; }
+    if (*id_) { for (index = 1; index < group_cardinality_; index++) if (group_cardinality_ == (lookup_table->perm_length[index] = manual_calculation_of_permutation_length(index))) break;
 	if (index == group_cardinality_) return 0; permutation_of_FIRST_GEN = lookup_table->permutation[index]; return finish(index + 1);
-    }
-    else { lookup_table->perm_length[1] = group_cardinality_; lookup_table->permutation[1] = lookup_table->base_permutation; return finish(2); }
+    } else { lookup_table->perm_length[1] = group_cardinality_; lookup_table->permutation[1] = lookup_table->base_permutation; return finish(2); }
 }
 
 int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigned long)); unparsed_arg_ = argv[1];
