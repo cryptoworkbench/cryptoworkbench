@@ -1,0 +1,11 @@
+../../libraries/functional/.string.o: ../../libraries/functional/string.h ../../libraries/functional/string.c
+	gcc -c ../../libraries/functional/string.c -o ../../libraries/functional/.string.o
+
+../../libraries/mathematics/.maths.o: ../../libraries/mathematics/maths.h ../../libraries/mathematics/maths.c
+	gcc -c ../../libraries/mathematics/maths.c -o ../../libraries/mathematics/.maths.o
+
+.chinese_remainder_theorem.o: chinese_remainder_theorem.c
+	gcc -c chinese_remainder_theorem.c -o .chinese_remainder_theorem.o
+
+chinese_remainder_theorem: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .chinese_remainder_theorem.o
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .chinese_remainder_theorem.o -o chinese_remainder_theorem
