@@ -56,11 +56,9 @@ int main(int argc, char **argv) { argvv = argv; mod_ = (unsigned long *) malloc(
 		iso.a); // < figure out UNICODE symbol for totient
 	char y_or_n; fscanf(stdin, " %c", &y_or_n); if (y_or_n == 'n' || y_or_n == 'N') exit(-1);
     } // detect when the permutation basis does not cover the group ^
-    fprintf(stdout, "Alice and Bob promise each other to use %s as modulus	(a.k.a. they deploy the group multiplicative group \u2115/%s\u2115*).\n", argv[1], argv[1]);
-    // fprintf(stdout, "They also both promise '%lu' as base for their modular exponentiation.\n", argv[1], mod_conditional_field_cap(generator) , argv[1]);
-
-    fprintf(stdout, "\nBob's private key: %lu", priv_bob);
-    fprintf(stdout, "\nAlice's private key: %lu\n", priv_alice);
+    fprintf(stdout, "Alice and Bob use \u2115/%s\u2115*. They take '%lu' as exponentiation basis. Diffie-Hellman key exchange follows:\n", argv[1], mod_conditional_field_cap(generator));
+    fprintf(stdout, "Bob's private key: %lu\n", priv_bob);
+    fprintf(stdout, "Alice's private key: %lu\n", priv_alice);
 
     unsigned long pub_bob; fprintf(stdout, "\nBob's public key:\n%lu^%lu \u2261 %lu	(mod %lu)\n", generator, priv_bob, (pub_bob = mod_exponentiate(generator, priv_bob)), *mod_);
     unsigned long pub_alice; fprintf(stdout, "\nAlice's public key:\n%lu^%lu \u2261 %lu	(mod %lu)\n", generator, priv_alice, (pub_alice = mod_exponentiate(generator, priv_alice)), *mod_);
@@ -70,10 +68,11 @@ int main(int argc, char **argv) { argvv = argv; mod_ = (unsigned long *) malloc(
     fprintf(stdout, "Alice receives Bob's public key '%lu'.\n", pub_bob);
 
     unsigned long SS_according_to_Bob; fprintf(stdout, "\nBob calculates '%lu ^ %lu \u2261 %lu'.\n", pub_alice, priv_bob, (SS_according_to_Bob = mod_exponentiate(pub_alice, priv_bob)));
-    unsigned long SS_according_to_Alice; fprintf(stdout, "Alice calculates '%lu ^ %lu \u2261 %lu'.\n", pub_bob, priv_alice, (SS_according_to_Alice = mod_exponentiate(pub_bob, priv_alice)));
+    unsigned long SS_according_to_Alice; fprintf(stdout, "Alice calculates '%lu ^ %lu \u2261 %lu'.\n", pub_bob, priv_alice, (SS_according_to_Alice = mod_exponentiate(pub_bob, priv_alice))); free(mod_);
 
-    free(mod_); if (SS_according_to_Bob != SS_according_to_Alice) error_message(error_selector(5), -5);
-    return 0; }
+    if (SS_according_to_Bob == SS_according_to_Alice)
+    { fprintf(stdout, "\nBoth derived %lu by combining the other's public key with their own private key: KEY EXCHANGE COMPLETE.\n", SS_according_to_Bob); return 0; }
+    else error_message(error_selector(5), -5); }
 /* Termination status legend:
  * -1: 'argv[1]' not parsable as number
  * -2: 'argv[2]' not parsable as number or number not coprime to 'argv[1]'
