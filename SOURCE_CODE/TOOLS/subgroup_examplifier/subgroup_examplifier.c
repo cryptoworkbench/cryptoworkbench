@@ -51,7 +51,7 @@ unsigned long *array_from_LL(struct LL_ **head_TRACER, unsigned long *required_a
     for (unsigned long i = 0; i < *required_array_size; i++) { struct LL_ *process = iter; ulong_array[i] = process->e; iter = process->next; free(process); } return ulong_array;
 }
 
-unsigned long manual_calculation_of_permutation_length(unsigned long index) { unsigned long ret_val = 0;
+unsigned long count_of_generated_elements(unsigned long index) { unsigned long ret_val = 0;
     struct VOID_ptr_ptr_PAIR permutation_LL_pair = initialize_CHANNEL_ptr_pair();
 
     unsigned long generated_element = *id_; do {
@@ -79,9 +79,9 @@ unsigned long second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) { u
     lookup_table->permutation = (unsigned long **) malloc(sizeof(unsigned long *) * group_cardinality_); lookup_table->perm_length = (unsigned long *) malloc(sizeof(unsigned long) * group_cardinality_);
     lookup_table->perm_length[0] = 1; *(lookup_table->permutation[0] = malloc(sizeof(unsigned long *))) = 0; lookup_table->ASCII = (char **) malloc(sizeof(char *) * group_cardinality_); unsigned long index = 0;
     for (; index < group_cardinality_; index++) lookup_table->ASCII[index] = str_from_ul(lookup_table->base_permutation[index], cell_width);
-    if (*id_) { for (index = 1; index < group_cardinality_; index++) if (group_cardinality_ == (lookup_table->perm_length[index] = manual_calculation_of_permutation_length(index))) break;
-	if (index == group_cardinality_) return 0; permutation_of_FIRST_GEN = lookup_table->permutation[index]; return finish(index + 1);
-    } else { lookup_table->perm_length[1] = group_cardinality_; lookup_table->permutation[1] = lookup_table->base_permutation; return finish(2); }
+    if (*id_) { for (index = 1; index < group_cardinality_; index++) if (group_cardinality_ == (lookup_table->perm_length[index] = count_of_generated_elements(index))) break;
+	if (index == group_cardinality_) return 0; permutation_of_FIRST_GEN = lookup_table->permutation[index]; return finish(index + 1); }
+    else { lookup_table->perm_length[1] = group_cardinality_; lookup_table->permutation[1] = lookup_table->base_permutation; return finish(2); }
 }
 
 int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigned long)); unparsed_arg_ = argv[1];
@@ -93,8 +93,7 @@ int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigne
 	    case 5: if (!str_represents_ul(argv[4], &offset->a)) fprintf(stderr, "Failed to interpret vertical table offset. Defaulting to not using any.\n");
 	    case 4: if (!str_represents_ul(argv[3], &offset->b)) fprintf(stderr, "Failed to interpret horizontal table offset. Defaulting to not using any.\n");
 	    default: if (!(*id_)) { offset->a %= *mod_; offset->b %= *mod_; } };
-    }
-    // process terminal arguments ^
+    } // process terminal arguments ^
 
     unsigned long generator_count = second_MAIN(group_elements_LL(argv));
     for (unsigned long index = 0; index < group_cardinality_; index++) print_permutation(index); if (group_cardinality_) fprintf(stdout, "\n");

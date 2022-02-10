@@ -108,6 +108,8 @@ unsigned long GCD(unsigned long a, unsigned long b) {
     return b;
 } /* ^ Calculates the GCD using a procedural implementation of the euclidean algorithm ^^^ */
 
+int coprime(unsigned long a, unsigned long b) { return (GCD(a, b) == 1) ? 1 : 0; }
+
 unsigned long totient(unsigned long a) {
     unsigned long totient = 0;
 

@@ -63,6 +63,7 @@ int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q);
 void open_urandom();
 void close_urandom();
 unsigned long urandom_number(unsigned long upper_bound);
+int coprime(unsigned long a, unsigned long b);
 
 /*
 void chinese_remainder_theorem_COPRIME_ERROR();

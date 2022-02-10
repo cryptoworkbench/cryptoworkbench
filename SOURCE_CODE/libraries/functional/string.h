@@ -10,7 +10,9 @@
 #define ASCII_BASE 48
 // ^^^ Necessary definitions that are needed in "string.c"
 
-char *arg;
+char **argvv; char *unparsed_arg; // enable easy access to these variables outside of 'main()' <
+
+void str_not_parsable_as_number();
 typedef void (*_error_selector) (); // this we will use for 'error_message'
 typedef const char *(*arg_error_selector) (int); arg_error_selector local_error_selector;
 
