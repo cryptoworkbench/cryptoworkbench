@@ -81,24 +81,39 @@ struct ordered_pair _factorize(unsigned long number, _factorization_method facto
 struct ordered_pair factorize(unsigned long number, _factorization_method alternate_choice)
 { return (alternate_choice) ? divisor_pair(number, alternate_choice(number)) : divisor_pair(number, _preferred_factorization_ENGINE(number)); }
 
+/*
 char *query_preferences_file() {
     FILE *file; if (!(file = fopen(_preferred_factorization_engine_file, "r")))
     { fprintf(stderr, "Couldn't open preferences file '%s'. " EXIT_STATUS_GOODBYE, _preferred_factorization_engine_file, -1); exit(-1); }
     char *ret_val = BUFFER_OF_SIZE(200); fscanf(file, "%s[^\n]", ret_val); fclose(file); return ret_val;
 } // check below for NEW
+*/
 
-/*  NEW:
-const char *permission_failure = "Permission failure within 'factorization_methods.c':";
-void factorization_engine_preference_ERROR() { fprintf(stderr, "\n%s failed to open '%s'\n\n", permission_failure, _preferred_factorization_engine_file); }
-char *query_preferences_file() {
-    FILE *file; if (!(file = fopen(_preferred_factorization_engine_file, "r"))) { // fprintf(stderr, "Failed to open preferences file '%s'.\n\n", _preferred_factorization_engine_file);
-	if (!(file = fopen(_preferred_factorization_engine_file, "w"))) error_message(factorization_engine_preference_ERROR, -1);
-	fprintf(stdout, "Please select from the list below which factorization method should be preferred:\n");
-	fprintf(stdout, "%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n", _A, __a, _B, __b, _C, __c, _D, __d, _E, __e, _F, __f, _G, __g, _H, __h);
-	fprintf(stdout, "\nPreferred factorization engine: "); char *preferred_factorization_engine = BUFFER_OF_SIZE(200); fscanf(stdin, " %s", preferred_factorization_engine);
+const char *permission_failure = "permission failure within 'factorization_methods.c':";
+void factorization_engine_preference_file_ERROR() { fprintf(stderr, "\n%s do not have sufficient rights to access '%s'.\n\n", permission_failure, _preferred_factorization_engine_file); }
+void factorization_engine_preference_specification_ERROR() { fprintf(stderr, "\nTried too many times to parse the unparsable.\nUser can run program again for more chances.\n\n"); }
+
+char *STDIN_factorization_engine() {
+    fprintf(stdout, "Please select from the list below:\n");
+    fprintf(stdout, "%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n\n", _A, __a, _B, __b, _C, __c, _D, __d, _E, __e, _F, __f, _G, __g, _H, __h);
+
+    char *preferred_factorization_engine = BUFFER_OF_SIZE(200); int extra_chances;
+    for (extra_chances = 0; extra_chances != 4; extra_chances++) { fprintf(stdout, "Preferred factorization engine");
+    if (extra_chances != 0) fprintf(stdout, " (didn't understand previous input)"); fprintf(stdout, ": ");
+    if (fscanf(stdin, " %s", preferred_factorization_engine) == 1 && str_represents_factorization_engine(preferred_factorization_engine)) break; }
+    if (extra_chances == 4) error_message(factorization_engine_preference_specification_ERROR, -2);
+    // Ask 5 times what factorization method should b preferred ^
+
+    printf("Selected: %s\n", preferred_factorization_engine);
+}
+
+char *query_preferences_file() { FILE *file;
+    if (!(file = fopen(_preferred_factorization_engine_file, "r"))) { fprintf(stderr, "Failed to open preferences file '%s'.\n\n", _preferred_factorization_engine_file);
+	if (!(file = fopen(_preferred_factorization_engine_file, "w"))) error_message(factorization_engine_preference_file_ERROR, -1);
+	char *str = STDIN_factorization_engine();
+	printf("%s\n", str);
     } char *BUFFER; fscanf(file, " %s[^\n]", BUFFER); fclose(file); return BUFFER;
 }
-*/
 
 void FACTORIZATION_METHOD_UNCHOSEN(char *arg) {
     fprintf(stderr, "Couldn't understand engine specification '%s', please specify one of the following:\n", arg);
@@ -109,7 +124,7 @@ void FACTORIZATION_METHOD_UNCHOSEN(char *arg) {
     fprintf(stderr, EXIT_STATUS_GOODBYE, -2); exit(-2);
 }
 
-int ONE_MORE_THAN_translation(char *arg) {
+int str_represents_factorization_engine(char *arg) {
     if (match_variadic(arg, 2, __a, _A)) return 1;
     else if (match_variadic(arg, 2, __b, _B)) return 2;
     else if (match_variadic(arg, 2, __c, _C)) return 3;
@@ -125,6 +140,6 @@ int interpret_ENGINE_from_external_file() {
     FILE *file;
     if (file = fopen(_preferred_factorization_engine_file, "r")) {
 	char *BUFFER = BUFFER_OF_SIZE(200);
-	fscanf(file, "%s[^\n]", BUFFER); fclose(file); int SELECTOR = ONE_MORE_THAN_translation(BUFFER); free(BUFFER); return SELECTOR;
+	fscanf(file, "%s[^\n]", BUFFER); fclose(file); int SELECTOR = str_represents_factorization_engine(BUFFER); free(BUFFER); return SELECTOR;
     } fprintf(stderr, "Couldn't open preferences file '%s'. " EXIT_STATUS_GOODBYE, -1, _preferred_factorization_engine_file); exit(-1);
 }

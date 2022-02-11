@@ -12,7 +12,7 @@ int main(int argc, char **argv) { const char *specific_file = _REPORT_preferred_
     char *BUFFER = BUFFER_OF_SIZE(200); fscanf(file, "%s[^\n]", BUFFER); fclose(file);
     // ^ copy first 200 bytes from file into BUFFER
 
-    int SELECTOR = ONE_MORE_THAN_translation(BUFFER); if (SELECTOR) SET_preferred_factorization_ENGINE(SELECTOR - 1); else FACTORIZATION_METHOD_UNCHOSEN(BUFFER); free(BUFFER);
+    int SELECTOR = str_represents_factorization_engine(BUFFER); if (SELECTOR) SET_preferred_factorization_ENGINE(SELECTOR - 1); else FACTORIZATION_METHOD_UNCHOSEN(BUFFER); free(BUFFER);
     // ^ Now engine should be set
 
     unsigned long p; if (2 > argc || !str_represents_ul(argv[1], &p)) { fprintf(stderr, "Failed to interpret %s as 'p'.\n", argv[1]); exit(-2); }

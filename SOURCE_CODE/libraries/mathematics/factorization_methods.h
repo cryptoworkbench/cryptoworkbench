@@ -37,5 +37,5 @@ char *query_preferences_file();
 _factorization_method factorization_method(int SELECTOR); // 'SET_preferred_factorization_ENGINE()'
 void SET_preferred_factorization_ENGINE(int SELECTOR);
 void FACTORIZATION_METHOD_UNCHOSEN(char *arg);
-int ONE_MORE_THAN_translation(char *arg);
+int str_represents_factorization_engine(char *arg);
 int interpret_ENGINE_from_external_file();
