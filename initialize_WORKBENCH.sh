@@ -84,4 +84,5 @@ echo "########### ASSEMBLY LINE HALTED !
 ########### The setup completed ! (presumably)
 #############################################################################
 ####### 'cd WORKBENCH/' to enter your VIRTUAL MATHEMATICS LABORATORY. #######"
+# ls WORKBENCH/ | wc -l FOR SOME REASON DOESN'T WORK
 # ^-- Bash script done

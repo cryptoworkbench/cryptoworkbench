@@ -31,7 +31,7 @@ unsigned long evens_factorizer(unsigned long even_composite); // the most effici
 unsigned long fermat_factorization(unsigned long composite);
 struct ordered_pair factorize(unsigned long number, _factorization_method factorization_ENGINE_to_use); struct ordered_pair _factorize(unsigned long number, _factorization_method factorization_ENGINE_to_use);
 
-char *read_preferences_file();
+char *query_preferences_file();
 // new ^
 
 _factorization_method factorization_method(int SELECTOR); // 'SET_preferred_factorization_ENGINE()'

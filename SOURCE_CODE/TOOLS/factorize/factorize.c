@@ -37,7 +37,7 @@ int main(int argc, char **argv) { unsigned long composite; unparsed_arg = argv[1
     if (!str_represents_ul(unparsed_arg, &composite)) error_message(error_selector(1), -1);
     // take in composite ^
     
-    char *ptr = argv[2]; if (!ptr) ptr = read_preferences_file();
+    char *ptr = argv[2]; if (!ptr) ptr = query_preferences_file();
     int SELECTOR = ONE_MORE_THAN_translation(ptr);
     if (SELECTOR) {
 	SET_preferred_factorization_ENGINE(SELECTOR - 1); // < a.k.a. interpretation from 'ptr' successful

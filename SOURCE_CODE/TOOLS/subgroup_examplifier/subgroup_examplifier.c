@@ -51,12 +51,11 @@ unsigned long *array_from_LL(struct LL_ **head_TRACER, unsigned long *required_a
     for (unsigned long i = 0; i < *required_array_size; i++) { struct LL_ *process = iter; ulong_array[i] = process->e; iter = process->next; free(process); } return ulong_array;
 }
 
-unsigned long count_of_generated_elements(unsigned long index) { unsigned long ret_val = 0;
+unsigned long count_of_GENERATED_elements(unsigned long index) { unsigned long ret_val = 0;
     struct VOID_ptr_ptr_PAIR permutation_LL_pair = initialize_CHANNEL_ptr_pair();
 
     unsigned long generated_element = *id_; do {
-	unsigned long SPECIFIC_INDEX = INDEX_within_UL_array(lookup_table->base_permutation, group_cardinality_, generated_element);
-	INSERT((struct LL_ ***) &permutation_LL_pair.iterator, SPECIFIC_INDEX); ret_val++;
+	INSERT((struct LL_ ***) &permutation_LL_pair.iterator, INDEX_within_UL_array(lookup_table->base_permutation, group_cardinality_, generated_element)); ret_val++;
 	generated_element = GF_combi(generated_element, lookup_table->base_permutation[index]);
     } while (generated_element != *id_);
     lookup_table->permutation[index] = array_from_LL((struct LL_ **) permutation_LL_pair.head, &ret_val);
@@ -79,7 +78,7 @@ unsigned long second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) { u
     lookup_table->permutation = (unsigned long **) malloc(sizeof(unsigned long *) * group_cardinality_); lookup_table->perm_length = (unsigned long *) malloc(sizeof(unsigned long) * group_cardinality_);
     lookup_table->perm_length[0] = 1; *(lookup_table->permutation[0] = malloc(sizeof(unsigned long *))) = 0; lookup_table->ASCII = (char **) malloc(sizeof(char *) * group_cardinality_); unsigned long index;
     for (index = 0; index < group_cardinality_; index++) lookup_table->ASCII[index] = str_from_ul(lookup_table->base_permutation[index], cell_width);
-    if (*id_) { for (index = 1; index < group_cardinality_; index++) if ((lookup_table->perm_length[index] = count_of_generated_elements(index)) == group_cardinality_) break;
+    if (*id_) { for (index = 1; index < group_cardinality_; index++) if ((lookup_table->perm_length[index] = count_of_GENERATED_elements(index)) == group_cardinality_) break;
 	if (index == group_cardinality_) return 0; permutation_of_FIRST_GEN = lookup_table->permutation[index]; return finish(index + 1); }
     lookup_table->perm_length[1] = group_cardinality_; lookup_table->permutation[1] = lookup_table->base_permutation; return finish(2);
 }
