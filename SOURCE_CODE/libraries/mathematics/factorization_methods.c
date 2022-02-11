@@ -4,7 +4,7 @@
 #include "maths.h" // needed for 'DOWN_ROUNDED_second_root()'
 #include "universal_group_library.h" // needed for 'BUFFER_OF_SIZE()'
 
-const char *_preferred_factorization_engine_file = "shared_preferred_factorization_engine";
+const char *_preferred_factorization_engine_file = "global_preference.factorization_engine";
 const char *_REPORT_preferred_factorization_engine_file() { return _preferred_factorization_engine_file; }
 const char *__a = "efficient_trial_division"; const char *__b = "less_efficient_trial_division"; const char *__c = "trial_division"; const char *__d = "TABLE_AIDED_efficient_trial_division";
 const char *__e = "TABLE_AIDED_less_efficient_trial_division"; const char *__f = "TABLE_AIDED_trial_division"; const char *__g = "shor_factorization"; const char *__h = "fermats_factorization_method";
@@ -83,7 +83,7 @@ struct ordered_pair factorize(unsigned long number, _factorization_method altern
 
 char *read_preferences_file() {
     FILE *file; if (!(file = fopen(_preferred_factorization_engine_file, "r")))
-    { fprintf(stderr, "Couldn't open pre*ferences file '%s'. " EXIT_STATUS_GOODBYE, _preferred_factorization_engine_file, -1); exit(-1); }
+    { fprintf(stderr, "Couldn't open preferences file '%s'. " EXIT_STATUS_GOODBYE, _preferred_factorization_engine_file, -1); exit(-1); }
     char *ret_val = BUFFER_OF_SIZE(200); fscanf(file, "%s[^\n]", ret_val); fclose(file); return ret_val;
 }
 
