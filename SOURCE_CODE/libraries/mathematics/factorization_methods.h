@@ -30,7 +30,9 @@ unsigned long odds_factorizer_WRAPPER(unsigned long composite, _factorization_me
 unsigned long evens_factorizer(unsigned long even_composite); // the most efficient factorization algorithm known for powers of two
 unsigned long fermat_factorization(unsigned long composite);
 struct ordered_pair factorize(unsigned long number, _factorization_method factorization_ENGINE_to_use); struct ordered_pair _factorize(unsigned long number, _factorization_method factorization_ENGINE_to_use);
-// ^ And a lot of functions
+
+char *read_preferences_file();
+// new ^
 
 _factorization_method factorization_method(int SELECTOR); // 'SET_preferred_factorization_ENGINE()'
 void SET_preferred_factorization_ENGINE(int SELECTOR);

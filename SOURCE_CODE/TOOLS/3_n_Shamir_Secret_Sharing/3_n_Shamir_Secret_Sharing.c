@@ -17,7 +17,7 @@
 #include <stdlib.h> // 'exit()'
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h"
-#include "../../libraries/mathematics/SSSS.h"
+#include "../../libraries/mathematics/shamir_secret_sharing.h"
 #define K 3
 
 char *one = "%s is not a suitable value for the field modulus!\n\nExiting '-%lu'.\n";

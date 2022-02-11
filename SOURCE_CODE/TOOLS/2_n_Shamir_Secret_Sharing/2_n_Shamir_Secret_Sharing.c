@@ -35,7 +35,7 @@
 #include <unistd.h> // 'execvp()'
 #include "../../libraries/functional/string.h" // 'ignored_arguments()'
 #include "../../libraries/mathematics/maths.h" // 'mod_inverse()'
-#include "../../libraries/mathematics/SSSS.h"
+#include "../../libraries/mathematics/shamir_secret_sharing.h"
 #define K 2 // degree of polynomial that is resolved in other to retrieve secret encoded as contant term
 
 unsigned long mod; int main(int argc, char **argv) { mod_ = &mod;

@@ -1,4 +1,4 @@
-#include "SSSS.h"
+#include "shamir_secret_sharing.h"
 #include "maths.h"
 #include <stdlib.h>
 #include <stdio.h>

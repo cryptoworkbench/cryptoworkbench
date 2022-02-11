@@ -30,14 +30,20 @@ _factorization_method initialize(unsigned long composite) {
     return _preferred_factorization_ENGINE;
 }
 
-int main(int argc, char **argv) { unsigned long composite;
-    if (!str_represents_ul(argv[1], &composite)) { fprintf(stderr, COMPOSITE_NOT_INTERPRETABLE EXIT_STATUS_GOODBYE, argv[1], -1); exit(-1); } char *ptr = argv[2];
-    if (!ptr) { FILE *file; const char *preferred_factorization_engine_file = _REPORT_preferred_factorization_engine_file();
-	if (!(file = fopen(preferred_factorization_engine_file, "r"))) { fprintf(stderr, "Couldn't open preferences file '%s'. " EXIT_STATUS_GOODBYE, preferred_factorization_engine_file, -1); exit(-1); }
-	ptr = BUFFER_OF_SIZE(200); fscanf(file, "%s[^\n]", ptr); fclose(file);
-    }
+_error_selector error_selector(int SELECTOR) { switch (SELECTOR) { case 1: fprintf(stderr, "Please provide as first argument the composite to factorize.\n\n"); return str_not_parsable_as_number; }; }
+// 'error_selector' function itself contains the only error message along with library function str_not_parsable_as_number() ^
+
+int main(int argc, char **argv) { unsigned long composite; unparsed_arg = argv[1];
+    if (!str_represents_ul(unparsed_arg, &composite)) error_message(error_selector(1), -1);
+    // take in composite ^
+    
+    char *ptr = argv[2];
+    if (!ptr) ptr = read_preferences_file();
     int SELECTOR = translate_SUBTRACT_ONE(ptr);
-    if (SELECTOR) SET_preferred_factorization_ENGINE(SELECTOR - 1); // < a.k.a. interpretation from 'ptr' successful
+    if (SELECTOR) {
+	SET_preferred_factorization_ENGINE(SELECTOR - 1); // < a.k.a. interpretation from 'ptr' successful
+	// printf("ello\n");
+    }
     else FACTORIZATION_METHOD_UNCHOSEN(ptr); _factorization_method preferred_factorization_method = initialize(composite);
     if (!(argc < 3)) fprintf(stdout, "	(engine specified by terminal argument)"); fprintf(stdout, "\n\n");
 

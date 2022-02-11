@@ -81,6 +81,26 @@ struct ordered_pair _factorize(unsigned long number, _factorization_method facto
 struct ordered_pair factorize(unsigned long number, _factorization_method alternate_choice)
 { return (alternate_choice) ? divisor_pair(number, alternate_choice(number)) : divisor_pair(number, _preferred_factorization_ENGINE(number)); }
 
+char *read_preferences_file() {
+    FILE *file; if (!(file = fopen(_preferred_factorization_engine_file, "r")))
+    { fprintf(stderr, "Couldn't open pre*ferences file '%s'. " EXIT_STATUS_GOODBYE, _preferred_factorization_engine_file, -1); exit(-1); }
+    char *ret_val = BUFFER_OF_SIZE(200); fscanf(file, "%s[^\n]", ret_val); fclose(file); return ret_val;
+}
+
+/* new version (in development)
+void read_preferences_file(char *ptr) {
+	FILE *file; if (!(file = fopen(_preferred_factorization_engine_file, "r"))) {
+	    fprintf(stderr, "Failed to open preferences file '%s'.\n\n", _preferred_factorization_engine_file);
+	    fprintf(stdout, "Please select from the list below which factorization should be preferred:\n");
+	    fprintf(stdout, "%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n", _A, __a, _B, __b, _C, __c, _D, __d, _E, __e, _F, __f, _G, __g, _H, __h);
+	    fprintf(stdout, "\nPreferred factorization engine: ");
+	    char *preferred_factorization_engine = BUFFER_OF_SIZE(200); fscanf(stdin, " %s", preferred_factorization_engine);
+	    // Works ^
+
+	    fscanf(file, "%s[^\n]", BUFFER); fclose(file); int SELECTOR = translate_SUBTRACT_ONE(BUFFER); free(BUFFER); return SELECTOR;
+	}
+}
+*/
 
 void FACTORIZATION_METHOD_UNCHOSEN(char *arg) {
     fprintf(stderr, "Couldn't understand engine specification '%s', please specify one of the following:\n", arg);
