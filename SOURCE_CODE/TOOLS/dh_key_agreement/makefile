@@ -10,8 +10,8 @@
 ../../libraries/functional/.triple_ref_pointers.o: ../../libraries/functional/triple_ref_pointers.h ../../libraries/functional/triple_ref_pointers.c
 	gcc -c ../../libraries/functional/triple_ref_pointers.c -o ../../libraries/functional/.triple_ref_pointers.o
 
-.diffie_hellman_key_agreement_protocol.o: diffie_hellman_key_agreement_protocol.c
-	gcc -c diffie_hellman_key_agreement_protocol.c -o .diffie_hellman_key_agreement_protocol.o
+.dh_key_agreement.o: dh_key_agreement.c
+	gcc -c dh_key_agreement.c -o .dh_key_agreement.o
 
-diffie_hellman_key_agreement_protocol: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.universal_group_library.o .diffie_hellman_key_agreement_protocol.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.universal_group_library.o .diffie_hellman_key_agreement_protocol.o -o ../../../WORKBENCH/diffie_hellman_key_agreement_protocol
+dh_key_agreement: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.universal_group_library.o .dh_key_agreement.o
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.universal_group_library.o .dh_key_agreement.o -o ../../../WORKBENCH/dh_key_agreement

@@ -23,7 +23,7 @@ cd ../group_operation && make group_operation && echo "#######===> The following
 "
 cd ../system_of_congruences && make system_of_congruences && echo "#######===> The following tool has been assemblied/linked: system_of_congruences
 "
-cd ../diffie_hellman_key_agreement_protocol && make diffie_hellman_key_agreement_protocol && echo "#######===> The following tool has been assemblied/linked: diffie_hellman_key_agreement_protocol
+cd ../dh_key_agreement && make dh_key_agreement && echo "#######===> The following tool has been assemblied/linked: dh_key_agreement
 "
 echo "#######===> THE FOLLOWING BASIC TOOLS HAVE BEEN ASSEMBLED/LINKED: -->                         <===#######
 ~ equivalence_class
@@ -36,7 +36,7 @@ echo "#######===> THE FOLLOWING BASIC TOOLS HAVE BEEN ASSEMBLED/LINKED: -->     
 ~ least_common_multiple
 ~ group_operation
 ~ system_of_congruences
-~ diffie_hellman_key_agreement_protocol
+~ dh_key_agreement
 "
 cd ../plot_polynomial && make plot_polynomial && echo "#######===> The following tool has been assemblied/linked: plot_polynomial
 "
