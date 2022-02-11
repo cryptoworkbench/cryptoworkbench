@@ -38,7 +38,7 @@ int main(int argc, char **argv) { unsigned long composite; unparsed_arg = argv[1
     // take in composite ^
     
     char *ptr = argv[2]; if (!ptr) ptr = read_preferences_file();
-    int SELECTOR = translate_SUBTRACT_ONE(ptr);
+    int SELECTOR = ONE_MORE_THAN_translation(ptr);
     if (SELECTOR) {
 	SET_preferred_factorization_ENGINE(SELECTOR - 1); // < a.k.a. interpretation from 'ptr' successful
 	// printf("ello\n");
