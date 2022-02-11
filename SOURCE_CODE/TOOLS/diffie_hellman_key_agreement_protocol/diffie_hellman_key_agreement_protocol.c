@@ -48,33 +48,37 @@ int main(int argc, char **argv) { argvv = argv; DH_parameters = (STRUCT_DH_param
 
     group_cardinality_ = totient(*mod_); struct ordered_pair iso = _isomorphism(); do { iso.b = mod_multiply(iso.b, DH_parameters->b); iso.a++; if (iso.b == MULTIPLICATIVE_IDENTITY) break; } while (1);
     if (iso.a != group_cardinality_) {
-	fprintf(stderr, "WARNING: %s only generates 1/%lu of \u2115/%s\u2115*  (tot(%s) / %lu = %lu / %lu = %lu), continue? ('n' of 'N' for exit): ",
+	fprintf(stderr, "WARNING: %s only covers %.2f %% (1/%lu) of \u2115/%s\u2115*  (|\u2115/%s\u2115*| / %lu  =  \u03C6(%s) / %lu  =  %lu / %lu  = %lu), continue? ('n' of 'N' for exit): ",
 		argv[2],
+		((float) 1 / (group_cardinality_ / iso.a)) * 100,
 		group_cardinality_ / iso.a,
 		argv[1],
+		argv[1],
+		iso.a,
 		argv[1],
 		group_cardinality_ / iso.a,
 		group_cardinality_,
 		group_cardinality_ / iso.a,
-		iso.a); // < figure out UNICODE symbol for totient, also make it display the percentage instead of the fraction 'group_cardinality_ / iso.a'
+		iso.a);
 	char y_or_n; fscanf(stdin, " %c", &y_or_n); if (y_or_n == 'n' || y_or_n == 'N') exit(-1);
     } // detect when the permutation basis does not cover the group ^
     fprintf(stdout, "Alice and Bob use %lu within \u2115/%s\u2115*.\n\nDiffie-Hellman key exchange example:\n", mod_conditional_field_cap(DH_parameters->b), argv[1]);
     fprintf(stdout, "Bob's private key: %lu\n", priv_bob);
     fprintf(stdout, "Alice's private key: %lu\n", priv_alice);
 
-    unsigned long pub_bob; fprintf(stdout, "\nBob's public key:\n%lu^%lu \u2261 %lu	(mod %lu)\n", DH_parameters->b, priv_bob, (pub_bob = DH_public_key(DH_parameters, priv_bob)), *mod_);
-    unsigned long pub_alice; fprintf(stdout, "\nAlice's public key:\n%lu^%lu \u2261 %lu	(mod %lu)\n", DH_parameters->b, priv_alice, (pub_alice = DH_public_key(DH_parameters, priv_alice)), *mod_);
+    unsigned long pub_bob; fprintf(stdout, "\nBob's public key:\n%lu^%lu \u2261 %lu (mod %lu)\n", DH_parameters->b, priv_bob, (pub_bob = DH_public_key(DH_parameters, priv_bob)), *mod_);
+
+    unsigned long pub_alice; fprintf(stdout, "\nAlice's public key:\n%lu^%lu \u2261 %lu (mod %lu)\n", DH_parameters->b, priv_alice, (pub_alice = DH_public_key(DH_parameters, priv_alice)), *mod_);
     // calculate public key's
 
     fprintf(stdout, "\nBob receives Alice's public key '%lu'.\n", pub_alice);
     fprintf(stdout, "Alice receives Bob's public key '%lu'.\n", pub_bob);
 
-    unsigned long SS_according_to_Bob; fprintf(stdout, "\nBob calculates '%lu ^ %lu \u2261 %lu'.\n", pub_alice, priv_bob, (SS_according_to_Bob = mod_exponentiate(pub_alice, priv_bob)));
-    unsigned long SS_according_to_Alice; fprintf(stdout, "Alice calculates '%lu ^ %lu \u2261 %lu'.\n", pub_bob, priv_alice, (SS_according_to_Alice = mod_exponentiate(pub_bob, priv_alice))); free(mod_);
+    unsigned long SS_according_to_Bob;   fprintf(stdout, "\nBob calculates '%lu^%lu \u2261 %lu (mod %lu)'.\n", pub_alice, priv_bob, (SS_according_to_Bob = mod_exponentiate(pub_alice, priv_bob)), *mod_);
+    unsigned long SS_according_to_Alice; fprintf(stdout, "Alice calculates '%lu^%lu \u2261 %lu (mod %lu)'.\n", pub_bob, priv_alice, (SS_according_to_Alice = mod_exponentiate(pub_bob, priv_alice)), *mod_); free(mod_);
 
     if (SS_according_to_Bob == SS_according_to_Alice)
-    { fprintf(stdout, "\nBoth derived %lu by combining the other's public key with their own private key: KEY EXCHANGE COMPLETE.\n", SS_according_to_Bob); return 0; }
+    { fprintf(stdout, "\nBoth derived %lu by raising the other's public key to their own private key: KEY EXCHANGE COMPLETE.\n", SS_according_to_Bob); return 0; }
     else error_message(error_selector(5), -5); }
 /* Termination status legend:
  * -1: 'argv[1]' not parsable as number
