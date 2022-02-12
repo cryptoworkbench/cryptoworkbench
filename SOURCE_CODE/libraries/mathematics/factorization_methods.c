@@ -69,10 +69,19 @@ unsigned long fermat_factorization(unsigned long composite) { return odds_factor
 
 _factorization_method factorization_method(int SELECTOR) {
     switch (SELECTOR) {
-	case 0: return efficient_trial_division; case 1: return LESS_efficient_trial_division; case 2: return LEAST_efficient_trial_division;
-	case 3: return efficient_trial_division_TABLE_AIDED; case 4: return LESS_efficient_trial_division_TABLE_AIDED; case 5: return LEAST_efficient_trial_division_TABLE_AIDED;
-	case 6: return shor_factorization; case 7: return fermat_factorization; default: return NULL; };
-} void SET_preferred_factorization_ENGINE(int SELECTOR) { _preferred_factorization_ENGINE = factorization_method(SELECTOR); }
+	case 0: return NULL;
+	case 1: return efficient_trial_division;
+	case 2: return LESS_efficient_trial_division;
+	case 3: return LEAST_efficient_trial_division;
+	case 4: return efficient_trial_division_TABLE_AIDED;
+	case 5: return LESS_efficient_trial_division_TABLE_AIDED;
+	case 6: return LEAST_efficient_trial_division_TABLE_AIDED;
+	case 7: return shor_factorization;
+	case 8: return fermat_factorization;
+    };
+}
+
+// void SET_preferred_factorization_ENGINE(int SELECTOR) { _preferred_factorization_ENGINE = factorization_method(SELECTOR); }
 
 struct ordered_pair _factorize(unsigned long number, _factorization_method factorization_ENGINE_to_use)
 { struct ordered_pair factor = divisor_pair(number, factorization_ENGINE_to_use(number)); if (factor.b < factor.a) { ul temp = factor.b; factor.b = factor.a; factor.a = temp; } return factor; }
@@ -96,24 +105,28 @@ void factorization_engine_preference_specification_ERROR() { fprintf(stderr, "\n
 char *STDIN_factorization_engine() {
     fprintf(stdout, "Please select from the list below:\n");
     fprintf(stdout, "%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n\n", _A, __a, _B, __b, _C, __c, _D, __d, _E, __e, _F, __f, _G, __g, _H, __h);
+    // list available choices ^ 
 
     char *preferred_factorization_engine = BUFFER_OF_SIZE(200); int extra_chances;
-    for (extra_chances = 0; extra_chances != 4; extra_chances++) { fprintf(stdout, "Preferred factorization engine");
-    if (extra_chances != 0) fprintf(stdout, " (didn't understand previous input)"); fprintf(stdout, ": ");
-    if (fscanf(stdin, " %s", preferred_factorization_engine) == 1 && str_represents_factorization_engine(preferred_factorization_engine)) break; }
+    for (extra_chances = 0; extra_chances != 4; extra_chances++) { fprintf(stdout, "Choice of factorization engine");
+    if (extra_chances != 0) fprintf(stdout, " (didn't understand previous choice)"); fprintf(stdout, ": ");
+    if (fscanf(stdin, " %s", preferred_factorization_engine) == 1 && SELECTOR_from_str_representing_factorization_method(preferred_factorization_engine)) break; }
     if (extra_chances == 4) error_message(factorization_engine_preference_specification_ERROR, -2);
-    // Ask 5 times what factorization method should b preferred ^
+    // Ask 5 times what factorization method should be preferred ^
 
-    printf("Selected: %s\n", preferred_factorization_engine);
+    return preferred_factorization_engine;
 }
+
+void write_to_preferences_file(char *str, FILE *file) { fprintf(file, "%s\n", str); fclose(file); }
 
 char *query_preferences_file() { FILE *file;
     if (!(file = fopen(_preferred_factorization_engine_file, "r"))) { fprintf(stderr, "Failed to open preferences file '%s'.\n\n", _preferred_factorization_engine_file);
 	if (!(file = fopen(_preferred_factorization_engine_file, "w"))) error_message(factorization_engine_preference_file_ERROR, -1);
-	char *str = STDIN_factorization_engine();
-	printf("%s\n", str);
-    } char *BUFFER; fscanf(file, " %s[^\n]", BUFFER); fclose(file); return BUFFER;
-}
+	char *str = STDIN_factorization_engine(); write_to_preferences_file(str, file); free(str);
+	fprintf(stdout, "Saved preference.\n\n"); return query_preferences_file();
+    } char *BUFFER = BUFFER_OF_SIZE(200); BUFFER[0] = 0; fscanf(file, " %s[^\n]", BUFFER); fclose(file);
+    return BUFFER;
+} // recursive function which works fine and runs at most twice ^
 
 void FACTORIZATION_METHOD_UNCHOSEN(char *arg) {
     fprintf(stderr, "Couldn't understand engine specification '%s', please specify one of the following:\n", arg);
@@ -124,7 +137,7 @@ void FACTORIZATION_METHOD_UNCHOSEN(char *arg) {
     fprintf(stderr, EXIT_STATUS_GOODBYE, -2); exit(-2);
 }
 
-int str_represents_factorization_engine(char *arg) {
+int SELECTOR_from_str_representing_factorization_method(char *arg) {
     if (match_variadic(arg, 2, __a, _A)) return 1;
     else if (match_variadic(arg, 2, __b, _B)) return 2;
     else if (match_variadic(arg, 2, __c, _C)) return 3;
@@ -134,12 +147,4 @@ int str_represents_factorization_engine(char *arg) {
     else if (match_variadic(arg, 2, __g, _G)) return 7;
     else if (match_variadic(arg, 2, __h, _H)) return 8;
     return 0;
-}
-
-int interpret_ENGINE_from_external_file() {
-    FILE *file;
-    if (file = fopen(_preferred_factorization_engine_file, "r")) {
-	char *BUFFER = BUFFER_OF_SIZE(200);
-	fscanf(file, "%s[^\n]", BUFFER); fclose(file); int SELECTOR = str_represents_factorization_engine(BUFFER); free(BUFFER); return SELECTOR;
-    } fprintf(stderr, "Couldn't open preferences file '%s'. " EXIT_STATUS_GOODBYE, -1, _preferred_factorization_engine_file); exit(-1);
 }

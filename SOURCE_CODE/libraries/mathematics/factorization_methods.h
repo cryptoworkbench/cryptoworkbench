@@ -31,11 +31,12 @@ unsigned long evens_factorizer(unsigned long even_composite); // the most effici
 unsigned long fermat_factorization(unsigned long composite);
 struct ordered_pair factorize(unsigned long number, _factorization_method factorization_ENGINE_to_use); struct ordered_pair _factorize(unsigned long number, _factorization_method factorization_ENGINE_to_use);
 
+char *STDIN_factorization_engine();
+void write_to_preferences_file(char *str, FILE *file);
 char *query_preferences_file();
 // new ^
 
 _factorization_method factorization_method(int SELECTOR); // 'SET_preferred_factorization_ENGINE()'
 void SET_preferred_factorization_ENGINE(int SELECTOR);
 void FACTORIZATION_METHOD_UNCHOSEN(char *arg);
-int str_represents_factorization_engine(char *arg);
-int interpret_ENGINE_from_external_file();
+int SELECTOR_from_str_representing_factorization_method(char *arg);

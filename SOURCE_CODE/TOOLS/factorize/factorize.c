@@ -15,7 +15,8 @@
 
 void domain_display(unsigned long a, unsigned long b) { fprintf(stdout, " and checking for all 'x <= %lu' if x divides %lu.", a, b); }
 
-_factorization_method initialize(unsigned long composite) {
+_factorization_method echo_settings(unsigned long composite) {
+    if (_preferred_factorization_ENGINE == NULL) printf("arrived in echo settings.\n");
     if (_preferred_factorization_ENGINE == LEAST_efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(composite, 3), composite); }
     else if (_preferred_factorization_ENGINE == LESS_efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(composite, 2), composite); }
     else if (_preferred_factorization_ENGINE == efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(composite, 1), composite); }
@@ -31,20 +32,20 @@ _factorization_method initialize(unsigned long composite) {
 }
 
 _error_selector error_selector(int SELECTOR) { switch (SELECTOR) { case 1: fprintf(stderr, "Please provide as first argument the composite to factorize.\n\n"); return str_not_parsable_as_number; }; }
-// 'error_selector' function itself contains the only error message along with library function str_not_parsable_as_number() ^
+// the only error function in this program is a combination of a single fprintf() along with str_not_parsable_as_number() ^
 
 int main(int argc, char **argv) { unsigned long composite; unparsed_arg = argv[1];
     if (!str_represents_ul(unparsed_arg, &composite)) error_message(error_selector(1), -1);
     // take in composite ^
-    
+
     char *ptr = argv[2]; if (!ptr) ptr = query_preferences_file();
-    int SELECTOR = str_represents_factorization_engine(ptr);
-    if (SELECTOR) {
-	SET_preferred_factorization_ENGINE(SELECTOR - 1); // < a.k.a. interpretation from 'ptr' successful
-	// printf("ello\n");
-    }
-    else FACTORIZATION_METHOD_UNCHOSEN(ptr); _factorization_method preferred_factorization_method = initialize(composite);
-    if (!(argc < 3)) fprintf(stdout, "	(engine specified by terminal argument)"); fprintf(stdout, "\n\n");
+    if (!(_preferred_factorization_ENGINE = factorization_method(SELECTOR_from_str_representing_factorization_method(ptr)))) {
+	fprintf(stderr, "Failed to interpret '%s'", ptr); if (!argv[2]) fprintf(stderr, " from preferences file"); fprintf(stderr, ".\n\n");
+	char *UPDATE_VALUE; _preferred_factorization_ENGINE = factorization_method(SELECTOR_from_str_representing_factorization_method(UPDATE_VALUE = STDIN_factorization_engine(ptr)));
+	if (!argv[2]) { write_to_preferences_file(UPDATE_VALUE, fopen(_REPORT_preferred_factorization_engine_file(), "w")); fprintf(stdout, "Updated preferences file.\n\n"); }
+    } // if both the terminal argument and the preferences file were unintelligeble, then force take factorization method from STDIN
+
+    echo_settings(composite); if (argv[2]) fprintf(stdout, "	(manually specified)"); fprintf(stdout, "\n\n");
 
     struct ordered_pair factor_a_and_b = factorize(composite, NULL);
     fprintf(stdout, "%lu = %lu * %lu\n", composite, factor_a_and_b.a, factor_a_and_b.b);
