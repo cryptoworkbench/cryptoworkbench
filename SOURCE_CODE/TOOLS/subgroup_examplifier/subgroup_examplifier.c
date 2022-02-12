@@ -35,7 +35,7 @@ void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
 void print_permutation(unsigned long index) {
     fprintf(stdout, "<%s> = {", lookup_table->ASCII[index]);
     unsigned long i = 0; do {
-	fprintf(stdout, "%s", lookup_table->ASCII[lookup_table->permutation[index][i]]); i++;
+	fprintf(stdout, "%s", lookup_table->ASCII[lookup_table->permutation[index][(offset->a + i) % lookup_table->perm_length[index]]]); i++;
 	if (i == lookup_table->perm_length[index]) break;
 	else fprintf(stdout, ", ");
     } while (1); fprintf(stdout, "}\n");
@@ -73,7 +73,7 @@ unsigned long finish(unsigned long index) { unsigned long generator_count = 1;
     } return generator_count;
 }
 
-unsigned long second_MAIN(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) { unsigned long cell_width = char_in_val(((struct LL_ *) element_CHANNEL_PTR_pair.iterator)->e);
+unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) { unsigned long cell_width = char_in_val(((struct LL_ *) element_CHANNEL_PTR_pair.iterator)->e);
     lookup_table = (struct crux *) malloc(sizeof(struct crux)); permutation_of_FIRST_GEN = lookup_table->base_permutation = array_from_LL((struct LL_ **) element_CHANNEL_PTR_pair.head, &group_cardinality_);
     lookup_table->permutation = (unsigned long **) malloc(sizeof(unsigned long *) * group_cardinality_); lookup_table->perm_length = (unsigned long *) malloc(sizeof(unsigned long) * group_cardinality_);
     lookup_table->perm_length[0] = 1; *(lookup_table->permutation[0] = malloc(sizeof(unsigned long *))) = 0; lookup_table->ASCII = (char **) malloc(sizeof(char *) * group_cardinality_); unsigned long index;
@@ -89,16 +89,17 @@ int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigne
     if (!(*mod_) || !(*mod_ - 1) && *id_) error_message(error_selector(3), -3);
     offset = (struct ordered_pair *) malloc(sizeof(struct ordered_pair)); offset->a = offset->b = 0; // member a will hold y offset, member b will hold x offset
     if (argc != 3) { switch (argc) {
-	    case 5: if (!str_represents_ul(argv[4], &offset->a)) fprintf(stderr, "Failed to interpret vertical table offset. Defaulting to not using any.\n");
-	    case 4: if (!str_represents_ul(argv[3], &offset->b)) fprintf(stderr, "Failed to interpret horizontal table offset. Defaulting to not using any.\n");
+	    case 5: if (!str_represents_ul(argv[4], &offset->b)) fprintf(stderr, "Failed to interpret vertical table offset. Defaulting to not using any.\n");
+	    case 4: if (!str_represents_ul(argv[3], &offset->a)) fprintf(stderr, "Failed to interpret horizontal table offset. Defaulting to not using any.\n");
 	    default: if (!(*id_)) { offset->a %= *mod_; offset->b %= *mod_; } };
     } // process terminal arguments ^
 
-    unsigned long generator_count = second_MAIN(group_elements_LL(argv));
-    for (unsigned long index = 0; index < group_cardinality_; index++) print_permutation(index); if (group_cardinality_) fprintf(stdout, "\n");
+    unsigned long generator_count = found_generators(group_elements_LL(argv));
+    unsigned long index = offset->b; do { print_permutation(index); index = _add(index, 1, group_cardinality_); } while (index != offset->b); fprintf(stdout, "\n");
+
     if (generator_count) {
 	fprintf(stdout, "%lu generators are present within \u2115/\u2115%s%s:\n", generator_count, argv[1], id_as_operation_symbol());
-	for (unsigned long printed_gens = 0, index = offset->a; printed_gens < generator_count; index = _add(index, 1, group_cardinality_))
+	for (unsigned long printed_gens = 0, index = offset->b; printed_gens < generator_count; index = _add(index, 1, group_cardinality_))
 	{ while (lookup_table->perm_length[index] != group_cardinality_) index = _add(index, 1, group_cardinality_); print_permutation(index); printed_gens++; }
     } else fprintf(stdout, "There are no generators in this group.\n");
     // examplify subgroups and list generators ^
