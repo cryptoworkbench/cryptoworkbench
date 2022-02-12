@@ -16,7 +16,6 @@
 void domain_display(unsigned long a, unsigned long b) { fprintf(stdout, " and checking for all 'x <= %lu' if x divides %lu.", a, b); }
 
 _factorization_method echo_settings(unsigned long composite) {
-    if (_preferred_factorization_ENGINE == NULL) printf("arrived in echo settings.\n");
     if (_preferred_factorization_ENGINE == LEAST_efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(composite, 3), composite); }
     else if (_preferred_factorization_ENGINE == LESS_efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(composite, 2), composite); }
     else if (_preferred_factorization_ENGINE == efficient_trial_division) { fprintf(stdout, "Using trial division"); domain_display(trial_limit(composite, 1), composite); }

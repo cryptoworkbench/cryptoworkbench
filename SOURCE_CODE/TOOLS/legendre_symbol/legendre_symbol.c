@@ -3,7 +3,7 @@
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/mathematics/factorization_methods.h"
-#include "../../libraries/mathematics/primality_testing_scemes.h"
+#include "../../libraries/mathematics/primality_testing.h"
 
 int main(int argc, char **argv) { const char *specific_file = _REPORT_preferred_factorization_engine_file();
     FILE *file; if (!(file = fopen(specific_file, "r"))) { fprintf(stderr, "Couldn't open preferences file '%s'." EXIT_STATUS_GOODBYE, specific_file, -1); exit(-1); }

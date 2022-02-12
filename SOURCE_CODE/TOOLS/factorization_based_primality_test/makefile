@@ -7,11 +7,11 @@
 ../../libraries/mathematics/.factorization_methods.o: ../../libraries/mathematics/factorization_methods.h ../../libraries/mathematics/factorization_methods.c
 	gcc -c ../../libraries/mathematics/factorization_methods.c -o ../../libraries/mathematics/.factorization_methods.o
 	
-../../libraries/mathematics/.primality_testing_scemes.o: ../../libraries/mathematics/primality_testing_scemes.h ../../libraries/mathematics/primality_testing_scemes.c
-	gcc -c ../../libraries/mathematics/primality_testing_scemes.c -o ../../libraries/mathematics/.primality_testing_scemes.o
+../../libraries/mathematics/.primality_testing.o: ../../libraries/mathematics/primality_testing.h ../../libraries/mathematics/primality_testing.c
+	gcc -c ../../libraries/mathematics/primality_testing.c -o ../../libraries/mathematics/.primality_testing.o
 
 .factorization_based_primality_test.o: factorization_based_primality_test.c
 	gcc -c factorization_based_primality_test.c -o .factorization_based_primality_test.o
 
-factorization_based_primality_test: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.primality_testing_scemes.o .factorization_based_primality_test.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.primality_testing_scemes.o .factorization_based_primality_test.o -o ../../../WORKBENCH/factorization_based_primality_test
+factorization_based_primality_test: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.primality_testing.o .factorization_based_primality_test.o
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.primality_testing.o .factorization_based_primality_test.o -o ../../../WORKBENCH/factorization_based_primality_test

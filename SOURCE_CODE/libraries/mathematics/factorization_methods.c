@@ -81,22 +81,12 @@ _factorization_method factorization_method(int SELECTOR) {
     };
 }
 
-// void SET_preferred_factorization_ENGINE(int SELECTOR) { _preferred_factorization_ENGINE = factorization_method(SELECTOR); }
-
 struct ordered_pair _factorize(unsigned long number, _factorization_method factorization_ENGINE_to_use)
 { struct ordered_pair factor = divisor_pair(number, factorization_ENGINE_to_use(number)); if (factor.b < factor.a) { ul temp = factor.b; factor.b = factor.a; factor.a = temp; } return factor; }
 // ^ passing as second argument '_preferred_factorization_ENGINE' or 'NULL' yields the same result
 
 struct ordered_pair factorize(unsigned long number, _factorization_method alternate_choice)
 { return (alternate_choice) ? divisor_pair(number, alternate_choice(number)) : divisor_pair(number, _preferred_factorization_ENGINE(number)); }
-
-/*
-char *query_preferences_file() {
-    FILE *file; if (!(file = fopen(_preferred_factorization_engine_file, "r")))
-    { fprintf(stderr, "Couldn't open preferences file '%s'. " EXIT_STATUS_GOODBYE, _preferred_factorization_engine_file, -1); exit(-1); }
-    char *ret_val = BUFFER_OF_SIZE(200); fscanf(file, "%s[^\n]", ret_val); fclose(file); return ret_val;
-} // check below for NEW
-*/
 
 const char *permission_failure = "permission failure within 'factorization_methods.c':";
 void factorization_engine_preference_file_ERROR() { fprintf(stderr, "\n%s do not have sufficient rights to access '%s'.\n\n", permission_failure, _preferred_factorization_engine_file); }
@@ -120,7 +110,7 @@ char *STDIN_factorization_engine() {
 void write_to_preferences_file(char *str, FILE *file) { fprintf(file, "%s\n", str); fclose(file); }
 
 char *query_preferences_file() { FILE *file;
-    if (!(file = fopen(_preferred_factorization_engine_file, "r"))) { fprintf(stderr, "Failed to open preferences file '%s'.\n\n", _preferred_factorization_engine_file);
+    if (!(file = fopen(_preferred_factorization_engine_file, "r"))) { fprintf(stderr, "Failed to open global preferences file '%s'.\n\n", _preferred_factorization_engine_file);
 	if (!(file = fopen(_preferred_factorization_engine_file, "w"))) error_message(factorization_engine_preference_file_ERROR, -1);
 	char *str = STDIN_factorization_engine(); write_to_preferences_file(str, file); free(str);
 	fprintf(stdout, "Saved preference.\n\n"); return query_preferences_file();
