@@ -40,7 +40,8 @@ int main(int argc, char **argv) { unsigned long composite; unparsed_arg = argv[1
 
     char *ptr = argv[2]; if (!ptr) ptr = query_preferences_file();
     if (!(_preferred_factorization_ENGINE = factorization_method(SELECTOR_from_str_representing_factorization_method(ptr)))) {
-	fprintf(stderr, "Failed to interpret '%s'", ptr); if (!argv[2]) fprintf(stderr, " from preferences file"); fprintf(stderr, ".\n\n");
+	fprintf(stderr, "Failed to interpret '%s' from ", ptr); if (argv[2]) fprintf(stderr, "terminal argument");
+	else fprintf(stderr, "global preferences file '%s'", _REPORT_preferred_factorization_engine_file()); fprintf(stderr, ".\n\n");
 	char *UPDATE_VALUE; _preferred_factorization_ENGINE = factorization_method(SELECTOR_from_str_representing_factorization_method(UPDATE_VALUE = STDIN_factorization_engine(ptr)));
 	if (!argv[2]) { write_to_preferences_file(UPDATE_VALUE, fopen(_REPORT_preferred_factorization_engine_file(), "w")); fprintf(stdout, "Updated preferences file.\n\n"); }
     } // if both the terminal argument and the preferences file were unintelligeble, then force take factorization method from STDIN
