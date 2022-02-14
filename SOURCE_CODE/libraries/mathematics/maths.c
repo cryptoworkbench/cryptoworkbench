@@ -16,14 +16,23 @@ struct ordered_pair _isomorphism() { struct ordered_pair ret_val = { ADDITIVE_ID
 
 unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_) { return (mod_) ? result % mod_ : result; }
 unsigned long mod_conditional_field_cap(unsigned long result) { return (*mod_) ? _conditional_field_cap(result, *mod_) : result; }
+// take a modulus value if it was set ^^
+
 unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a + b, mod_); }
 unsigned long mod_add(unsigned long a, unsigned long b) { return _add(a, b, *mod_); }
+// add under (modular) arithmetic
+
 unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_) { return _conditional_field_cap(mod_ - element_of_additive_group, mod_); }
 unsigned long mod_inverse(unsigned long element_of_additive_group) { return _inverse(element_of_additive_group, *mod_); }
+// take the additive_inverse ^^
+
 unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a + _inverse(b, mod_), mod_); }
 unsigned long mod_subtract(unsigned long a, unsigned long b) { return _subtract(a, b, *mod_); }
+// subtract under (modular) arithmetic
+
 unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a * b, mod_); }
 unsigned long mod_multiply(unsigned long a, unsigned long b) { return mod_conditional_field_cap(a * b); } 
+
 unsigned long _divide(unsigned long numerator, unsigned long denominator, unsigned long mod_)
 { if (mod_) while (numerator % denominator != 0) numerator += mod_; return _conditional_field_cap(numerator / denominator, mod_); }
 unsigned long mod_divide(unsigned long numerator, unsigned long denominator) { return _divide(numerator, denominator, *mod_); }
@@ -46,8 +55,6 @@ unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned
 
 unsigned long DH_public_key(STRUCT_DH_parameters *DH_parameters, unsigned long DH_private_key) { return _exponentiate(DH_parameters->b, DH_private_key, DH_parameters->a); }
 void print_DH_parameters(STRUCT_DH_parameters *DH_parameters, FILE *fs) { fprintf(fs, "(\u2115/%lu\u2115*, %lu)", DH_parameters->a, DH_parameters->b); }
-
-unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID) { switch (ID) { case 0: return mod_add(a, b); case 1: return mod_multiply(a, b); default: return mod_exponentiate(a, b); }; }
 
 _group_operation _operation_from_ID(unsigned long ID) { return (ID) ? _multiply : _add; }
 mod_group_operation operation_from_ID(unsigned long ID) { return (ID) ? mod_multiply : mod_add; }

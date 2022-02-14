@@ -41,10 +41,10 @@ void print_permutation(unsigned long index) {
     } while (1); fprintf(stdout, "}\n");
 }
 
-struct VOID_ptr_ptr_PAIR group_elements_LL(char **argv) { FILE *ELEMENT_database = open_group(argv); struct VOID_ptr_ptr_PAIR element_CHANNEL_ptr_pair = initialize_CHANNEL_ptr_pair(); unsigned long group_ELEMENT;
+struct VOID_ptr_ptr_PAIR group_elements_LL(char **argv)
+{ FILE *ELEMENT_database = open_group(argv); struct VOID_ptr_ptr_PAIR element_CHANNEL_ptr_pair = initialize_CHANNEL_ptr_pair(); unsigned long group_ELEMENT;
     while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { INSERT((struct LL_ ***) &element_CHANNEL_ptr_pair.iterator, group_ELEMENT); group_cardinality_++; } close_group(argv[1], ELEMENT_database);
-    return element_CHANNEL_ptr_pair;
-}
+    return element_CHANNEL_ptr_pair; }
 
 unsigned long *array_from_LL(struct LL_ **head_TRACER, unsigned long *required_array_size) {
     struct LL_ *iter; if (!(iter = (struct LL_ *) _close_CHANNEL((void **) head_TRACER))) return NULL; unsigned long *ulong_array = (unsigned long *) malloc(sizeof(unsigned long) * *required_array_size);

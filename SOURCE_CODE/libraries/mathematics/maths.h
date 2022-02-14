@@ -15,24 +15,37 @@ char *_REPORT_open_prime_table(); // < for access in other files to 'char * _ope
 
 struct ordered_pair _isomorphism();
 
-unsigned long exponentiate(unsigned long base, unsigned long exponent); // wrapper function follows
-unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_);
+unsigned long exponentiate(unsigned long base, unsigned long exponent); unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_);
+unsigned long mod_exponentiate(unsigned long base, unsigned long exponent);
+// required exponentiation functions ^^^
+
 unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_);
+unsigned long mod_conditional_field_cap(unsigned long result);
+// takes a modulus value if set ^^
+
 unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_);
-unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_);
-unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_);
-unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_);
-unsigned long _divide(unsigned long numerator, unsigned long denominator, unsigned long mod_);
-unsigned long _polynomial(unsigned long **COEFFICIENT_array, unsigned long _x, unsigned long mod); // wrapper functions follow
-unsigned long mod_conditional_field_cap(unsigned long result); unsigned long _conditional_field_cap(unsigned long result, unsigned long mod);
 unsigned long mod_add(unsigned long a, unsigned long b);
+// add under (modular) arithmetic ^^
+
+unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_);
 unsigned long mod_inverse(unsigned long element_of_additive_group);
+// take the additive inverse ^^
+
+unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_);
 unsigned long mod_subtract(unsigned long a, unsigned long b);
+// subtract under (modular) arithmetic ^^
+
+unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_);
 unsigned long mod_multiply(unsigned long a, unsigned long b);
+// multiply under (modular) arithmetic ^^
+
+unsigned long _divide(unsigned long numerator, unsigned long denominator, unsigned long mod_);
 unsigned long mod_divide(unsigned long member_from_equivalence_class_representing_the_numerator, unsigned long denominator);
+// divide under (modular) arithmetic ^^
+
+unsigned long _polynomial(unsigned long **COEFFICIENT_array, unsigned long _x, unsigned long mod);
 unsigned long mod_polynomial(unsigned long **coefficient, unsigned long _x);
-unsigned long mod_exponentiate(unsigned long base, unsigned long exponent); // wrapper function follows
-unsigned long N_operation(unsigned long a, unsigned long b, unsigned long ID); // (< combine them all!)
+// calculate a polynomial (under mod arithmetic) ^^
 
 typedef struct ordered_pair STRUCT_DH_parameters;
 void print_DH_parameters(STRUCT_DH_parameters *DH_parameters, FILE *fs);

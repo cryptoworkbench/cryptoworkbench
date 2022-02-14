@@ -40,3 +40,4 @@ _factorization_method factorization_method(int SELECTOR); // 'SET_preferred_fact
 void SET_preferred_factorization_ENGINE(int SELECTOR);
 void FACTORIZATION_METHOD_UNCHOSEN(char *arg);
 int SELECTOR_from_str_representing_factorization_method(char *arg);
+const char *_preferred_factorization_ENGINE_description();

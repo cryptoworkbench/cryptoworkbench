@@ -138,3 +138,15 @@ int SELECTOR_from_str_representing_factorization_method(char *arg) {
     else if (match_variadic(arg, 2, __h, _H)) return 8;
     return 0;
 }
+
+const char *_preferred_factorization_ENGINE_description() { initialize_factorization_library(); // < makes available in calling file the below pointers
+    if (_preferred_factorization_ENGINE == efficient_trial_division) return _a;
+    else if (_preferred_factorization_ENGINE == LESS_efficient_trial_division) return _b;
+    else if (_preferred_factorization_ENGINE == LEAST_efficient_trial_division) return _c;
+    else if (_preferred_factorization_ENGINE == efficient_trial_division) return _d;
+    else if (_preferred_factorization_ENGINE == LESS_efficient_trial_division) return _e;
+    else if (_preferred_factorization_ENGINE == LEAST_efficient_trial_division) return _f;
+    else if (_preferred_factorization_ENGINE == shor_factorization) return _g;
+    else if (_preferred_factorization_ENGINE == fermat_factorization) return _h;
+    return NULL;
+}
