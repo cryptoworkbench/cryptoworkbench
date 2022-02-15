@@ -1,7 +1,6 @@
 #!/bin/bash
 
-rm -r WORKBENCH/
-mkdir WORKBENCH/
+rm -r WORKBENCH/ && mkdir WORKBENCH/
 mkdir WORKBENCH/ARCHIVE
 clear && echo "########### ASSEMBLY LINE ROLLING ! #######=====>"
 cd SOURCE_CODE/TOOLS/equivalence_class && make equivalence_class && echo "#######===> The following tool has been assemblied/linked: additive_inverse

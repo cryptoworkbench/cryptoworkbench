@@ -1,6 +1,5 @@
 #!/bin/bash 
 
-mkdir WORKBENCH/
 mkdir WORKBENCH/ARCHIVE
 clear && echo "########### ASSEMBLY LINE ROLLING ! #######=====>"
 cd SOURCE_CODE/TOOLS/equivalence_class && make equivalence_class && echo "#######===> The following tool has been assemblied/linked: additive_inverse
@@ -56,6 +55,8 @@ cd ../prime_table_exporter && make prime_table_exporter && echo "#######===> The
 "
 cd ../factorize && make factorize && echo "#######===> The following tool has been assemblied/linked: factorize
 "
+cd ../prime_factorize && make prime_factorize && echo "#######===> The following tool has been assemblied/linked: prime_factorize
+"
 cd ../factorization_based_primality_test && make factorization_based_primality_test && echo "#######===> The following tool has been assemblied/linked: factorization_based_primality_test
 "
 cd ../group_element_table_generator && make group_element_table_generator && echo "#######===> The following tool has been assemblied/linked: group_element_table_generator
@@ -66,6 +67,7 @@ echo "#######===> SOME MORE TOOLS HAVE BEEN ASSEMBLED/LINKED: -->               
 ~ sieve_of_eratosthenes
 ~ prime_table_exporter
 ~ factorize
+~ prime_factorize
 ~ modular_group_element_table_generator 
 ~ subgroup_examplifier
 ~ Diffie_Hellman_Key_Agreement

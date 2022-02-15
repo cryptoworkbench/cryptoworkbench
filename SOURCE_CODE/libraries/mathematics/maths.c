@@ -6,37 +6,39 @@
 #include "maths.h"
 #include "../functional/string.h"
 
-FILE *entropy_source = NULL;
+FILE *urandom = NULL;
 const char *_standard_prime_table_filename = "shared_prime_table";
 char *_REPORT_standard_prime_table_filename() { return (char *) _standard_prime_table_filename; }
 char *_open_prime_table = NULL; char *_REPORT_open_prime_table() { return (char *) _open_prime_table; }
 // Two global variables and two functions for access to these global variables in other files/libraries
 
 struct ordered_pair _isomorphism() { struct ordered_pair ret_val = { ADDITIVE_IDENTITY, MULTIPLICATIVE_IDENTITY }; return ret_val; }
+// a general function which a lot of functions in this library make use of ^^
 
 unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_) { return (mod_) ? result % mod_ : result; }
 unsigned long mod_conditional_field_cap(unsigned long result) { return (*mod_) ? _conditional_field_cap(result, *mod_) : result; }
-// take a modulus value if it was set ^^
+// take a modulus if it was set ^^
 
 unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a + b, mod_); }
 unsigned long mod_add(unsigned long a, unsigned long b) { return _add(a, b, *mod_); }
-// add under (modular) arithmetic
+// support for (modular) adding ^^
 
 unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_) { return _conditional_field_cap(mod_ - element_of_additive_group, mod_); }
 unsigned long mod_inverse(unsigned long element_of_additive_group) { return _inverse(element_of_additive_group, *mod_); }
-// take the additive_inverse ^^
+// support for additive inverses ^^
 
 unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a + _inverse(b, mod_), mod_); }
 unsigned long mod_subtract(unsigned long a, unsigned long b) { return _subtract(a, b, *mod_); }
-// subtract under (modular) arithmetic
+// support for (modular) subtraction ^^
 
 unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a * b, mod_); }
 unsigned long mod_multiply(unsigned long a, unsigned long b) { return mod_conditional_field_cap(a * b); } 
+// support for (modular) multipication ^^
 
 unsigned long _divide(unsigned long numerator, unsigned long denominator, unsigned long mod_)
 { if (mod_) while (numerator % denominator != 0) numerator += mod_; return _conditional_field_cap(numerator / denominator, mod_); }
 unsigned long mod_divide(unsigned long numerator, unsigned long denominator) { return _divide(numerator, denominator, *mod_); }
-// ^ some functions and their wrappers
+// support for (modular) division
 
 unsigned long exponentiate(unsigned long base, unsigned long exponent)
 { unsigned long exponentiation_RESULT = (0 < base); for (unsigned long iter = 0; iter < exponent; iter++) exponentiation_RESULT *= base; return exponentiation_RESULT; } 
@@ -165,11 +167,11 @@ FILE *prime_table_open(char *prime_table_filename) {
 
 int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q) { return (odd_prime_q - 1 - _exponentiate(odd_prime_p, (odd_prime_q - 1) / 2, odd_prime_q)) ? 1 : -1; }
 
-void open_urandom() { entropy_source = fopen("/dev/urandom", "r"); }
-void close_urandom() { if (entropy_source) fclose(entropy_source); }
+void open_urandom() { urandom = fopen("/dev/urandom", "r"); }
+void close_urandom() { if (urandom) fclose(urandom); }
 
-unsigned long urandom_number(unsigned long upper_bound) { if (!(entropy_source)) open_urandom();
-    unsigned long ret_val; fread(&ret_val, sizeof(unsigned long), 1, entropy_source);
+unsigned long urandom_number(unsigned long upper_bound) { if (!(urandom)) open_urandom();
+    unsigned long ret_val; fread(&ret_val, sizeof(unsigned long), 1, urandom);
     ret_val = _conditional_field_cap(ret_val, upper_bound); return ret_val;
 }
 
