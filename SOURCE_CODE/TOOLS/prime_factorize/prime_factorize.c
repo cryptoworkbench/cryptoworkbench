@@ -38,25 +38,27 @@ struct LL_ *divisor_list_stretch(struct LL_ *cursor)
 { struct ordered_pair divisor_pair = factorize(cursor->e, NULL); if (!(divisor_pair.a - 1)) return cursor; return divisor_list_stretch(stretched_divisor(cursor, divisor_pair)); }
 // recursive function which stretches a LL of divisors ^
 
-unsigned long _number_of_distinct_prime_factors(unsigned long previous_prime_factor, struct LL_ *i, unsigned long ret_val)
-{ if (!(i)) return ret_val; if (i->e != previous_prime_factor) ret_val++; _number_of_distinct_prime_factors(i->e, i->next, ret_val); }
+unsigned long _number_of_distinct_prime_factors(unsigned long previous_prime_factor, struct LL_ *i, unsigned long ret_val) {
+    if (!(i)) return ret_val;
+    if (i->e != previous_prime_factor) ret_val++;
+    _number_of_distinct_prime_factors(i->e, i->next, ret_val);
+}
+// recurive function ^
+
+void _number_of_distinct_prime_factors_(unsigned long last_factor, struct LL_ *cursor, unsigned long index) {
+    if (!(cursor)) return;
+    if (cursor->e == last_factor) crux->log[index]++;
+    else { index++; crux->prime_factor[index] = cursor->e; }
+    _number_of_distinct_prime_factors_(cursor->e, cursor->next, index);
+}
 // recurive function ^
 
 unsigned long number_of_distinct_prime_factors(struct LL_ *divisors) {
-    unsigned long ret_val = _number_of_distinct_prime_factors(divisors->e, divisors->next, 1);
-    // count the number of distinct prime factors using a recursive function ^
-
+    struct LL_ *i = divisors; unsigned long ret_val = _number_of_distinct_prime_factors(i->e, i->next, 1);
     crux = (struct _crux *) malloc(sizeof(struct _crux));
     crux->prime_factor = (unsigned long *) malloc(sizeof(unsigned long) * ret_val);
-    crux->log = (int *) malloc(sizeof(int) * ret_val);
-    // allocate the crux and it's arrays
-
-    struct LL_ *i = divisors; int index = 0;
-    do {crux->prime_factor[index] = i->e;
-	for (crux->log[index] = 0; i && i->e == crux->prime_factor[index]; crux->log[index]++, i = i->next) {}
-	index++;
-    } while (index < ret_val);
-
+    crux->log = (int *) malloc(sizeof(int) * ret_val); for (int i = 0; i < ret_val; i++) crux->log[i] = 1;
+    crux->prime_factor[0] = divisors->e; _number_of_distinct_prime_factors_(crux->prime_factor[0], divisors->next, 0);
     return ret_val;
 }
 
