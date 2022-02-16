@@ -4,4 +4,4 @@
 # USING:
 #!/bin/bash 
 
-for i in $(seq 2 $1); do prime_factorize "$i" $2 2> a; done
+for i in $(seq 2 $1); do ./prime_factorize "$i" $2 2> a; done

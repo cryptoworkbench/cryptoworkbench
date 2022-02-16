@@ -17,54 +17,45 @@ struct _crux { unsigned long *prime_factor; int *log; int entries; };
 _error_selector error_selector(int SELECTOR) { switch (SELECTOR) { case 1: fprintf(stderr, "Please provide as first argument the composite to factorize.\n\n"); return str_not_parsable_as_number; }; }
 // error functions ^
 
-// struct _crux *crux;
-// global variable declarations ^
+struct LL_ *unit_spawn(unsigned long divisor) // NON-recursive <--
+{ struct LL_ *ret_val = (struct LL_ *) malloc(sizeof(struct LL_)); ret_val->e = divisor; ret_val->next = NULL; return ret_val; }
 
-struct LL_ *unit_spawn(unsigned long divisor) { struct LL_ *ret_val = (struct LL_ *) malloc(sizeof(struct LL_)); ret_val->e = divisor; ret_val->next = NULL; return ret_val; }
+struct LL_ *insert(struct LL_ *last, unsigned long new_divisor) // NON-recursive <--
+{ struct LL_ *ret_val = (struct LL_ *) malloc(sizeof(struct LL_)); ret_val->e = new_divisor; struct LL_ *next = last->next; last->next = ret_val; ret_val->next = next; return ret_val; }
 
-struct LL_ *insert(struct LL_ *last, unsigned long new_divisor) {
-    struct LL_ *ret_val = (struct LL_ *) malloc(sizeof(struct LL_)); ret_val->e = new_divisor;
-    // create the new unit ^
+struct LL_ *stretched_divisor(struct LL_ *in, struct ordered_pair divisor_pair) // NON-recursive <--
+{ in->e = divisor_pair.a; return insert(in, divisor_pair.b); }
 
-    struct LL_ *next = last->next; last->next = ret_val; ret_val->next = next; return ret_val;
-    // insert said unit and return at this unit ^
-} // divisor_list_stretch()
+struct LL_ *divisor_list_stretch(struct LL_ *i)
+{ struct ordered_pair divisor_pair = factorize(i->e, NULL); if (!(divisor_pair.a - 1)) return i; return divisor_list_stretch(stretched_divisor(i, divisor_pair)); }
+// recursive function yielding the list containing the prime factorization ^
 
-struct LL_ *stretched_divisor(struct LL_ *in, struct ordered_pair divisor_pair) { in->e = divisor_pair.a;
-    // update factorized sloth with smaller divisor ^
+unsigned long distinct_prime_factors(unsigned long previous_prime_factor, struct LL_ *i, unsigned long ret_val)
+{ if (!(i)) return ret_val; if (i->e != previous_prime_factor) ret_val++; distinct_prime_factors(i->e, i->next, ret_val); }
+// recursive function which counts the number of distinct prime factors said (^^) list ^
 
-    return insert(in, divisor_pair.b);
-    // insert the greater divisor and return the as-of-yet unfactorized divisor in the LL
-} // divisor_list_stretch()
+void associative_array_setup(struct _crux *crux, unsigned long last_factor, struct LL_ *i, unsigned long index)
+{ if (!(i)) return; if (i->e == last_factor) crux->log[index]++; else { index++; crux->prime_factor[index] = i->e; } associative_array_setup(crux, i->e, i->next, index); }
+// recursive function which set's up the program's crux (which holds the associative array)
 
-struct LL_ *divisor_list_stretch(struct LL_ *cursor)
-{ struct ordered_pair divisor_pair = factorize(cursor->e, NULL); if (!(divisor_pair.a - 1)) return cursor; return divisor_list_stretch(stretched_divisor(cursor, divisor_pair)); }
-// recursive function which stretches a LL of divisors ^
+struct _crux *allocate_crux(int number_of_distinct_prime_factors) {
+    struct _crux *ret_val = (struct _crux *) malloc(sizeof(struct _crux)); ret_val->prime_factor = (unsigned long *) malloc(sizeof(unsigned long) * number_of_distinct_prime_factors);
+    ret_val->log = (int *) malloc(sizeof(int) * number_of_distinct_prime_factors);
+    for (int i = 0; i < number_of_distinct_prime_factors; i++) ret_val->log[i] = 1; ret_val->entries = number_of_distinct_prime_factors;
+    return ret_val;
+} void CRUX_free(struct _crux *crux) { free(crux->log); free(crux->prime_factor); free(crux); }
+// funct^ons for allocation or destruction of a program's crux ^
 
-unsigned long _number_of_distinct_prime_factors(unsigned long previous_prime_factor, struct LL_ *i, unsigned long ret_val)
-{ if (!(i)) return ret_val; if (i->e != previous_prime_factor) ret_val++; _number_of_distinct_prime_factors(i->e, i->next, ret_val); }
-// recurive function ^
-
-void crux_setup(struct _crux *crux, unsigned long last_factor, struct LL_ *cursor, unsigned long index)
-{ if (!(cursor)) return; if (cursor->e == last_factor) crux->log[index]++; else { index++; crux->prime_factor[index] = cursor->e; } crux_setup(crux, cursor->e, cursor->next, index); }
-// recurive function ^
-
-struct _crux *initialize_crux(int length)
+struct _crux *CRUX_initialize(unsigned long number_of_distinct_prime_factors, struct LL_ *divisors) // NON-recursive wrapper function <--
 {
-    struct _crux *ret_val = (struct _crux *) malloc(sizeof(struct _crux)); ret_val->prime_factor = (unsigned long *) malloc(sizeof(unsigned long) * length);
-    ret_val->log = (int *) malloc(sizeof(int) * length); for (int i = 0; i < length; i++) ret_val->log[i] = 1; ret_val->entries = length; return ret_val;
-}//recursive function ^
+    struct _crux *ret_val = allocate_crux(number_of_distinct_prime_factors); ret_val->prime_factor[0] = divisors->e;
+    associative_array_setup(ret_val, ret_val->prime_factor[0], divisors->next, 0); return ret_val;
+}
+// '_crux' functions dealing with allocation and free'ing
 
-struct _crux *crux_prepare(unsigned long length, struct LL_ *divisors)
-{
-    struct _crux *ret_val = initialize_crux(length);
-    ret_val->prime_factor[0] = divisors->e;
-    crux_setup(ret_val, ret_val->prime_factor[0], divisors->next, 0); return ret_val;
-} // a recursive function which initializes the table
-
-void _RESULT(struct _crux *crux, int index)
-{ fprintf(stdout, "%lu^%lu", crux->prime_factor[index], crux->log[index]); index++; if (index == crux->entries) return; fprintf(stdout, " * "); _RESULT(crux, index); }
-void RESULT(struct _crux *crux, unsigned long composite) { fprintf(stdout, "%lu = ", composite); _RESULT(crux, 0); fprintf(stdout, "\n"); }
+struct _crux *_RESULT(struct _crux *crux, int index)
+{ fprintf(stdout, "%lu^%lu", crux->prime_factor[index], crux->log[index]); index++; if (index == crux->entries) return crux; fprintf(stdout, " * "); return _RESULT(crux, index); }
+struct _crux *RESULT(struct _crux *crux, unsigned long composite) { fprintf(stdout, "%lu = ", composite); _RESULT(crux, 0); fprintf(stdout, "\n"); return crux; }
 // a recursive do-while function which prints out the _RESULT (^^) and a wrapper for this function (^)
 
 int main(int argc, char **argv) { unsigned long composite; unparsed_arg = argv[1];
@@ -82,7 +73,9 @@ int main(int argc, char **argv) { unsigned long composite; unparsed_arg = argv[1
     struct LL_ *divisors = unit_spawn(composite);
     struct LL_ *tail = divisor_list_stretch(divisors);
 
-    struct _crux *crux = crux_prepare(_number_of_distinct_prime_factors(divisors->e, divisors->next, 1), divisors);
-    RESULT(crux, composite);
+    CRUX_free(RESULT(CRUX_initialize(distinct_prime_factors(divisors->e, divisors->next, 1), divisors), composite));
+
+    // struct _crux *crux = CRUX_initialize(distinct_prime_factors(divisors->e, divisors->next, 1), divisors); RESULT(crux, composite); CRUX_free(crux);
+    // can also be like this ^
     return 0;
 }
