@@ -38,11 +38,13 @@ struct LL_ *divisor_list_stretch(struct LL_ *cursor)
 { struct ordered_pair divisor_pair = factorize(cursor->e, NULL); if (!(divisor_pair.a - 1)) return cursor; return divisor_list_stretch(stretched_divisor(cursor, divisor_pair)); }
 // recursive function which stretches a LL of divisors ^
 
-void _number_of_distinct_prime_factors(unsigned long previous_prime_factor, struct LL_ *i, unsigned long *ret_val)
-{ if (!(i)) return; if (i->e != previous_prime_factor) (*ret_val)++; _number_of_distinct_prime_factors(i->e, i->next, ret_val); }
+unsigned long _number_of_distinct_prime_factors(unsigned long previous_prime_factor, struct LL_ *i, unsigned long ret_val)
+{ if (!(i)) return ret_val; if (i->e != previous_prime_factor) ret_val++; _number_of_distinct_prime_factors(i->e, i->next, ret_val); }
+// recurive function ^
 
 unsigned long number_of_distinct_prime_factors(struct LL_ *divisors) {
-    unsigned long ret_val = 1; _number_of_distinct_prime_factors(divisors->e, divisors->next, &ret_val);
+    unsigned long ret_val = _number_of_distinct_prime_factors(divisors->e, divisors->next, 1);
+    // count the number of distinct prime factors using a recursive function ^
 
     crux = (struct _crux *) malloc(sizeof(struct _crux));
     crux->prime_factor = (unsigned long *) malloc(sizeof(unsigned long) * ret_val);
