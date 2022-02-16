@@ -30,41 +30,38 @@ struct LL_ *divisor_list_stretch(struct LL_ *i)
 { struct ordered_pair divisor_pair = factorize(i->e, NULL); if (!(divisor_pair.a - 1)) return i; return divisor_list_stretch(stretched_divisor(i, divisor_pair)); }
 // recursive function yielding the list containing the prime factorization ^
 
+void divisor_list_WIPE(struct LL_ *i) { if (!(i)) return; struct LL_ *next = i->next; free(i); divisor_list_WIPE(next); }
+
 unsigned long number_of_distinct_prime_factors(unsigned long previous_prime_factor, struct LL_ *i, unsigned long ret_val)
 { if (!(i)) return ret_val; if (i->e != previous_prime_factor) ret_val++; number_of_distinct_prime_factors(i->e, i->next, ret_val); }
 // recursive function which counts the number of distinct prime factors said (^^) list ^
 
-void associative_array_setup(struct _crux *crux, unsigned long last_factor, struct LL_ *i, unsigned long index)
-{ if (!(i)) return; if (i->e == last_factor) crux->log[index]++; else { index++; crux->prime_factor[index] = i->e; } associative_array_setup(crux, i->e, i->next, index); }
+void CRUX_setup(struct _crux *crux, unsigned long last_factor, struct LL_ *i, unsigned long index)
+{ if (!(i)) return; if (i->e == last_factor) crux->log[index]++; else { index++; crux->prime_factor[index] = i->e; } CRUX_setup(crux, i->e, i->next, index); }
 // recursive function which set's up the program's crux (which holds the associative array)
 
 struct _crux *CRUX_allocate(int number_of_distinct_prime_factors) {
-    struct _crux *ret_val = (struct _crux *) malloc(sizeof(struct _crux)); ret_val->prime_factor = (unsigned long *) malloc(sizeof(unsigned long) * number_of_distinct_prime_factors);
-    ret_val->log = (int *) malloc(sizeof(int) * number_of_distinct_prime_factors);
-    for (int i = 0; i < number_of_distinct_prime_factors; i++) ret_val->log[i] = 1; ret_val->length = number_of_distinct_prime_factors;
-    return ret_val;
+    struct _crux *ret_val = (struct _crux *) malloc(sizeof(struct _crux)); ret_val->prime_factor = (unsigned long *) malloc(sizeof(unsigned long) * number_of_distinct_prime_factors); ret_val->log =
+	(int *) malloc(sizeof(int) * number_of_distinct_prime_factors); for (int i = 0; i < number_of_distinct_prime_factors; i++) ret_val->log[i] = 1; ret_val->length = number_of_distinct_prime_factors; return ret_val;
 } void CRUX_free(struct _crux *crux) { free(crux->log); free(crux->prime_factor); free(crux); }
-// funct^ons for allocation or destruction of a program's crux ^
+// funct^ons for allocation and destruction of a program's crux ^
 
-struct _crux *CRUX_initialize(unsigned long number_of_distinct_prime_factors, struct LL_ *divisors) // NON-recursive wrapper function <--
-{
+struct _crux *CRUX_initialize(unsigned long number_of_distinct_prime_factors, struct LL_ *divisors) { // NON-recursive wrapper function for 'CRUX_allocate' <--
     struct _crux *ret_val = CRUX_allocate(number_of_distinct_prime_factors); ret_val->prime_factor[0] = divisors->e;
-    associative_array_setup(ret_val, ret_val->prime_factor[0], divisors->next, 0); return ret_val;
+    CRUX_setup(ret_val, ret_val->prime_factor[0], divisors->next, 0); divisor_list_WIPE(divisors); return ret_val;
 }
-// '_crux' functions dealing with allocation and free'ing
 
-struct _crux *_CRUX_print(struct _crux *crux, int index) // recursive function <--
-{ fprintf(stdout, "%lu^%lu", crux->prime_factor[index], crux->log[index]); index++; if (index == crux->length) return crux; fprintf(stdout, " * "); return _CRUX_print(crux, index); }
-
-unsigned long CRUX_calculate(struct _crux *crux, int index, unsigned long multiplicative_accumulator)
-{ if (index == crux->length) return multiplicative_accumulator; return CRUX_calculate(crux, 1 + index, multiplicative_accumulator * exponentiate(crux->prime_factor[index], crux->log[index])); }
+unsigned long CRUX_calculate(unsigned long multiplicative_accumulator, struct _crux *crux, int index)
+{ if (index == crux->length) return multiplicative_accumulator; return CRUX_calculate(multiplicative_accumulator * exponentiate(crux->prime_factor[index], crux->log[index]), crux, 1 + index); }
 // recursive function for converting from prime factorization back to number ^
 
-struct _crux *CRUX_print(struct _crux *crux) // wrapper for the above recursive function <--
-{
-    fprintf(stdout, "%lu = ", CRUX_calculate(crux, 0, 1)); _CRUX_print(crux, 0); fprintf(stdout, "\n");
-    return crux;
-}
+struct _crux *_CRUX_print(struct _crux *crux, int index)
+{ fprintf(stdout, "%lu^%lu", crux->prime_factor[index], crux->log[index]); index++; if (index == crux->length) return crux; fprintf(stdout, " * "); return _CRUX_print(crux, index); }
+// recursive function to print crux ^
+
+struct _crux *CRUX_print(struct _crux *crux)
+{ fprintf(stdout, "%lu = ", CRUX_calculate(MULTIPLICATIVE_IDENTITY, crux, 0)); _CRUX_print(crux, 0); fprintf(stdout, "\n"); return crux; }
+// wrapper function for calling the recursive function '_CRUX_print' ^
 
 int main(int argc, char **argv) { unsigned long composite; unparsed_arg = argv[1];
     if (!str_represents_ul(unparsed_arg, &composite)) error_message(error_selector(1), -1);
@@ -76,9 +73,7 @@ int main(int argc, char **argv) { unsigned long composite; unparsed_arg = argv[1
     fprintf(stderr, "Interpreted '%s' from ", _preferred_factorization_ENGINE_description()); if (argv[2]) fprintf(stderr, "terminal argument"); else fprintf(stderr, "the global preferences file"); fprintf(stderr, ".\n");
     // interpret composite and factorization engine ^
 
-    struct LL_ *divisors = unit_spawn(composite);
-    struct LL_ *tail = divisor_list_stretch(divisors);
-
+    struct LL_ *divisors = unit_spawn(composite); /* struct LL_ *tail = */ divisor_list_stretch(divisors);
     CRUX_free(CRUX_print(CRUX_initialize(number_of_distinct_prime_factors(divisors->e, divisors->next, 1), divisors)));
     return 0;
 }
