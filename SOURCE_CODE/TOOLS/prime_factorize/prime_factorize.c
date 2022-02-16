@@ -53,29 +53,25 @@ struct _crux *CRUX_initialize(unsigned long number_of_distinct_prime_factors, st
 }
 // '_crux' functions dealing with allocation and free'ing
 
-struct _crux *_RESULT(struct _crux *crux, int index)
-{ fprintf(stdout, "%lu^%lu", crux->prime_factor[index], crux->log[index]); index++; if (index == crux->entries) return crux; fprintf(stdout, " * "); return _RESULT(crux, index); }
-struct _crux *RESULT(struct _crux *crux, unsigned long composite) { fprintf(stdout, "%lu = ", composite); _RESULT(crux, 0); fprintf(stdout, "\n"); return crux; }
-// a recursive do-while function which prints out the _RESULT (^^) and a wrapper for this function (^)
+struct _crux *_CRUX_printout(struct _crux *crux, int index) // recursive function <--
+{ fprintf(stdout, "%lu^%lu", crux->prime_factor[index], crux->log[index]); index++; if (index == crux->entries) return crux; fprintf(stdout, " * "); return _CRUX_printout(crux, index); }
+
+struct _crux *CRUX_printout(struct _crux *crux, unsigned long composite) // wrapper for the above recursive function <--
+{ fprintf(stdout, "%lu = ", composite); _CRUX_printout(crux, 0); fprintf(stdout, "\n"); return crux; }
 
 int main(int argc, char **argv) { unsigned long composite; unparsed_arg = argv[1];
     if (!str_represents_ul(unparsed_arg, &composite)) error_message(error_selector(1), -1);
-    // interpret composite ^
-    
     char *ptr = argv[2]; if (!ptr) ptr = query_preferences_file();
     if (!(_preferred_factorization_ENGINE = factorization_method(SELECTOR_from_str_representing_factorization_method(ptr)))) { fprintf(stderr, "Failed to interpret '%s' from ", ptr);
 	if (argv[2]) fprintf(stderr, "terminal argument"); else fprintf(stderr, "global preferences file '%s'", _REPORT_preferred_factorization_engine_file()); fprintf(stderr, ".\n\n");
 	char *UPDATE_VALUE; _preferred_factorization_ENGINE = factorization_method(SELECTOR_from_str_representing_factorization_method(UPDATE_VALUE = STDIN_factorization_engine(ptr)));
 	if (!argv[2]) { write_to_preferences_file(UPDATE_VALUE, fopen(_REPORT_preferred_factorization_engine_file(), "w")); fprintf(stdout, "Updated preferences file.\n\n"); } }
     fprintf(stderr, "Interpreted '%s' from ", _preferred_factorization_ENGINE_description()); if (argv[2]) fprintf(stderr, "terminal argument"); else fprintf(stderr, "the global preferences file"); fprintf(stderr, ".\n");
-    // interpret and set factorization engine ^
+    // interpret composite and factorization engine ^
 
     struct LL_ *divisors = unit_spawn(composite);
     struct LL_ *tail = divisor_list_stretch(divisors);
 
-    CRUX_free(RESULT(CRUX_initialize(distinct_prime_factors(divisors->e, divisors->next, 1), divisors), composite));
-
-    // struct _crux *crux = CRUX_initialize(distinct_prime_factors(divisors->e, divisors->next, 1), divisors); RESULT(crux, composite); CRUX_free(crux);
-    // can also be like this ^
+    CRUX_free(CRUX_printout(CRUX_initialize(distinct_prime_factors(divisors->e, divisors->next, 1), divisors), composite));
     return 0;
 }
