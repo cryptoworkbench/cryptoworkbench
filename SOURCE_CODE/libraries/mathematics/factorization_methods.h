@@ -41,3 +41,10 @@ void SET_preferred_factorization_ENGINE(int SELECTOR);
 void FACTORIZATION_METHOD_UNCHOSEN(char *arg);
 int SELECTOR_from_str_representing_factorization_method(char *arg);
 const char *_preferred_factorization_ENGINE_description();
+
+/*
+struct LL_ *insert(struct LL_ *last, unsigned long new_divisor);
+struct LL_ *stretched_divisor(struct LL_ *in, struct ordered_pair divisor_pair);
+struct LL_ *divisor_list_stretch(struct LL_ *cursor);
+unsigned long number_of_distinct_prime_factors(struct LL_ *divisors);
+*/

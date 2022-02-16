@@ -11,10 +11,8 @@
 struct LL_ { struct LL_ *next; unsigned long e; };
 // linked list type for the triple ref technique ^
 
-struct _crux { unsigned long *prime_factor; int *log; };
-
-struct _crux *crux; int divisor_count;
-// global variables ^
+struct _crux { unsigned long *prime_factor; int *log; }; struct _crux *crux;
+// program crux ^
 
 _error_selector error_selector(int SELECTOR) { switch (SELECTOR) { case 1: fprintf(stderr, "Please provide as first argument the composite to factorize.\n\n"); return str_not_parsable_as_number; }; }
 // error functions ^
@@ -37,26 +35,21 @@ struct LL_ *stretched_divisor(struct LL_ *in, struct ordered_pair divisor_pair) 
 } // divisor_list_stretch()
 
 struct LL_ *divisor_list_stretch(struct LL_ *cursor)
-{ struct ordered_pair divisor_pair = factorize(cursor->e, NULL); if (!(divisor_pair.a - 1)) return cursor; divisor_count++; return divisor_list_stretch(stretched_divisor(cursor, divisor_pair)); }
+{ struct ordered_pair divisor_pair = factorize(cursor->e, NULL); if (!(divisor_pair.a - 1)) return cursor; return divisor_list_stretch(stretched_divisor(cursor, divisor_pair)); }
 // recursive function which stretches a LL of divisors ^
 
-// void LL_print(struct LL_ *i) { for (; i != NULL; i = i->next) fprintf(stdout, "%lu * ", i->e); }
+void _number_of_distinct_prime_factors(unsigned long previous_prime_factor, struct LL_ *i, unsigned long *ret_val)
+{ if (!(i)) return; if (i->e != previous_prime_factor) (*ret_val)++; _number_of_distinct_prime_factors(i->e, i->next, ret_val); }
 
 unsigned long number_of_distinct_prime_factors(struct LL_ *divisors) {
-    unsigned long ret_val = 0;
-    struct LL_ *i = divisors; do {
-	unsigned long prime_factor = i->e; ret_val++;
-	while (i && i->e == prime_factor) i = i->next;
-    } while (i);
-    // count number of distinct prime factors ^^
+    unsigned long ret_val = 1; _number_of_distinct_prime_factors(divisors->e, divisors->next, &ret_val);
 
     crux = (struct _crux *) malloc(sizeof(struct _crux));
     crux->prime_factor = (unsigned long *) malloc(sizeof(unsigned long) * ret_val);
     crux->log = (int *) malloc(sizeof(int) * ret_val);
     // allocate the crux and it's arrays
 
-    // int index; for (struct LL_ *i = list, index = 0; i && index < divisor_count; index++) { }
-    i = divisors; int index = 0;
+    struct LL_ *i = divisors; int index = 0;
     do {crux->prime_factor[index] = i->e;
 	for (crux->log[index] = 0; i && i->e == crux->prime_factor[index]; crux->log[index]++, i = i->next) {}
 	index++;
@@ -66,7 +59,7 @@ unsigned long number_of_distinct_prime_factors(struct LL_ *divisors) {
 }
 
 int main(int argc, char **argv) { unsigned long composite; unparsed_arg = argv[1];
-    if (!str_represents_ul(unparsed_arg, &composite)) error_message(error_selector(1), -1); divisor_count = 1;
+    if (!str_represents_ul(unparsed_arg, &composite)) error_message(error_selector(1), -1);
     // interpret composite ^
     
     char *ptr = argv[2]; if (!ptr) ptr = query_preferences_file();
@@ -77,10 +70,12 @@ int main(int argc, char **argv) { unsigned long composite; unparsed_arg = argv[1
     fprintf(stderr, "Interpreted '%s' from ", _preferred_factorization_ENGINE_description()); if (argv[2]) fprintf(stderr, "terminal argument"); else fprintf(stderr, "the global preferences file"); fprintf(stderr, ".\n");
     // interpret and set factorization engine ^
 
-    struct LL_ *divisors = unit_spawn(composite); struct LL_ *tail = divisor_list_stretch(divisors);
+    struct LL_ *divisors = unit_spawn(composite);
+    struct LL_ *tail = divisor_list_stretch(divisors);
     fprintf(stdout, "%lu = ", composite);
 
     unsigned long number_of_distinct_factors = number_of_distinct_prime_factors(divisors);
+    // printf("ret\n");
     for (unsigned long i = 0; i < number_of_distinct_factors - 1; i++) printf("%lu^%lu * ", crux->prime_factor[i], crux->log[i]);
     printf("%lu^%lu\n", crux->prime_factor[number_of_distinct_factors - 1], crux->log[number_of_distinct_factors - 1]);
     return 0;

@@ -150,3 +150,47 @@ const char *_preferred_factorization_ENGINE_description() { initialize_factoriza
     else if (_preferred_factorization_ENGINE == fermat_factorization) return _h;
     return NULL;
 }
+
+// FUNCTIONS FOR PRIME FACTORIZATION:
+/*
+struct LL_ *insert(struct LL_ *last, unsigned long new_divisor) {
+    struct LL_ *ret_val = (struct LL_ *) malloc(sizeof(struct LL_)); ret_val->e = new_divisor;
+    // create the new unit ^
+
+    struct LL_ *next = last->next; last->next = ret_val; ret_val->next = next; return ret_val;
+    // insert said unit and return at this unit ^
+} // divisor_list_stretch()
+
+struct LL_ *stretched_divisor(struct LL_ *in, struct ordered_pair divisor_pair) { in->e = divisor_pair.a;
+    // update factorized sloth with smaller divisor ^
+
+    return insert(in, divisor_pair.b);
+    // insert the greater divisor and return the as-of-yet unfactorized divisor in the LL
+} // divisor_list_stretch()
+
+struct LL_ *divisor_list_stretch(struct LL_ *cursor)
+{ struct ordered_pair divisor_pair = factorize(cursor->e, NULL); if (!(divisor_pair.a - 1)) return cursor; divisor_count++; return divisor_list_stretch(stretched_divisor(cursor, divisor_pair)); }
+// recursive function which stretches a LL of divisors ^
+
+unsigned long number_of_distinct_prime_factors(struct LL_ *divisors) {
+    unsigned long ret_val = 0;
+    struct LL_ *i = divisors; do {
+	unsigned long prime_factor = i->e; ret_val++;
+	while (i && i->e == prime_factor) i = i->next;
+    } while (i);
+    // count number of distinct prime factors ^^
+
+    crux = (struct _crux *) malloc(sizeof(struct _crux));
+    crux->prime_factor = (unsigned long *) malloc(sizeof(unsigned long) * ret_val);
+    crux->log = (int *) malloc(sizeof(int) * ret_val);
+    // allocate the crux and it's arrays
+
+    i = divisors; int index = 0;
+    do {crux->prime_factor[index] = i->e;
+	for (crux->log[index] = 0; i && i->e == crux->prime_factor[index]; crux->log[index]++, i = i->next) {}
+	index++;
+    } while (index < ret_val);
+
+    return ret_val;
+}
+*/
