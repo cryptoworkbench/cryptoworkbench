@@ -1,0 +1,14 @@
+subgroup_examplifier: Could not open 'ARCHIVE/multiplicative_group_of_integers_modulus_23'
+subgroup_examplifier: Assuming the 'ARCHIVE/' folder was there and it wasn't a permission thing, I will try to use 'group_element_table_generator' to autonomously archive ℕ23*
+subgroup_examplifier: group_element_table_generator returned an exit status of '0' ⇒ ℕ23* should be registered now
+subgroup_examplifier: Sourced ℕ23* from 'ARCHIVE/multiplicative_group_of_integers_modulus_23'
+subgroup_examplifier: Closed 'ARCHIVE/multiplicative_group_of_integers_modulus_23'
+subgroup_examplifier: Successfully opened 'ARCHIVE/multiplicative_group_of_integers_modulus_23'
+subgroup_examplifier: Sourced ℕ23* from 'ARCHIVE/multiplicative_group_of_integers_modulus_23'
+subgroup_examplifier: Closed 'ARCHIVE/multiplicative_group_of_integers_modulus_23'
+subgroup_examplifier: Successfully opened 'ARCHIVE/multiplicative_group_of_integers_modulus_23'
+subgroup_examplifier: Sourced ℕ23* from 'ARCHIVE/multiplicative_group_of_integers_modulus_23'
+subgroup_examplifier: Closed 'ARCHIVE/multiplicative_group_of_integers_modulus_23'
+subgroup_examplifier: Successfully opened 'ARCHIVE/multiplicative_group_of_integers_modulus_23'
+subgroup_examplifier: Sourced ℕ23* from 'ARCHIVE/multiplicative_group_of_integers_modulus_23'
+subgroup_examplifier: Closed 'ARCHIVE/multiplicative_group_of_integers_modulus_23'
