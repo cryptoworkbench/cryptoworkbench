@@ -13,5 +13,5 @@
 .legendre_symbol.o: legendre_symbol.c
 	gcc -c legendre_symbol.c -o .legendre_symbol.o
 
-legendre_symbol: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.primality_testing.o .legendre_symbol.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.primality_testing.o .legendre_symbol.o -o ../../../WORKBENCH/legendre_symbol
+legendre_symbol: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.primality_testing.o .legendre_symbol.o .legendre_symbol.sh
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.primality_testing.o .legendre_symbol.o -o ../../../WORKBENCH/legendre_symbol && cp .legendre_symbol.sh ../../../WORKBENCH/legendre_symbol.sh
