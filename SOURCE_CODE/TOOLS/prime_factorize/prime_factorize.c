@@ -21,6 +21,7 @@ int main(int argc, char **argv) { unsigned long number; unparsed_arg = argv[1];
     fprintf(stderr, "Interpreted '%s' from ", _preferred_factorization_ENGINE_description()); if (argv[2]) fprintf(stderr, "terminal argument"); else fprintf(stderr, "the global preferences file"); fprintf(stderr, ".\n");
     // interpret number and factorization engine ^
 
-    PRIME_FACTORIZATION_free(PRIME_FACTORIZATION_print(PRIME_FACTORIZATION_initialize(number)));
+    struct _PRIME_FACTORIZATION *PRIME_FACTORIZATION = PRIME_FACTORIZATION_initialize(number);
+    PRIME_FACTORIZATION_free(PRIME_FACTORIZATION_print(PRIME_FACTORIZATION));
     return 0;
 }
