@@ -165,7 +165,7 @@ FILE *prime_table_open(char *prime_table_filename) {
     return prime_table;
 } void prime_table_close(FILE *prime_table) { fclose(prime_table); _open_prime_table = NULL; }
 
-int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q) { return (odd_prime_q - 1 - _exponentiate(odd_prime_p, (odd_prime_q - 1) / 2, odd_prime_q)) ? 1 : -1; }
+int eulers_criterion(unsigned long odd_prime_p, unsigned long odd_prime_q) { return (odd_prime_q - 1 - _exponentiate(odd_prime_p, (odd_prime_q - 1) / 2, odd_prime_q)) ? 1 : -1; }
 
 void open_urandom() { urandom = fopen("/dev/urandom", "r"); }
 void close_urandom() { if (urandom) fclose(urandom); }

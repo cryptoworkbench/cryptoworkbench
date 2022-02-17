@@ -78,7 +78,7 @@ char *sieve_of_eratosthenes(unsigned long limit);
 unsigned long primes_printed_from_sieve_array_to_FS(char *sieve, unsigned long limit, FILE *FS);
 FILE *prime_table_open(char *prime_table_filename); // < I want this to eventually try to cooperate with the logbook instead of stderr
 void prime_table_close(FILE *prime_table); // < closes FS and resets char * variable '_open_prime_table' to NULL
-int legendre_symbol(unsigned long odd_prime_p, unsigned long odd_prime_q);
+int eulers_criterion(unsigned long odd_prime_p, unsigned long odd_prime_q);
 void open_urandom();
 void close_urandom();
 unsigned long urandom_number(unsigned long upper_bound);

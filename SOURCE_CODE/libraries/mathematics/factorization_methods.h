@@ -42,9 +42,22 @@ void FACTORIZATION_METHOD_UNCHOSEN(char *arg);
 int SELECTOR_from_str_representing_factorization_method(char *arg);
 const char *_preferred_factorization_ENGINE_description();
 
-/*
-struct LL_ *insert(struct LL_ *last, unsigned long new_divisor);
-struct LL_ *stretched_divisor(struct LL_ *in, struct ordered_pair divisor_pair);
-struct LL_ *divisor_list_stretch(struct LL_ *cursor);
-unsigned long number_of_distinct_prime_factors(struct LL_ *divisors);
-*/
+
+
+// PRIME FACTORIZATION:
+struct LL_ { struct LL_ *next; unsigned long e; };
+struct _PRIME_FACTORIZATION { unsigned long *prime_factor; int *log; int number_of_distinct_prime_factors; };
+// Variable type declarations ^
+
+struct LL_ *insert(struct LL_ *last, unsigned long new_divisor); // NON-recursive <--
+struct LL_ *stretched_divisor(struct LL_ *in, struct ordered_pair divisor_pair); // NON-recursive <--
+struct LL_ *divisor_list_stretch(struct LL_ *i); // recursive function yielding the list containing the prime factorization <--
+void divisor_list_WIPE(struct LL_ *i); // also recursive
+unsigned long number_of_distinct_prime_factors(unsigned long previous_prime_factor, struct LL_ *i, unsigned long ret_val); // recursive function which counts the number of distinct prime factors said list <--
+void PRIME_FACTORIZATION_setup(struct _PRIME_FACTORIZATION *crux, unsigned long last_factor, struct LL_ *i, unsigned long index); // recursive function which set's up the program's crux (which holds the associative array)
+struct _PRIME_FACTORIZATION *PRIME_FACTORIZATION_allocate(int number_of_distinct_prime_factors); // allocation of a struct '_PRIME_FACTORIZATION'
+void PRIME_FACTORIZATION_free(struct _PRIME_FACTORIZATION *crux); // destruction of a struct '_PRIME_FACTORIZATION'
+struct _PRIME_FACTORIZATION *PRIME_FACTORIZATION_initialize(unsigned long number_of_distinct_prime_factors, struct LL_ *divisors); // NON-recursive wrapper function for 'PRIME_FACTORIZATION_allocate' <--
+unsigned long PRIME_FACTORIZATION_calculate(unsigned long multiplicative_accumulator, struct _PRIME_FACTORIZATION *crux, int index); // recursive function for converting from prime factorization back to number ^
+struct _PRIME_FACTORIZATION *_PRIME_FACTORIZATION_print(struct _PRIME_FACTORIZATION *crux, int index); // recursive function which prints struct '_PRIME_FACTORIZATION'
+struct _PRIME_FACTORIZATION *PRIME_FACTORIZATION_print(struct _PRIME_FACTORIZATION *crux); // wrapper for the above recursive function

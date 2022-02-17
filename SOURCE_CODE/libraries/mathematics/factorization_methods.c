@@ -151,46 +151,50 @@ const char *_preferred_factorization_ENGINE_description() { initialize_factoriza
     return NULL;
 }
 
-// FUNCTIONS FOR PRIME FACTORIZATION:
-/*
-struct LL_ *insert(struct LL_ *last, unsigned long new_divisor) {
-    struct LL_ *ret_val = (struct LL_ *) malloc(sizeof(struct LL_)); ret_val->e = new_divisor;
-    // create the new unit ^
+// PRIME FACTORIZATION:
+struct LL_ *insert(struct LL_ *last, unsigned long new_divisor) // NON-recursive <--
+{ struct LL_ *ret_val = (struct LL_ *) malloc(sizeof(struct LL_)); ret_val->e = new_divisor; struct LL_ *next = last->next; last->next = ret_val; ret_val->next = next; return ret_val; }
 
-    struct LL_ *next = last->next; last->next = ret_val; ret_val->next = next; return ret_val;
-    // insert said unit and return at this unit ^
-} // divisor_list_stretch()
+struct LL_ *stretched_divisor(struct LL_ *in, struct ordered_pair divisor_pair) // NON-recursive <--
+{ in->e = divisor_pair.a; return insert(in, divisor_pair.b); }
 
-struct LL_ *stretched_divisor(struct LL_ *in, struct ordered_pair divisor_pair) { in->e = divisor_pair.a;
-    // update factorized sloth with smaller divisor ^
+struct LL_ *divisor_list_stretch(struct LL_ *i)
+{ struct ordered_pair divisor_pair = factorize(i->e, NULL); if (!(divisor_pair.a - 1)) return i; return divisor_list_stretch(stretched_divisor(i, divisor_pair)); }
+// recursive function yielding the list containing the prime factorization ^
 
-    return insert(in, divisor_pair.b);
-    // insert the greater divisor and return the as-of-yet unfactorized divisor in the LL
-} // divisor_list_stretch()
+void divisor_list_WIPE(struct LL_ *i) { if (!(i)) return; struct LL_ *next = i->next; free(i); divisor_list_WIPE(next); }
 
-struct LL_ *divisor_list_stretch(struct LL_ *cursor)
-{ struct ordered_pair divisor_pair = factorize(cursor->e, NULL); if (!(divisor_pair.a - 1)) return cursor; divisor_count++; return divisor_list_stretch(stretched_divisor(cursor, divisor_pair)); }
-// recursive function which stretches a LL of divisors ^
+unsigned long number_of_distinct_prime_factors(unsigned long previous_prime_factor, struct LL_ *i, unsigned long ret_val)
+{ if (!(i)) return ret_val; if (i->e != previous_prime_factor) ret_val++; number_of_distinct_prime_factors(i->e, i->next, ret_val); }
+// recursive function which counts the number of distinct prime factors said (^^) list ^
 
-unsigned long number_of_distinct_prime_factors(struct LL_ *divisors) {
-    unsigned long ret_val = 0;
-    struct LL_ *i = divisors; do {
-	unsigned long prime_factor = i->e; ret_val++;
-	while (i && i->e == prime_factor) i = i->next;
-    } while (i);
-    // count number of distinct prime factors ^^
+void PRIME_FACTORIZATION_setup(struct _PRIME_FACTORIZATION *crux, unsigned long last_factor, struct LL_ *i, unsigned long index)
+{ if (!(i)) return; if (i->e == last_factor) crux->log[index]++; else { index++; crux->prime_factor[index] = i->e; } PRIME_FACTORIZATION_setup(crux, i->e, i->next, index); }
+// recursive function which set's up the program's crux (which holds the associative array)
 
-    crux = (struct _crux *) malloc(sizeof(struct _crux));
-    crux->prime_factor = (unsigned long *) malloc(sizeof(unsigned long) * ret_val);
-    crux->log = (int *) malloc(sizeof(int) * ret_val);
-    // allocate the crux and it's arrays
+struct _PRIME_FACTORIZATION *PRIME_FACTORIZATION_allocate(int number_of_distinct_prime_factors) {
+    struct _PRIME_FACTORIZATION *ret_val = (struct _PRIME_FACTORIZATION *) malloc(sizeof(struct _PRIME_FACTORIZATION));
+    ret_val->prime_factor = (unsigned long *) malloc(sizeof(unsigned long) * number_of_distinct_prime_factors);
+    ret_val->log = (int *) malloc(sizeof(int) * number_of_distinct_prime_factors);
+    for (int i = 0; i < number_of_distinct_prime_factors; i++) ret_val->log[i] = 1; ret_val->number_of_distinct_prime_factors = number_of_distinct_prime_factors; return ret_val;
+} void PRIME_FACTORIZATION_free(struct _PRIME_FACTORIZATION *crux) { free(crux->log); free(crux->prime_factor); free(crux); }
+// funct^ons for allocation and destruction of a program's crux ^
 
-    i = divisors; int index = 0;
-    do {crux->prime_factor[index] = i->e;
-	for (crux->log[index] = 0; i && i->e == crux->prime_factor[index]; crux->log[index]++, i = i->next) {}
-	index++;
-    } while (index < ret_val);
-
-    return ret_val;
+struct _PRIME_FACTORIZATION *PRIME_FACTORIZATION_initialize(unsigned long number_of_distinct_prime_factors, struct LL_ *divisors) { // NON-recursive wrapper function for 'PRIME_FACTORIZATION_allocate' <--
+    struct _PRIME_FACTORIZATION *ret_val = PRIME_FACTORIZATION_allocate(number_of_distinct_prime_factors); ret_val->prime_factor[0] = divisors->e;
+    PRIME_FACTORIZATION_setup(ret_val, ret_val->prime_factor[0], divisors->next, 0); divisor_list_WIPE(divisors); return ret_val;
 }
-*/
+
+unsigned long PRIME_FACTORIZATION_calculate(unsigned long multiplicative_accumulator, struct _PRIME_FACTORIZATION *crux, int index) {
+    if (index == crux->number_of_distinct_prime_factors) return multiplicative_accumulator;
+    return PRIME_FACTORIZATION_calculate(multiplicative_accumulator * exponentiate(crux->prime_factor[index], crux->log[index]), crux, 1 + index);
+} // recursive function for converting from prime factorization back to number ^
+
+struct _PRIME_FACTORIZATION *_PRIME_FACTORIZATION_print(struct _PRIME_FACTORIZATION *crux, int index) {
+    fprintf(stdout, "%lu^%lu", crux->prime_factor[index], crux->log[index]); index++; if (index == crux->number_of_distinct_prime_factors) return crux;
+    fprintf(stdout, " * "); return _PRIME_FACTORIZATION_print(crux, index);
+} // recursive function to print crux ^
+
+struct _PRIME_FACTORIZATION *PRIME_FACTORIZATION_print(struct _PRIME_FACTORIZATION *crux)
+{ fprintf(stdout, "%lu = ", PRIME_FACTORIZATION_calculate(MULTIPLICATIVE_IDENTITY, crux, 0)); _PRIME_FACTORIZATION_print(crux, 0); fprintf(stdout, "\n"); return crux; }
+// wrapper function for calling the recursive function '_PRIME_FACTORIZATION_print' ^
