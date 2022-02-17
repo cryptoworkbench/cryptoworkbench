@@ -57,7 +57,8 @@ unsigned long number_of_distinct_prime_factors(unsigned long previous_prime_fact
 void PRIME_FACTORIZATION_setup(struct _PRIME_FACTORIZATION *crux, unsigned long last_factor, struct LL_ *i, unsigned long index); // recursive function which set's up the program's crux (which holds the associative array)
 struct _PRIME_FACTORIZATION *PRIME_FACTORIZATION_allocate(int number_of_distinct_prime_factors); // allocation of a struct '_PRIME_FACTORIZATION'
 void PRIME_FACTORIZATION_free(struct _PRIME_FACTORIZATION *crux); // destruction of a struct '_PRIME_FACTORIZATION'
-struct _PRIME_FACTORIZATION *PRIME_FACTORIZATION_initialize(unsigned long number_of_distinct_prime_factors, struct LL_ *divisors); // NON-recursive wrapper function for 'PRIME_FACTORIZATION_allocate' <--
+struct _PRIME_FACTORIZATION *_PRIME_FACTORIZATION_initialize(unsigned long number_of_distinct_prime_factors, struct LL_ *divisors); // NON-recursive wrapper function for 'PRIME_FACTORIZATION_allocate' <--
+struct _PRIME_FACTORIZATION *PRIME_FACTORIZATION_initialize(unsigned long number); // NON-recursive wrapper function for 'PRIME_FACTORIZATION_allocate' <--
 unsigned long PRIME_FACTORIZATION_calculate(unsigned long multiplicative_accumulator, struct _PRIME_FACTORIZATION *crux, int index); // recursive function for converting from prime factorization back to number ^
 struct _PRIME_FACTORIZATION *_PRIME_FACTORIZATION_print(struct _PRIME_FACTORIZATION *crux, int index); // recursive function which prints struct '_PRIME_FACTORIZATION'
 struct _PRIME_FACTORIZATION *PRIME_FACTORIZATION_print(struct _PRIME_FACTORIZATION *crux); // wrapper for the above recursive function
