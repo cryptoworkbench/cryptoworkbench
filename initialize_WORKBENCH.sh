@@ -63,6 +63,8 @@ cd ../group_element_table_generator && make group_element_table_generator && ech
 "
 cd ../subgroup_examplifier && make subgroup_examplifier && echo "#######===> The following tool has been assemblied/linked: subgroup_examplifier
 "
+cd ../quadratic_residue && make quadratic_residue && echo "#######===> The following tool has been assemblied/linked: quadratic_residue
+"
 echo "#######===> SOME MORE TOOLS HAVE BEEN ASSEMBLED/LINKED: -->                                         <===#######
 ~ sieve_of_eratosthenes
 ~ prime_table_exporter
@@ -70,6 +72,7 @@ echo "#######===> SOME MORE TOOLS HAVE BEEN ASSEMBLED/LINKED: -->               
 ~ prime_factorize
 ~ modular_group_element_table_generator 
 ~ subgroup_examplifier
+~ quadratic_residue
 ~ Diffie_Hellman_Key_Agreement
 ~ cayley_table_generator
 "

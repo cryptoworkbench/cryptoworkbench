@@ -1,6 +1,7 @@
-#!/bin/bash
+#!/bin/bash 
 
-rm -r WORKBENCH/ && mkdir WORKBENCH/
+rm -fr WORKBENCH/
+mkdir WORKBENCH/
 mkdir WORKBENCH/ARCHIVE
 clear && echo "########### ASSEMBLY LINE ROLLING ! #######=====>"
 cd SOURCE_CODE/TOOLS/equivalence_class && make equivalence_class && echo "#######===> The following tool has been assemblied/linked: additive_inverse
@@ -56,18 +57,24 @@ cd ../prime_table_exporter && make prime_table_exporter && echo "#######===> The
 "
 cd ../factorize && make factorize && echo "#######===> The following tool has been assemblied/linked: factorize
 "
+cd ../prime_factorize && make prime_factorize && echo "#######===> The following tool has been assemblied/linked: prime_factorize
+"
 cd ../factorization_based_primality_test && make factorization_based_primality_test && echo "#######===> The following tool has been assemblied/linked: factorization_based_primality_test
 "
 cd ../group_element_table_generator && make group_element_table_generator && echo "#######===> The following tool has been assemblied/linked: group_element_table_generator
 "
 cd ../subgroup_examplifier && make subgroup_examplifier && echo "#######===> The following tool has been assemblied/linked: subgroup_examplifier
 "
+cd ../quadratic_residue && make quadratic_residue && echo "#######===> The following tool has been assemblied/linked: quadratic_residue
+"
 echo "#######===> SOME MORE TOOLS HAVE BEEN ASSEMBLED/LINKED: -->                                         <===#######
 ~ sieve_of_eratosthenes
 ~ prime_table_exporter
 ~ factorize
+~ prime_factorize
 ~ modular_group_element_table_generator 
 ~ subgroup_examplifier
+~ quadratic_residue
 ~ Diffie_Hellman_Key_Agreement
 ~ cayley_table_generator
 "
@@ -84,4 +91,5 @@ echo "########### ASSEMBLY LINE HALTED !
 ########### The setup completed ! (presumably)
 #############################################################################
 ####### 'cd WORKBENCH/' to enter your VIRTUAL MATHEMATICS LABORATORY. #######"
+# ls WORKBENCH/ | wc -l FOR SOME REASON DOESN'T WORK
 # ^-- Bash script done
