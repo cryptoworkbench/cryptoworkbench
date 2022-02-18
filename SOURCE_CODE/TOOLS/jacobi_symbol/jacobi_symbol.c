@@ -1,7 +1,10 @@
-// haven't yet found a fail in legendre_symbol()
+// Haven't yet found a fail in legendre_symbol()
 //
-// found a fail in jacobi_symbol():
+// Found a fail in jacobi_symbol():
 // '~/WORKBENCH/<argv[0]> 20 21' yields "20 is a quadratic residue mod 21", which is not true
+//
+// DOES NOT NECESSARILY CALCULATE ALL QUADRATIC ROOTS:
+// cl && subgroup_examplifier 15 1 1 1 && quadratic_residue_with_root 15
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h"
@@ -19,12 +22,12 @@ int _legendre_symbol(unsigned long N, unsigned long q, int multiplicative_accumu
 int legendre_symbol(unsigned long N, unsigned long q) {
     if (N == 1) return 1;
     else if (N == 2) { int i = q % 8; if (i == 1 || i == 7) return 1; else if (i == 3 || i == 5) return -1; }
-    return _legendre_symbol(N, q, 1, 0, PRIME_FACTORIZATION_initialize(N));
+    return _legendre_symbol(N, q, 1, 0, PRIME_FACTORIZATION(N));
 }
 
 // Attempts the generalize the above using factorization for the denominator
 int jacobi_symbol(unsigned long p, unsigned long C) {
-    struct _PRIME_FACTORIZATION *prime_factorization = PRIME_FACTORIZATION_initialize(C);
+    struct _PRIME_FACTORIZATION *prime_factorization = PRIME_FACTORIZATION(C);
     int m = 1;
     for (int i = 0; i < prime_factorization->number_of_distinct_prime_factors; i++) {
 	int leg = legendre_symbol(p % prime_factorization->prime_factor[i], prime_factorization->prime_factor[i]);

@@ -180,14 +180,14 @@ struct _PRIME_FACTORIZATION *PRIME_FACTORIZATION_allocate(int number_of_distinct
 } void PRIME_FACTORIZATION_free(struct _PRIME_FACTORIZATION *crux) { free(crux->log); free(crux->prime_factor); free(crux); }
 // funct^ons for allocation and destruction of a program's crux ^
 
-struct _PRIME_FACTORIZATION *_PRIME_FACTORIZATION_initialize(unsigned long number_of_distinct_prime_factors, struct LL_ *divisors) { // NON-recursive wrapper function for 'PRIME_FACTORIZATION_allocate' <--
+struct _PRIME_FACTORIZATION *_PRIME_FACTORIZATION(unsigned long number_of_distinct_prime_factors, struct LL_ *divisors) { // NON-recursive wrapper function for 'PRIME_FACTORIZATION_allocate' <--
     struct _PRIME_FACTORIZATION *ret_val = PRIME_FACTORIZATION_allocate(number_of_distinct_prime_factors); ret_val->prime_factor[0] = divisors->e;
     PRIME_FACTORIZATION_setup(ret_val, ret_val->prime_factor[0], divisors->next, 0); divisor_list_WIPE(divisors); return ret_val;
 }
 
-struct _PRIME_FACTORIZATION *PRIME_FACTORIZATION_initialize(unsigned long number) { // NON-recursive wrapper function for 'PRIME_FACTORIZATION_allocate' <--
+struct _PRIME_FACTORIZATION *PRIME_FACTORIZATION(unsigned long number) { // NON-recursive wrapper function for 'PRIME_FACTORIZATION_allocate' <--
     struct LL_ *divisors = (struct LL_ *) malloc(sizeof(struct LL_)); divisors->e = number; divisors->next = NULL; // struct LL_ *tail =
-    divisor_list_stretch(divisors); return _PRIME_FACTORIZATION_initialize(number_of_distinct_prime_factors(divisors->e, divisors->next, 1), divisors);
+    divisor_list_stretch(divisors); return _PRIME_FACTORIZATION(number_of_distinct_prime_factors(divisors->e, divisors->next, 1), divisors);
 }
 
 unsigned long PRIME_FACTORIZATION_calculate(unsigned long multiplicative_accumulator, struct _PRIME_FACTORIZATION *crux, int index) {
