@@ -1,10 +1,20 @@
-// Haven't yet found a fail in legendre_symbol()
+// DEVELOPERS NOTES:
+// The Jacobi symbol is actually only defined when the numerator is odd: this is not reflected in the code.
+//
+// does not necessarily calculate all quadratic roots (try):
+// cl && subgroup_examplifier 15 1 1 1 && quadratic_residue_with_root 15
 //
 // Found a fail in jacobi_symbol():
 // '~/WORKBENCH/<argv[0]> 20 21' yields "20 is a quadratic residue mod 21", which is not true
 //
-// DOES NOT NECESSARILY CALCULATE ALL QUADRATIC ROOTS:
-// cl && subgroup_examplifier 15 1 1 1 && quadratic_residue_with_root 15
+// However all the online calculators that I found also give this false answer:
+// - https://www.mymathtables.com/numbers/legendre-symbol-generator.html
+// - https://www.easycalculation.com/legendre-symbol.php
+// - http://math.fau.edu/richman/jacobi.htm
+//
+// But M - 1 is never a quadratic residue, so I should probably just hard-code that (have the code reflect this (assumedly) inherent property).
+//
+// Haven't yet found a fail in legendre_symbol()
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h"

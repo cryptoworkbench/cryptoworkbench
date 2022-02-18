@@ -151,6 +151,17 @@ const char *_preferred_factorization_ENGINE_description() { initialize_factoriza
     return NULL;
 }
 
+_factorization_method factorization_method_retrieve(char *optionally_factorization_method_specifying_argument) {
+    _factorization_method ret_val; char *ptr = optionally_factorization_method_specifying_argument; if (!ptr) ptr = query_preferences_file();
+    if (!(ret_val = factorization_method(SELECTOR_from_str_representing_factorization_method(ptr)))) {
+	fprintf(stderr, "Failed to interpret '%s' from ", ptr); if (optionally_factorization_method_specifying_argument) fprintf(stderr, "terminal argument");
+	else fprintf(stderr, "global preferences file '%s'", _REPORT_preferred_factorization_engine_file()); fprintf(stderr, ".\n\n");
+	char *UPDATE_VALUE; ret_val = factorization_method(SELECTOR_from_str_representing_factorization_method(UPDATE_VALUE = STDIN_factorization_engine(ptr)));
+	if (!optionally_factorization_method_specifying_argument) { write_to_preferences_file(UPDATE_VALUE, fopen(_REPORT_preferred_factorization_engine_file(), "w")); fprintf(stdout, "Updated preferences file.\n\n"); }
+    } // if both the terminal argument and the preferences file were unintelligeble, then try to take the factorization method from STDIN by force
+    return ret_val;
+}
+
 // PRIME FACTORIZATION:
 struct LL_ *insert(struct LL_ *last, unsigned long new_divisor) // NON-recursive <--
 { struct LL_ *ret_val = (struct LL_ *) malloc(sizeof(struct LL_)); ret_val->e = new_divisor; struct LL_ *next = last->next; last->next = ret_val; ret_val->next = next; return ret_val; }
