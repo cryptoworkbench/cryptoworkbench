@@ -20,7 +20,7 @@ for i in $(seq 1 $1); do
     ./subgroup_examplifier $1 $2 "$i" $4;
     echo "
     ";
-    echo "refresh rate: every $3 s.
+    echo "refresh rate: every $3s.
     ";
     sleep $3
 done

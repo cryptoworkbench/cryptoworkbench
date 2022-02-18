@@ -1,4 +1,7 @@
 // DEVELOPERS NOTES:
+// Abstract out 'legendre_symbol' into maths.c or factorization.c
+//
+// DEVELOPERS NOTE:
 // The Jacobi symbol is actually only defined when the numerator is odd: this is not reflected in the code.
 //
 // does not necessarily calculate all quadratic roots (try):
