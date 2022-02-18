@@ -10,8 +10,8 @@
 ../../libraries/mathematics/.primality_testing.o: ../../libraries/mathematics/primality_testing.h ../../libraries/mathematics/primality_testing.c
 	gcc -c ../../libraries/mathematics/primality_testing.c -o ../../libraries/mathematics/.primality_testing.o
 
-.legendre_symbol.o: legendre_symbol.c
-	gcc -c legendre_symbol.c -o .legendre_symbol.o
+.jacobi_symbol.o: jacobi_symbol.c
+	gcc -c jacobi_symbol.c -o .jacobi_symbol.o
 
-legendre_symbol: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.primality_testing.o .legendre_symbol.o .legendre_symbol.sh
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.primality_testing.o .legendre_symbol.o -o ../../../WORKBENCH/legendre_symbol && cp .legendre_symbol.sh ../../../WORKBENCH/legendre_symbol.sh
+jacobi_symbol: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.primality_testing.o .jacobi_symbol.o .jacobi_symbol.sh
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o ../../libraries/mathematics/.primality_testing.o .jacobi_symbol.o -o ../../../WORKBENCH/jacobi_symbol && cp .jacobi_symbol.sh ../../../WORKBENCH/jacobi_symbol.sh

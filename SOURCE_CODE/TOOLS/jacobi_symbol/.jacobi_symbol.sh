@@ -4,4 +4,4 @@
 # USING:
 #!/bin/bash 
 
-for i in $(seq 2 $1); do ./legendre_symbol "$i" $2; done
+for i in $(seq 1 $1); do ./legendre_symbol "$i" $2; done
