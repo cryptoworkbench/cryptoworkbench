@@ -19,7 +19,6 @@
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/mathematics/factorization_methods.h"
-#include "../../libraries/mathematics/primality_testing.h"
 
 // Legendre symbol for composite numerator and odd prime denominator
 int _legendre_symbol(unsigned long N, unsigned long q, int multiplicative_accumulator, int index, struct _PRIME_FACTORIZATION *prime_factorization) {
@@ -30,28 +29,34 @@ int _legendre_symbol(unsigned long N, unsigned long q, int multiplicative_accumu
 
 // Same as above but adds support for even prime and multiplicative identity 
 int legendre_symbol(unsigned long N, unsigned long q) {
-    if (N == 1) return 1;
+    if (N == 1) return 1; // 1 is always a quadratic residue in groups with mod > 1
     else if (N == 2) { int i = q % 8; if (i == 1 || i == 7) return 1; else if (i == 3 || i == 5) return -1; }
     return _legendre_symbol(N, q, 1, 0, PRIME_FACTORIZATION(N));
 }
 
-// Attempts the generalize the above using factorization for the denominator
+// Attempts to generalize the above using factorization for the denominator
 int jacobi_symbol(unsigned long p, unsigned long C) {
     struct _PRIME_FACTORIZATION *prime_factorization = PRIME_FACTORIZATION(C);
     int m = 1;
     for (int i = 0; i < prime_factorization->number_of_distinct_prime_factors; i++) {
 	int leg = legendre_symbol(p % prime_factorization->prime_factor[i], prime_factorization->prime_factor[i]);
 	if (leg == -1 && prime_factorization->log[i] % 2 == 0) leg = 1; // if (!(leg + 1 || prime_factorization->log[i] % 2)) leg = 1;
-	printf("legende_symbol of ( %lu / %lu )^%i = %i\n", p % prime_factorization->prime_factor[i], prime_factorization->prime_factor[i], prime_factorization->log[i], leg);
+	// printf("legende_symbol of ( %lu / %lu )^%i = %i\n", p % prime_factorization->prime_factor[i], prime_factorization->prime_factor[i], prime_factorization->log[i], leg);
 	m *= leg;
     }
     return m;
 }
 
-int main(int argc, char **argv) {
-    unsigned long N; if (2 > argc || !str_represents_ul(argv[1], &N)) { fprintf(stderr, "Failed to interpret %s as 'N'.\n", argv[1]); exit(-2); }
-    unsigned long q; if (3 > argc || !str_represents_ul(argv[2], &q)) { fprintf(stderr, "Failed to interpret %s as 'q'.\n", argv[2]); exit(-3); }
-    if (GCD(N, q) != 1) exit(-4);
+_error_selector error_selector(int SELECTOR) { switch (SELECTOR) {
+    case 1: fprintf(stderr, "Please provide as first argument the numerator to the Jacobi symbol.\n\n"); return str_not_parsable_as_number;
+    case 2: fprintf(stderr, "Please provide as second argument the denominator to the Jacobi symbol.\n\n"); return str_not_parsable_as_number;
+}; }
+// the only error function in this program is a combination of a single fprintf() along with str_not_parsable_as_number() ^
+
+int main(int argc, char **argv) { unparsed_arg = argv[1];
+    unsigned long N; if (2 > argc || !str_represents_ul(unparsed_arg, &N)) error_message(error_selector(1), -1); unparsed_arg = argv[2];
+    unsigned long q; if (3 > argc || !str_represents_ul(unparsed_arg, &q)) error_message(error_selector(2), -2); 
+    if (GCD(N, q) != 1) { fprintf(stderr, "%lu is not an element from \u2115/%lu\u2115\n\n", N, q); error_message(numbers_not_coprime, -3); }
     char *ptr = argv[3]; if (!ptr) ptr = query_preferences_file();
     if (!(_preferred_factorization_engine = factorization_method(SELECTOR_from_str_representing_factorization_method(ptr)))) {
 	fprintf(stderr, "Failed to interpret '%s' from ", ptr); if (argv[3]) fprintf(stderr, "terminal argument");
@@ -68,6 +73,6 @@ int main(int argc, char **argv) {
     if (!primality_test_based_on_preferred_factorization_engine(q)) ans = jacobi_symbol(N, q);
     else ans = legendre_symbol(N, q);
     if (ans == 1) fprintf(stdout, "%lu is a quadratic residue mod %lu\n", N, q); // BASH SCRIPT APPROACH <--
-    // else if (ans == - 1) fprintf(stdout, "%lu is not a quadratic residue mod %lu\n", N, q); // BASH SCRIPT APPROACH <--
+    else if (ans == - 1) fprintf(stdout, "%lu is not a quadratic residue mod %lu\n", N, q); // BASH SCRIPT APPROACH <--
     return 0;
 }

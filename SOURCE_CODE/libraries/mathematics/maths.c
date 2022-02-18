@@ -180,3 +180,7 @@ unsigned long chinese_remainder_theorem(unsigned long remainder, unsigned long *
 	    unsigned long reduced_term = isomorphism.b % *moduli[i]; if (reduced_term != remainder) if (reduced_term != 1) isomorphism.b *= _divide(1, reduced_term, *moduli[i]); isomorphism.b *= remainder;
     } return isomorphism.a;
 }
+
+void numbers_not_coprime() {
+    fprintf(stderr, "\nTwo user-input values which should have been coprime were not.\n\n");
+}

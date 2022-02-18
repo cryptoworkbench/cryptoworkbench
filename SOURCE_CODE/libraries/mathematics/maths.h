@@ -88,6 +88,7 @@ void chinese_remainder_theorem_COPRIME_ERROR();
 _error_selector chinese_remainder_theorem_ERROR_SELECTOR(int i);
 */
 unsigned long chinese_remainder_theorem(unsigned long remainder, unsigned long **moduli, unsigned long modulis);
+void numbers_not_coprime(); // food for error_message()
 
 /* Supplemantary notes:
  * 1). The multiplicative inverse is very different from the additive inverse, check the function 'multiplicative_inverse' for this problem.

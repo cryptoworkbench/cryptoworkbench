@@ -34,7 +34,6 @@ struct ordered_pair factorize(unsigned long number, _factorization_method factor
 char *STDIN_factorization_engine();
 void write_to_preferences_file(char *str, FILE *file);
 char *query_preferences_file();
-// new ^
 
 _factorization_method factorization_method(int SELECTOR);
 void FACTORIZATION_METHOD_UNCHOSEN(char *arg);
