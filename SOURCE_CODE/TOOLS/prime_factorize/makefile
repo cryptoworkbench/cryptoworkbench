@@ -7,9 +7,6 @@
 ../../libraries/mathematics/.maths.o: ../../libraries/mathematics/maths.h ../../libraries/mathematics/maths.c
 	gcc -c ../../libraries/mathematics/maths.c -o ../../libraries/mathematics/.maths.o
 
-../../libraries/mathematics/.primality_testing.o: ../../libraries/mathematics/primality_testing.h ../../libraries/mathematics/primality_testing.c
-	gcc -c ../../libraries/mathematics/primality_testing.c -o ../../libraries/mathematics/.primality_testing.o
-
 ../../libraries/mathematics/.factorization_methods.o: ../../libraries/mathematics/factorization_methods.h ../../libraries/mathematics/factorization_methods.c
 	gcc -c ../../libraries/mathematics/factorization_methods.c -o ../../libraries/mathematics/.factorization_methods.o
 
@@ -19,5 +16,5 @@
 ../../../WORKBENCH/prime_factorize.sh: .prime_factorize.sh
 	cp .prime_factorize.sh ../../../WORKBENCH/prime_factorize.sh
 
-prime_factorize: ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.maths.o  ../../libraries/mathematics/.primality_testing.o ../../libraries/mathematics/.factorization_methods.o .prime_factorize.o ../../../WORKBENCH/prime_factorize.sh
-	gcc ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.maths.o  ../../libraries/mathematics/.primality_testing.o ../../libraries/mathematics/.factorization_methods.o .prime_factorize.o -o ../../../WORKBENCH/prime_factorize && cp .prime_factorize.sh ../../../WORKBENCH/prime_factorize.sh
+prime_factorize: ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o .prime_factorize.o ../../../WORKBENCH/prime_factorize.sh
+	gcc ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o .prime_factorize.o -o ../../../WORKBENCH/prime_factorize && cp .prime_factorize.sh ../../../WORKBENCH/prime_factorize.sh

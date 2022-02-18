@@ -42,7 +42,8 @@ void FACTORIZATION_METHOD_UNCHOSEN(char *arg);
 int SELECTOR_from_str_representing_factorization_method(char *arg);
 const char *_preferred_factorization_ENGINE_description();
 
-_factorization_method factorization_method_retrieve(char *optionally_factorization_method_specifying_argument);
+_factorization_method factorization_method_retrieve(char *potentially_factorization_method_specifying_argument);
+int primality_test_based_on_preferred_factorization_engine(unsigned long potential_prime);
 
 // PRIME FACTORIZATION:
 struct LL_ { struct LL_ *next; unsigned long e; };

@@ -5,7 +5,6 @@
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
 #include "../../libraries/mathematics/maths.h"
-#include "../../libraries/mathematics/primality_testing.h"
 #include "../../libraries/mathematics/factorization_methods.h"
 
 _error_selector error_selector(int SELECTOR) { switch (SELECTOR) { case 1: fprintf(stderr, "Please provide as first argument the number to factorize.\n\n"); return str_not_parsable_as_number; }; }
