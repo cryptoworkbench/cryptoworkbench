@@ -15,9 +15,9 @@ struct LL_ { struct LL_ *next; unsigned long e; }; // << THIS I CAN ABSTRACT OUT
 struct LL_ *quadratic_residue_LL = NULL; char *unparsed_arg;
 // global variable definitions ^^
 
-void least_to_most_INSERT(struct LL_ **trt, unsigned long quadratic_residue) {
-    struct LL_ *new_quadratic_residue = (struct LL_ *) malloc(sizeof(struct LL_)); new_quadratic_residue->e = quadratic_residue; new_quadratic_residue->next = NULL;
-    struct LL_ **tracer = trt; while (*tracer && (**tracer).e <= quadratic_residue) { if ((**tracer).e == quadratic_residue) return; tracer = &(*tracer)->next; }
+void least_to_most_INSERT(struct LL_ **tracer, unsigned long quadratic_residue) {
+    while (*tracer && (**tracer).e <= quadratic_residue) { if ((**tracer).e == quadratic_residue) return; tracer = &(*tracer)->next; }
+    struct LL_ *new_quadratic_residue = (struct LL_ *) malloc(sizeof(struct LL_)); new_quadratic_residue->e = quadratic_residue; // new_quadratic_residue->next = NULL;
     new_quadratic_residue->next = *tracer; *tracer = new_quadratic_residue;
 }
 
