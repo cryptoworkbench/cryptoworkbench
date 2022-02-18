@@ -1,5 +1,5 @@
 typedef unsigned long (*_factorization_method) (unsigned long);
-_factorization_method _preferred_factorization_ENGINE;
+_factorization_method _preferred_factorization_engine;
 
 char *_a; char *_b; char *_c; char *_d; char *_e; char *_f; char *_g; char *_h;
 

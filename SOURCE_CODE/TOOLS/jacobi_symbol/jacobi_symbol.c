@@ -53,10 +53,10 @@ int main(int argc, char **argv) {
     unsigned long q; if (3 > argc || !str_represents_ul(argv[2], &q)) { fprintf(stderr, "Failed to interpret %s as 'q'.\n", argv[2]); exit(-3); }
     if (GCD(N, q) != 1) exit(-4);
     char *ptr = argv[3]; if (!ptr) ptr = query_preferences_file();
-    if (!(_preferred_factorization_ENGINE = factorization_method(SELECTOR_from_str_representing_factorization_method(ptr)))) {
+    if (!(_preferred_factorization_engine = factorization_method(SELECTOR_from_str_representing_factorization_method(ptr)))) {
 	fprintf(stderr, "Failed to interpret '%s' from ", ptr); if (argv[3]) fprintf(stderr, "terminal argument");
 	else fprintf(stderr, "global preferences file '%s'", _REPORT_preferred_factorization_engine_file()); fprintf(stderr, ".\n\n");
-	char *UPDATE_VALUE; _preferred_factorization_ENGINE = factorization_method(SELECTOR_from_str_representing_factorization_method(UPDATE_VALUE = STDIN_factorization_engine(ptr)));
+	char *UPDATE_VALUE; _preferred_factorization_engine = factorization_method(SELECTOR_from_str_representing_factorization_method(UPDATE_VALUE = STDIN_factorization_engine(ptr)));
 	if (!argv[3]) { write_to_preferences_file(UPDATE_VALUE, fopen(_REPORT_preferred_factorization_engine_file(), "w")); fprintf(stdout, "Updated preferences file.\n\n"); }
     } // if both the terminal argument and the preferences file were unintelligeble, then force take factorization method from STDIN
 

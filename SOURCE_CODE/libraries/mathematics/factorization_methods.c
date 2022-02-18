@@ -83,10 +83,10 @@ _factorization_method factorization_method(int SELECTOR) {
 
 struct ordered_pair _factorize(unsigned long number, _factorization_method factorization_ENGINE_to_use)
 { struct ordered_pair factor = divisor_pair(number, factorization_ENGINE_to_use(number)); if (factor.b < factor.a) { ul temp = factor.b; factor.b = factor.a; factor.a = temp; } return factor; }
-// ^ passing as second argument '_preferred_factorization_ENGINE' or 'NULL' yields the same result
+// ^ passing as second argument '_preferred_factorization_engine' or 'NULL' yields the same result
 
 struct ordered_pair factorize(unsigned long number, _factorization_method alternate_choice)
-{ return (alternate_choice) ? divisor_pair(number, alternate_choice(number)) : divisor_pair(number, _preferred_factorization_ENGINE(number)); }
+{ return (alternate_choice) ? divisor_pair(number, alternate_choice(number)) : divisor_pair(number, _preferred_factorization_engine(number)); }
 
 const char *permission_failure = "permission failure within 'factorization_methods.c':";
 void factorization_engine_preference_file_ERROR() { fprintf(stderr, "\n%s do not have sufficient rights to access '%s'.\n\n", permission_failure, _preferred_factorization_engine_file); }
@@ -140,19 +140,19 @@ int SELECTOR_from_str_representing_factorization_method(char *arg) {
 }
 
 const char *_preferred_factorization_ENGINE_description() { initialize_factorization_library(); // < makes available in calling file the below pointers
-    if (_preferred_factorization_ENGINE == efficient_trial_division) return _a;
-    else if (_preferred_factorization_ENGINE == LESS_efficient_trial_division) return _b;
-    else if (_preferred_factorization_ENGINE == LEAST_efficient_trial_division) return _c;
-    else if (_preferred_factorization_ENGINE == efficient_trial_division) return _d;
-    else if (_preferred_factorization_ENGINE == LESS_efficient_trial_division) return _e;
-    else if (_preferred_factorization_ENGINE == LEAST_efficient_trial_division) return _f;
-    else if (_preferred_factorization_ENGINE == shor_factorization) return _g;
-    else if (_preferred_factorization_ENGINE == fermat_factorization) return _h;
+    if (_preferred_factorization_engine == efficient_trial_division) return _a;
+    else if (_preferred_factorization_engine == LESS_efficient_trial_division) return _b;
+    else if (_preferred_factorization_engine == LEAST_efficient_trial_division) return _c;
+    else if (_preferred_factorization_engine == efficient_trial_division) return _d;
+    else if (_preferred_factorization_engine == LESS_efficient_trial_division) return _e;
+    else if (_preferred_factorization_engine == LEAST_efficient_trial_division) return _f;
+    else if (_preferred_factorization_engine == shor_factorization) return _g;
+    else if (_preferred_factorization_engine == fermat_factorization) return _h;
     return NULL;
 }
 
 int primality_test_based_on_preferred_factorization_engine(unsigned long potential_prime)
-{ return (potential_prime - _preferred_factorization_ENGINE(potential_prime)) ? ADDITIVE_IDENTITY : MULTIPLICATIVE_IDENTITY;}
+{ return (potential_prime - _preferred_factorization_engine(potential_prime)) ? ADDITIVE_IDENTITY : MULTIPLICATIVE_IDENTITY;}
 
 _factorization_method factorization_method_retrieve(char *potentially_factorization_method_specifying_argument) {
     _factorization_method ret_val; char *ptr = potentially_factorization_method_specifying_argument; if (!ptr) ptr = query_preferences_file();
