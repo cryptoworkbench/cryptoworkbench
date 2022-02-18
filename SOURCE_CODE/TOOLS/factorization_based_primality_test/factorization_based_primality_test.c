@@ -7,7 +7,7 @@ int main(int argc, char **argv) { unsigned long potential_prime;
     if (!str_represents_ul(argv[1], &potential_prime)) exit(-1);
     
     _preferred_factorization_engine = factorization_method_retrieve(argv[2]);
-    fprintf(stdout, "Using the factorization engine \"%s\" as the basis for my primality test on %lu.", _preferred_factorization_ENGINE_description(), potential_prime);
+    fprintf(stdout, "Using the factorization engine \"%s\" as the basis for my primality test on %lu.", _factorization_engine_description(_preferred_factorization_engine), potential_prime);
     if (!(argc < 3)) fprintf(stdout, "	(as specified by terminal argument)"); fprintf(stdout, "\n\n");
 
     fprintf(stdout, "%lu is ", potential_prime);
