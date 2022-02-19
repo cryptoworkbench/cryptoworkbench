@@ -76,12 +76,8 @@ unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair
     lookup_table->perm_length[1] = group_cardinality_; lookup_table->permutation[1] = lookup_table->base_permutation; return finish(2);
 }
 
-void soft_error_reference() {
-    fprintf(stderr, "Defaulting to not using any.	^	^	^\n\n");
-}
-
-void horizontal_offset_error() { fprintf(stderr, "Failed to interpret horizontal table offset.\n\n"); }
-void vertical_offset_error() { fprintf(stderr, "Failed to interpret vertical table offset.\n\n"); }
+void horizontal_offset_error() { fprintf(stderr, "Failed to interpret horizontal table offset -- - ^\n\n"); }
+void vertical_offset_error() { fprintf(stderr, "Failed to interpret vertical table offset  -- -- ^\n\n"); }
 void invalid_group_parameters() {
     fprintf(stderr, "\nInvalid group parameters: ");
     if (!(*mod_)) fprintf(stderr, "the modulus cannot be 0!");
@@ -100,8 +96,8 @@ int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigne
     if (!(*mod_) || !(*mod_ - 1) && *id_) conditional_goodbye(error_message(invalid_group_parameters, -3));
     offset = (struct ordered_pair *) malloc(sizeof(struct ordered_pair)); offset->a = offset->b = 0; // member a will hold y offset, member b will hold x offset
     if (argc != 3) { switch (argc) {
-	    case 5: if (!str_represents_ul(argv[4], &offset->b, 0)) error_specification_message(vertical_offset_error, 0); // oft_error_reference(); }
-	    case 4: if (!str_represents_ul(argv[3], &offset->a, 0)) error_specification_message(horizontal_offset_error, 0); // oft_error_reference(); }
+	    case 5: if (!str_represents_ul(argv[4], &offset->b, 0)) conditional_goodbye(error_specification_message(vertical_offset_error, 0));
+	    case 4: if (!str_represents_ul(argv[3], &offset->a, 0)) conditional_goodbye(error_specification_message(horizontal_offset_error, 0));
 	    default: if (!(*id_)) { offset->a %= *mod_; offset->b %= *mod_; } };
     } unsigned long generator_count = found_generators(group_elements_LL(argv));
     unsigned long index = offset->b; do { print_permutation(index); index = _add(index, 1, group_cardinality_); } while (index != offset->b); fprintf(stdout, "\n");
