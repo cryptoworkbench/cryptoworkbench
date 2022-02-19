@@ -35,10 +35,33 @@ int str_represents_ul(char *str, unsigned long *ul_ptr, int exit_status) { unpar
     return 1;
 }
 
-int error_specification_message(_error_selector error_explainer, int exit_status)
-{ fflush(stdout); error_explainer(); return exit_status; }
+int str_represents_ul_(char *str, unsigned long *ul_ptr, int exit_status)
+{ 
+    unparsed_arg = str; // <-- dodge having to use the wrapper for the error function (in case anything goes wrong)
+    if (!str) return n(error_message(str_not_parsable_as_number, exit_status)); unsigned long length_of_string = 0;
+    do { if (str[length_of_string] >= ASCII_BASE && str[length_of_string] < ASCII_BASE + 10) length_of_string++; else return n(error_message(str_not_parsable_as_number, exit_status)); }
+    while (str[length_of_string] != STRING_TERMINATING_CHARACTER);
+    // ^^^ Checks to see if the proposed char array at index is even parsable as an unsigned long, returns NULL if not
 
-int n(int pass_through) { fprintf(stderr, "\n"); return pass_through; }
+    unsigned long iteration_count, str_as_UL; // Declare needed variables
+    iteration_count = str_as_UL = 0; // Initialize variables
+
+    // char *current_character = &(str[length_of_string - 1]);
+    char *current_character = (str + (length_of_string - 1));
+    while (current_character != str) {
+	str_as_UL += ((unsigned int) *current_character - ASCII_BASE) * exponentiate(NUMERIC_BASE, iteration_count);
+	iteration_count++; // Update the iteration count (appriopiate log)
+	current_character = (current_character - 1); // Move back one character
+    } str_as_UL += (*current_character - ASCII_BASE) * (exponentiate(NUMERIC_BASE, length_of_string - 1));
+
+    *ul_ptr = str_as_UL; // <<< Inserts the parsed variable into the INSERTMENT_SLOTH (see header file "string.h")
+    return 0;
+}
+
+int error_specification_message(_error_selector error_explainer, int exit_status)
+{ if (exit_status) { fflush(stdout); error_explainer(); } return exit_status; }
+
+int n(int exit_status) { if (exit_status) fprintf(stderr, "\n"); return exit_status; }
 
 void conditional_goodbye(int exit_status) { if (!exit_status) return; fprintf(stderr, "\n" EXIT_STATUS_GOODBYE "\n", exit_status); exit(exit_status); }
 
