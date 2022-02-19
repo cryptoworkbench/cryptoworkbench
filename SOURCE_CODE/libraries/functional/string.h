@@ -18,7 +18,7 @@ _error_selector _str_not_parsable_as_number(char *str); void str_not_parsable_as
 typedef const char *(*arg_error_selector) (int); arg_error_selector local_error_selector;
 
 int error_message(_error_selector error_explainer, int exit_status);
-int error_specification_message(_error_selector error_explainer, int exit_status);
+int error_specification(_error_selector error_explainer, int exit_status);
 int n(int pass_through);
 void conditional_goodbye(int exit_status);
 int str_represents_ul(char *str, unsigned long *ul_ptr, int exit_status);

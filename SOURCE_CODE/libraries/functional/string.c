@@ -58,7 +58,7 @@ int str_represents_ul_(char *str, unsigned long *ul_ptr, int exit_status)
     return 0;
 }
 
-int error_specification_message(_error_selector error_explainer, int exit_status)
+int error_specification(_error_selector error_explainer, int exit_status)
 { if (exit_status) { fflush(stdout); error_explainer(); } return exit_status; }
 
 int n(int exit_status) { if (exit_status) fprintf(stderr, "\n"); return exit_status; }

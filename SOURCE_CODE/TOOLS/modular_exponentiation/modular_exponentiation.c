@@ -8,9 +8,9 @@ void base_error() { fprintf(stderr, "\nFailed to understand '%s' as the value to
 void mod_error() { fprintf(stderr, "\nFailed to understand '%s' as the value to use as the modulus.", unparsed_arg); }
 
 int main(int argc, char **argv) { unsigned long mod; mod_ = &mod; unparsed_arg = argv[1];
-    if (!str_represents_ul(unparsed_arg, &mod, 0)) conditional_goodbye(n(error_specification_message(mod_error, -1)));
-    unsigned long base;     unparsed_arg = argv[2]; if (!str_represents_ul(unparsed_arg, &base, 0)) conditional_goodbye(n(error_specification_message(base_error, -2)));
-    unsigned long exponent; unparsed_arg = argv[3]; if (!str_represents_ul(unparsed_arg, &exponent, 0)) conditional_goodbye(n(error_specification_message(exponent_error, -3)));
+    if (!str_represents_ul(unparsed_arg, &mod, 0)) conditional_goodbye(n(error_specification(mod_error, -1)));
+    unsigned long base;     unparsed_arg = argv[2]; if (!str_represents_ul(unparsed_arg, &base, 0)) conditional_goodbye(n(error_specification(base_error, -2)));
+    unsigned long exponent; unparsed_arg = argv[3]; if (!str_represents_ul(unparsed_arg, &exponent, 0)) conditional_goodbye(n(error_specification(exponent_error, -3)));
     // ^^^ Parse terminal arguments
 
     fprintf(stdout, "%lu^%lu %% %lu = %lu\n", base, exponent, mod, mod_exponentiate(base, exponent));
