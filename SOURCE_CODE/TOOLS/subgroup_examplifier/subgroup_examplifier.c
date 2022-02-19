@@ -76,28 +76,28 @@ unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair
     lookup_table->perm_length[1] = group_cardinality_; lookup_table->permutation[1] = lookup_table->base_permutation; return finish(2);
 }
 
-void horizontal_offset_error() { fprintf(stderr, "Failed to interpret horizontal table offset -- - ^\n\n"); }
-void vertical_offset_error() { fprintf(stderr, "Failed to interpret vertical table offset  -- -- ^\n\n"); }
+void horizontal_offset_error() { fprintf(stderr, "Failed to interpret horizontal table offset -- - ^"); }
+void vertical_offset_error() { fprintf(stderr, "Failed to interpret vertical table offset  -- -- ^"); }
 void invalid_group_parameters() {
     fprintf(stderr, "\nInvalid group parameters: ");
     if (!(*mod_)) fprintf(stderr, "the modulus cannot be 0!");
     else fprintf(stderr, "for multiplicative groups the modulus needs to be at least 2! (since multiplicative groups do not include the element '0')");
     fprintf(stderr, "\n\n"); free(mod_); free(id_); }
-void identity_error() { fprintf(stderr, "\nFailed to understand '%s' as the identity element of any additive group (which is always zero) or any multiplicative group (which is always one).\n\n", unparsed_arg_); }
-void mod_error() { fprintf(stderr, "\nFailed to understand '%s' as the modulus value of any group to examplify.\n\n", unparsed_arg_); }
+void identity_error() { fprintf(stderr, "\nFailed to understand '%s' as the identity element of any additive group (which is always zero) or any multiplicative group (which is always one).", unparsed_arg_); }
+void mod_error() { fprintf(stderr, "\nFailed to understand '%s' as the modulus value of any group to examplify.", unparsed_arg_); }
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigned long)); unparsed_arg_ = argv[1];
-    if (!str_represents_ul(unparsed_arg_, mod_, 0)) conditional_goodbye(error_specification_message(mod_error, -1)); int *SELECTOR = (int *) malloc(sizeof(int)); unparsed_arg_ = argv[2];
-    if (10 == (*SELECTOR = identity_SELECTOR(unparsed_arg_))) conditional_goodbye(error_specification_message(identity_error, error_message(_str_not_parsable_as_number(argv[2]), -2)));
+    if (!str_represents_ul(unparsed_arg_, mod_, 0)) conditional_goodbye(n(n(error_specification_message(mod_error, -1)))); int *SELECTOR = (int *) malloc(sizeof(int)); unparsed_arg_ = argv[2];
+    if (10 == (*SELECTOR = identity_SELECTOR(unparsed_arg_))) conditional_goodbye(n(n(error_specification_message(identity_error, n(error_message(_str_not_parsable_as_number(argv[2]), -2))))));
     // perfect th^s later .. ..
 
     id_ = (unsigned long *) malloc(sizeof(unsigned long)); *id_ = identity_(*SELECTOR); free(SELECTOR);
     if (!(*mod_) || !(*mod_ - 1) && *id_) conditional_goodbye(error_message(invalid_group_parameters, -3));
     offset = (struct ordered_pair *) malloc(sizeof(struct ordered_pair)); offset->a = offset->b = 0; // member a will hold y offset, member b will hold x offset
     if (argc != 3) { switch (argc) {
-	    case 5: if (!str_represents_ul(argv[4], &offset->b, 0)) conditional_goodbye(error_specification_message(vertical_offset_error, 0));
-	    case 4: if (!str_represents_ul(argv[3], &offset->a, 0)) conditional_goodbye(error_specification_message(horizontal_offset_error, 0));
+	    case 5: if (!str_represents_ul(argv[4], &offset->b, 0)) conditional_goodbye(n(n(error_specification_message(vertical_offset_error, 0))));
+	    case 4: if (!str_represents_ul(argv[3], &offset->a, 0)) conditional_goodbye(n(n(error_specification_message(horizontal_offset_error, 0))));
 	    default: if (!(*id_)) { offset->a %= *mod_; offset->b %= *mod_; } };
     } unsigned long generator_count = found_generators(group_elements_LL(argv));
     unsigned long index = offset->b; do { print_permutation(index); index = _add(index, 1, group_cardinality_); } while (index != offset->b); fprintf(stdout, "\n");

@@ -19,7 +19,7 @@ typedef const char *(*arg_error_selector) (int); arg_error_selector local_error_
 
 int error_message(_error_selector error_explainer, int exit_status);
 int error_specification_message(_error_selector error_explainer, int exit_status);
-int e(int pass_through);
+int n(int pass_through);
 void conditional_goodbye(int exit_status);
 int str_represents_ul(char *str, unsigned long *ul_ptr, int exit_status);
 // ^^^ Puts the numeric value of "str" at the location pointed at by "ul_ptr".
