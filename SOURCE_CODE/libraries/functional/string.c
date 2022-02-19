@@ -8,10 +8,10 @@
 #include "../mathematics/maths.h" // 'exponentiation()'
 #include <stdio.h>
 
-void str_not_parsable_as_number() { fprintf(stderr, "\nparsing of '%s' failed: '%s' is not a number.\n\n", unparsed_arg, unparsed_arg); }
+void str_not_parsable_as_number() { fprintf(stderr, " parsing of '%s' failed: '%s' is not a number.\n", unparsed_arg, unparsed_arg); }
 
 void error_message(_error_selector error_explainer, int termination_status)
-{ fflush(stdout); fprintf(stderr, "### THE FOLLOWING ERROR OCCURRED -->"); error_explainer(); fprintf(stderr, EXIT_STATUS_GOODBYE, termination_status); exit(termination_status); }
+{ fflush(stdout); fprintf(stderr, "### THE FOLLOWING ERROR OCCURRED -->"); error_explainer(); if (!termination_status) return; fprintf(stderr, EXIT_STATUS_GOODBYE, termination_status); exit(termination_status); }
 
 char *BUFFER_OF_SIZE(unsigned int SIZE) {
     char *return_value = (char *) malloc(sizeof(char) * SIZE);

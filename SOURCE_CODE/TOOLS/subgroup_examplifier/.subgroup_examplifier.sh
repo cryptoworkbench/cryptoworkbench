@@ -13,7 +13,10 @@
 
 #!/bin/bash
 
-for i in $(seq 1 $1); do
+#for i in $(seq 1 $1); do
+i=0;
+while true
+do
     clear
     echo "Current horizontal offset: $i
     ";
@@ -22,5 +25,6 @@ for i in $(seq 1 $1); do
     ";
     echo "refresh rate: every $3s.
     ";
+    i=$(( $i + 1 ))
     sleep $3
 done
