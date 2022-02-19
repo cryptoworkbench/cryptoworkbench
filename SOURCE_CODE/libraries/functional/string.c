@@ -38,8 +38,9 @@ int str_represents_ul(char *str, unsigned long *ul_ptr, int exit_status) { unpar
 int error_specification_message(_error_selector error_explainer, int exit_status)
 { fflush(stdout); error_explainer(); return exit_status; }
 
-void exit_status_goodbye(int exit_status)
-{ fprintf(stderr, "\n" EXIT_STATUS_GOODBYE "\n", exit_status); exit(exit_status); }
+int e(int pass_through) { fprintf(stderr, "\n"); return pass_through; }
+
+void conditional_goodbye(int exit_status) { if (!exit_status) return; fprintf(stderr, "\n" EXIT_STATUS_GOODBYE "\n", exit_status); exit(exit_status); }
 
 char *BUFFER_OF_SIZE(unsigned int SIZE) {
     char *return_value = (char *) malloc(sizeof(char) * SIZE);

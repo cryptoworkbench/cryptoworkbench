@@ -4,13 +4,14 @@
 // ^^^ Necessary library inclusions that are needed in "string.c"
 
 #define GENERIC_PARSING_ERROR "'%s' is not something I am able to understand as a suitable number;"
-#define EXIT_STATUS_GOODBYE "Terminating with exit status '%i'. Goodbye."
+#define EXIT_STATUS_GOODBYE "Terminating with exit status '%i'. Goodbye." // still need this for now <--
 #define STRING_TERMINATING_CHARACTER 0
 #define NUMERIC_BASE 10
 #define ASCII_BASE 48
 // ^^^ Necessary definitions that are needed in "string.c"
 
-char **argvv; char *unparsed_arg; // enable easy access to these variables outside of 'main()' <
+char ***argvv; char *unparsed_arg; // enable easy access to these variables outside of 'main()' <
+char **_unparsed_arg;
 
 typedef void (*_error_selector) (); // this we will use for 'error_message'
 _error_selector _str_not_parsable_as_number(char *str); void str_not_parsable_as_number();
@@ -18,7 +19,8 @@ typedef const char *(*arg_error_selector) (int); arg_error_selector local_error_
 
 int error_message(_error_selector error_explainer, int exit_status);
 int error_specification_message(_error_selector error_explainer, int exit_status);
-void exit_status_goodbye(int exit_status);
+int e(int pass_through);
+void conditional_goodbye(int exit_status);
 int str_represents_ul(char *str, unsigned long *ul_ptr, int exit_status);
 // ^^^ Puts the numeric value of "str" at the location pointed at by "ul_ptr".
 // 

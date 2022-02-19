@@ -1,5 +1,8 @@
 /* Program description:
  * Examplifies subgroups. Feed it a modulus and a group identity as command-line arguments and it will examplify all subgroups within specified group. It also lists the generators that are within the group.
+ *
+ * DEVELOPERS NOTES:
+ * For some reason it fails when you say '1 0'
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -89,12 +92,12 @@ void mod_error() { fprintf(stderr, "\nFailed to understand '%s' as the modulus v
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigned long)); unparsed_arg_ = argv[1];
-    if (!str_represents_ul(unparsed_arg_, mod_, 0)) exit_status_goodbye(error_specification_message(mod_error, -1)); int *SELECTOR = (int *) malloc(sizeof(int)); unparsed_arg_ = argv[2];
-    if (10 == (*SELECTOR = identity_SELECTOR(unparsed_arg_))) exit_status_goodbye(error_specification_message(identity_error, error_message(_str_not_parsable_as_number(argv[2]), -2)));
+    if (!str_represents_ul(unparsed_arg_, mod_, 0)) conditional_goodbye(error_specification_message(mod_error, -1)); int *SELECTOR = (int *) malloc(sizeof(int)); unparsed_arg_ = argv[2];
+    if (10 == (*SELECTOR = identity_SELECTOR(unparsed_arg_))) conditional_goodbye(error_specification_message(identity_error, error_message(_str_not_parsable_as_number(argv[2]), -2)));
     // perfect th^s later .. ..
 
     id_ = (unsigned long *) malloc(sizeof(unsigned long)); *id_ = identity_(*SELECTOR); free(SELECTOR);
-    if (!(*mod_) || !(*mod_ - 1) && *id_) error_message(invalid_group_parameters, -3);
+    if (!(*mod_) || !(*mod_ - 1) && *id_) conditional_goodbye(error_message(invalid_group_parameters, -3));
     offset = (struct ordered_pair *) malloc(sizeof(struct ordered_pair)); offset->a = offset->b = 0; // member a will hold y offset, member b will hold x offset
     if (argc != 3) { switch (argc) {
 	    case 5: if (!str_represents_ul(argv[4], &offset->b, 0)) error_specification_message(vertical_offset_error, 0); // oft_error_reference(); }

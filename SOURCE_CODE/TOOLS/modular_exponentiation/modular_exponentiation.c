@@ -3,25 +3,17 @@
 #include "../../libraries/functional/string.h" // 'str_represents_ul()'
 #include "../../libraries/mathematics/maths.h" // 'N_operation()'
 
-void QUIT_ON_ARGV_THREE_ERROR(char *argv_three) {
-    fprintf(stderr, "FATAL ERROR: cannot grasp exponent '%s'. Returning '-3'.\n", argv_three); exit(-2);
-}
+void exponent_error() { fprintf(stderr, "\nFailed to understand '%s' as the value to use for the exponent.", unparsed_arg); }
+void base_error() { fprintf(stderr, "\nFailed to understand '%s' as the value to use as the base.", unparsed_arg); }
+void mod_error() { fprintf(stderr, "\nFailed to understand '%s' as the value to use as the modulus.", unparsed_arg); }
 
-void QUIT_ON_ARGV_TWO_ERROR(char *argv_two) {
-    fprintf(stderr, "FATAL ERROR: cannot grasp base '%s'. Returning '-2'.\n", argv_two); exit(-2);
-}
-
-void QUIT_ON_ARGV_ONE_ERROR(char *argv_one) {
-    fprintf(stderr, "FATAL ERROR: cannot grasp modulus '%s'. Returning '-1'.\n", argv_one); exit(-1);
-}
-
-int main(int argc, char **argv) { unsigned long mod; mod_ = &mod;
-    if (2 > argc || !str_represents_ul(argv[1], &mod)) QUIT_ON_ARGV_ONE_ERROR(argv[1]); ul base;
-    if (3 > argc || !str_represents_ul(argv[2], &base)) QUIT_ON_ARGV_TWO_ERROR(argv[2]); ul exponent;
-    if (4 > argc || !str_represents_ul(argv[3], &exponent)) QUIT_ON_ARGV_THREE_ERROR(argv[3]);
+int main(int argc, char **argv) { unsigned long mod; mod_ = &mod; unparsed_arg = argv[1];
+    if (!str_represents_ul(unparsed_arg, &mod, 0)) conditional_goodbye(e(error_specification_message(mod_error, -1)));
+    unsigned long base;     unparsed_arg = argv[2]; if (!str_represents_ul(unparsed_arg, &base, 0)) conditional_goodbye(e(error_specification_message(base_error, -2)));
+    unsigned long exponent; unparsed_arg = argv[3]; if (!str_represents_ul(unparsed_arg, &exponent, 0)) conditional_goodbye(e(error_specification_message(exponent_error, -3)));
     // ^^^ Parse terminal arguments
 
-    fprintf(stdout, "%lu^%lu %% %lu = %lu\n", base, exponent, mod, N_operation(base, exponent, 2));
+    fprintf(stdout, "%lu^%lu %% %lu = %lu\n", base, exponent, mod, mod_exponentiate(base, exponent));
     // ^^^ Perform modular exponentiation using the "FINITE_N_exponentiation()" function
     return 0;
 }
