@@ -12,11 +12,17 @@
 
 char **argvv; char *unparsed_arg; // enable easy access to these variables outside of 'main()' <
 
-void str_not_parsable_as_number();
 typedef void (*_error_selector) (); // this we will use for 'error_message'
+_error_selector _str_not_parsable_as_number(char *str); void str_not_parsable_as_number();
 typedef const char *(*arg_error_selector) (int); arg_error_selector local_error_selector;
 
-void error_message(_error_selector error_explainer, int termination_status);
+int error_message(_error_selector error_explainer, int exit_status);
+int error_specification_message(_error_selector error_explainer, int exit_status);
+void exit_status_goodbye(int exit_status);
+int str_represents_ul(char *str, unsigned long *ul_ptr, int exit_status);
+// ^^^ Puts the numeric value of "str" at the location pointed at by "ul_ptr".
+// 
+// Returns "VOID" if "str" is not parsable as a base-10 number.
 
 char *BUFFER_OF_SIZE(unsigned int SIZE);
 
@@ -42,10 +48,6 @@ int string_to_int(char *string); // Returns the numeric value represented by the
 unsigned long char_in_val(unsigned long a); // Calculates the number of characters needed to display a in base BASE notation (BASE = 10)
 char *str_from_ul(unsigned long a, unsigned long min_out_length); // Converts from ul to string with a minimum of min_out_length characters, heading zeros are fixed if needed, call as str_from_ul(unsigned long a, characters_in_val(a))
 
-unsigned long *str_represents_ul(char *STRING, unsigned long *UL_PTR);
-/* ^^^ Puts the numeric value of "STRING" at the location pointed at by "UL_PTR".
- * 
- * Returns "VOID" if "STRING" is not parsable as a base-10 number.
- */
+
 void ignored_arguments(int argc, char **argv, int used_arguments);
 void str_does_not_represent_suitable_ul(char **argv, int index);
