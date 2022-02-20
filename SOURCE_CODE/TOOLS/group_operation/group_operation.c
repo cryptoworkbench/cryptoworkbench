@@ -3,25 +3,19 @@
 #include "../../libraries/mathematics/maths.h"
 #include "../../libraries/mathematics/universal_group_library.h"
 
-const char *MOD_not_parsable = "please specify as first argument the modulus of the group operation (0 to act upon the infinite group of integers).";
-const char *a_not_parsable = "please specify as second argument the first value to do the group operation with.";
-const char *b_not_parsable = "please specify as third argument the second value to do the group operation with.";
-const char *ID_not_parsable = "please specify as fourth argument '0' for the additive group identity or '1' for the multiplicative group identity.";
+void b_not_parsable() { fprintf(stderr, "Please specify as fourth argument the second value to do the group operation with."); }
+void a_not_parsable() { fprintf(stderr, "Please specify as third argument the first value to do the group operation with."); }
+void id_not_parsable() { fprintf(stderr, "Please specify as second argument '0' for the additive group identity or '1' for the multiplicative group identity."); }
+void mod_not_parsable() { fprintf(stderr, "Please specify as first argument the modulus of the group operation (0 to act upon the infinite group of integers)."); }
 
-const char *local_switch(int index) { if (index == 1) return MOD_not_parsable; else if (index == 2) return a_not_parsable; else if (index == 3) return b_not_parsable; else if (index == 4) return ID_not_parsable; }
+int main(int argc, char **argv) {unsigned long mod; mod_ = &mod;
+    conditional_goodbye(n(n(error_specification(mod_not_parsable, n(str_represents_ul_(argv[1], mod_, -1)))))); unsigned long id;
+    conditional_goodbye(n(n(error_specification(id_not_parsable, id = identity_set(&id, identity_SELECTOR(argv[2]), -2))))); unsigned long a;
+    // if (!match_variadic(argv[4], 2, "0", "1")) exit(-4); str_represents_ul(argv[4], &ID);
+    conditional_goodbye(n(n(error_specification(a_not_parsable, n(str_represents_ul_(argv[3], &a, -3)))))); unsigned long b;
+    conditional_goodbye(n(n(error_specification(b_not_parsable, n(str_represents_ul_(argv[4], &b, -4))))));
 
-unsigned long mod; int main(int argc, char **argv) { mod_ = &mod; local_error_selector = local_switch;
-    /*
-    if (!str_represents_ul(argv[1], mod_)) str_does_not_represent_suitable_ul(argv, 1); unsigned long a;
-    if (!str_represents_ul(argv[2], &a)) str_does_not_represent_suitable_ul(argv, 2); unsigned long b;
-    if (!str_represents_ul(argv[3], &b)) str_does_not_represent_suitable_ul(argv, 3); unsigned long ID;
-    if (!match_variadic(argv[4], 2, "0", "1")) str_does_not_represent_suitable_ul(argv, 4); str_represents_ul(argv[4], &ID);
-    */
-    if (!str_represents_ul(argv[1], mod_)) exit(-1); unsigned long a;
-    if (!str_represents_ul(argv[2], &a)) exit(-2); unsigned long b;
-    if (!str_represents_ul(argv[3], &b)) exit(-3); unsigned long ID;
-    if (!match_variadic(argv[4], 2, "0", "1")) exit(-4); str_represents_ul(argv[4], &ID);
-    _group_operation operation = _operation_from_ID(ID);
-    if (mod) fprintf(stdout, "%lu %s %lu \u2261 %lu	(mod %lu)\n", a, _as_operation_symbol(ID), b, operation(a, b, mod), mod);
-    else fprintf(stdout, "%lu %s %lu = %lu	(within the infinite field of natural numbers)\n", a, _as_operation_symbol(ID), b, operation(a, b, mod));
+    _group_operation operation = _operation_from_ID(id);
+    if (mod) fprintf(stdout, "%lu %s %lu \u2261 %lu	(mod %lu)\n", a, _as_operation_symbol(id), b, operation(a, b, mod), mod);
+    else fprintf(stdout, "%lu %s %lu = %lu	(within the infinite field of natural numbers)\n", a, _as_operation_symbol(id), b, operation(a, b, mod));
     return 0; }
