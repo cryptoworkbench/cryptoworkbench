@@ -43,11 +43,10 @@ _factorization_method explain_configuration(unsigned long composite) {
     return _preferred_factorization_engine;
 }
 
-_error_selector error_selector(int SELECTOR) { switch (SELECTOR) { case 1: fprintf(stderr, "Please provide as first argument the composite to factorize.\n\n"); return str_not_parsable_as_number; }; }
-// the only error function in this program is a combination of a single fprintf() along with str_not_parsable_as_number() ^
+void composite_parsing_error() { fprintf(stderr, "Please provide as first argument the composite to factorize."); }
 
-int main(int argc, char **argv) { unsigned long composite; unparsed_arg = argv[1];
-    if (!str_represents_ul(unparsed_arg, &composite)) error_message(error_selector(1), -1);
+int main(int argc, char **argv) { unparsed_arg = argv[1]; unsigned long composite;
+    conditional_goodbye(n(n(error_specification(composite_parsing_error, n(str_represents_ul_(argv[1], &composite, -1))))));
     // take in composite ^
 
     _preferred_factorization_engine = factorization_method_retrieve(argv[2]);

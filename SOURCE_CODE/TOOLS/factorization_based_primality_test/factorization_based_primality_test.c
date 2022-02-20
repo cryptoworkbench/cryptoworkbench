@@ -3,7 +3,7 @@
 #include "../../libraries/functional/string.h" // needed for 'str_represents_ul()', 'BUFFER_OF_SIZE()', EXIT_STATUS_GOODBYE
 #include "../../libraries/mathematics/factorization_methods.h" // needed for 'SELECTOR_from_str_representing_factorization_method()'
 
-void composite_parse_error() { fprintf(stderr, "Please provide as first argument the composite to factorize."); }
+void composite_parse_error() { fprintf(stderr, "Please provide as first argument the number to check if it is prime."); }
 
 int main(int argc, char **argv) { unsigned long potential_prime;
     conditional_goodbye(n(n(error_specification(composite_parse_error, n(str_represents_ul_(argv[1], &potential_prime, -1))))));
