@@ -5,12 +5,14 @@
 
 void b_not_parsable() { fprintf(stderr, "Please specify as fourth argument the second value to do the group operation with."); }
 void a_not_parsable() { fprintf(stderr, "Please specify as third argument the first value to do the group operation with."); }
-void id_not_parsable() { fprintf(stderr, "Please specify as second argument '0' for the additive group identity or '1' for the multiplicative group identity."); }
+// void id_not_parsable() { fprintf(stderr, "Please specify as second argument '0' for the additive group identity or '1' for the multiplicative group identity."); }
 void mod_not_parsable() { fprintf(stderr, "Please specify as first argument the modulus of the group operation (0 to act upon the infinite group of integers)."); }
 
-int main(int argc, char **argv) {unsigned long mod; mod_ = &mod;
+// conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul_(argv[1], &mod, -1)))))); unsigned long numerator;
+int main(int argc, char **argv) { unsigned long mod; mod_ = &mod;
     conditional_goodbye(n(n(error_specification(mod_not_parsable, n(str_represents_ul_(argv[1], mod_, -1)))))); unsigned long id;
-    conditional_goodbye(n(n(error_specification(id_not_parsable, id = identity_set(&id, identity_SELECTOR(argv[2]), -2))))); unsigned long a;
+    // conditional_goodbye(n(n(error_specification(n(error_message(n(identity_SELECTOR_error), identity_set(&id, identity_SELECTOR(argv[2]), -2))))))); unsigned long a;
+    conditional_goodbye(n(n(error_message(identity_SELECTOR_error, identity_set(&id, identity_SELECTOR(argv[2]), -2))))); unsigned long a;
     // if (!match_variadic(argv[4], 2, "0", "1")) exit(-4); str_represents_ul(argv[4], &ID);
     conditional_goodbye(n(n(error_specification(a_not_parsable, n(str_represents_ul_(argv[3], &a, -3)))))); unsigned long b;
     conditional_goodbye(n(n(error_specification(b_not_parsable, n(str_represents_ul_(argv[4], &b, -4))))));

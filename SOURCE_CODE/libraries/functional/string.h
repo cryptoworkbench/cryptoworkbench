@@ -19,6 +19,7 @@ typedef const char *(*arg_error_selector) (int); arg_error_selector local_error_
 int error_message(_error_selector error_explainer, int exit_status);
 int error_specification(_error_selector error_explainer, int exit_status);
 int n(int pass_through);
+// _error_selector N(_error_selector error_explainer, int exit_status);
 void conditional_goodbye(int exit_status);
 int str_represents_ul(char *str, unsigned long *ul_ptr, int exit_status);
 int str_represents_ul_(char *str, unsigned long *ul_ptr, int exit_status); // <-- Make this one replace 'str_represents_ul()' <--

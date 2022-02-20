@@ -11,8 +11,11 @@
 _error_selector _str_not_parsable_as_number(char *str) { unparsed_arg = str; return str_not_parsable_as_number; }
 void str_not_parsable_as_number() { fprintf(stderr, " parsing of '%s' failed: '%s' is not a number.", unparsed_arg, unparsed_arg); }
 
+// _error_selector N(_error_selector error_explainer, int exit_status) { if (exit_status) fprintf(stderr, "\n"); return error_explainer; }
+// new and untested ^
+
 int error_message(_error_selector error_explainer, int exit_status)
-{ fflush(stdout); fprintf(stderr, "### THE FOLLOWING ERROR OCCURRED -->"); error_explainer(); return exit_status; }
+{ if (exit_status) { fflush(stdout); fprintf(stderr, "### THE FOLLOWING ERROR OCCURRED -->"); error_explainer(); } return exit_status; }
 
 int str_represents_ul(char *str, unsigned long *ul_ptr, int exit_status) { unparsed_arg = str; // <-- dodge having to use the wrapper for the error function (in case anything goes wrong)
     if (!str) return n(error_message(str_not_parsable_as_number, exit_status)); unsigned long length_of_string = 0;

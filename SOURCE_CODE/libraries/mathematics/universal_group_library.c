@@ -7,14 +7,36 @@
 #include "../functional/string.h"
 #include "universal_group_library.h"
 
+int _identity;
+
 char *path_to_FILE;
 
 const char *additive_signs[] = {"0", "+", "addition", "additions", "additive", 0};
 const char *multiplicative_signs[] = {"1", "*", "multiplication", "multiplications", "multiplicative", 0};
-int identity_SELECTOR(char *arg) { if (arg) { if (strcmp(arg, additive_signs[0]) == 0) return 0; else if (strcmp(arg, multiplicative_signs[0]) == 0) return 1; else if (strcmp(arg, additive_signs[1]) == 0) return 2;
-	else if (strcmp(arg, multiplicative_signs[1]) == 0) return 3; else if (strcmp(arg, additive_signs[2]) == 0) return 4; else if (strcmp(arg, multiplicative_signs[2]) == 0) return 5;
-	else if (strcmp(arg, additive_signs[3]) == 0) return 6; else if (strcmp(arg, multiplicative_signs[3]) == 0) return 7; else if (strcmp(arg, additive_signs[4]) == 0) return 8;
-	else if (strcmp(arg, multiplicative_signs[4]) == 0) return 9; } return 10;
+
+void identity_SELECTOR_error()
+{
+    fprintf(stderr, "\nFailed recognize '%s' from one of the following lists:\n", failed_identity);
+    fprintf(stderr, "~ The list for indications of an additive group context: %s, %s, %s, %s, or %s\n", additive_signs[0], additive_signs[1], additive_signs[2], additive_signs[3], additive_signs[4]);
+    fprintf(stderr, "~ The list for indications of a multiplicative group context: %s, %s, %s, %s, or %s", multiplicative_signs[0], multiplicative_signs[1], multiplicative_signs[2], multiplicative_signs[3], multiplicative_signs[4]);
+}
+
+int identity_SELECTOR(char *arg)
+{ 
+    if (arg) {
+	if (strcmp(arg, additive_signs[0]) == 0) return 0;
+	else if (strcmp(arg, multiplicative_signs[0]) == 0) return 1;
+	else if (strcmp(arg, additive_signs[1]) == 0) return 2;
+	else if (strcmp(arg, multiplicative_signs[1]) == 0) return 3;
+	else if (strcmp(arg, additive_signs[2]) == 0) return 4;
+	else if (strcmp(arg, multiplicative_signs[2]) == 0) return 5;
+	else if (strcmp(arg, additive_signs[3]) == 0) return 6;
+	else if (strcmp(arg, multiplicative_signs[3]) == 0) return 7;
+	else if (strcmp(arg, additive_signs[4]) == 0) return 8;
+	else if (strcmp(arg, multiplicative_signs[4]) == 0) return 9;
+    }
+    failed_identity = arg;
+    return 10;
 }
 
 unsigned long identity_(int SELECTOR) { return (SELECTOR % 2) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY ; }
