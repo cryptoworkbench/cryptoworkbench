@@ -23,7 +23,7 @@ unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_) { retur
 unsigned long mod_add(unsigned long a, unsigned long b) { return _add(a, b, *mod_); }
 // support for (modular) adding ^^
 
-unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_) { return _conditional_field_cap(mod_ - element_of_additive_group, mod_); }
+unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_) { return _conditional_field_cap(mod_ - _conditional_field_cap(element_of_additive_group, mod_), mod_); }
 unsigned long mod_inverse(unsigned long element_of_additive_group) { return _inverse(element_of_additive_group, *mod_); }
 // support for additive inverses ^^
 

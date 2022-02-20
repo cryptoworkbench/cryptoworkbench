@@ -38,14 +38,22 @@
 #include "../../libraries/mathematics/shamir_secret_sharing.h"
 #define K 2 // degree of polynomial that is resolved in other to retrieve secret encoded as contant term
 
-unsigned long mod; int main(int argc, char **argv) { mod_ = &mod;
-    if (!str_represents_ul(argv[1], mod_)) { printf("%s is not mod!\n", argv[1]); exit(-1); }
+void second_second() { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of second point."); }
+void second_first() { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of second point."); }
+void first_second() { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of first point."); }
+void first_first() { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of first point."); }
+
+void mod_error() { fprintf(stderr, "%s is not mod!\n", unparsed_arg); }
+
+int main(int argc, char **argv) { unsigned long mod; mod_ = &mod;
+    conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul_(argv[1], mod_, -1))))));
+    // if (!str_represents_ul(argv[1], mod_)) { printf("%s is not mod!\n", argv[1]); exit(-1); }
     if (6 < argc) { ignored_arguments(argc, argv, 5); argc = 6; } // < complain about unneccesary arguments and forget about them once and for all
     unsigned long ***equation = equations_ALLOCATE(K); switch (argc) {
-	case 6: if (!str_represents_ul(argv[5], equation[1][0])) fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of second point.\n", argv[5]);
-	case 5: if (!str_represents_ul(argv[4], equation[1][1])) fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of second point.\n", argv[4]);
-	case 4: if (!str_represents_ul(argv[3], equation[0][0])) fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of first point.\n", argv[3]);
-	case 3: if (!str_represents_ul(argv[2], equation[0][1])) fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of first point.\n", argv[2]);
+	case 6: conditional_goodbye(n(n(error_specification(second_second, n(str_represents_ul_(argv[5], equation[1][0], 0))))));
+	case 5: conditional_goodbye(n(n(error_specification(second_first, n(str_represents_ul_(argv[4], equation[1][1], 0))))));
+	case 4: conditional_goodbye(n(n(error_specification(first_second, n(str_represents_ul_(argv[3], equation[0][0], 0))))));
+	case 3: conditional_goodbye(n(n(error_specification(first_first, n(str_represents_ul_(argv[2], equation[0][1], 0))))));
     }; // ^ interpret interpretable information
     fprintf(stdout, "x_1 \u2261 "); if (2 < argc) fprintf(stdout, "%lu\n", *equation[0][1]); else fscanf(stdin, " %lu", equation[0][1]);
     fprintf(stdout, "y_1 \u2261 "); if (3 < argc) fprintf(stdout, "%lu\n", *equation[0][0]); else fscanf(stdin, " %lu", equation[0][0]); fprintf(stdout, "\n");
