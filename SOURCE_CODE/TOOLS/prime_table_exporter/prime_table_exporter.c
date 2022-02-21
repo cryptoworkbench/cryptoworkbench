@@ -1,20 +1,16 @@
+// exports a prime table
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../libraries/functional/string.h" // needed for: definition 'EXIT_STATUS_GOODBYE', pointer 'str_represents_u()'
-#include "../../libraries/mathematics/maths.h" // needed for: definition 'ADDITIVE_IDENTITY', type definition 'ul'
-#define ERROR_MESSAGE "I am the sieve of eratosthenes. I am the most efficient algorithm for calculating all primes under a certain limit.\n\nTell me to what limit to calculate; '%s' is not interpretable as a number / limit.\n\n\n"
+#include "../../libraries/functional/string.h"
+#include "../../libraries/mathematics/maths.h"
 
-void error_and_exit(char *argv_one) { int exit_status = - 1;
-    fprintf(stderr, ERROR_MESSAGE, argv_one);
-    fprintf(stderr, EXIT_STATUS_GOODBYE, exit_status);
-    exit(exit_status);
-}
+void limit_error() { fprintf(stderr, "Failed to understand '%s' as the limit to my sieve.", unparsed_arg); }
 
-int main(int argc, char **argv) {
-    if (!str_represents_ul(argv[1], &mod_)) error_and_exit(argv[1]); char *output_filename = _REPORT_standard_prime_table_filename();
-    if (2 < argc) output_filename = argv[2];
-    // ^ Deal with user input
+int main(int argc, char **argv) { unparsed_arg = argv[1];
+    unsigned long limit; conditional_goodbye(n(n(error_specification(limit_error, n(str_represents_ul_(unparsed_arg, &limit, -1))))));
+    char *output_filename = _REPORT_standard_prime_table_filename(); if (2 < argc) output_filename = argv[2];
+    // process terminal arguments ^
 
-    FILE *FS_to_external_prime_table = fopen(output_filename, "w"); // overwritten if already exists: outputting to the same output file again with a lesser 'mod' shrinks the prime table
-    fprintf(stdout, "Exported %lu primes to external file '%s' (which is all primes less than %lu).\n", primes_printed_from_sieve_array_to_FS(sieve_of_eratosthenes(mod_), mod_, FS_to_external_prime_table), output_filename, mod_); fclose(FS_to_external_prime_table); return 0;
+    FILE *FS_to_external_prime_table = fopen(output_filename, "w"); fprintf(stdout, "Exported %lu primes to external file '%s' (which is all primes less than %lu).\n", primes_printed_from_sieve_array_to_FS(sieve_of_eratosthenes(limit), limit, FS_to_external_prime_table), output_filename, limit); fclose(FS_to_external_prime_table); return 0;
+    // prime table will be overwritten if it already exists, with other words: outputting to the same output file again with a lesser 'limit' shrinks the prime table ^^
 }
