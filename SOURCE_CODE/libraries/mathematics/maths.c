@@ -85,6 +85,11 @@ unsigned long _polynomial(unsigned long **COEFFICIENT_array, unsigned long _x, u
     do { i--; ret_val = _add(ret_val, _multiply(term_factor, *COEFFICIENT_array[i], mod_), mod_); term_factor = _multiply(term_factor, _x, mod_); } while (i != 0); return ret_val;
 } unsigned long mod_polynomial(unsigned long **COEFFICIENT_array, unsigned long _x) { return _polynomial(COEFFICIENT_array, _x, *mod_); }
 
+unsigned long _Polynomial(unsigned long *coefficient, unsigned long _x, unsigned long mod_, unsigned long number_of_coefficients) {
+    struct ordered_pair iso = _isomorphism();
+    do { number_of_coefficients--; iso.a = _add(iso.a, _multiply(iso.b, coefficient[number_of_coefficients], mod_), mod_); iso.b = _multiply(iso.b, _x, mod_); } while (number_of_coefficients != 0); return iso.a;
+} unsigned long mod_Polynomial(unsigned long *coefficient, unsigned long _x, unsigned long number_of_coefficients) { return _Polynomial(coefficient, _x, *mod_, number_of_coefficients); }
+
 unsigned long GCD(unsigned long a, unsigned long b) {
     unsigned long remainder = a % b;
     while (remainder != 0) {
