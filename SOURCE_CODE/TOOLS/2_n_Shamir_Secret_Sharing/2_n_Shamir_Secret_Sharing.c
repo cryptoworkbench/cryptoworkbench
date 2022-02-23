@@ -46,10 +46,10 @@ void second_first() { fprintf(stderr, "Failed to interpret argument '%s' as x co
 void first_second() { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of first point."); }
 void first_first() { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of first point."); }
 
-void mod_error() { fprintf(stderr, "%s is not mod!\n", unparsed_arg); }
+void mod_error() { fprintf(stderr, "%s is not mod!", unparsed_arg); }
 
 int main(int argc, char **argv) {
-    unsigned long mod; conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul_(argv[1], mod_, -1)))))); mod_ = &mod;
+    unsigned long mod; conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul_(argv[1], &mod, -1)))))); mod_ = &mod;
     if (6 < argc) { ignored_arguments(argc, argv, 5); argc = 6; } // < complain about unneccesary arguments and forget about them once and for all
     unsigned long ***equation = equations_ALLOCATE(K); switch (argc) {
 	case 6: conditional_goodbye(n(n(error_specification(second_second, n(str_represents_ul_(argv[5], equation[1][0], 0))))));
