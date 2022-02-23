@@ -37,6 +37,6 @@ int main(int argc, char **argv) { unparsed_arg = argv[1];
     if (!(*mod_)) fscanf(stdin, "%lu", &range_bound);
     else fprintf(stdout, "%lu\n", range_bound);
 
-    for (unsigned long x = 0; x < range_bound; x++) fprintf(stdout, "(%lu, %lu)\n", x, mod_Polynomial(coefficient, x, number_of_coefficients));
+    for (unsigned long x = 0; x < range_bound; x++) fprintf(stdout, "(%lu, %lu)\n", x, mod_Polynomial(x, coefficient, number_of_coefficients));
     free(coefficient); return 0; }
 

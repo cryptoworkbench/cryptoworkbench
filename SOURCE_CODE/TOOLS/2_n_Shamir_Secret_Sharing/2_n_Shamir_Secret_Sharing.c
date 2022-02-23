@@ -1,4 +1,7 @@
 /* DEVELOPER NOTICE #1:
+ * I want to switch this TOOL over from 'mod_polynomial' to 'mod_Polynomial'
+ *
+ * DEVELOPER NOTICE #2:
  * executing 'clear && polynomial_plot 13 9 7 && 2_n_Shamir_Secret_Sharing 13 1 3 4 4'
  *
  * Gives a curious result:
@@ -45,8 +48,8 @@ void first_first() { fprintf(stderr, "Failed to interpret argument '%s' as x coo
 
 void mod_error() { fprintf(stderr, "%s is not mod!\n", unparsed_arg); }
 
-int main(int argc, char **argv) { unsigned long mod; mod_ = &mod;
-    conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul_(argv[1], mod_, -1))))));
+int main(int argc, char **argv) {
+    unsigned long mod; conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul_(argv[1], mod_, -1)))))); mod_ = &mod;
     if (6 < argc) { ignored_arguments(argc, argv, 5); argc = 6; } // < complain about unneccesary arguments and forget about them once and for all
     unsigned long ***equation = equations_ALLOCATE(K); switch (argc) {
 	case 6: conditional_goodbye(n(n(error_specification(second_second, n(str_represents_ul_(argv[5], equation[1][0], 0))))));

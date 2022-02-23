@@ -12,6 +12,9 @@
  * a = 15, b = 9, c = 3
  *
  * Yields a floating point exception instead.
+ *
+ * DEVELOPER NOTICE #1:
+ * I want to switch this TOOL over from 'mod_polynomial' to 'mod_Polynomial'
  */
 #include <stdio.h>
 #include <stdlib.h> // 'exit()'
