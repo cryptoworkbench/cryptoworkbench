@@ -50,17 +50,19 @@ void mod_error() { fprintf(stderr, "%s is not mod!", unparsed_arg); }
 
 int main(int argc, char **argv) {
     unsigned long mod; conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul_(argv[1], &mod, -1)))))); mod_ = &mod;
-    if (6 < argc) { ignored_arguments(argc, argv, 5); argc = 6; } // < forget about unneccesary arguments once and for all after complaining about them
-    unsigned long ***equation = equations_ALLOCATE(K); switch (argc) {
-	case 6: n(n(error_specification(second_second, str_represents_ul_(argv[5], equation[1][0], 1))));
-	case 5: n(n(error_specification(second_first, str_represents_ul_(argv[4], equation[1][1], 1))));
-	case 4: n(n(error_specification(first_second, str_represents_ul_(argv[3], equation[0][0], 1))));
-	case 3: n(n(error_specification(first_first, str_represents_ul_(argv[2], equation[0][1], 1))));
-    }; // ^ interpret interpretable information
-    fprintf(stdout, "x_1 \u2261 "); if (2 < argc) fprintf(stdout, "%lu\n", *equation[0][1]); else fscanf(stdin, " %lu", equation[0][1]);
-    fprintf(stdout, "y_1 \u2261 "); if (3 < argc) fprintf(stdout, "%lu\n", *equation[0][0]); else fscanf(stdin, " %lu", equation[0][0]); fprintf(stdout, "\n");
-    fprintf(stdout, "x_2 \u2261 "); if (4 < argc) fprintf(stdout, "%lu\n", *equation[1][1]); else fscanf(stdin, " %lu", equation[1][1]);
-    fprintf(stdout, "y_2 \u2261 "); if (5 < argc) fprintf(stdout, "%lu\n", *equation[1][0]); else fscanf(stdin, " %lu", equation[1][0]); fprintf(stdout, "\n");
+    // interpret and set 'mod_' ^
+
+    if (6 < argc) ignored_arguments(argc, argv, 5);
+    // forget about unneccesary arguments once and for all ^
+
+    unsigned long ***equation = equations_ALLOCATE(K);
+    conditional_goodbye(n(n(error_specification(first_first, n(str_represents_ul_(argv[2], equation[0][1], -2))))));
+    conditional_goodbye(n(n(error_specification(first_second, n(str_represents_ul_(argv[3], equation[0][0], -3))))));
+    conditional_goodbye(n(n(error_specification(second_first, n(str_represents_ul_(argv[4], equation[1][1], -4))))));
+    conditional_goodbye(n(n(error_specification(second_second, n(str_represents_ul_(argv[5], equation[1][0], -5))))));
+
+    fprintf(stdout, "Supplied mappings:\n");
+    fprintf(stdout, "%lu -> %lu\n%lu -> %lu\n\n", *equation[0][1], *equation[0][0], *equation[1][1], *equation[1][0]);
     *equation[0][K] = *equation[1][K] = 1; unsigned long **equation_ONE_WITH_TWO = coefficient_cancel(equation[0], equation[1], 2);
     // ^ Prepare equations
 

@@ -32,7 +32,8 @@ void argv_ERROR(unsigned long index, char **argv) {
     exit(-index);
 }
 
-unsigned long mod; int main(int argc, char **argv) { mod_ = &mod;
+int main(int argc, char **argv) {
+    unsigned long mod; mod_ = &mod;
     if (!str_represents_ul(argv[1], mod_)) argv_ERROR(1, argv);
     if (8 < argc) { ignored_arguments(argc, argv, 7); argc = 8; } // < complain about unneccesary arguments and forget about them once and for all
     unsigned long ***equation = equations_ALLOCATE(K); switch (argc) {

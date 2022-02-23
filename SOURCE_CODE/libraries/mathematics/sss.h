@@ -1,6 +1,6 @@
 // try to adapt the functions from 'shamir_secret_sharing.c' so that they fit '_Polynomial' instead of '_polynomial'
 void equation_DISCARD(unsigned long **equation);
-unsigned long **equation_ADD(unsigned long **equation_ONE, unsigned long **equation_TWO);
+unsigned long *equation_ADD(unsigned long *first_equation, unsigned long *second_equation);
 unsigned long **equation_MULTIPLY(unsigned long **equation, unsigned long multiplier);
 unsigned long **equation_NEGATIVE(unsigned long **equation);
 unsigned long **equation_SUBTRACT(unsigned long **equation_ONE, unsigned long **equation_TWO);
