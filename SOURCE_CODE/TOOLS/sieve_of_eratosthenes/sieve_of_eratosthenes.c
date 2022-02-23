@@ -11,8 +11,12 @@ void error_and_exit(char *argv_one) { int exit_status = - 1;
     exit(exit_status);
 }
 
-int main(int argc, char **argv) { unsigned long mod;
-    if (!str_represents_ul(argv[1], &mod)) error_and_exit(argv[1]);
-    fprintf(stdout, "\nPrinted %lu primes.\n", primes_printed_from_sieve_array_to_FS(sieve_of_eratosthenes(mod), mod, stdout));
+void limit_failed_to_parse() {
+    fprintf(stderr, "Failed to understand '%s' as the limit for the sieve function.", unparsed_arg);
+}
+
+int main(int argc, char **argv) { unparsed_arg = argv[1];
+    unsigned long limit; conditional_goodbye(n(n(error_specification(limit_failed_to_parse, n(str_represents_ul_(argv[1], &limit, -1))))));
+    fprintf(stdout, "\nPrinted %lu primes.\n", primes_printed_from_sieve_array_to_FS(sieve_of_eratosthenes(limit), limit, stdout));
     return 0;
 }

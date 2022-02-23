@@ -11,9 +11,6 @@
 _error_selector _str_not_parsable_as_number(char *str) { unparsed_arg = str; return str_not_parsable_as_number; }
 void str_not_parsable_as_number() { fprintf(stderr, " parsing of '%s' failed: '%s' is not a number.", unparsed_arg, unparsed_arg); }
 
-// _error_selector N(_error_selector error_explainer, int exit_status) { if (exit_status) fprintf(stderr, "\n"); return error_explainer; }
-// new and untested ^
-
 int error_message(_error_selector error_explainer, int exit_status)
 { if (exit_status) { fflush(stdout); fprintf(stderr, "### THE FOLLOWING ERROR OCCURRED -->"); error_explainer(); } return exit_status; }
 
