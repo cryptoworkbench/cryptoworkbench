@@ -13,6 +13,13 @@
  *
  * 3_n_Shamir_Secret_Sharing will recover that a was 3, b was 2, and the secret encoded on the y axis (c) was 1.
  *
+ * Another example:
+ * ./plot_polynomial 101 3 2 12
+ *
+ * ./3_n_Shamir_Secret_Sharing 101 95 7 96 77 97 52
+ *
+ * This will tell that c was 12.
+ *
  * DEVELOPER NOTICE #1:
  * I want to switch this TOOL over from 'mod_polynomial' to 'mod_Polynomial'
  *
@@ -32,44 +39,27 @@
 #include "../../libraries/mathematics/shamir_secret_sharing.h"
 #define K 3
 
-char *one = "%s is not a suitable value for the field modulus!\n\nExiting '-%lu'.\n";
-
-void argv_ERROR(unsigned long index, char **argv) {
-    char *error; switch (index) {
-	case 1: error = one;
-    }; fprintf(stderr, error, argv[index], index);
-    exit(-index);
-}
-
-
 void _third_y_failed_to_parse() { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of last point.", unparsed_arg); }
 void _third_x_failed_to_parse() { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of last point.", unparsed_arg); }
 void second_y_failed_to_parse() { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of second point.", unparsed_arg); }
 void second_x_failed_to_parse() { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of second point.", unparsed_arg); }
 void _first_y_failed_to_parse() { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of first point.", unparsed_arg); }
 void _first_x_failed_to_parse() { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of first point.", unparsed_arg); }
-void mod_failed_to_parse() { fprintf(stderr, "Please provide as first argument a finite field specification."); }
+void mod_failed_to_parse()      { fprintf(stderr, "Please provide as first argument the finite field specification."); }
 
 int main(int argc, char **argv) {
-    unsigned long mod; conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(str_represents_ul_(argv[1], &mod, -1)))))); mod_ = &mod;
-    // interpret and set 'mod_' ^
-
-    if (8 < argc) ignored_arguments(argc, argv, 7);
-    // complain and forget about unneccesary arguments once and for all ^
-
-    unsigned long ***equation = equations_ALLOCATE(K);
+    unsigned long mod; conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(str_represents_ul_(argv[1], &mod, -1)))))); mod_ = &mod; unsigned long ***equation = equations_ALLOCATE(K);
     unparsed_arg = argv[2]; conditional_goodbye(n(n(error_specification(_first_x_failed_to_parse, n(str_represents_ul_(unparsed_arg, equation[0][1], -2))))));
     unparsed_arg = argv[3]; conditional_goodbye(n(n(error_specification(_first_y_failed_to_parse, n(str_represents_ul_(unparsed_arg, equation[0][0], -3))))));
     unparsed_arg = argv[4]; conditional_goodbye(n(n(error_specification(second_x_failed_to_parse, n(str_represents_ul_(unparsed_arg, equation[1][1], -4))))));
     unparsed_arg = argv[5]; conditional_goodbye(n(n(error_specification(second_y_failed_to_parse, n(str_represents_ul_(unparsed_arg, equation[1][0], -5))))));
     unparsed_arg = argv[6]; conditional_goodbye(n(n(error_specification(_third_x_failed_to_parse, n(str_represents_ul_(unparsed_arg, equation[2][1], -6))))));
     unparsed_arg = argv[7]; conditional_goodbye(n(n(error_specification(_third_y_failed_to_parse, n(str_represents_ul_(unparsed_arg, equation[2][0], -7))))));
-    // interpret remaining variables ^
+    if (8 < argc) ignored_arguments(argc, argv, 7); // complain and about unneccesary command line arguments <--
+    // interpret command line arguments ^
 
-    fprintf(stdout, "Supplied mappings:\n");
-    fprintf(stdout, "x_1 \u2261 %lu\n", *equation[0][1]); fprintf(stdout, "y_1 \u2261 %lu\n\n", *equation[0][0]);
-    fprintf(stdout, "x_2 \u2261 %lu\n", *equation[1][1]); fprintf(stdout, "y_2 \u2261 %lu\n\n", *equation[1][0]);
-    fprintf(stdout, "x_3 \u2261 %lu\n", *equation[2][1]); fprintf(stdout, "y_3 \u2261 %lu\n\n", *equation[2][0]);
+    fprintf(stdout, "Supplied mappings:\n%lu -> %lu\n%lu -> %lu\n%lu -> %lu\n\n", *equation[0][1], *equation[0][0], *equation[1][1], *equation[1][0], *equation[2][1], *equation[2][0]);
+    // display coordinate points ('mapping behaviour samples') ^
 
     *equation[0][2] = mod_exponentiate(*equation[0][1], 2); *equation[1][2] = mod_exponentiate(*equation[1][1], 2); *equation[2][2] = mod_exponentiate(*equation[2][1], 2);
     *equation[0][3] = *equation[1][3] = *equation[2][3] = 1;
