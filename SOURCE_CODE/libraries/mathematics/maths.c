@@ -78,6 +78,12 @@ unsigned long _polynomial(unsigned long x, unsigned long *coefficient, int numbe
     do { number_of_coefficients--; iso.a = _add(iso.a, _multiply(iso.b, coefficient[number_of_coefficients], mod_), mod_); iso.b = _multiply(iso.b, x, mod_); } while (number_of_coefficients != 0); return iso.a;
 } unsigned long mod_polynomial(unsigned long x, unsigned long *coefficient, int number_of_coefficients) { return _polynomial(x, coefficient, number_of_coefficients, *mod_); }
 
+unsigned long _Polynomial(unsigned long x, unsigned long *coefficient, int number_of_coefficients, unsigned long mod_) {
+    struct ordered_pair iso = _isomorphism(); int discounter = 0;
+    do { discounter++; iso.a = _add(iso.a, _multiply(iso.b, coefficient[number_of_coefficients - discounter], mod_), mod_); iso.b = _multiply(iso.b, x, mod_); }
+    while (number_of_coefficients - discounter != 0); return iso.a;
+} unsigned long mod_Polynomial(unsigned long x, unsigned long *coefficient, int number_of_coefficients) { return _polynomial(x, coefficient, number_of_coefficients, *mod_); }
+
 unsigned long GCD(unsigned long a, unsigned long b) {
     unsigned long remainder = a % b;
     while (remainder != 0) {

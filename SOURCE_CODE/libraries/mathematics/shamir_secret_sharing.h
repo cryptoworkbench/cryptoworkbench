@@ -1,5 +1,4 @@
 void SET_k(int k);
-int k_yield();
 void equation_DISCARD(unsigned long **equation);
 unsigned long *equation_ADD(unsigned long *first_equation, unsigned long *second_equation);
 unsigned long *equation_MULTIPLY(unsigned long *equation, unsigned long multiplier);

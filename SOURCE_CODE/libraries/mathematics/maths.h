@@ -46,7 +46,11 @@ unsigned long mod_divide(unsigned long member_from_equivalence_class_representin
 // unsigned long _polynomial(unsigned long **COEFFICIENT_array, unsigned long _x, unsigned long mod); unsigned long mod_polynomial(unsigned long **coefficient, unsigned long _x);
 unsigned long _polynomial(unsigned long x, unsigned long *coefficient, int number_of_coefficients, unsigned long mod_);
 unsigned long mod_polynomial(unsigned long x, unsigned long *coefficient, int number_of_coefficients);
-// calculate a polynomial (under mod arithmetic) ^^
+// calculate a polynomial over an (in)finite field  ^^
+
+unsigned long _Polynomial(unsigned long x, unsigned long *coefficient, int number_of_coefficients, unsigned long mod_);
+unsigned long mod_Polynomial(unsigned long x, unsigned long *coefficient, int number_of_coefficients);
+// calculate a polynomial over an (in)finite field  ^^ (coefficients go in reverse order)
 
 typedef struct ordered_pair STRUCT_DH_parameters;
 void print_DH_parameters(STRUCT_DH_parameters *DH_parameters, FILE *fs);
