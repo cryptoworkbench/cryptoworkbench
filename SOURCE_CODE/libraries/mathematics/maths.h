@@ -44,8 +44,8 @@ unsigned long mod_divide(unsigned long member_from_equivalence_class_representin
 // divide under (modular) arithmetic ^^
 
 // unsigned long _polynomial(unsigned long **COEFFICIENT_array, unsigned long _x, unsigned long mod); unsigned long mod_polynomial(unsigned long **coefficient, unsigned long _x);
-unsigned long _polynomial(unsigned long x, unsigned long *coefficient, unsigned long number_of_coefficients, unsigned long mod_);
-unsigned long mod_polynomial(unsigned long x, unsigned long *coefficient, unsigned long number_of_coefficients);
+unsigned long _polynomial(unsigned long x, unsigned long *coefficient, int number_of_coefficients, unsigned long mod_);
+unsigned long mod_polynomial(unsigned long x, unsigned long *coefficient, int number_of_coefficients);
 // calculate a polynomial (under mod arithmetic) ^^
 
 typedef struct ordered_pair STRUCT_DH_parameters;
