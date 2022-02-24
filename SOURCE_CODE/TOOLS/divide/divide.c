@@ -11,9 +11,9 @@ void denominator_error() { fprintf(stderr, denominator_parsing_error); }
 void numerator_error() { fprintf(stderr, numerator_parsing_error); }
 
 unsigned long mod; int main(int argc, char **argv) { mod_ = &mod;
-    conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul_(argv[1], &mod, -1)))))); unsigned long numerator;
-    conditional_goodbye(n(n(error_specification(numerator_error, n(str_represents_ul_(argv[2], &numerator, -2)))))); unsigned long denominator;
-    conditional_goodbye(n(n(error_specification(denominator_error, n(str_represents_ul_(argv[3], &denominator, -3))))));
+    conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul(argv[1], &mod, -1)))))); unsigned long numerator;
+    conditional_goodbye(n(n(error_specification(numerator_error, n(str_represents_ul(argv[2], &numerator, -2)))))); unsigned long denominator;
+    conditional_goodbye(n(n(error_specification(denominator_error, n(str_represents_ul(argv[3], &denominator, -3))))));
 
     fprintf(stdout, "%lu / %lu \u2261 %lu (mod %lu)\n", numerator, denominator, mod_divide(numerator, denominator), mod);
     return 0;

@@ -11,7 +11,7 @@ void composite_error() { fprintf(stderr, "Please provide as first argument the n
 // error functions ^
 
 int main(int argc, char **argv) {
-    unsigned long number; conditional_goodbye(n(n(error_specification(composite_error, n(str_represents_ul_(argv[1], &number, -1))))));
+    unsigned long number; conditional_goodbye(n(n(error_specification(composite_error, n(str_represents_ul(argv[1], &number, -1))))));
     
     
     // unsigned long number; unparsed_arg = argv[1]; // str_not_parsable_as_number() depends on this variable being set <--

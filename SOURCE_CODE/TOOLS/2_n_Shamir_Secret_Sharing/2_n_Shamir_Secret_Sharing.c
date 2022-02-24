@@ -49,17 +49,17 @@ void first_first() { fprintf(stderr, "Failed to interpret argument '%s' as x coo
 void mod_error() { fprintf(stderr, "%s is not mod!", unparsed_arg); }
 
 int main(int argc, char **argv) {
-    unsigned long mod; conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul_(argv[1], &mod, -1)))))); mod_ = &mod;
+    unsigned long mod; conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul(argv[1], &mod, -1)))))); mod_ = &mod;
     // interpret and set 'mod_' ^
 
     if (6 < argc) ignored_arguments(argc, argv, 5);
     // forget about unneccesary arguments once and for all ^
 
     unsigned long ***equation = equations_ALLOCATE(K);
-    conditional_goodbye(n(n(error_specification(first_first, n(str_represents_ul_(argv[2], equation[0][1], -2))))));
-    conditional_goodbye(n(n(error_specification(first_second, n(str_represents_ul_(argv[3], equation[0][0], -3))))));
-    conditional_goodbye(n(n(error_specification(second_first, n(str_represents_ul_(argv[4], equation[1][1], -4))))));
-    conditional_goodbye(n(n(error_specification(second_second, n(str_represents_ul_(argv[5], equation[1][0], -5))))));
+    conditional_goodbye(n(n(error_specification(first_first, n(str_represents_ul(argv[2], equation[0][1], -2))))));
+    conditional_goodbye(n(n(error_specification(first_second, n(str_represents_ul(argv[3], equation[0][0], -3))))));
+    conditional_goodbye(n(n(error_specification(second_first, n(str_represents_ul(argv[4], equation[1][1], -4))))));
+    conditional_goodbye(n(n(error_specification(second_second, n(str_represents_ul(argv[5], equation[1][0], -5))))));
 
     fprintf(stdout, "Supplied mappings:\n");
     fprintf(stdout, "%lu -> %lu\n%lu -> %lu\n\n", *equation[0][1], *equation[0][0], *equation[1][1], *equation[1][0]);

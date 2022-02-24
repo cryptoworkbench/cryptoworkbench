@@ -23,13 +23,13 @@ void remainder_not_parsable() { fprintf(stderr, "Please provide as first argumen
 void modulus_failed_to_parse() { fprintf(stderr, "Failed to understand '%s' as the %ith modulus.", unparsed_modulus, i + 1); }
 
 int main(int argc, char **argv) { unparsed_arg = argv[1];
-    unsigned long remainder; conditional_goodbye(n(n(error_specification(remainder_not_parsable, n(str_represents_ul_(argv[1], &remainder, -1))))));
+    unsigned long remainder; conditional_goodbye(n(n(error_specification(remainder_not_parsable, n(str_represents_ul(argv[1], &remainder, -1))))));
                              conditional_goodbye(n(n(error_specification(system_not_provided, -2 * (argc == 2)))));
     // interpret remainder ^
 
     unsigned long moduli = argc - 2; unsigned long **array_of_moduli = (unsigned long **) malloc(sizeof(unsigned long *) * moduli); unsigned long i;
     for (i = 0; i < moduli; i++) array_of_moduli[i] = (unsigned long *) malloc(sizeof(unsigned long));
-    for (i = 0; i < moduli; i++) { unparsed_modulus = argv[2 + i]; conditional_goodbye(n(n(error_specification(modulus_failed_to_parse, n(str_represents_ul_(unparsed_modulus, array_of_moduli[i], - (2 + i))))))); }
+    for (i = 0; i < moduli; i++) { unparsed_modulus = argv[2 + i]; conditional_goodbye(n(n(error_specification(modulus_failed_to_parse, n(str_represents_ul(unparsed_modulus, array_of_moduli[i], - (2 + i))))))); }
 
     for (i = 0; i < moduli; i++) for (unsigned long j = i + 1; j < moduli; j++) if (GCD(*array_of_moduli[i], *array_of_moduli[j]) != 1) conditional_goodbye(n(n(error_message(moduli_not_coprime, -3))));
     // check to see if all moduli are coprime to each other ^

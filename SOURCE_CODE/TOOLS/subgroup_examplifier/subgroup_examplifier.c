@@ -87,8 +87,9 @@ void identity_error() { fprintf(stderr, "\nFailed to understand '%s' as the iden
 void mod_error() { fprintf(stderr, "\nFailed to understand '%s' as the modulus value of any group to examplify.", unparsed_arg_); }
 // error functions ^ (function header format fits typedef '_error_message')
 
-int main(int argc, char **argv) { mod_ = (unsigned long *) malloc(sizeof(unsigned long)); unparsed_arg_ = argv[1];
-    conditional_goodbye(n(n(error_specification(mod_error, str_represents_ul_(unparsed_arg_, mod_, -1)))));
+int main(int argc, char **argv) {
+    mod_ = (unsigned long *) malloc(sizeof(unsigned long));
+    unparsed_arg_ = argv[1]; conditional_goodbye(n(n(error_specification(mod_error, str_represents_ul(unparsed_arg_, mod_, -1)))));
     // BEHOLD! THE CODING MIRACLE ! ^^^
 
     int *SELECTOR = (int *) malloc(sizeof(int)); unparsed_arg_ = argv[2];

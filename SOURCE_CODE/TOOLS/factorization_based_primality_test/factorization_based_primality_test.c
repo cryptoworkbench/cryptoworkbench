@@ -6,7 +6,7 @@
 void composite_parse_error() { fprintf(stderr, "Please provide as first argument the number to check if it is prime."); }
 
 int main(int argc, char **argv) { unsigned long potential_prime;
-    conditional_goodbye(n(n(error_specification(composite_parse_error, n(str_represents_ul_(argv[1], &potential_prime, -1))))));
+    conditional_goodbye(n(n(error_specification(composite_parse_error, n(str_represents_ul(argv[1], &potential_prime, -1))))));
     
     _preferred_factorization_engine = factorization_method_retrieve(argv[2]);
     fprintf(stdout, "Using the factorization engine \"%s\" as the basis for my primality test on %lu.", _factorization_engine_description(_preferred_factorization_engine), potential_prime);

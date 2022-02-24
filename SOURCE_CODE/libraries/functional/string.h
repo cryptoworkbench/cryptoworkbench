@@ -21,7 +21,6 @@ int error_specification(_error_selector error_explainer, int exit_status);
 int n(int pass_through);
 void conditional_goodbye(int exit_status);
 int str_represents_ul(char *str, unsigned long *ul_ptr, int exit_status);
-int str_represents_ul_(char *str, unsigned long *ul_ptr, int exit_status); // <-- Make this one replace 'str_represents_ul()' <--
 // ^^^ Puts the numeric value of "str" at the location pointed at by "ul_ptr".
 // 
 // Returns "VOID" if "str" is not parsable as a base-10 number.

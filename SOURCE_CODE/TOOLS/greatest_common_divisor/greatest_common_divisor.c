@@ -15,6 +15,6 @@ int main(int argc, char **argv) { unsigned long gcd_function_argument_count = ar
     conditional_goodbye(n(n(error_specification(argument_count, -(2 > gcd_function_argument_count)))));
     unsigned long **arguments_array = (unsigned long **) malloc(sizeof(unsigned long *) * gcd_function_argument_count);
     for (array_index = 0; array_index < gcd_function_argument_count; array_index++)
-    { conditional_goodbye(n(n(error_specification(argument_parse, n(str_represents_ul_(argv[1 + array_index], (arguments_array[array_index] = (unsigned long *) malloc(sizeof(unsigned long))), -(2 + array_index)))))));}
+    { conditional_goodbye(n(n(error_specification(argument_parse, n(str_represents_ul(argv[1 + array_index], (arguments_array[array_index] = (unsigned long *) malloc(sizeof(unsigned long))), -(2 + array_index)))))));}
     printf("GCD of arguments: %lu\n", UNRESTRICTED_GCD(arguments_array, gcd_function_argument_count)); return 0;
 }
