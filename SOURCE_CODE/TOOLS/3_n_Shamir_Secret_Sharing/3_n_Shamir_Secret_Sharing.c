@@ -39,13 +39,13 @@
 #include "../../libraries/mathematics/shamir_secret_sharing.h"
 #define K 3
 
-void __last_y_failed_to_parse() { fprintf(stderr, "Failed to interpret '%s' as y coordinate of last point.", unparsed_arg); }
-void __last_x_failed_to_parse() { fprintf(stderr, "Failed to interpret '%s' as x coordinate of last point.", unparsed_arg); }
-void second_y_failed_to_parse() { fprintf(stderr, "Failed to interpret '%s' as y coordinate of second point.", unparsed_arg); }
-void second_x_failed_to_parse() { fprintf(stderr, "Failed to interpret '%s' as x coordinate of second point.", unparsed_arg); }
-void _first_y_failed_to_parse() { fprintf(stderr, "Failed to interpret '%s' as y coordinate of first point.", unparsed_arg); }
-void _first_x_failed_to_parse() { fprintf(stderr, "Failed to interpret '%s' as x coordinate of first point.", unparsed_arg); }
-void _____mod_failed_to_parse() { fprintf(stderr, "Please provide as first argument a finite field specification."); }
+void __last_y_failed_to_parse() { fprintf(stderr, "Please provide as seventh argument the y coordinate of last point!"); }
+void __last_x_failed_to_parse() { fprintf(stderr, "Please provide as sixth argument the x coordinate of last point!"); }
+void second_y_failed_to_parse() { fprintf(stderr, "Please provide as fifth argument the y coordinate of second point!"); }
+void second_x_failed_to_parse() { fprintf(stderr, "Please provide as fourth argument the x coordinate of second point!"); }
+void _first_y_failed_to_parse() { fprintf(stderr, "Please provide as third argument the y coordinate of first point!"); }
+void _first_x_failed_to_parse() { fprintf(stderr, "Please provide as second argument the x coordinate of first point!"); }
+void _____mod_failed_to_parse() { fprintf(stderr, "Please provide as first argument a finite field specification!"); }
 
 int main(int argc, char **argv) { SET_k(K);
     unsigned long mod;      conditional_goodbye(n(n(error_specification(_____mod_failed_to_parse, n(str_represents_ul(argv[1], &mod, -1)))))); mod_ = &mod; unsigned long **equation = equations_ALLOCATE(K);

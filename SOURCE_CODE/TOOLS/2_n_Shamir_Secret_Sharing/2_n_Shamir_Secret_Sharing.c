@@ -42,14 +42,14 @@
 
 unsigned long **equation;
 
-void _last_y_failed_to_parse() { fprintf(stderr, "Failed to interpret '%s' as y coordinate of second point.", unparsed_arg); equations_DELETE(equation); }
-void _last_x_failed_to_parse() { fprintf(stderr, "Failed to interpret '%s' as x coordinate of second point.", unparsed_arg); equations_DELETE(equation); }
-void first_y_failed_to_parse() { fprintf(stderr, "Failed to interpret '%s' as y coordinate of first point.", unparsed_arg); equations_DELETE(equation); }
-void first_x_failed_to_parse() { fprintf(stderr, "Failed to interpret '%s' as x coordinate of first point.", unparsed_arg); equations_DELETE(equation); }
-void mod_error() { fprintf(stderr, "%s is not mod!", unparsed_arg); }
+void _last_y_failed_to_parse() { fprintf(stderr, "Please provide as fifth argument the y coordinate of second point!"); equations_DELETE(equation); }
+void _last_x_failed_to_parse() { fprintf(stderr, "Please provide as fourth argument the x coordinate of second point!"); equations_DELETE(equation); }
+void first_y_failed_to_parse() { fprintf(stderr, "Please provide as third argument the y coordinate of first point!"); equations_DELETE(equation); }
+void first_x_failed_to_parse() { fprintf(stderr, "Please provide as second argument the x coordinate of first point!"); equations_DELETE(equation); }
+void ______________mod_error() { fprintf(stderr, "Please provide as first argument a finite field specification!", unparsed_arg); }
 
 int main(int argc, char **argv) { SET_k(K);
-    unsigned long mod; conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul(argv[1], &mod, -1)))))); mod_ = &mod; equation = equations_ALLOCATE(K);
+    unsigned long mod; conditional_goodbye(n(n(error_specification(______________mod_error, n(str_represents_ul(argv[1], &mod, -1)))))); mod_ = &mod; equation = equations_ALLOCATE(K);
     conditional_goodbye(n(n(error_specification(first_x_failed_to_parse, n(str_represents_ul(argv[2], 1 + equation[0], -2))))));
     conditional_goodbye(n(n(error_specification(first_y_failed_to_parse, n(str_represents_ul(argv[3], 0 + equation[0], -3))))));
     conditional_goodbye(n(n(error_specification(_last_x_failed_to_parse, n(str_represents_ul(argv[4], 1 + equation[1], -4))))));
