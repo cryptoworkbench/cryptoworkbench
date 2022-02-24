@@ -30,6 +30,6 @@ int main(int argc, char **argv) {
     unsigned long range_bound = mod; fprintf(stdout, "Number of coordinates that follow: "); if (!(*mod_)) fscanf(stdin, "%lu", &range_bound); else fprintf(stdout, "%lu\n", range_bound);
     // if the infinite field of Natural numbers (N) was not divided into quotient groups (by a modulus), ask how many coordinates should follow ^
 
-    for (unsigned long x = 0; x < range_bound; x++) fprintf(stdout, "(%lu, %lu)\n", x, mod_Polynomial(x, coefficient, number_of_coefficients)); free(coefficient);
+    for (unsigned long x = 0; x < range_bound; x++) fprintf(stdout, "(%lu, %lu)\n", x, mod_polynomial(x, coefficient, number_of_coefficients)); free(coefficient);
     return 0;
 }

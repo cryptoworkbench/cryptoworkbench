@@ -70,6 +70,6 @@ int main(int argc, char **argv) { SET_k(K); unsigned long mod;
 
     fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", mod);
     fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", coefficient[1], coefficient[0], mod);
-    fprintf(stdout, "\nThe shared secret was '%lu'.\n", mod_Polynomial(0, coefficient, K));
+    fprintf(stdout, "\nThe shared secret was '%lu'.\n", mod_polynomial(0, coefficient, K));
     free(coefficient); equations_DELETE(equation); return 0;
 }
