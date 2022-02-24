@@ -1,12 +1,12 @@
-/* The reason I make this library is because I want to make a general K-n SSSS program. */
+// try to adapt the functions from 'shamir_secret_sharing.c' so that they fit '_Polynomial' instead of '_polynomial'
 void equation_DISCARD(unsigned long **equation);
-unsigned long **equation_ADD(unsigned long **equation_ONE, unsigned long **equation_TWO);
-unsigned long **equation_MULTIPLY(unsigned long **equation, unsigned long multiplier);
-unsigned long **equation_NEGATIVE(unsigned long **equation);
-unsigned long **equation_SUBTRACT(unsigned long **equation_ONE, unsigned long **equation_TWO);
-unsigned long equation_multiplier(unsigned long **equation_ONE, unsigned long **equation_TWO, int index);
-unsigned long **coefficient_cancel(unsigned long **equation_ONE, unsigned long **equation_TWO, int index);
-unsigned long ***equations_ALLOCATE(int k_in_k_N_SSSS);
+unsigned long *equation_ADD(unsigned long *first_equation, unsigned long *second_equation, int length);
+unsigned long *equation_MULTIPLY(unsigned long *equation, unsigned long multiplier, int length);
+unsigned long *equation_NEGATIVE(unsigned long *equation, int length);
+unsigned long *equation_SUBTRACT(unsigned long *first_equation, unsigned long *second_equation, int length);
+unsigned long equation_multiplier(unsigned long *first_equation, unsigned long *second_equation, int index, int length);
+unsigned long *coefficient_cancel(unsigned long *first_equation, unsigned long *second_equation, int index, int length);
+unsigned long **equations_ALLOCATE(int K);
 int equation_amount(unsigned long ***equation);
-void equations_DELETE(unsigned long ***equations);
+void equations_DELETE(unsigned long **equations, int amount);
 unsigned long **coefficients_ALLOCATE(int K);

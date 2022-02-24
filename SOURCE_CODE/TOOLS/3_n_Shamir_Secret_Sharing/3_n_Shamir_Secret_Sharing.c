@@ -36,7 +36,7 @@
 #include <stdlib.h> // 'exit()'
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h"
-#include "../../libraries/mathematics/sss.h"
+#include "../../libraries/mathematics/shamir_secret_sharing.h"
 #define K 3
 
 void _third_y_failed_to_parse() { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of last point.", unparsed_arg); }
@@ -81,5 +81,5 @@ int main(int argc, char **argv) {
     fprintf(stdout, "Second-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", mod);
     fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(modulus %lu)\n", coefficient[0], coefficient[1], coefficient[2], mod);
     fprintf(stdout, "\nThe shared secret was '%lu'.\n", mod_Polynomial(0, coefficient, K));
-    free(coefficient); // equations_DELETE(equation, K + 1);
-    return 0; } // < Finalize program
+    free(coefficient); equations_DELETE(equation, K); return 0;
+}
