@@ -5,6 +5,18 @@
  * 2). https://www.youtube.com/watch?v=K54ildEW9-Q	"How to keep an open secret with mathematics." (yt channel "Stand-up Maths")
  * 3). https://www.youtube.com/watch?v=ohc1futhFYM	"Equation of Parabola Given 3 Points (System of Equations)" (yt channel "Mario's Math Tutoring")
  *
+ * For example try:
+ * ./plot_polynomial 31 3 2 1
+ *
+ * Then select points one, two and three:
+ * ./3_n_Shamir_Secret_Sharing 31 1 6 2 17 3 3
+ *
+ * 3_n_Shamir_Secret_Sharing will recover that a was 3, b was 2, and the secret encoded on the y axis (c) was 1.
+ *
+ * DEVELOPER NOTICE #1:
+ * I want to switch this TOOL over from 'mod_polynomial' to 'mod_Polynomial'
+ *
+ * DEVELOPER NOTICE #2:
  * Didn't work with:
  * 17 7 2 6 2 15 11
  *
@@ -12,9 +24,6 @@
  * a = 15, b = 9, c = 3
  *
  * Yields a floating point exception instead.
- *
- * DEVELOPER NOTICE #1:
- * I want to switch this TOOL over from 'mod_polynomial' to 'mod_Polynomial'
  */
 #include <stdio.h>
 #include <stdlib.h> // 'exit()'
@@ -32,24 +41,36 @@ void argv_ERROR(unsigned long index, char **argv) {
     exit(-index);
 }
 
+
+void _third_y_failed_to_parse() { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of last point.", unparsed_arg); }
+void _third_x_failed_to_parse() { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of last point.", unparsed_arg); }
+void second_y_failed_to_parse() { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of second point.", unparsed_arg); }
+void second_x_failed_to_parse() { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of second point.", unparsed_arg); }
+void _first_y_failed_to_parse() { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of first point.", unparsed_arg); }
+void _first_x_failed_to_parse() { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of first point.", unparsed_arg); }
+void mod_failed_to_parse() { fprintf(stderr, "Please provide as first argument a finite field specification."); }
+
 int main(int argc, char **argv) {
-    unsigned long mod; mod_ = &mod;
-    if (!str_represents_ul(argv[1], mod_)) argv_ERROR(1, argv);
-    if (8 < argc) { ignored_arguments(argc, argv, 7); argc = 8; } // < complain about unneccesary arguments and forget about them once and for all
-    unsigned long ***equation = equations_ALLOCATE(K); switch (argc) {
-	case 8: if (!str_represents_ul(argv[7], equation[2][0])) fprintf(stderr, "Failed to interpret argument '%s' as a y variable.\n", argv[7]);
-	case 7: if (!str_represents_ul(argv[6], equation[2][1])) fprintf(stderr, "Failed to interpret argument '%s' as a x variable.\n", argv[6]);
-	case 6: if (!str_represents_ul(argv[5], equation[1][0])) fprintf(stderr, "Failed to interpret argument '%s' as a y coordinate.\n", argv[5]);
-	case 5: if (!str_represents_ul(argv[4], equation[1][1])) fprintf(stderr, "Failed to interpret argument '%s' as a x coordinate.\n", argv[4]);
-	case 4: if (!str_represents_ul(argv[3], equation[0][0])) fprintf(stderr, "Failed to interpret argument '%s' as a y coordinate.\n", argv[3]);
-	case 3: if (!str_represents_ul(argv[2], equation[0][1])) fprintf(stderr, "Failed to interpret argument '%s' as a x coordinate.\n", argv[2]);
-    }; // ^ Interpreted interpretable information
-    fprintf(stdout, "x_1 \u2261 "); if (2 < argc) fprintf(stdout, "%lu\n", *equation[0][1]); else fscanf(stdin, " %lu", equation[0][1]);
-    fprintf(stdout, "y_1 \u2261 "); if (3 < argc) fprintf(stdout, "%lu\n", *equation[0][0]); else fscanf(stdin, " %lu", equation[0][0]); fprintf(stdout, "\n");
-    fprintf(stdout, "x_2 \u2261 "); if (4 < argc) fprintf(stdout, "%lu\n", *equation[1][1]); else fscanf(stdin, " %lu", equation[1][1]);
-    fprintf(stdout, "y_2 \u2261 "); if (5 < argc) fprintf(stdout, "%lu\n", *equation[1][0]); else fscanf(stdin, " %lu", equation[1][0]); fprintf(stdout, "\n");
-    fprintf(stdout, "x_3 \u2261 "); if (4 < argc) fprintf(stdout, "%lu\n", *equation[2][1]); else fscanf(stdin, " %lu", equation[2][1]);
-    fprintf(stdout, "y_3 \u2261 "); if (5 < argc) fprintf(stdout, "%lu\n", *equation[2][0]); else fscanf(stdin, " %lu", equation[2][0]); fprintf(stdout, "\n");
+    unsigned long mod; conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(str_represents_ul_(argv[1], &mod, -1)))))); mod_ = &mod;
+    // interpret and set 'mod_' ^
+
+    if (8 < argc) ignored_arguments(argc, argv, 7);
+    // complain and forget about unneccesary arguments once and for all ^
+
+    unsigned long ***equation = equations_ALLOCATE(K);
+    unparsed_arg = argv[2]; conditional_goodbye(n(n(error_specification(_first_x_failed_to_parse, n(str_represents_ul_(unparsed_arg, equation[0][1], -2))))));
+    unparsed_arg = argv[3]; conditional_goodbye(n(n(error_specification(_first_y_failed_to_parse, n(str_represents_ul_(unparsed_arg, equation[0][0], -3))))));
+    unparsed_arg = argv[4]; conditional_goodbye(n(n(error_specification(second_x_failed_to_parse, n(str_represents_ul_(unparsed_arg, equation[1][1], -4))))));
+    unparsed_arg = argv[5]; conditional_goodbye(n(n(error_specification(second_y_failed_to_parse, n(str_represents_ul_(unparsed_arg, equation[1][0], -5))))));
+    unparsed_arg = argv[6]; conditional_goodbye(n(n(error_specification(_third_x_failed_to_parse, n(str_represents_ul_(unparsed_arg, equation[2][1], -6))))));
+    unparsed_arg = argv[7]; conditional_goodbye(n(n(error_specification(_third_y_failed_to_parse, n(str_represents_ul_(unparsed_arg, equation[2][0], -7))))));
+    // interpret remaining variables ^
+
+    fprintf(stdout, "Supplied mappings:\n");
+    fprintf(stdout, "x_1 \u2261 %lu\n", *equation[0][1]); fprintf(stdout, "y_1 \u2261 %lu\n\n", *equation[0][0]);
+    fprintf(stdout, "x_2 \u2261 %lu\n", *equation[1][1]); fprintf(stdout, "y_2 \u2261 %lu\n\n", *equation[1][0]);
+    fprintf(stdout, "x_3 \u2261 %lu\n", *equation[2][1]); fprintf(stdout, "y_3 \u2261 %lu\n\n", *equation[2][0]);
+
     *equation[0][2] = mod_exponentiate(*equation[0][1], 2); *equation[1][2] = mod_exponentiate(*equation[1][1], 2); *equation[2][2] = mod_exponentiate(*equation[2][1], 2);
     *equation[0][3] = *equation[1][3] = *equation[2][3] = 1;
     // ^ Prepare initial equations
