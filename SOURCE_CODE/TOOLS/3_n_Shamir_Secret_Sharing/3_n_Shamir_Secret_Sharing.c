@@ -39,16 +39,16 @@
 #include "../../libraries/mathematics/shamir_secret_sharing.h"
 #define K 3
 
-void __last_y_failed_to_parse() { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of last point.", unparsed_arg); }
-void __last_x_failed_to_parse() { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of last point.", unparsed_arg); }
-void second_y_failed_to_parse() { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of second point.", unparsed_arg); }
-void second_x_failed_to_parse() { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of second point.", unparsed_arg); }
-void _first_y_failed_to_parse() { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of first point.", unparsed_arg); }
-void _first_x_failed_to_parse() { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of first point.", unparsed_arg); }
-void mod_failed_to_parse()      { fprintf(stderr, "Please provide as first argument the finite field specification."); }
+void __last_y_failed_to_parse() { fprintf(stderr, "Failed to interpret '%s' as y coordinate of last point.", unparsed_arg); }
+void __last_x_failed_to_parse() { fprintf(stderr, "Failed to interpret '%s' as x coordinate of last point.", unparsed_arg); }
+void second_y_failed_to_parse() { fprintf(stderr, "Failed to interpret '%s' as y coordinate of second point.", unparsed_arg); }
+void second_x_failed_to_parse() { fprintf(stderr, "Failed to interpret '%s' as x coordinate of second point.", unparsed_arg); }
+void _first_y_failed_to_parse() { fprintf(stderr, "Failed to interpret '%s' as y coordinate of first point.", unparsed_arg); }
+void _first_x_failed_to_parse() { fprintf(stderr, "Failed to interpret '%s' as x coordinate of first point.", unparsed_arg); }
+void _____mod_failed_to_parse() { fprintf(stderr, "Please provide as first argument a finite field specification."); }
 
 int main(int argc, char **argv) { SET_k(K);
-    unsigned long mod; conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(str_represents_ul(argv[1], &mod, -1)))))); mod_ = &mod; unsigned long **equation = equations_ALLOCATE(K);
+    unsigned long mod;      conditional_goodbye(n(n(error_specification(_____mod_failed_to_parse, n(str_represents_ul(argv[1], &mod, -1)))))); mod_ = &mod; unsigned long **equation = equations_ALLOCATE(K);
     unparsed_arg = argv[2]; conditional_goodbye(n(n(error_specification(_first_x_failed_to_parse, n(str_represents_ul(unparsed_arg, 1 + equation[0], -2))))));
     unparsed_arg = argv[3]; conditional_goodbye(n(n(error_specification(_first_y_failed_to_parse, n(str_represents_ul(unparsed_arg, 0 + equation[0], -3))))));
     unparsed_arg = argv[4]; conditional_goodbye(n(n(error_specification(second_x_failed_to_parse, n(str_represents_ul(unparsed_arg, 1 + equation[1], -4))))));
