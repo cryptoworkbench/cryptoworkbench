@@ -80,17 +80,10 @@ int UL_array_SIZE(unsigned long **UL_array) { int ret_val = 0; while (UL_array[r
 
 unsigned long INDEX_within_UL_array(unsigned long *UL_array, unsigned long UL_array_SIZE, unsigned long number) { for (unsigned long INDEX = 0; INDEX < UL_array_SIZE; INDEX++) if (UL_array[INDEX] == number) return INDEX;}
 
-/*
-unsigned long _polynomial(unsigned long **COEFFICIENT_array, unsigned long _x, unsigned long mod_) {
-    unsigned long ret_val = ADDITIVE_IDENTITY; unsigned long term_factor = MULTIPLICATIVE_IDENTITY; unsigned long i = UL_array_SIZE(COEFFICIENT_array);
-    do { i--; ret_val = _add(ret_val, _multiply(term_factor, *COEFFICIENT_array[i], mod_), mod_); term_factor = _multiply(term_factor, _x, mod_); } while (i != 0); return ret_val;
-} unsigned long mod_polynomial(unsigned long **COEFFICIENT_array, unsigned long _x) { return _polynomial(COEFFICIENT_array, _x, *mod_); }
-*/
-
-unsigned long _Polynomial(unsigned long x, unsigned long *coefficient, unsigned long number_of_coefficients, unsigned long mod_) {
+unsigned long _polynomial(unsigned long x, unsigned long *coefficient, unsigned long number_of_coefficients, unsigned long mod_) {
     struct ordered_pair iso = _isomorphism();
     do { number_of_coefficients--; iso.a = _add(iso.a, _multiply(iso.b, coefficient[number_of_coefficients], mod_), mod_); iso.b = _multiply(iso.b, x, mod_); } while (number_of_coefficients != 0); return iso.a;
-} unsigned long mod_Polynomial(unsigned long x, unsigned long *coefficient, unsigned long number_of_coefficients) { return _Polynomial(x, coefficient, number_of_coefficients, *mod_); }
+} unsigned long mod_polynomial(unsigned long x, unsigned long *coefficient, unsigned long number_of_coefficients) { return _polynomial(x, coefficient, number_of_coefficients, *mod_); }
 
 unsigned long GCD(unsigned long a, unsigned long b) {
     unsigned long remainder = a % b;

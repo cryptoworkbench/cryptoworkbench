@@ -1,5 +1,5 @@
 /* DEVELOPER NOTICE #1:
- * I want to switch this TOOL over from 'mod_polynomial' to 'mod_Polynomial'
+ * I want to switch this TOOL over from 'mod_polynomial' to 'mod_polynomial'
  *
  * DEVELOPER NOTICE #2:
  * executing 'clear && polynomial_plot 13 9 7 && 2_n_Shamir_Secret_Sharing 13 1 3 4 4'
@@ -67,6 +67,6 @@ int main(int argc, char **argv) { SET_k(K);
 
     fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", mod);
     fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", coefficient[0], coefficient[1], mod);
-    fprintf(stdout, "\nThe shared secret was '%lu'.\n", mod_Polynomial(0, coefficient, K));
+    fprintf(stdout, "\nThe shared secret was '%lu'.\n", mod_polynomial(0, coefficient, K));
     free(coefficient); equations_DELETE(equation); return 0;
 }
