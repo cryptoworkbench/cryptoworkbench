@@ -6,7 +6,7 @@
  * 3). https://www.youtube.com/watch?v=ohc1futhFYM	"Equation of Parabola Given 3 Points (System of Equations)" (yt channel "Mario's Math Tutoring")
  *
  * For example try:
- * ./plot_polynomial 31 3 2 1
+ * ./plot_polynomial 31 1 2 3
  *
  * Then select points one, two and three:
  * ./3_n_Shamir_Secret_Sharing 31 1 6 2 17 3 3
@@ -73,13 +73,14 @@ int main(int argc, char **argv) { SET_k(K);
     unsigned long *final_linear_equation = coefficient_cancel(equation_ONE_and_TWO, equation_TWO_and_THREE, 1);
     // ^ Prepare other equations
 
-    unsigned long *coefficient = UL_array_of_SIZE(K); coefficient[0] = mod_divide(final_linear_equation[0], final_linear_equation[2]);
-    coefficient[1] = mod_divide(mod_subtract(equation_ONE_and_TWO[0], mod_multiply(equation_ONE_and_TWO[2], coefficient[0])), equation_ONE_and_TWO[1]);
-    coefficient[2] = mod_subtract(equation[0][0], mod_add(mod_multiply(coefficient[1], equation[0][1]), (mod_multiply(coefficient[0], _exponentiate(equation[0][1], 2, mod)))));
+    unsigned long *coefficient = UL_array_of_SIZE(K);
+    coefficient[2] = mod_divide(final_linear_equation[0], final_linear_equation[2]);
+    coefficient[1] = mod_divide(mod_subtract(equation_ONE_and_TWO[0], mod_multiply(equation_ONE_and_TWO[2], coefficient[2])), equation_ONE_and_TWO[1]);
+    coefficient[0] = mod_subtract(equation[0][0], mod_add(mod_multiply(coefficient[1], equation[0][1]), (mod_multiply(coefficient[2], _exponentiate(equation[0][1], 2, mod)))));
     // ^ Put the coefficients into an unsigned long array
 
     fprintf(stdout, "Second-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", mod);
-    fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(modulus %lu)\n", coefficient[0], coefficient[1], coefficient[2], mod);
-    fprintf(stdout, "\nThe shared secret was '%lu'.\n", mod_polynomial(0, coefficient, K));
+    fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(modulus %lu)\n", coefficient[2], coefficient[1], coefficient[0], mod);
+    fprintf(stdout, "\nThe shared secret was '%lu'.\n", mod_Polynomial(0, coefficient, K));
     free(coefficient); equations_DELETE(equation); return 0;
 }
