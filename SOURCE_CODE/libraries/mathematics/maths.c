@@ -76,7 +76,7 @@ unsigned long *UL_array_of_SIZE(int SIZE) {
     return ret_val;
 }
 
-unsigned long INDEX_within_UL_array(unsigned long *UL_array, unsigned long UL_array_SIZE, unsigned long number) { for (unsigned long INDEX = 0; INDEX < UL_array_SIZE; INDEX++) if (UL_array[INDEX] == number) return INDEX;}
+unsigned long INDEX_within_UL_array(unsigned long *UL_array, unsigned long array_size, unsigned long number) { for (unsigned long INDEX = 0; INDEX < array_size; INDEX++) if (UL_array[INDEX] == number) return INDEX;}
 
 unsigned long _polynomial(unsigned long x, unsigned long *coefficient, unsigned long number_of_coefficients, unsigned long mod_) { struct ordered_pair iso = _isomorphism();
     do { number_of_coefficients--; iso.a = _add(iso.a, _multiply(iso.b, coefficient[number_of_coefficients], mod_), mod_); iso.b = _multiply(iso.b, x, mod_); } while (number_of_coefficients != 0); return iso.a;
