@@ -47,7 +47,7 @@ void _first_y_failed_to_parse() { fprintf(stderr, "Failed to interpret argument 
 void _first_x_failed_to_parse() { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of first point.", unparsed_arg); }
 void mod_failed_to_parse()      { fprintf(stderr, "Please provide as first argument the finite field specification."); }
 
-int main(int argc, char **argv) {
+int main(int argc, char **argv) { SET_k(K);
     unsigned long mod; conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(str_represents_ul(argv[1], &mod, -1)))))); mod_ = &mod; unsigned long **equation = equations_ALLOCATE(K);
     unparsed_arg = argv[2]; conditional_goodbye(n(n(error_specification(_first_x_failed_to_parse, n(str_represents_ul(unparsed_arg, equation[0] + 1, -2))))));
     unparsed_arg = argv[3]; conditional_goodbye(n(n(error_specification(_first_y_failed_to_parse, n(str_represents_ul(unparsed_arg, equation[0] + 0, -3))))));
@@ -68,9 +68,9 @@ int main(int argc, char **argv) {
     equation[0][3] = equation[1][3] = equation[2][3] = 1;
     // ^ Prepare initial equations
 
-    unsigned long *equation_ONE_and_TWO = coefficient_cancel(equation[0], equation[1], 3, K); 
-    unsigned long *equation_TWO_and_THREE = coefficient_cancel(equation[1], equation[2], 3, K);
-    unsigned long *final_linear_equation = coefficient_cancel(equation_ONE_and_TWO, equation_TWO_and_THREE, 1, K);
+    unsigned long *equation_ONE_and_TWO = coefficient_cancel(equation[0], equation[1], 3); 
+    unsigned long *equation_TWO_and_THREE = coefficient_cancel(equation[1], equation[2], 3);
+    unsigned long *final_linear_equation = coefficient_cancel(equation_ONE_and_TWO, equation_TWO_and_THREE, 1);
     // ^ Prepare other equations
 
     unsigned long *coefficient = UL_array_of_SIZE(K); coefficient[0] = mod_divide(final_linear_equation[0], final_linear_equation[2]);
@@ -81,5 +81,5 @@ int main(int argc, char **argv) {
     fprintf(stdout, "Second-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", mod);
     fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(modulus %lu)\n", coefficient[0], coefficient[1], coefficient[2], mod);
     fprintf(stdout, "\nThe shared secret was '%lu'.\n", mod_Polynomial(0, coefficient, K));
-    free(coefficient); equations_DELETE(equation, K); return 0;
+    free(coefficient); equations_DELETE(equation); return 0;
 }

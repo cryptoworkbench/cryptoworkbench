@@ -40,26 +40,25 @@
 #include "../../libraries/mathematics/shamir_secret_sharing.h"
 #define K 2 // degree of polynomial that is resolved in other to retrieve secret encoded as contant term
 
-void second_second() { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of second point.", unparsed_arg); }
-void second_first() { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of second point.", unparsed_arg); }
-void first_second() { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of first point.", unparsed_arg); }
-void first_first() { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of first point.", unparsed_arg); }
+unsigned long **equation;
 
+void second_second() { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of second point.", unparsed_arg); equations_DELETE(equation); }
+void second_first() { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of second point.", unparsed_arg); equations_DELETE(equation); }
+void first_second() { fprintf(stderr, "Failed to interpret argument '%s' as y coordinate of first point.", unparsed_arg); equations_DELETE(equation); }
+void first_first() { fprintf(stderr, "Failed to interpret argument '%s' as x coordinate of first point.", unparsed_arg); equations_DELETE(equation); }
 void mod_error() { fprintf(stderr, "%s is not mod!", unparsed_arg); }
 
-int main(int argc, char **argv) {
-    unsigned long mod; conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul(argv[1], &mod, -1)))))); mod_ = &mod; // interpret and set 'mod_' <--
-    if (6 < argc) ignored_arguments(argc, argv, 5); // forget once and for all about any unneccesary arguments <--
+int main(int argc, char **argv) { SET_k(K);
+    unsigned long mod; conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul(argv[1], &mod, -1)))))); mod_ = &mod; equation = equations_ALLOCATE(K);
+    conditional_goodbye(n(n(error_specification(first_first, n(str_represents_ul(argv[2], 1 + equation[0], -2))))));
+    conditional_goodbye(n(n(error_specification(first_second, n(str_represents_ul(argv[3], 0 + equation[0], -3))))));
+    conditional_goodbye(n(n(error_specification(second_first, n(str_represents_ul(argv[4], 1 + equation[1], -4))))));
+    conditional_goodbye(n(n(error_specification(second_second, n(str_represents_ul(argv[5], 0 + equation[1], -5))))));
+    if (6 < argc) ignored_arguments(argc, argv, 5);
+    fprintf(stdout, "Supplied mappings:\n%lu -> %lu\n%lu -> %lu\n\n", equation[0][1], equation[0][0], equation[1][1], equation[1][0]);
+    // handle terminal inputs ^ 
 
-    unsigned long **equation = equations_ALLOCATE(K);
-    conditional_goodbye(n(n(error_specification(first_first, n(str_represents_ul(argv[2], equation[0] + 1, -2))))));
-    conditional_goodbye(n(n(error_specification(first_second, n(str_represents_ul(argv[3], equation[0] + 0, -3))))));
-    conditional_goodbye(n(n(error_specification(second_first, n(str_represents_ul(argv[4], equation[1] + 1, -4))))));
-    conditional_goodbye(n(n(error_specification(second_second, n(str_represents_ul(argv[5], equation[1] + 0, -5))))));
-
-    fprintf(stdout, "Supplied mappings:\n");
-    fprintf(stdout, "%lu -> %lu\n%lu -> %lu\n\n", equation[0][1], equation[0][0], equation[1][1], equation[1][0]);
-    equation[0][K] = equation[1][K] = 1; unsigned long *equation_ONE_WITH_TWO = coefficient_cancel(equation[0], equation[1], 2, K);
+    equation[0][K] = equation[1][K] = 1; unsigned long *equation_ONE_WITH_TWO = coefficient_cancel(equation[0], equation[1], 2);
     // ^ Prepare equations
 
     unsigned long *coefficient = UL_array_of_SIZE(K);
@@ -69,5 +68,5 @@ int main(int argc, char **argv) {
     fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", mod);
     fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", coefficient[0], coefficient[1], mod);
     fprintf(stdout, "\nThe shared secret was '%lu'.\n", mod_Polynomial(0, coefficient, K));
-    free(coefficient); equations_DELETE(equation, K); return 0;
+    free(coefficient); equations_DELETE(equation); return 0;
 }
