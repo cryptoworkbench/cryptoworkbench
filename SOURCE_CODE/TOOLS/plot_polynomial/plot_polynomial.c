@@ -15,22 +15,28 @@ void mod_error() { fprintf(stderr, "'%s' is not mod!", unparsed_arg); }
 // error functions ^
 
 int main(int argc, char **argv) { unparsed_arg = argv[1];
-    unsigned long mod;                    conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul(argv[1], &mod, -1)))))); mod_ = &mod;
-    // take in mod ^
-
+    unsigned long mod;          conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul(argv[1], &mod, -1)))))); mod_ = &mod;
     int number_of_coefficients; conditional_goodbye(n(n(error_message(wrong_argument_count, -4 * (!(number_of_coefficients = argc - 2))))));
-    // set 'number_of_coefficients' and simultaneously check if the required amount was met ^
+    // handle terminal inputs ^
 
     unsigned long *coefficient = (unsigned long *) malloc(sizeof(unsigned long) * number_of_coefficients);
     for (i = 0; i < number_of_coefficients; i++) conditional_goodbye(n(n(error_specification(coefficient_failed_to_parse, n(str_represents_ul(argv[i + 2], coefficient + i, -3))))));
     
     fprintf(stdout, "Plotting polynomial with coefficients:\n");
-    i = 0; char symbol = 'a';
+    // for (char symb = 'a'; i = number_of_coefficients; i != 0; symb++; i++) { fprintf(stdout, "%c }
+
+    int i = 0; char symbol = 'a';
+    do {fprintf(stdout, "%c = %lu", symbol, coefficient[i]);
+	if (i + 1 == number_of_coefficients) break; i++; symbol++; fprintf(stdout, ", ");
+    } while (1); if (mod) fprintf(stdout, "	(mod %lu)", mod); fprintf(stdout, "\n\n");
+
+    /*
     while (1) {
 	fprintf(stdout, "%c = %lu", symbol, coefficient[i]);
 	if (i + 1 == number_of_coefficients) break; i++;
 	symbol++; fprintf(stdout, ", ");
     } if (mod) fprintf(stdout, "	(mod %lu)", mod); fprintf(stdout, "\n\n");
+    */
 
     unsigned long range_bound = mod;
     fprintf(stdout, "Number of coordinates that follow: ");

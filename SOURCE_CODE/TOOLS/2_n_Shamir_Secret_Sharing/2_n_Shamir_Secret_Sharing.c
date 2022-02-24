@@ -48,25 +48,28 @@ void first_y_failed_to_parse() { fprintf(stderr, "Please provide as third argume
 void first_x_failed_to_parse() { fprintf(stderr, "Please provide as second argument the x coordinate of first point!"); equations_DELETE(equation); }
 void ______________mod_error() { fprintf(stderr, "Please provide as first argument a finite field specification!", unparsed_arg); }
 
-int main(int argc, char **argv) { SET_k(K);
-    unsigned long mod; conditional_goodbye(n(n(error_specification(______________mod_error, n(str_represents_ul(argv[1], &mod, -1)))))); mod_ = &mod; equation = equations_ALLOCATE(K);
+// index[0]: y coordinate
+// index[1]: x coordinate
+// index[2]: c variable
+
+int main(int argc, char **argv) { SET_k(K); unsigned long mod;
+    conditional_goodbye(n(n(error_specification(______________mod_error, n(str_represents_ul(argv[1], &mod, -1)))))); mod_ = &mod; equation = equations_ALLOCATE(K);
     conditional_goodbye(n(n(error_specification(first_x_failed_to_parse, n(str_represents_ul(argv[2], 1 + equation[0], -2))))));
     conditional_goodbye(n(n(error_specification(first_y_failed_to_parse, n(str_represents_ul(argv[3], 0 + equation[0], -3))))));
     conditional_goodbye(n(n(error_specification(_last_x_failed_to_parse, n(str_represents_ul(argv[4], 1 + equation[1], -4))))));
     conditional_goodbye(n(n(error_specification(_last_y_failed_to_parse, n(str_represents_ul(argv[5], 0 + equation[1], -5))))));
-    if (6 < argc) ignored_arguments(argc, argv, 5);
-    fprintf(stdout, "Supplied mappings:\n%lu -> %lu\n%lu -> %lu\n\n", equation[0][1], equation[0][0], equation[1][1], equation[1][0]);
+    if (6 < argc) ignored_arguments(argc, argv, 5); fprintf(stdout, "Supplied sample mappings:\n%lu -> %lu\n%lu -> %lu\n\n", equation[0][1], equation[0][0], equation[1][1], equation[1][0]);
     // handle terminal inputs ^ 
 
     equation[0][K] = equation[1][K] = 1; unsigned long *equation_ONE_WITH_TWO = coefficient_cancel(equation[0], equation[1], 2);
-    // ^ Prepare equations
+    // prepare equations ^
 
-    unsigned long *coefficient = UL_array_of_SIZE(K);
-    coefficient[0] = mod_divide(equation_ONE_WITH_TWO[0], equation_ONE_WITH_TWO[1]); // coefficient a
-    coefficient[1] = mod_subtract(equation[0][0], mod_multiply(equation[0][1], coefficient[0])); // coefficient b
+    unsigned long *coefficient = UL_array_of_SIZE(K); // make an alternate version which DOES yield a zero terminated ul string <--
+    coefficient[1] = mod_divide(equation_ONE_WITH_TWO[0], equation_ONE_WITH_TWO[1]); // the difference in y <-
+    coefficient[0] = mod_subtract(equation[0][0], mod_multiply(equation[0][1], coefficient[1]));
 
     fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", mod);
-    fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", coefficient[0], coefficient[1], mod);
-    fprintf(stdout, "\nThe shared secret was '%lu'.\n", mod_polynomial(0, coefficient, K));
+    fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", coefficient[1], coefficient[0], mod);
+    fprintf(stdout, "\nThe shared secret was '%lu'.\n", mod_Polynomial(0, coefficient, K));
     free(coefficient); equations_DELETE(equation); return 0;
 }
