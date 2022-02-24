@@ -43,7 +43,7 @@ unsigned long _divide(unsigned long numerator, unsigned long denominator, unsign
 unsigned long mod_divide(unsigned long member_from_equivalence_class_representing_the_numerator, unsigned long denominator);
 // divide under (modular) arithmetic ^^
 
-unsigned long _polynomial(unsigned long **COEFFICIENT_array, unsigned long _x, unsigned long mod); unsigned long mod_polynomial(unsigned long **coefficient, unsigned long _x);
+// unsigned long _polynomial(unsigned long **COEFFICIENT_array, unsigned long _x, unsigned long mod); unsigned long mod_polynomial(unsigned long **coefficient, unsigned long _x);
 unsigned long _Polynomial(unsigned long x, unsigned long *coefficient, unsigned long number_of_coefficients, unsigned long mod_);
 unsigned long mod_Polynomial(unsigned long x, unsigned long *coefficient, unsigned long number_of_coefficients);
 // calculate a polynomial (under mod arithmetic) ^^
@@ -68,7 +68,7 @@ unsigned long totient(unsigned long a);
 unsigned long extended_gcd(unsigned long a, unsigned long b, unsigned long *x, unsigned long *y);
 unsigned long multiplicative_inverse(unsigned long a);
 unsigned long least_base_TWO_log(unsigned long power_of_TWO);
-unsigned long **UL_array_of_SIZE(int SIZE);
+unsigned long *UL_array_of_SIZE(int SIZE); // unsigned long **UL_array_of_SIZE(int SIZE);
 int UL_array_SIZE(unsigned long **UL_array);
 unsigned long INDEX_within_UL_array(unsigned long *UL_array, unsigned long UL_array_SIZE, unsigned long number);
 unsigned long least_common_multiple(unsigned long a, unsigned long b);

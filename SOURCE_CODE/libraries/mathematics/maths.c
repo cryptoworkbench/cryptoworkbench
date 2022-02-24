@@ -71,19 +71,21 @@ unsigned long F_combi(unsigned long a, unsigned long b) {
 
 unsigned long GF_combi(unsigned long a, unsigned long b) { return (*id_) ? mod_multiply(a, b) : mod_add(a, b); }
 
-unsigned long **UL_array_of_SIZE(int SIZE) {
-    unsigned long **ret_val = (unsigned long **) malloc(sizeof(unsigned long *) * (SIZE + 1)); ret_val[SIZE] = NULL;
-    for (int i = 0; i < SIZE; i++) ret_val[i] = (unsigned long *) malloc(sizeof(unsigned long)); return ret_val;
+unsigned long *UL_array_of_SIZE(int SIZE) {
+    unsigned long *ret_val = (unsigned long *) malloc(sizeof(unsigned long) * SIZE);
+    return ret_val;
 }
 
 int UL_array_SIZE(unsigned long **UL_array) { int ret_val = 0; while (UL_array[ret_val]) ret_val++; return ret_val; }
 
 unsigned long INDEX_within_UL_array(unsigned long *UL_array, unsigned long UL_array_SIZE, unsigned long number) { for (unsigned long INDEX = 0; INDEX < UL_array_SIZE; INDEX++) if (UL_array[INDEX] == number) return INDEX;}
 
+/*
 unsigned long _polynomial(unsigned long **COEFFICIENT_array, unsigned long _x, unsigned long mod_) {
     unsigned long ret_val = ADDITIVE_IDENTITY; unsigned long term_factor = MULTIPLICATIVE_IDENTITY; unsigned long i = UL_array_SIZE(COEFFICIENT_array);
     do { i--; ret_val = _add(ret_val, _multiply(term_factor, *COEFFICIENT_array[i], mod_), mod_); term_factor = _multiply(term_factor, _x, mod_); } while (i != 0); return ret_val;
 } unsigned long mod_polynomial(unsigned long **COEFFICIENT_array, unsigned long _x) { return _polynomial(COEFFICIENT_array, _x, *mod_); }
+*/
 
 unsigned long _Polynomial(unsigned long x, unsigned long *coefficient, unsigned long number_of_coefficients, unsigned long mod_) {
     struct ordered_pair iso = _isomorphism();

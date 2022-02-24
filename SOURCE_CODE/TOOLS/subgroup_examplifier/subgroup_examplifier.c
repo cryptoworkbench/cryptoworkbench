@@ -87,9 +87,8 @@ void identity_error() { fprintf(stderr, "\nFailed to understand '%s' as the iden
 void mod_error() { fprintf(stderr, "\nFailed to understand '%s' as the modulus value of any group to examplify.", unparsed_arg_); }
 // error functions ^ (function header format fits typedef '_error_message')
 
-int main(int argc, char **argv) {
-    mod_ = (unsigned long *) malloc(sizeof(unsigned long));
-    unparsed_arg_ = argv[1]; conditional_goodbye(n(n(error_specification(mod_error, str_represents_ul(unparsed_arg_, mod_, -1)))));
+int main(int argc, char **argv) { unsigned long mod;
+    unparsed_arg_ = argv[1]; conditional_goodbye(n(n(error_specification(mod_error, str_represents_ul(unparsed_arg_, &mod, -1))))); mod_ = &mod;
     // BEHOLD! THE CODING MIRACLE ! ^^^
 
     int *SELECTOR = (int *) malloc(sizeof(int)); unparsed_arg_ = argv[2];
@@ -114,7 +113,7 @@ int main(int argc, char **argv) {
     } else fprintf(stdout, "There are no generators in this group.\n");
     // list generators afterwards ^
 
-    free(offset); free(mod_);
+    free(offset);
     for (unsigned long i = 0; i < group_cardinality_; i++) { free(lookup_table->permutation[i]); free(lookup_table->ASCII[i]); } free(lookup_table->perm_length);
     if (*id_) free(lookup_table->base_permutation); free(id_); free(lookup_table); return 0;
 }
