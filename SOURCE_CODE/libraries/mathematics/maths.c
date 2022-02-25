@@ -129,13 +129,7 @@ unsigned long multiplicative_inverse(unsigned long a) { // Yield a^-1 mod b
 }
 
 unsigned long LCM(unsigned long a, unsigned long b) { unsigned long ret_val = a; if (a < b) ret_val = b; while (ret_val % a != 0 || ret_val % b != 0) ret_val++; return ret_val; }
-
-unsigned long UNRESTRICTED_LCM(unsigned long *array, unsigned long array_size)
-{
-    unsigned long ret_val = array[0];
-    for (unsigned long i = 1; i < array_size; i++) ret_val = LCM(ret_val, array[i]);
-    return ret_val;
-}
+unsigned long UNRESTRICTED_LCM(unsigned long *array, unsigned long array_size) { unsigned long ret_val = array[0]; for (unsigned long i = 1; i < array_size; i++) ret_val = LCM(ret_val, array[i]); return ret_val; }
 
 struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *to_be_updated, unsigned long minimum)
 { while (to_be_updated->b < minimum) { to_be_updated->b += to_be_updated->a; to_be_updated->a++; to_be_updated->b += to_be_updated->a; } }

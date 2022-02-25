@@ -22,10 +22,7 @@ unsigned long LEAST_efficient_trial_division_TABLE_AIDED(unsigned long composite
 unsigned long shor_factorization(unsigned long presumed_composite);
 
 struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *to_be_updated, unsigned long minimum);
-unsigned long difference_of_squares_factorization_method(unsigned long odd_composite);
-unsigned long odds_factorizer_WRAPPER(unsigned long composite, _factorization_method odds_factorizer);
-unsigned long evens_factorizer(unsigned long even_composite); // the most efficient factorization algorithm known for powers of two
-unsigned long fermat_factorization(unsigned long composite);
+unsigned long difference_of_squares_factorization_method(unsigned long odd_composite); unsigned long fermat_factorization(unsigned long composite);
 struct ordered_pair factorize(unsigned long number, _factorization_method factorization_ENGINE_to_use); struct ordered_pair _factorize(unsigned long number, _factorization_method factorization_ENGINE_to_use);
 
 void write_to_preferences_file(char *str, FILE *file);

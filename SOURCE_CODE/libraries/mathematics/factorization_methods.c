@@ -47,20 +47,14 @@ unsigned long shor_factorization(unsigned long presumed_composite) {
 	unsigned long period_of_a_ = 1; for (unsigned long a_power = a_; a_power != MULTIPLICATIVE_IDENTITY; a_power *= a_, a_power %= presumed_composite) period_of_a_++; if (period_of_a_ % 2 == 1) continue;
 	unsigned long a_power = _exponentiate(a_, period_of_a_ / 2, 0); if (presumed_composite == a_power + 1) continue; return GCD(presumed_composite, a_power + 1);
     }
-} // dependency of 'factorization_method()'
+}
 
-// NOW SOME FUNCTIONS TO ACHIEVE FERMAT FACTORIZATION
-// We will use "struct ordered_pair"
-// We will use unsigned long member 'a' for the roots
-// We will use unsigned member 'b' for the squares
 unsigned long difference_of_squares_factorization_method(unsigned long odd_composite) { struct ordered_pair square_BIG = {0, 0}; struct ordered_pair square_SMALL = {0, 0};
     while (square_BIG.b != odd_composite + square_SMALL.b)
     { least_perfect_square_equal_to_or_greater_than(&square_BIG, odd_composite + square_SMALL.b); least_perfect_square_equal_to_or_greater_than(&square_SMALL, square_BIG.b - odd_composite); }
-    return square_BIG.a + square_SMALL.a; }
-unsigned long evens_factorizer(unsigned long even_composite) { ul a = MULTIPLICATIVE_IDENTITY; do { even_composite /= 2; a *= 2; } while (even_composite % 2 == 0); return a; } // only call with even composite
-unsigned long odds_factorizer_WRAPPER(unsigned long composite, _factorization_method odds_factorizer) { return (composite % 2 == 0) ? evens_factorizer(composite) : odds_factorizer(composite); }
-unsigned long fermat_factorization(unsigned long composite) { return odds_factorizer_WRAPPER(composite, difference_of_squares_factorization_method); }
-// ^ FOUR FUCNCTIONS TO ACHIEVE FERMAT FACTORIZATION
+    return square_BIG.a + square_SMALL.a;
+} unsigned long fermat_factorization(unsigned long composite) { return (composite % 2 == 0) ? (composite / 2) : difference_of_squares_factorization_method(composite); }
+// two functions to achieve Fermat factorization ^
 
 _factorization_method factorization_method(int SELECTOR) {
     switch (SELECTOR) {
