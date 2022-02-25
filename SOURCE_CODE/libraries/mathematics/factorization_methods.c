@@ -6,18 +6,13 @@
 
 const char *_preferred_factorization_engine_file = "global_preference.factorization_engine";
 const char *_REPORT_preferred_factorization_engine_file() { return _preferred_factorization_engine_file; }
-const char *__a = "efficient_trial_division"; const char *__b = "less_efficient_trial_division"; const char *__c = "trial_division"; const char *__d = "TABLE_AIDED_efficient_trial_division";
-const char *__e = "TABLE_AIDED_less_efficient_trial_division"; const char *__f = "TABLE_AIDED_trial_division"; const char *__g = "shor_factorization"; const char *__h = "fermats_factorization_method";
+const char *_a = "efficient_trial_division"; const char *_b = "less_efficient_trial_division"; const char *_c = "trial_division"; const char *_d = "TABLE_AIDED_efficient_trial_division";
+const char *_e = "TABLE_AIDED_less_efficient_trial_division"; const char *_f = "TABLE_AIDED_trial_division"; const char *_g = "fermats_factorization_method"; const char *_h = "shor_factorization";
 
-const char *_REPORT_a() { return __a; } const char *_REPORT_b() { return __b; } const char *_REPORT_c() { return __c; } const char *_REPORT_d() { return __d; } const char *_REPORT_e() { return __e; }
-const char *_REPORT_f() { return __f; } const char *_REPORT_g() { return __g; } const char *_REPORT_h() { return __h; } const char *_A = "a"; const char *_B = "b"; const char *_C = "c"; const char *_D = "d";
+const char *_REPORT_a() { return _a; } const char *_REPORT_b() { return _b; } const char *_REPORT_c() { return _c; } const char *_REPORT_d() { return _d; } const char *_REPORT_e() { return _e; }
+const char *_REPORT_f() { return _f; } const char *_REPORT_g() { return _g; } const char *_REPORT_h() { return _h; } const char *_A = "a"; const char *_B = "b"; const char *_C = "c"; const char *_D = "d";
 const char *_E = "e"; const char *_F = "f"; const char *_G = "g"; const char *_H = "h";
 // ^ string literals we will be comparing against
-
-void initialize_factorization_library() {
-    _a = (char *) __a; _b = (char *) __b; _c = (char *) __c; _d = (char *) __d;
-    _e = (char *) __e; _f = (char *) __f; _g = (char *) __g; _h = (char *) __h;
-}
 
 struct ordered_pair divisor_pair(unsigned long number, unsigned long DIVISOR_OF_number)
 { struct ordered_pair pair_of_divisors; pair_of_divisors.b = DIVISOR_OF_number; pair_of_divisors.a = number / pair_of_divisors.b; return pair_of_divisors; }
@@ -76,8 +71,8 @@ _factorization_method factorization_method(int SELECTOR) {
 	case 4: return efficient_trial_division_TABLE_AIDED;
 	case 5: return LESS_efficient_trial_division_TABLE_AIDED;
 	case 6: return LEAST_efficient_trial_division_TABLE_AIDED;
-	case 7: return shor_factorization;
-	case 8: return fermat_factorization;
+	case 7: return fermat_factorization;
+	case 8: return shor_factorization;
     };
 }
 
@@ -92,9 +87,9 @@ const char *permission_failure = "permission failure within 'factorization_metho
 void factorization_engine_preference_file_ERROR() { fprintf(stderr, "\n%s do not have sufficient rights to access '%s'.\n\n", permission_failure, _preferred_factorization_engine_file); }
 void factorization_engine_preference_specification_ERROR() { fprintf(stderr, "\nTried too many times to parse the unparsable.\nUser can run program again for more chances.\n\n"); }
 
-char *STDIN_factorization_engine() {
+char *STDIN_factorization_preference() {
     fprintf(stdout, "Please select from the list below:\n");
-    fprintf(stdout, "%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n\n", _A, __a, _B, __b, _C, __c, _D, __d, _E, __e, _F, __f, _G, __g, _H, __h);
+    fprintf(stdout, "%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s\n%s. %s (not guarenteed to work for the TOOL prime_factorization and mostly useless anyway)\n\n", _A, _a, _B, _b, _C, _c, _D, _d, _E, _e, _F, _f, _G, _g, _H, _h);
     // list available choices ^ 
 
     char *preferred_factorization_engine = BUFFER_OF_SIZE(200); int extra_chances;
@@ -112,57 +107,47 @@ void write_to_preferences_file(char *str, FILE *file) { fprintf(file, "%s\n", st
 char *query_preferences_file() { FILE *file;
     if (!(file = fopen(_preferred_factorization_engine_file, "r"))) { fprintf(stderr, "Failed to open global preferences file '%s'.\n\n", _preferred_factorization_engine_file);
 	if (!(file = fopen(_preferred_factorization_engine_file, "w"))) error_message(factorization_engine_preference_file_ERROR, -1);
-	char *str = STDIN_factorization_engine(); write_to_preferences_file(str, file); free(str);
+	char *str = STDIN_factorization_preference(); write_to_preferences_file(str, file); free(str);
 	fprintf(stdout, "Saved preference.\n\n"); return query_preferences_file();
     } char *BUFFER = BUFFER_OF_SIZE(200); BUFFER[0] = 0; fscanf(file, " %s[^\n]", BUFFER); fclose(file);
     return BUFFER;
 } // recursive function which works fine and runs at most twice ^
 
-void FACTORIZATION_METHOD_UNCHOSEN(char *arg) {
-    fprintf(stderr, "Couldn't understand engine specification '%s', please specify one of the following:\n", arg);
-    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", _A, __a, _B, __b, _C, __c);
-    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", _D, __d, _E, __e, _F, __f);
-    fprintf(stderr, "\"%s\" for \"%s\"\n\"%s\" for \"%s\"\n", _G, __g, _H, __h);
-    fprintf(stderr, "\n'%s' is not one of these.\n\n", arg);
-    fprintf(stderr, EXIT_STATUS_GOODBYE, -2); exit(-2);
-}
-
 int SELECTOR_from_str_representing_factorization_method(char *arg) {
-    if (match_variadic(arg, 2, __a, _A)) return 1;
-    else if (match_variadic(arg, 2, __b, _B)) return 2;
-    else if (match_variadic(arg, 2, __c, _C)) return 3;
-    else if (match_variadic(arg, 2, __d, _D)) return 4;
-    else if (match_variadic(arg, 2, __e, _E)) return 5;
-    else if (match_variadic(arg, 2, __f, _F)) return 6;
-    else if (match_variadic(arg, 2, __g, _G)) return 7;
-    else if (match_variadic(arg, 2, __h, _H)) return 8;
+    if (match_variadic(arg, 2, _a, _A)) return 1;
+    else if (match_variadic(arg, 2, _b, _B)) return 2;
+    else if (match_variadic(arg, 2, _c, _C)) return 3;
+    else if (match_variadic(arg, 2, _d, _D)) return 4;
+    else if (match_variadic(arg, 2, _e, _E)) return 5;
+    else if (match_variadic(arg, 2, _f, _F)) return 6;
+    else if (match_variadic(arg, 2, _g, _G)) return 7;
+    else if (match_variadic(arg, 2, _h, _H)) return 8;
     return 0;
 }
 
 const char *_factorization_engine_description(_factorization_method factorization_engine) {
-    initialize_factorization_library(); // < makes available in calling file the below pointers
     if (factorization_engine == efficient_trial_division) return _a;
     else if (factorization_engine == LESS_efficient_trial_division) return _b;
     else if (factorization_engine == LEAST_efficient_trial_division) return _c;
     else if (factorization_engine == efficient_trial_division) return _d;
     else if (factorization_engine == LESS_efficient_trial_division) return _e;
     else if (factorization_engine == LEAST_efficient_trial_division) return _f;
-    else if (factorization_engine == shor_factorization) return _g;
-    else if (factorization_engine == fermat_factorization) return _h;
+    else if (factorization_engine == fermat_factorization) return _g;
+    else if (factorization_engine == shor_factorization) return _h;
     return NULL;
-}
+} // done
 
 int primality_test_based_on_preferred_factorization_engine(unsigned long potential_prime)
 { return (potential_prime - _preferred_factorization_engine(potential_prime)) ? ADDITIVE_IDENTITY : MULTIPLICATIVE_IDENTITY;}
 
-_factorization_method factorization_method_retrieve(char *potentially_factorization_method_specifying_argument) {
-    _factorization_method ret_val; char *ptr = potentially_factorization_method_specifying_argument; if (!ptr) ptr = query_preferences_file();
-    if (!(ret_val = factorization_method(SELECTOR_from_str_representing_factorization_method(ptr)))) {
-	fprintf(stderr, "Failed to interpret '%s' from ", ptr); if (potentially_factorization_method_specifying_argument) fprintf(stderr, "terminal argument");
+_factorization_method factorization_method_retrieve(char *potentially_factorization_preference_specifying_str) { _factorization_method ret_val;
+    if (!potentially_factorization_preference_specifying_str) potentially_factorization_preference_specifying_str = query_preferences_file();
+    if (!(ret_val = factorization_method(SELECTOR_from_str_representing_factorization_method(potentially_factorization_preference_specifying_str)))) {
+	fprintf(stderr, "Failed to interpret '%s' from ", potentially_factorization_preference_specifying_str); if (potentially_factorization_preference_specifying_str) fprintf(stderr, "terminal argument");
 	else fprintf(stderr, "global preferences file '%s'", _REPORT_preferred_factorization_engine_file()); fprintf(stderr, ".\n\n");
-	char *UPDATE_VALUE; ret_val = factorization_method(SELECTOR_from_str_representing_factorization_method(UPDATE_VALUE = STDIN_factorization_engine(ptr)));
-	if (!potentially_factorization_method_specifying_argument) { write_to_preferences_file(UPDATE_VALUE, fopen(_REPORT_preferred_factorization_engine_file(), "w")); fprintf(stdout, "Updated preferences file.\n\n"); }
-    } // if both the terminal argument and the preferences file were unintelligeble, then try to take the factorization method from STDIN by force
+	char *UPDATE_VALUE; ret_val = factorization_method(SELECTOR_from_str_representing_factorization_method(UPDATE_VALUE = STDIN_factorization_preference(potentially_factorization_preference_specifying_str)));
+	if (!potentially_factorization_preference_specifying_str) { write_to_preferences_file(UPDATE_VALUE, fopen(_REPORT_preferred_factorization_engine_file(), "w")); fprintf(stdout, "Updated preferences file.\n\n"); }
+    } // if both the terminal argument and the preferences file were unintelligeble, then try to take the factorization method from STDIN manually
     return ret_val;
 }
 

@@ -1,7 +1,7 @@
 // doesn't get 'h'
-#include <stdio.h> // needed for 'fprintf()', 'fopen()'
-#include "../../libraries/functional/string.h" // needed for 'str_represents_ul()', 'BUFFER_OF_SIZE()', EXIT_STATUS_GOODBYE
-#include "../../libraries/mathematics/factorization_methods.h" // needed for 'SELECTOR_from_str_representing_factorization_method()'
+#include <stdio.h>
+#include "../../libraries/functional/string.h"
+#include "../../libraries/mathematics/factorization_methods.h"
 
 void composite_parse_error() { fprintf(stderr, "Please provide as first argument the number to check if it is prime."); }
 

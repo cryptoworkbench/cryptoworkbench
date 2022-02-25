@@ -128,11 +128,7 @@ unsigned long multiplicative_inverse(unsigned long a) { // Yield a^-1 mod b
     // return x % *mod_; // doesn't work
 }
 
-unsigned long LCM(unsigned long a, unsigned long b) {
-    unsigned long least_common_multiple = a; if (a < b) least_common_multiple = b;
-    while (least_common_multiple % a != 0 || least_common_multiple % b != 0) least_common_multiple++;
-    return least_common_multiple;
-}
+unsigned long LCM(unsigned long a, unsigned long b) { unsigned long ret_val = a; if (a < b) ret_val = b; while (ret_val % a != 0 || ret_val % b != 0) ret_val++; return ret_val; }
 
 unsigned long UNRESTRICTED_LCM(unsigned long *array, unsigned long array_size)
 {
