@@ -89,7 +89,7 @@ unsigned long GCD(unsigned long a, unsigned long b) {
     return b;
 } /* ^ Calculates the GCD using a procedural implementation of the euclidean algorithm ^^^ */
 
-unsigned long UNRESTRICTED_GCD(unsigned long **array, unsigned long array_size) { unsigned long ret_val = *array[0]; for (unsigned long i = 1; i < array_size; i++) ret_val = GCD(ret_val, *array[i]); return ret_val; }
+unsigned long UNRESTRICTED_GCD(unsigned long *array, unsigned long array_size) { unsigned long ret_val = array[0]; for (unsigned long i = 1; i < array_size; i++) ret_val = GCD(ret_val, array[i]); return ret_val; }
 
 int coprime(unsigned long a, unsigned long b) { return (GCD(a, b) == 1) ? 1 : 0; }
 

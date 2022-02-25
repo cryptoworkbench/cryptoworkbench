@@ -61,7 +61,7 @@ unsigned long GF_combi(unsigned long a, unsigned long b);
 /* ### OLD FUNCTIONS: */
 unsigned long GCD(unsigned long a, unsigned long b);
 int coprime(unsigned long a, unsigned long b);
-unsigned long UNRESTRICTED_GCD(unsigned long **array, unsigned long array_size);
+unsigned long UNRESTRICTED_GCD(unsigned long *array, unsigned long array_size);
 unsigned long totient(unsigned long a);
 // ^^^ Calculates the GCD using a procedural implementation of the euclidean algorithm: ^^ Order of inputs does not matter.
 
