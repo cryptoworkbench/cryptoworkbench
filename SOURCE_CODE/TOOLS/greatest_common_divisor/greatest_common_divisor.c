@@ -11,8 +11,8 @@ void argument_parse() { fprintf(stderr, "Failed to parse '%s'!", (*argv_location
 void argument_count() { fprintf(stderr, "The GCD (Greatest Common Divisor) function requires at least 2 arguments!"); }
 // error functions ^
 
-int main(int argc, char **argv) { unsigned long gcd_function_argument_count = argc - 1; argv_location = &argv;
-    conditional_goodbye(n(n(error_specification(argument_count, -(2 > gcd_function_argument_count)))));
+int main(int argc, char **argv) { argv_location = &argv; unsigned long gcd_function_argument_count;
+    conditional_goodbye(n(n(error_specification(argument_count, -(2 > (gcd_function_argument_count = argc - 1))))));
     unsigned long **arguments_array = (unsigned long **) malloc(sizeof(unsigned long *) * gcd_function_argument_count);
     for (array_index = 0; array_index < gcd_function_argument_count; array_index++)
     { conditional_goodbye(n(n(error_specification(argument_parse, n(str_represents_ul(argv[1 + array_index], (arguments_array[array_index] = (unsigned long *) malloc(sizeof(unsigned long))), -(2 + array_index)))))));}

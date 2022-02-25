@@ -134,6 +134,13 @@ unsigned long least_common_multiple(unsigned long a, unsigned long b) {
     return least_common_multiple;
 }
 
+unsigned long UNRESTRICTED_LCM(unsigned long *array, unsigned long array_size)
+{
+    unsigned long ret_val = array[0];
+    for (unsigned long i = 1; i < array_size; i++) ret_val = least_common_multiple(ret_val, array[i]);
+    return ret_val;
+}
+
 struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *to_be_updated, unsigned long minimum)
 { while (to_be_updated->b < minimum) { to_be_updated->b += to_be_updated->a; to_be_updated->a++; to_be_updated->b += to_be_updated->a; } }
 // ^ dependency of 'difference_of_squares_factorization()'
