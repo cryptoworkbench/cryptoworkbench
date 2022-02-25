@@ -22,8 +22,7 @@ void identity_SELECTOR_error()
 }
 
 int identity_SELECTOR(char *arg)
-{ 
-    if (arg) {
+{ if (arg) {
 	if (strcmp(arg, additive_signs[0]) == 0) return 0;
 	else if (strcmp(arg, multiplicative_signs[0]) == 0) return 1;
 	else if (strcmp(arg, additive_signs[1]) == 0) return 2;
@@ -34,9 +33,7 @@ int identity_SELECTOR(char *arg)
 	else if (strcmp(arg, multiplicative_signs[3]) == 0) return 7;
 	else if (strcmp(arg, additive_signs[4]) == 0) return 8;
 	else if (strcmp(arg, multiplicative_signs[4]) == 0) return 9;
-    }
-    failed_identity = arg;
-    return 10;
+    } failed_identity = arg; return 10;
 }
 
 unsigned long identity_(int SELECTOR) { return (SELECTOR % 2) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY ; }
@@ -56,6 +53,9 @@ const char *id_as_noun() { return _as_noun(*id_); }
 const char *id_as_nouns() { return _as_nouns(*id_); }
 const char *id_as_adjective() { return _as_adjective(*id_); }
 // ^ wrapper for the above block of five functions
+
+__finite_field_operation _finite_group_operation(unsigned long id) { return (id) ? mod_multiply : mod_add; }
+__finite_field_operation id_finite_group_operation() { return _finite_group_operation(*id_); }
 
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line) {
     fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", argv_ZERO, TO_BE_APPENDED_logbook_line);

@@ -4,11 +4,11 @@
 #define PRIME_TABLE_UNAVAILABLE_ERROR "Failed to open the prime table '%s'.\n\n"
 
 struct ordered_pair { unsigned long a; unsigned long b; };
-typedef unsigned long (*mod_group_operation) (unsigned long, unsigned long);
-typedef unsigned long (*_group_operation) (unsigned long, unsigned long, unsigned long);
+typedef unsigned long (*__finite_field_operation) (unsigned long, unsigned long);
+typedef unsigned long (*infinite_field_operation) (unsigned long, unsigned long, unsigned long);
 typedef unsigned long ul;
 
-unsigned long *mod_, *id_; // < a function that starts with one of these works with one of these
+unsigned long *mod_; // *id_; // < a function that starts with one of these works with one of these
 
 char *_REPORT_standard_prime_table_filename(); // < for access in other files to 'const char pointer standard_prime_table_filename'.
 char *_REPORT_open_prime_table(); // < for access in other files to 'char * _opened_prime_table' (which gets initialied to NULL).
@@ -53,11 +53,6 @@ void print_DH_parameters(STRUCT_DH_parameters *DH_parameters, FILE *fs);
 unsigned long DH_public_key(STRUCT_DH_parameters *DH_parameters, unsigned long private_key);
 // functions for DH and DH based scemes (i.e. Elgamal) ^
 
-_group_operation _operation_from_ID(unsigned long ID); mod_group_operation operation_from_ID(unsigned long ID);
-mod_group_operation _finite_group_operation(unsigned long ID); mod_group_operation id_finite_group_operation();
-
-unsigned long F_combi(unsigned long a, unsigned long b);
-unsigned long GF_combi(unsigned long a, unsigned long b);
 /* ### OLD FUNCTIONS: */
 unsigned long GCD(unsigned long a, unsigned long b);
 int coprime(unsigned long a, unsigned long b);

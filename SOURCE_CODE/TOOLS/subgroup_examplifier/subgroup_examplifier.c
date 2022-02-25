@@ -16,7 +16,7 @@ struct LL_ { struct LL_ *next; unsigned long e; };
 struct crux { unsigned long *base_permutation; char **ASCII; unsigned long **permutation; unsigned long *perm_length; };
 // ^^ type definitions
 
-struct ordered_pair *offset; char *unparsed_arg_; struct crux *lookup_table; unsigned long group_cardinality_ = 0; unsigned long *permutation_of_FIRST_GEN;
+struct ordered_pair *offset; char *unparsed_arg_; struct crux *lookup_table; unsigned long group_cardinality_ = 0; unsigned long *permutation_of_FIRST_GEN; __finite_field_operation combine;
 //     ^ global variables          ^                           ^                           ^                                      ^
 
 void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
@@ -46,10 +46,9 @@ unsigned long *array_from_LL(struct LL_ **head_TRACER, unsigned long *required_a
 
 unsigned long count_of_GENERATED_subgroup_elements(unsigned long index) { unsigned long ret_val = 0;
     struct VOID_ptr_ptr_PAIR permutation_LL_pair = initialize_CHANNEL_ptr_pair();
-
     unsigned long generated_element = *id_; do {
 	INSERT((struct LL_ ***) &permutation_LL_pair.iterator, INDEX_within_UL_array(lookup_table->base_permutation, group_cardinality_, generated_element)); ret_val++;
-	generated_element = GF_combi(generated_element, lookup_table->base_permutation[index]);
+	generated_element = combine(generated_element, lookup_table->base_permutation[index]);
     } while (generated_element != *id_);
     lookup_table->permutation[index] = array_from_LL((struct LL_ **) permutation_LL_pair.head, &ret_val);
     return ret_val;
@@ -62,7 +61,7 @@ unsigned long finish(unsigned long index) { unsigned long generator_count = 1;
 	lookup_table->permutation[index] = malloc(sizeof(unsigned long) * lookup_table->perm_length[index]);
 	unsigned long j = 0; lookup_table->permutation[index][j] = INDEX_within_UL_array(lookup_table->base_permutation, group_cardinality_, lookup_table->base_permutation[0]);
 	for (; j + 1 < lookup_table->perm_length[index]; j++) lookup_table->permutation[index][j + 1]
-	    = INDEX_within_UL_array(lookup_table->base_permutation, group_cardinality_, GF_combi(lookup_table->base_permutation[index], lookup_table->base_permutation[lookup_table->permutation[index][j]]));
+	    = INDEX_within_UL_array(lookup_table->base_permutation, group_cardinality_, combine(lookup_table->base_permutation[index], lookup_table->base_permutation[lookup_table->permutation[index][j]]));
     } return generator_count;
 }
 
@@ -102,7 +101,7 @@ int main(int argc, char **argv) { unsigned long mod;
 	    case 5: if (!str_represents_ul(argv[4], &offset->b, 0)) conditional_goodbye(n(n(error_specification(vertical_offset_error, 0))));
 	    case 4: if (!str_represents_ul(argv[3], &offset->a, 0)) conditional_goodbye(n(n(error_specification(horizontal_offset_error, 0))));
 	    default: if (!(*id_)) { offset->a %= *mod_; offset->b %= *mod_; } };
-    } unsigned long generator_count = found_generators(group_elements_LL(argv));
+    } combine = id_finite_group_operation(); unsigned long generator_count = found_generators(group_elements_LL(argv));
     unsigned long index = offset->b; do { print_permutation(index); index = _add(index, 1, group_cardinality_); } while (index != offset->b); fprintf(stdout, "\n");
     // process terminal inputs and yield output ^
 

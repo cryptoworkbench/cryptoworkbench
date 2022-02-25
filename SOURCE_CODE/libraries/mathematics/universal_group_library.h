@@ -8,6 +8,7 @@
 
 char *failed_identity;
 char *argv_ZERO;
+unsigned long *id_;
 FILE *logbook_fs;
 // ^^ Variable definitions
 
@@ -19,6 +20,7 @@ int identity_set(unsigned long *identity, int SELECTOR, int exit_status);
 
 const char *_as_number(unsigned long ID); const char *_as_operation_symbol(unsigned long ID); const char *_as_noun(unsigned long ID); const char *_as_nouns(unsigned long ID); const char *_as_adjective(unsigned long ID);
 const char *id_as_number(); const char *id_as_operation_symbol(); const char *id_as_noun(); const char *id_as_nouns(); const char *id_as_adjective();
+__finite_field_operation id_finite_group_operation(); // wrapper function <--
 
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line);
 void open_and_append_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line);
