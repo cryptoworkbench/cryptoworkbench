@@ -6,7 +6,7 @@
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h"
 
-unsigned long i;
+int number_of_coefficients; unsigned long i; unsigned long *coefficient;
 // global variable definitions ^
 
 void coefficient_failed_to_parse() { fprintf(stderr, "Coefficient failed to parse!"); }
@@ -14,17 +14,15 @@ void _______wrong_argument_count() { fprintf(stderr, "The no coefficients were s
 void __________________mod_error() { fprintf(stderr, "Please provide as first argument a modulus with which to divide the infinite field of natural numbers \u2115!"); }
 // error functions ^
 
-void coeffient_print(char symbol, unsigned long ul) {
-    fprintf(stdout, "%c = %lu", symbol, ul);
-}
+void coefficients_allocate() { coefficient = (unsigned long *) malloc(sizeof(unsigned long) * number_of_coefficients); }
+void coefficients__display() { fprintf(stdout, "%c = %lu", 'a' + i, coefficient[i]); if (i + 1 == number_of_coefficients) return; i++; fprintf(stdout, ", "); coefficients__display(); }
+// functions for coefficient handling ^
 
-int main(int argc, char **argv) {
-    unsigned long mod;                           conditional_goodbye(n(n(error_specification(__________________mod_error, n(str_represents_ul(argv[1], &mod, -1)))))); mod_ = &mod;
-    int number_of_coefficients;                  conditional_goodbye(n(n(error_message      (_______wrong_argument_count, -4 * (!(number_of_coefficients = argc - 2))))));
-    unsigned long *coefficient = (unsigned long *) malloc(sizeof(unsigned long) * number_of_coefficients);
-    for (i = 0; i < number_of_coefficients; i++) conditional_goodbye(n(n(error_specification(coefficient_failed_to_parse, n(str_represents_ul(argv[i + 2], coefficient + i, -3))))));
-    fprintf(stdout, "Plotting polynomial with coefficients:\n"); char symbol = 'a'; int i; for (i = number_of_coefficients - 1; i; i--) { coeffient_print(symbol + i, coefficient[i]); fprintf(stdout, ", "); }
-    coeffient_print(symbol, coefficient[i]); fprintf(stdout, "\n\n");
+int main(int argc, char **argv) { unsigned long mod;
+        conditional_goodbye(n(n(error_specification(__________________mod_error, n(str_represents_ul(argv[1], &mod, -1)))))); mod_ = &mod;
+        conditional_goodbye(n(n(error_message      (_______wrong_argument_count, -4 * (!(number_of_coefficients = argc - 2)))))); coefficients_allocate(); for (i = 0; i < number_of_coefficients; i++)
+	conditional_goodbye(n(n(error_specification(coefficient_failed_to_parse, n(str_represents_ul(argv[i + 2], coefficient + i, -3)))))); i = 0;
+    fprintf(stdout, "Plotting polynomial with coefficients:\n"); coefficients__display(); fprintf(stdout, "\n\n");
     // handle terminal inputs ^
 
     unsigned long range_bound = mod; fprintf(stdout, "Number of coordinates that follow: "); if (!(*mod_)) fscanf(stdin, "%lu", &range_bound); else fprintf(stdout, "%lu\n", range_bound);
