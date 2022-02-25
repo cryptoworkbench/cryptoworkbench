@@ -6,11 +6,8 @@
 #define FORK_ERROR "Failed to split up myself into two daughter processes so that I could dedicate one part of my being to securing the group."
 #define FILE_DESCRIPTOR_ERROR "Failed to rewrite the file descriptor of child process."
 
-char *failed_identity;
-char *argv_ZERO;
-unsigned long *id_;
-FILE *logbook_fs;
-// ^^ Variable definitions
+char *failed_identity; char *argv_ZERO; FILE *logbook_fs; unsigned long *id_; // all function that begin with 'id_' work with this last variable <-
+// variable definitions ^
 
 int identity_SELECTOR(char *arg);
 void identity_SELECTOR_error();
