@@ -13,6 +13,6 @@ void variable_b_error() { fprintf(stderr, "Please provide as second argument the
 int main(int argc, char **argv) {
     unsigned long a; conditional_goodbye(n(n(error_specification(variable_a_error, n(str_represents_ul(argv[1], &a, -1))))));
     unsigned long b; conditional_goodbye(n(n(error_specification(variable_b_error, n(str_represents_ul(argv[2], &b, -2))))));
-    fprintf(stdout, "The least common multiple of %lu and %lu is %lu.\n", a, b, least_common_multiple(a, b));
+    fprintf(stdout, "The least common multiple of %lu and %lu is %lu.\n", a, b, LCM(a, b));
     return 0;
 }
