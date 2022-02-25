@@ -91,13 +91,7 @@ int main(int argc, char **argv) {
     // take in mod ^
 
     id_ = (unsigned long *) malloc(sizeof(unsigned long));
-    unparsed_arg = argv[2]; conditional_goodbye(n(n(error_message(identity_SELECTOR_error, identity_set(id_, identity_SELECTOR(argv[2]), -2))))); unsigned long a;
-
-    /*
-    int *SELECTOR = (int *) malloc(sizeof(int));
-    if (10 == (*SELECTOR = identity_SELECTOR(unparsed_arg))) conditional_goodbye(n(n(error_specification(identity_error, n(error_message(_str_not_parsable_as_number(argv[2]), -2))))));
-    id_ = (unsigned long *) malloc(sizeof(unsigned long)); *id_ = identity_(*SELECTOR); free(SELECTOR);
-    // perfect th^s later .. .. */
+    unparsed_arg = argv[2]; conditional_goodbye(n(error_message(identity_SELECTOR_error, identity_set(id_, identity_SELECTOR(argv[2]), -2)))); unsigned long a;
 
     if (!(*mod_) || !(*mod_ - 1) && *id_) conditional_goodbye(error_message(invalid_group_parameters, -3));
     offset = (struct ordered_pair *) malloc(sizeof(struct ordered_pair)); offset->a = offset->b = 0; // member a will hold y offset, member b will hold x offset
