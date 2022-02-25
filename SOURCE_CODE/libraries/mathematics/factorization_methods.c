@@ -140,6 +140,18 @@ const char *_factorization_engine_description(_factorization_method factorizatio
 int primality_test_based_on_preferred_factorization_engine(unsigned long potential_prime)
 { return (potential_prime - _preferred_factorization_engine(potential_prime)) ? ADDITIVE_IDENTITY : MULTIPLICATIVE_IDENTITY;}
 
+_factorization_method factorization_method_retrieve(char *potentially_factorization_method_specifying_argument) { _factorization_method ret_val;
+    char *ptr; if (!potentially_factorization_method_specifying_argument) ptr = query_preferences_file();
+    if (!(ret_val = factorization_method(SELECTOR_from_str_representing_factorization_method(ptr)))) {
+	fprintf(stderr, "Failed to interpret '%s' from ", ptr); if (potentially_factorization_method_specifying_argument) fprintf(stderr, "terminal argument");
+	else fprintf(stderr, "global preferences file '%s'", _REPORT_preferred_factorization_engine_file()); fprintf(stderr, ".\n\n");
+	char *UPDATE_VALUE; ret_val = factorization_method(SELECTOR_from_str_representing_factorization_method(UPDATE_VALUE = STDIN_factorization_preference(ptr)));
+	if (!potentially_factorization_method_specifying_argument) { write_to_preferences_file(UPDATE_VALUE, fopen(_REPORT_preferred_factorization_engine_file(), "w")); fprintf(stdout, "Updated preferences file.\n\n"); }
+    } // if both the terminal argument and the preferences file were unintelligeble, then try to take the factorization method from STDIN by force
+    return ret_val;
+}
+
+/*
 _factorization_method factorization_method_retrieve(char *potentially_factorization_preference_specifying_str) { _factorization_method ret_val;
     if (!potentially_factorization_preference_specifying_str) potentially_factorization_preference_specifying_str = query_preferences_file();
     if (!(ret_val = factorization_method(SELECTOR_from_str_representing_factorization_method(potentially_factorization_preference_specifying_str)))) {
@@ -149,7 +161,7 @@ _factorization_method factorization_method_retrieve(char *potentially_factorizat
 	if (!potentially_factorization_preference_specifying_str) { write_to_preferences_file(UPDATE_VALUE, fopen(_REPORT_preferred_factorization_engine_file(), "w")); fprintf(stdout, "Updated preferences file.\n\n"); }
     } // if both the terminal argument and the preferences file were unintelligeble, then try to take the factorization method from STDIN manually
     return ret_val;
-}
+} */
 
 // PRIME FACTORIZATION:
 struct LL_ *insert(struct LL_ *last, unsigned long new_divisor) // NON-recursive <--

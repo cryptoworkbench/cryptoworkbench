@@ -9,8 +9,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/maths.h" // needed for 'DOWN_ROUNDED_second_root()' and some of the factorization methods in 'factorization_methods.c' need functions headers from 'maths.h'
-#include "../../libraries/mathematics/factorization_methods.h" // needed for function pointers 'trial_division_LEAST_EFFICIENT', 'trial_division_LESS_EFFICIENT', 'trial_division_MOST_EFFICIENT', etc
+#include "../../libraries/mathematics/maths.h"
+#include "../../libraries/mathematics/factorization_methods.h"
 #define COMPOSITE_NOT_INTERPRETABLE "Failed to interpret composite '%s'!\n\n"
 
 void domain_display(unsigned long a, unsigned long b) { fprintf(stdout, " and checking for all 'x <= %lu' if x divides %lu.", a, b); }
