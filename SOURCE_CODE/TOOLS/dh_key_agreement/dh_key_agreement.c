@@ -16,16 +16,6 @@ STRUCT_DH_parameters *DH_parameters; unsigned long group_cardinality_;
 // global variables ^
 
 void RESULT_ERROR() { fprintf(stderr, "\nAlice and Bob did not derive the same shared secret.\n\n"); }
-void coprime_ERROR() { fprintf(stderr, "\nprovide instead of '%s' a number coprime to %lu.\n\n", unparsed_arg, *mod_); free(mod_); }
-_error_selector error_selector(int SELECTOR) {
-    switch (SELECTOR) {
-	case 1: fprintf(stdout, "Please provide as first argument a modulus specifying the multiplicative group to use.\n\n"); free(mod_); return str_not_parsable_as_number; 
-	case 2: fprintf(stdout, "Please provide as second argument an element within \u2115/%s\u2115* to perform modular exponentiation upon (preferably a generator).\n\n", argvv[1]); return coprime_ERROR;
-	case 3: fprintf(stdout, "Please provide as third argument Bob's secret key.\n\n"); return coprime_ERROR;
-	case 4: fprintf(stdout, "Please provide as fourth argument Alice's secret key.\n\n"); return coprime_ERROR;
-	case 5: return RESULT_ERROR;
-    };
-} // error functions ^
 
 void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
     struct LL_ *new_LL_element = (struct LL_ *) malloc(sizeof(struct LL_)); new_LL_element->e = new_ulong; new_LL_element->next = NULL; // create and initialize new element
@@ -38,13 +28,26 @@ struct VOID_ptr_ptr_PAIR group_elements_LL(char **argv) { FILE *ELEMENT_database
     return element_CHANNEL_ptr_pair;
 }
 
-unsigned long group_cardinality_;
-int main(int argc, char **argv) { argvv = argv; DH_parameters = (STRUCT_DH_parameters *) malloc(sizeof(STRUCT_DH_parameters)); mod_ = &DH_parameters->a; unparsed_arg = argv[1];
-    if (2 > argc || !str_represents_ul(unparsed_arg, &DH_parameters->a)) error_message(error_selector(1), -1); unparsed_arg = argv[2];
-    if (3 > argc || !str_represents_ul(unparsed_arg, &DH_parameters->b) || !coprime(DH_parameters->b, *mod_)) error_message(error_selector(2), -2); unparsed_arg = argv[3]; unsigned long priv_bob;
-    if (4 > argc || !str_represents_ul(unparsed_arg, &priv_bob) || !coprime(priv_bob, *mod_)) priv_bob = urandom_number(*mod_); unparsed_arg = argv[4]; unsigned long priv_alice;
-    if (5 > argc || !str_represents_ul(unparsed_arg, &priv_alice) || !coprime(priv_alice, *mod_)) priv_alice = urandom_number(*mod_); close_urandom();
-    // take in needed variables ^
+int i;
+void mod_failed_to_parse() { fprintf(stderr, "Please provide as first argument a modulus specifying the multiplicative group to use. '\u2115/%s\u2115*' makes no sense to me.", (*argv_location)[1]); }
+void coprime_error() { fprintf(stderr, "gcd(%s, %s) != 1: %s is not an element from \u2115/%s\u2115*.", (*argv_location)[i], (*argv_location)[1], (*argv_location)[i], (*argv_location)[1]); }
+void generator_failed_to_parse() { fprintf(stderr, "Please provide as second argument a generator from \u2115/%s\u2115*.", (*argv_location)[1]); }
+
+void _third_argument_instruction() { fprintf(stderr, "The argument that can be suppied here is Bob's private key."); }
+void fourth_argument_instruction() { fprintf(stderr, "The argument that can be suppied here is Alice's private key."); }
+
+int main(int argc, char **argv) { argv_location = &argv; DH_parameters = (STRUCT_DH_parameters *) malloc(sizeof(STRUCT_DH_parameters)); mod_ = &DH_parameters->a;
+    i = 1; conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(str_represents_ul(argv[i], mod_, -i))))));
+    // take in mod ^
+
+    i = 2;
+    conditional_goodbye(n(n(error_specification(generator_failed_to_parse, n( -i * ( str_represents_ul(argv[i], &DH_parameters->b, 1)))))));
+    conditional_goodbye(n(n(error_specification(generator_failed_to_parse, n(n(error_message(coprime_error, -2 * ( !coprime(DH_parameters->b, *mod_) ))))))));
+    // two checks on second input ^^
+
+    unsigned long __priv_bob; i = 3; if (argc > 3) conditional_goodbye(n(n(error_specification(_third_argument_instruction, n(str_represents_ul(argv[i], &__priv_bob, -i)))))); else __priv_bob = urandom_number(*mod_);
+    unsigned long priv_alice; i = 4; if (argc > 4) conditional_goodbye(n(n(error_specification(fourth_argument_instruction, n(str_represents_ul(argv[i], &priv_alice, -i)))))); else priv_alice = urandom_number(*mod_);
+    // take complain about 
 
     group_cardinality_ = totient(*mod_); struct ordered_pair iso = _isomorphism(); do { iso.b = mod_multiply(iso.b, DH_parameters->b); iso.a++; if (iso.b == MULTIPLICATIVE_IDENTITY) break; } while (1);
     if (iso.a != group_cardinality_) {
@@ -63,10 +66,10 @@ int main(int argc, char **argv) { argvv = argv; DH_parameters = (STRUCT_DH_param
 	char y_or_n; fscanf(stdin, " %c", &y_or_n); if (y_or_n == 'n' || y_or_n == 'N') exit(-1);
     } // detect when the permutation basis does not cover the group ^
     fprintf(stdout, "Alice and Bob use %lu within \u2115/%s\u2115*.\n\nDiffie-Hellman key exchange example:\n", mod_conditional_field_cap(DH_parameters->b), argv[1]);
-    fprintf(stdout, "Bob's private key: %lu\n", priv_bob);
+    fprintf(stdout, "Bob's private key: %lu\n", __priv_bob);
     fprintf(stdout, "Alice's private key: %lu\n", priv_alice);
 
-    unsigned long pub_bob; fprintf(stdout, "\nBob's public key:\n%lu^%lu \u2261 %lu (mod %lu)\n", DH_parameters->b, priv_bob, (pub_bob = DH_public_key(DH_parameters, priv_bob)), *mod_);
+    unsigned long pub_bob; fprintf(stdout, "\nBob's public key:\n%lu^%lu \u2261 %lu (mod %lu)\n", DH_parameters->b, __priv_bob, (pub_bob = DH_public_key(DH_parameters, __priv_bob)), *mod_);
 
     unsigned long pub_alice; fprintf(stdout, "\nAlice's public key:\n%lu^%lu \u2261 %lu (mod %lu)\n", DH_parameters->b, priv_alice, (pub_alice = DH_public_key(DH_parameters, priv_alice)), *mod_);
     // calculate public key's
@@ -74,12 +77,12 @@ int main(int argc, char **argv) { argvv = argv; DH_parameters = (STRUCT_DH_param
     fprintf(stdout, "\nBob receives Alice's public key '%lu'.\n", pub_alice);
     fprintf(stdout, "Alice receives Bob's public key '%lu'.\n", pub_bob);
 
-    unsigned long SS_according_to_Bob;   fprintf(stdout, "\nBob calculates '%lu^%lu \u2261 %lu (mod %lu)'.\n", pub_alice, priv_bob, (SS_according_to_Bob = mod_exponentiate(pub_alice, priv_bob)), *mod_);
+    unsigned long SS_according_to_Bob;   fprintf(stdout, "\nBob calculates '%lu^%lu \u2261 %lu (mod %lu)'.\n", pub_alice, __priv_bob, (SS_according_to_Bob = mod_exponentiate(pub_alice, __priv_bob)), *mod_);
     unsigned long SS_according_to_Alice; fprintf(stdout, "Alice calculates '%lu^%lu \u2261 %lu (mod %lu)'.\n", pub_bob, priv_alice, (SS_according_to_Alice = mod_exponentiate(pub_bob, priv_alice)), *mod_); free(mod_);
 
     if (SS_according_to_Bob == SS_according_to_Alice)
     { fprintf(stdout, "\nBoth derived %lu by raising the other's public key to their own private key: KEY EXCHANGE COMPLETE.\n", SS_according_to_Bob); return 0; }
-    else error_message(error_selector(5), -5); }
+    else error_message(RESULT_ERROR, -1); }
 /* Termination status legend:
  * -1: 'argv[1]' not parsable as number
  * -2: 'argv[2]' not parsable as number or number not coprime to 'argv[1]'

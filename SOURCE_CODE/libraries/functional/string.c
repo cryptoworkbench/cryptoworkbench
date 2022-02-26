@@ -9,10 +9,10 @@
 #include <stdio.h>
 
 _error_selector _str_not_parsable_as_number(char *str) { unparsed_arg = str; return str_not_parsable_as_number; }
-void str_not_parsable_as_number() { fprintf(stderr, " parsing of '%s' failed: '%s' is not a number.", unparsed_arg, unparsed_arg); }
+void str_not_parsable_as_number() { fprintf(stderr, "parsing of '%s' failed: '%s' is not a number.", unparsed_arg, unparsed_arg); }
 
 int error_message(_error_selector error_explainer, int exit_status)
-{ if (exit_status) { fflush(stdout); fprintf(stderr, "### THE FOLLOWING ERROR OCCURRED -->"); error_explainer(); } return exit_status; }
+{ if (exit_status) { fflush(stdout); fprintf(stderr, "### THE FOLLOWING ERROR OCCURRED --> "); error_explainer(); } return exit_status; }
 
 int str_represents_ul(char *str, unsigned long *ul_ptr, int exit_status)
 { 
