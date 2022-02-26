@@ -16,7 +16,7 @@ struct LL_ { struct LL_ *next; unsigned long e; };
 struct crux { unsigned long *base_permutation; char **ASCII; unsigned long **permutation; unsigned long *perm_length; };
 // ^^ type definitions
 
-struct ordered_pair offset; struct crux *lookup_table; unsigned long group_cardinality_ = 0; unsigned long *permutation_of_FIRST_GEN; __finite_field_operation combine;
+struct crux *lookup_table; unsigned long group_cardinality_ = 0; unsigned long *permutation_of_FIRST_GEN; __finite_field_operation combine; unsigned long horizontal_offset = 0;
 //     ^ global variables                 ^                           ^                                      ^                                                  ^
 
 void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
@@ -28,7 +28,7 @@ void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
 void print_permutation(unsigned long index) {
     fprintf(stdout, "<%s> = {", lookup_table->ASCII[index]);
     unsigned long i = 0; do {
-	fprintf(stdout, "%s", lookup_table->ASCII[lookup_table->permutation[index][(offset.a + i) % lookup_table->perm_length[index]]]); i++;
+	fprintf(stdout, "%s", lookup_table->ASCII[lookup_table->permutation[index][(horizontal_offset + i) % lookup_table->perm_length[index]]]); i++;
 	if (i == lookup_table->perm_length[index]) break;
 	else fprintf(stdout, ", ");
     } while (1); fprintf(stdout, "}\n");
@@ -75,8 +75,8 @@ unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair
     lookup_table->perm_length[1] = group_cardinality_; lookup_table->permutation[1] = lookup_table->base_permutation; return finish(2);
 }
 
-void horizontal_offset_error() { fprintf(stderr, "Failed to interpret horizontal table offset -- - ^"); }
-void vertical_offset_error() { fprintf(stderr, "Failed to interpret vertical table offset  -- -- ^"); }
+void horizontal_offset_failed_to_parse() { fprintf(stderr, "Failed to interpret horizontal table offset! --- ^"); }
+void __vertical_offset_failed_to_parse() { fprintf(stderr, "Failed to interpret vertical table offset! -- -- ^"); }
 void invalid_group_parameters() {
     fprintf(stderr, "\nInvalid group parameters: ");
     if (!(*mod_)) fprintf(stderr, "the modulus cannot be 0!");
@@ -86,24 +86,22 @@ void mod_error() { fprintf(stderr, "Please supply as first argument the modulus 
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { argv_location = &argv;
-    unsigned long mod; conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul(argv[1], &mod, -1))))));                   mod_ = &mod;
-    unsigned long id;  conditional_goodbye(n(n(error_message(identity_SELECTOR_error, identity_set(&id, identity_SELECTOR(argv[2]), -2)))));  id_ = &id;
+    unsigned long mod;                   conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul(argv[1], &mod, -1))))));                   mod_ = &mod;
+    unsigned long id;                    conditional_goodbye(n(n(error_message(identity_SELECTOR_error, identity_set(&id, identity_SELECTOR(argv[2]), -2)))));  id_ = &id;
     if (!mod || !(mod - 1) && id) conditional_goodbye(error_message(invalid_group_parameters, -3));
-    //   take in mandatory arguments ^ 
+    // process mandatory terminal arguments (mod and group identity) ^ 
 
-    if (argc != 3) { switch (argc) {
-	    case 5: if (!str_represents_ul(argv[4], &offset.b, 0)) conditional_goodbye(n(n(error_specification(vertical_offset_error, 0))));
-	    case 4: if (!str_represents_ul(argv[3], &offset.a, 0)) conditional_goodbye(n(n(error_specification(horizontal_offset_error, 0))));
-	    default: if (!id) { offset.a %= mod; offset.b %= mod; } };
-    } // process optional arguments ^
+    if (argc > 3)                                      n(n(error_specification(horizontal_offset_failed_to_parse, str_represents_ul(argv[3], &horizontal_offset, 1))));
+    unsigned long __vertical_offset = 0; if (argc > 4) n(n(error_specification(__vertical_offset_failed_to_parse, str_represents_ul(argv[4], &__vertical_offset, 1))));
+    // process optional terminal arguments ^
 
     combine = id_finite_group_operation(); unsigned long generator_count = found_generators(group_elements_LL(argv));
-    unsigned long index = offset.b; do { print_permutation(index); index = _add(index, 1, group_cardinality_); } while (index != offset.b); fprintf(stdout, "\n");
+    unsigned long index = __vertical_offset; do { print_permutation(index); index = _add(index, 1, group_cardinality_); } while (index != __vertical_offset); fprintf(stdout, "\n");
     //   examplify subgroups ^
 
     if (generator_count) {
 	fprintf(stdout, "%lu generators are present within \u2115/\u2115%s%s:\n", generator_count, argv[1], id_as_operation_symbol());
-	for (unsigned long printed_gens = 0, index = offset.b; printed_gens < generator_count; index = _add(index, 1, group_cardinality_))
+	for (unsigned long printed_gens = 0, index = __vertical_offset; printed_gens < generator_count; index = _add(index, 1, group_cardinality_))
 	{ while (lookup_table->perm_length[index] != group_cardinality_) index = _add(index, 1, group_cardinality_); print_permutation(index); printed_gens++; }
     } else fprintf(stdout, "There are no generators in this group.\n");
     //   list generators afterwards ^
