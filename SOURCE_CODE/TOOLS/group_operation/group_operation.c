@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h"
-#include "../../libraries/mathematics/universal_group_library.h"
+#include "../../libraries/mathematics/group_library.h"
 
 void __b_not_parsable() { fprintf(stderr, "Please specify as fourth argument the second value to do the group operation with."); }
 void __a_not_parsable() { fprintf(stderr, "Please specify as third argument the first value to do the group operation with."); }

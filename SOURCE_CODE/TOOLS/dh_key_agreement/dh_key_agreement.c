@@ -7,7 +7,7 @@
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
 #include "../../libraries/mathematics/maths.h"
-#include "../../libraries/mathematics/universal_group_library.h"
+#include "../../libraries/mathematics/group_library.h"
 
 struct LL_ { unsigned long e; struct LL_ *next; };
 // type definitions ^

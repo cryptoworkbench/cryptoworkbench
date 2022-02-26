@@ -7,11 +7,11 @@
 ../../libraries/functional/.triple_ref_pointers.o: ../../libraries/functional/triple_ref_pointers.h ../../libraries/functional/triple_ref_pointers.c
 	gcc -c ../../libraries/functional/triple_ref_pointers.c -o ../../libraries/functional/.triple_ref_pointers.o
 
-../../libraries/mathematics/.universal_group_library.o: ../../libraries/mathematics/universal_group_library.h ../../libraries/mathematics/universal_group_library.c
-	gcc -c ../../libraries/mathematics/universal_group_library.c -o ../../libraries/mathematics/.universal_group_library.o
+../../libraries/mathematics/.group_library.o: ../../libraries/mathematics/group_library.h ../../libraries/mathematics/group_library.c
+	gcc -c ../../libraries/mathematics/group_library.c -o ../../libraries/mathematics/.group_library.o
 
 .subgroup_examplifier.o: subgroup_examplifier.c
 	gcc -c subgroup_examplifier.c -o .subgroup_examplifier.o
 
-subgroup_examplifier: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.universal_group_library.o .subgroup_examplifier.o .subgroup_examplifier.sh
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.universal_group_library.o .subgroup_examplifier.o -o ../../../WORKBENCH/subgroup_examplifier && cp .subgroup_examplifier.sh ../../../WORKBENCH/subgroup_examplifier.sh
+subgroup_examplifier: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_library.o .subgroup_examplifier.o .subgroup_examplifier.sh
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_library.o .subgroup_examplifier.o -o ../../../WORKBENCH/subgroup_examplifier && cp .subgroup_examplifier.sh ../../../WORKBENCH/subgroup_examplifier.sh

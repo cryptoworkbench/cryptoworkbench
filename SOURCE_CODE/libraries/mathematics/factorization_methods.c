@@ -2,7 +2,7 @@
 #include "../functional/string.h" // needed for definition EXIT_STATUS_GOODBYE
 #include "factorization_methods.h" // need for function headers
 #include "maths.h" // needed for 'DOWN_ROUNDED_second_root()'
-#include "universal_group_library.h" // needed for 'BUFFER_OF_SIZE()'
+#include "group_library.h" // needed for 'BUFFER_OF_SIZE()'
 
 const char *_preferred_factorization_engine_file = "global_preference.factorization_engine";
 const char *_REPORT_preferred_factorization_engine_file() { return _preferred_factorization_engine_file; }

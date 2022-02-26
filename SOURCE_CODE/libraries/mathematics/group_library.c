@@ -5,7 +5,7 @@
 #include <sys/wait.h> // <<< Needed for "waitpid()"
 #include "maths.h"
 #include "../functional/string.h"
-#include "universal_group_library.h"
+#include "group_library.h"
 
 int _identity;
 
