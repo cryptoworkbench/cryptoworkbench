@@ -82,7 +82,7 @@ void invalid_group_parameters() {
     if (!(*mod_)) fprintf(stderr, "the modulus cannot be 0!");
     else fprintf(stderr, "for multiplicative groups the modulus needs to be at least 2! (since multiplicative groups do not include the element '0')");
     fprintf(stderr, "\n\n"); free(mod_); free(id_); }
-void mod_error() { fprintf(stderr, "Failed to understand '%s' as the modulus value of any group to examplify.", (*argv_location)[1]); }
+void mod_error() { fprintf(stderr, "Failed to understand '%s' as the modulus.", (*argv_location)[1]); }
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { argv_location = &argv;

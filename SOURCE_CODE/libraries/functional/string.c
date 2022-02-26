@@ -42,7 +42,8 @@ int error_specification(_error_selector error_explainer, int exit_status)
 
 int n(int exit_status) { if (exit_status) fprintf(stderr, "\n"); return exit_status; }
 
-void conditional_goodbye(int exit_status) { if (!exit_status) return; fprintf(stderr, EXIT_STATUS_GOODBYE, exit_status); exit(exit_status); }
+void conditional_goodbye(int exit_status)
+{ if (!exit_status) return; fprintf(stderr, "\n# ^ ^ ^  THE ABOVE WAS A FATAL ERROR!  ^ ^ ^  #\n# Terminating with exit status '%i'. Goodbye. #\n", exit_status); exit(exit_status); }
 
 char *BUFFER_OF_SIZE(unsigned int SIZE) {
     char *return_value = (char *) malloc(sizeof(char) * SIZE);
@@ -173,5 +174,3 @@ void ignored_arguments(int argc, char **argv, int used_arguments) {
 	do {fprintf(stderr, "%s", argv[used_arguments + 1]); used_arguments++; if (used_arguments + 1 == argc) break; fprintf(stderr, ", "); } while (1);
 	fprintf(stdout, "\n"); fprintf(stderr, "\n"); }
 }
-
-void str_does_not_represent_suitable_ul(char **argv, int index) { fprintf(stderr, GENERIC_PARSING_ERROR "%s\n\n" EXIT_STATUS_GOODBYE, argv[index], local_error_selector(index), -index); exit(-index); }
