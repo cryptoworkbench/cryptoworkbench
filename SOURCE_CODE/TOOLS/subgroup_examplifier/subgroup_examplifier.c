@@ -2,7 +2,7 @@
  * Examplifies subgroups. Feed it a modulus and a group identity as command-line arguments and it will examplify all subgroups within specified group. It also lists the generators that are within the group.
  *
  * DEVELOPERS NOTES:
- * For some reason it fails when you say '1 0'
+ * When you put it with 2 1 it says there are no generators there.
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -81,35 +81,35 @@ void invalid_group_parameters() {
     fprintf(stderr, "\nInvalid group parameters: ");
     if (!(*mod_)) fprintf(stderr, "the modulus cannot be 0!");
     else fprintf(stderr, "for multiplicative groups the modulus needs to be at least 2! (since multiplicative groups do not include the element '0')");
-    fprintf(stderr, "\n\n"); free(mod_); free(id_); }
-void mod_error() { fprintf(stderr, "Failed to understand '%s' as the modulus.", (*argv_location)[1]); }
+    fprintf(stderr, "\n\n"); }
+void mod_error() { fprintf(stderr, "Please supply as first argument the modulus of the group to examplify!"); }
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { argv_location = &argv;
-    unsigned long mod; conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul(argv[1], &mod, -1)))))); mod_ = &mod;
-    // take in mod ^
+    unsigned long mod; conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul(argv[1], &mod, -1))))));                   mod_ = &mod;
+    unsigned long id;  conditional_goodbye(n(n(error_message(identity_SELECTOR_error, identity_set(&id, identity_SELECTOR(argv[2]), -2)))));  id_ = &id;
+    if (!mod || !(mod - 1) && id) conditional_goodbye(error_message(invalid_group_parameters, -3));
+    //   take in mandatory arguments ^ 
 
-    id_ = (unsigned long *) malloc(sizeof(unsigned long));
-    unparsed_arg = argv[2]; conditional_goodbye(n(n(error_message(identity_SELECTOR_error, identity_set(id_, identity_SELECTOR(argv[2]), -2))))); unsigned long a;
-
-    if (!(*mod_) || !(*mod_ - 1) && *id_) conditional_goodbye(error_message(invalid_group_parameters, -3));
-    offset = (struct ordered_pair *) malloc(sizeof(struct ordered_pair)); offset->a = offset->b = 0; // member a will hold y offset, member b will hold x offset
+    offset = (struct ordered_pair *) malloc(sizeof(struct ordered_pair)); offset->a = offset->b = 0; // *
     if (argc != 3) { switch (argc) {
 	    case 5: if (!str_represents_ul(argv[4], &offset->b, 0)) conditional_goodbye(n(n(error_specification(vertical_offset_error, 0))));
 	    case 4: if (!str_represents_ul(argv[3], &offset->a, 0)) conditional_goodbye(n(n(error_specification(horizontal_offset_error, 0))));
-	    default: if (!(*id_)) { offset->a %= *mod_; offset->b %= *mod_; } };
-    } combine = id_finite_group_operation(); unsigned long generator_count = found_generators(group_elements_LL(argv));
+	    default: if (!id) { offset->a %= *mod_; offset->b %= *mod_; } };
+    } // process optional arguments ^
+
+    combine = id_finite_group_operation(); unsigned long generator_count = found_generators(group_elements_LL(argv));
     unsigned long index = offset->b; do { print_permutation(index); index = _add(index, 1, group_cardinality_); } while (index != offset->b); fprintf(stdout, "\n");
-    // process terminal inputs and yield output ^
+    //   examplify subgroups ^
 
     if (generator_count) {
 	fprintf(stdout, "%lu generators are present within \u2115/\u2115%s%s:\n", generator_count, argv[1], id_as_operation_symbol());
 	for (unsigned long printed_gens = 0, index = offset->b; printed_gens < generator_count; index = _add(index, 1, group_cardinality_))
 	{ while (lookup_table->perm_length[index] != group_cardinality_) index = _add(index, 1, group_cardinality_); print_permutation(index); printed_gens++; }
     } else fprintf(stdout, "There are no generators in this group.\n");
-    // list generators afterwards ^
+    //   list generators afterwards ^
 
     free(offset);
     for (unsigned long i = 0; i < group_cardinality_; i++) { free(lookup_table->permutation[i]); free(lookup_table->ASCII[i]); } free(lookup_table->perm_length);
-    if (*id_) free(lookup_table->base_permutation); free(id_); free(lookup_table); return 0;
-}
+    if (id) free(lookup_table->base_permutation); free(lookup_table); return 0;
+} // * = 'member a will hold y offset, member b will hold x offset'
