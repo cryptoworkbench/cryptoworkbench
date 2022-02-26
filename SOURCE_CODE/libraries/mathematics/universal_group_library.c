@@ -36,15 +36,15 @@ int identity_SELECTOR(char *arg)
     } failed_identity = arg; return 10;
 }
 
-unsigned long identity_(int SELECTOR) { return (SELECTOR % 2) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY ; }
-int identity_set(unsigned long *identity, int SELECTOR, int exit_status) { if (SELECTOR == 10) return exit_status; *identity = identity_(SELECTOR); return 0; }
+int identity_(int SELECTOR) { return (SELECTOR % 2) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY ; }
+int identity_set(int *id_, int SELECTOR, int exit_status) { if (SELECTOR == 10) return exit_status; *id_ = identity_(SELECTOR); return 0; }
 // ^^ functions for figuring out what identity element to start the subgroups with
 
-const char *_as_number(unsigned long id) { return (id) ? multiplicative_signs[0] : additive_signs[0]; }
-const char *_as_operation_symbol(unsigned long id) { return (id) ? multiplicative_signs[1] : additive_signs[1]; }
-const char *_as_noun(unsigned long id) { return (id) ? multiplicative_signs[2] : additive_signs[2]; }
-const char *_as_nouns(unsigned long id) { return (id) ? multiplicative_signs[3] : additive_signs[3]; }
-const char *_as_adjective(unsigned long id) { return (id) ? multiplicative_signs[4] : additive_signs[4]; }
+const char *_as_number(int id) { return (id) ? multiplicative_signs[0] : additive_signs[0]; }
+const char *_as_operation_symbol(int id) { return (id) ? multiplicative_signs[1] : additive_signs[1]; }
+const char *_as_noun(int id) { return (id) ? multiplicative_signs[2] : additive_signs[2]; }
+const char *_as_nouns(int id) { return (id) ? multiplicative_signs[3] : additive_signs[3]; }
+const char *_as_adjective(int id) { return (id) ? multiplicative_signs[4] : additive_signs[4]; }
 // ^ returns one of the names
 
 const char *id_as_number() { return _as_number(*id_); }
@@ -54,7 +54,7 @@ const char *id_as_nouns() { return _as_nouns(*id_); }
 const char *id_as_adjective() { return _as_adjective(*id_); }
 // ^ wrapper for the above block of five functions
 
-__finite_field_operation _finite_group_operation(unsigned long id)
+__finite_field_operation _finite_group_operation(int id)
 { return (id) ? mod_multiply : mod_add; }
 __finite_field_operation id_finite_group_operation() { return _finite_group_operation(*id_); }
 

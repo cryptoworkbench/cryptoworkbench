@@ -6,19 +6,19 @@
 #define FORK_ERROR "Failed to split up myself into two daughter processes so that I could dedicate one part of my being to securing the group."
 #define FILE_DESCRIPTOR_ERROR "Failed to rewrite the file descriptor of child process."
 
-char *failed_identity; char *argv_ZERO; FILE *logbook_fs; unsigned long *id_; // all function that begin with 'id_' work with this last variable <-
+char *failed_identity; char *argv_ZERO; FILE *logbook_fs; int *id_; // all function that begin with 'id_' work with this last variable <-
 // variable definitions ^
 
 int identity_SELECTOR(char *arg);
 void identity_SELECTOR_error();
-unsigned long identity_(int SELECTOR);
-int identity_set(unsigned long *identity, int SELECTOR, int exit_status);
+int identity_(int SELECTOR);
+int identity_set(int *id_, int SELECTOR, int exit_status);
 // identity functions ^
 
-const char *_as_number(unsigned long ID); const char *_as_operation_symbol(unsigned long ID); const char *_as_noun(unsigned long ID); const char *_as_nouns(unsigned long ID); const char *_as_adjective(unsigned long ID);
+const char *_as_number(int ID); const char *_as_operation_symbol(int ID); const char *_as_noun(int ID); const char *_as_nouns(int ID); const char *_as_adjective(int ID);
 const char *id_as_number(); const char *id_as_operation_symbol(); const char *id_as_noun(); const char *id_as_nouns(); const char *id_as_adjective();
 
-__finite_field_operation id_finite_group_operation(); // wrapper function for commented out '__finite_field_operation _finite_group_operation(unsigned long id);' <-- 
+__finite_field_operation id_finite_group_operation(); // wrapper function for commented out '__finite_field_operation _finite_group_operation(int id);' <-- 
 
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line);
 void open_and_append_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line);

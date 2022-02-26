@@ -77,18 +77,20 @@ unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair
 
 void horizontal_offset_failed_to_parse() { fprintf(stderr, "Failed to interpret horizontal table offset! --- ^"); }
 void __vertical_offset_failed_to_parse() { fprintf(stderr, "Failed to interpret vertical table offset! -- -- ^"); }
-void invalid_group_parameters() {
+void invalid_group_parameters()
+{
     fprintf(stderr, "\nInvalid group parameters: ");
     if (!(*mod_)) fprintf(stderr, "the modulus cannot be 0!");
     else fprintf(stderr, "for multiplicative groups the modulus needs to be at least 2! (since multiplicative groups do not include the element '0')");
-    fprintf(stderr, "\n\n"); }
+}
+
 void mod_error() { fprintf(stderr, "Please supply as first argument the modulus of the group to examplify!"); }
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { argv_location = &argv;
-    unsigned long mod;                   conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul(argv[1], &mod, -1))))));                   mod_ = &mod;
-    unsigned long id;                    conditional_goodbye(n(n(error_message(identity_SELECTOR_error, identity_set(&id, identity_SELECTOR(argv[2]), -2)))));  id_ = &id;
-    if (!mod || !(mod - 1) && id) conditional_goodbye(error_message(invalid_group_parameters, -3));
+    unsigned long mod;            conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul(argv[1], &mod, -1))))));                   mod_ = &mod;
+    int id;                       conditional_goodbye(n(n(error_message(identity_SELECTOR_error, identity_set(&id, identity_SELECTOR(argv[2]), -2)))));  id_ = &id;
+    if (!mod || !(mod - 1) && id) conditional_goodbye(n(n(error_message(invalid_group_parameters, -3))));
     // process mandatory terminal arguments (mod and group identity) ^ 
 
     if (argc > 3)                                      n(n(error_specification(horizontal_offset_failed_to_parse, str_represents_ul(argv[3], &horizontal_offset, 1))));
