@@ -4,7 +4,7 @@
 // ^^^ Necessary library inclusions that are needed in "string.c"
 
 #define GENERIC_PARSING_ERROR "'%s' is not something I am able to understand as a suitable number;"
-#define EXIT_STATUS_GOODBYE "# ^ ^ ^  THE ABOVE WAS A FATAL ERROR!  ^ ^ ^  #\n# Terminating with exit status '%i'. Goodbye. #\n###############################################" // still need this for now <--
+#define EXIT_STATUS_GOODBYE "\n# ^ ^ ^  THE ABOVE WAS A FATAL ERROR!  ^ ^ ^  #\n# Terminating with exit status '%i'. Goodbye. #\n" // still need this for now <--
 #define STRING_TERMINATING_CHARACTER 0
 #define NUMERIC_BASE 10
 #define ASCII_BASE 48

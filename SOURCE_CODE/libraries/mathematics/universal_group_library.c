@@ -16,9 +16,9 @@ const char *multiplicative_signs[] = {"1", "*", "multiplication", "multiplicatio
 
 void identity_SELECTOR_error()
 {
-    fprintf(stderr, "\nFailed recognize '%s' from one of the following lists:\n", failed_identity);
-    fprintf(stderr, "~ The list for indications of an additive group context: %s, %s, %s, %s, or %s\n", additive_signs[0], additive_signs[1], additive_signs[2], additive_signs[3], additive_signs[4]);
-    fprintf(stderr, "~ The list for indications of a multiplicative group context: %s, %s, %s, %s, or %s", multiplicative_signs[0], multiplicative_signs[1], multiplicative_signs[2], multiplicative_signs[3], multiplicative_signs[4]);
+    fprintf(stderr, "\n\nFailed to find '%s' in one of the following lists:\n", failed_identity);
+    fprintf(stderr, "- '%s', '%s', '%s', '%s' or '%s'\n", additive_signs[4], additive_signs[2], additive_signs[3], additive_signs[0], additive_signs[1]);
+    fprintf(stderr, "- '%s', '%s', '%s', '%s' or '%s'", multiplicative_signs[4], multiplicative_signs[2], multiplicative_signs[3], multiplicative_signs[0], multiplicative_signs[1]);
 }
 
 int identity_SELECTOR(char *arg)

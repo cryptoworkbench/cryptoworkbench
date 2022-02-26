@@ -82,16 +82,15 @@ void invalid_group_parameters() {
     if (!(*mod_)) fprintf(stderr, "the modulus cannot be 0!");
     else fprintf(stderr, "for multiplicative groups the modulus needs to be at least 2! (since multiplicative groups do not include the element '0')");
     fprintf(stderr, "\n\n"); free(mod_); free(id_); }
-void identity_error() { fprintf(stderr, "\nFailed to understand '%s' as the identity element of any additive group (which is always zero) or any multiplicative group (which is always one).", unparsed_arg); }
-void mod_error() { fprintf(stderr, "\nFailed to understand '%s' as the modulus value of any group to examplify.", unparsed_arg); }
+void mod_error() { fprintf(stderr, "Failed to understand '%s' as the modulus value of any group to examplify.", (*argv_location)[1]); }
 // error functions ^ (function header format fits typedef '_error_message')
 
-int main(int argc, char **argv) {
-    unsigned long mod; unparsed_arg = argv[1]; conditional_goodbye(n(n(error_specification(mod_error, str_represents_ul(unparsed_arg, &mod, -1))))); mod_ = &mod;
+int main(int argc, char **argv) { argv_location = &argv;
+    unsigned long mod; conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul(argv[1], &mod, -1)))))); mod_ = &mod;
     // take in mod ^
 
     id_ = (unsigned long *) malloc(sizeof(unsigned long));
-    unparsed_arg = argv[2]; conditional_goodbye(n(error_message(identity_SELECTOR_error, identity_set(id_, identity_SELECTOR(argv[2]), -2)))); unsigned long a;
+    unparsed_arg = argv[2]; conditional_goodbye(n(n(error_message(identity_SELECTOR_error, identity_set(id_, identity_SELECTOR(argv[2]), -2))))); unsigned long a;
 
     if (!(*mod_) || !(*mod_ - 1) && *id_) conditional_goodbye(error_message(invalid_group_parameters, -3));
     offset = (struct ordered_pair *) malloc(sizeof(struct ordered_pair)); offset->a = offset->b = 0; // member a will hold y offset, member b will hold x offset

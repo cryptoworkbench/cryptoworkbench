@@ -42,7 +42,7 @@ int error_specification(_error_selector error_explainer, int exit_status)
 
 int n(int exit_status) { if (exit_status) fprintf(stderr, "\n"); return exit_status; }
 
-void conditional_goodbye(int exit_status) { if (!exit_status) return; fprintf(stderr, "\n" EXIT_STATUS_GOODBYE "\n", exit_status); exit(exit_status); }
+void conditional_goodbye(int exit_status) { if (!exit_status) return; fprintf(stderr, EXIT_STATUS_GOODBYE, exit_status); exit(exit_status); }
 
 char *BUFFER_OF_SIZE(unsigned int SIZE) {
     char *return_value = (char *) malloc(sizeof(char) * SIZE);
