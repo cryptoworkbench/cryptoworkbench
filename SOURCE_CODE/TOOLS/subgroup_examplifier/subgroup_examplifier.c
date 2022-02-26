@@ -16,7 +16,7 @@ struct LL_ { struct LL_ *next; unsigned long e; };
 struct crux { unsigned long *base_permutation; char **ASCII; unsigned long **permutation; unsigned long *perm_length; };
 // ^^ type definitions
 
-struct ordered_pair *offset; struct crux *lookup_table; unsigned long group_cardinality_ = 0; unsigned long *permutation_of_FIRST_GEN; __finite_field_operation combine;
+struct ordered_pair offset; struct crux *lookup_table; unsigned long group_cardinality_ = 0; unsigned long *permutation_of_FIRST_GEN; __finite_field_operation combine;
 //     ^ global variables                 ^                           ^                                      ^                                                  ^
 
 void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
@@ -28,7 +28,7 @@ void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
 void print_permutation(unsigned long index) {
     fprintf(stdout, "<%s> = {", lookup_table->ASCII[index]);
     unsigned long i = 0; do {
-	fprintf(stdout, "%s", lookup_table->ASCII[lookup_table->permutation[index][(offset->a + i) % lookup_table->perm_length[index]]]); i++;
+	fprintf(stdout, "%s", lookup_table->ASCII[lookup_table->permutation[index][(offset.a + i) % lookup_table->perm_length[index]]]); i++;
 	if (i == lookup_table->perm_length[index]) break;
 	else fprintf(stdout, ", ");
     } while (1); fprintf(stdout, "}\n");
@@ -91,25 +91,23 @@ int main(int argc, char **argv) { argv_location = &argv;
     if (!mod || !(mod - 1) && id) conditional_goodbye(error_message(invalid_group_parameters, -3));
     //   take in mandatory arguments ^ 
 
-    offset = (struct ordered_pair *) malloc(sizeof(struct ordered_pair)); offset->a = offset->b = 0; // *
     if (argc != 3) { switch (argc) {
-	    case 5: if (!str_represents_ul(argv[4], &offset->b, 0)) conditional_goodbye(n(n(error_specification(vertical_offset_error, 0))));
-	    case 4: if (!str_represents_ul(argv[3], &offset->a, 0)) conditional_goodbye(n(n(error_specification(horizontal_offset_error, 0))));
-	    default: if (!id) { offset->a %= *mod_; offset->b %= *mod_; } };
+	    case 5: if (!str_represents_ul(argv[4], &offset.b, 0)) conditional_goodbye(n(n(error_specification(vertical_offset_error, 0))));
+	    case 4: if (!str_represents_ul(argv[3], &offset.a, 0)) conditional_goodbye(n(n(error_specification(horizontal_offset_error, 0))));
+	    default: if (!id) { offset.a %= mod; offset.b %= mod; } };
     } // process optional arguments ^
 
     combine = id_finite_group_operation(); unsigned long generator_count = found_generators(group_elements_LL(argv));
-    unsigned long index = offset->b; do { print_permutation(index); index = _add(index, 1, group_cardinality_); } while (index != offset->b); fprintf(stdout, "\n");
+    unsigned long index = offset.b; do { print_permutation(index); index = _add(index, 1, group_cardinality_); } while (index != offset.b); fprintf(stdout, "\n");
     //   examplify subgroups ^
 
     if (generator_count) {
 	fprintf(stdout, "%lu generators are present within \u2115/\u2115%s%s:\n", generator_count, argv[1], id_as_operation_symbol());
-	for (unsigned long printed_gens = 0, index = offset->b; printed_gens < generator_count; index = _add(index, 1, group_cardinality_))
+	for (unsigned long printed_gens = 0, index = offset.b; printed_gens < generator_count; index = _add(index, 1, group_cardinality_))
 	{ while (lookup_table->perm_length[index] != group_cardinality_) index = _add(index, 1, group_cardinality_); print_permutation(index); printed_gens++; }
     } else fprintf(stdout, "There are no generators in this group.\n");
     //   list generators afterwards ^
 
-    free(offset);
     for (unsigned long i = 0; i < group_cardinality_; i++) { free(lookup_table->permutation[i]); free(lookup_table->ASCII[i]); } free(lookup_table->perm_length);
     if (id) free(lookup_table->base_permutation); free(lookup_table); return 0;
 } // * = 'member a will hold y offset, member b will hold x offset'
