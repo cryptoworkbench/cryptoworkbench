@@ -10,8 +10,5 @@
 ../../libraries/mathematics/.maths.o: ../../libraries/mathematics/maths.h ../../libraries/mathematics/maths.c
 	gcc -c ../../libraries/mathematics/maths.c -o ../../libraries/mathematics/.maths.o
 
-.group_element_table_generator.o: group_element_table_generator.c
-	gcc -c group_element_table_generator.c -o .group_element_table_generator.o
-
-group_element_table_generator: ../../libraries/functional/.string.o ../../libraries/mathematics/.group_library.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o .group_element_table_generator.o
-	gcc ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.group_library.o ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o .group_element_table_generator.o -o ../../../WORKBENCH/group_element_table_generator
+group_element_table_generator: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .group_element_table_generator.o
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .group_element_table_generator.o -o ../../../WORKBENCH/group_element_table_generator

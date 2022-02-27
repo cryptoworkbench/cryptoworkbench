@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h"
-#include "../../libraries/mathematics/group_library.h"
 
 void argument_ERROR(const char *char_PTR_one, const char *char_PTR_two) { fprintf(stderr, " failed to understand the %s argument as the %s.\n\n", char_PTR_one, char_PTR_two); }
 const char *first[] = {"first", "modulus"}; void error_ONE() { argument_ERROR(first[0], first[1]); }
