@@ -88,13 +88,13 @@ void mod_error() { fprintf(stderr, "Please supply as first argument the modulus 
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { argv_location = &argv;
-    unsigned long mod;            conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul(argv[1], &mod, -1))))));                   mod_ = &mod;
-    int id;                       conditional_goodbye(n(n(error_message(identity_SELECTOR_error, identity_set(&id, identity_SELECTOR(argv[2]), -2)))));  id_ = &id;
-    if (!mod || !(mod - 1) && id) conditional_goodbye(n(n(error_message(invalid_group_parameters, -3))));
+    unsigned long mod; mod_ = &mod;conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul(argv[1], mod_, -1))))));
+    int id; id_ = &id;             conditional_goodbye(n(n(error_message(identity_SELECTOR_error, identity_set(id_, identity_SELECTOR(argv[2]), -2)))));
+    if (!mod || !(mod - 1) && id)  conditional_goodbye(n(n(error_message(invalid_group_parameters, -3))));
     // process mandatory terminal arguments (mod and group identity) ^ 
 
-    if (argc > 3)                                      n(n(error_specification(horizontal_offset_failed_to_parse, str_represents_ul(argv[3], &horizontal_offset, 1))));
-    unsigned long __vertical_offset = 0; if (argc > 4) n(n(error_specification(__vertical_offset_failed_to_parse, str_represents_ul(argv[4], &__vertical_offset, 1))));
+    n(n(error_specification(horizontal_offset_failed_to_parse, 3 < argc && str_represents_ul(argv[3], &horizontal_offset, 1)))); unsigned long __vertical_offset = 0;
+    n(n(error_specification(__vertical_offset_failed_to_parse, 4 < argc && str_represents_ul(argv[4], &__vertical_offset, 1))));
     // process optional terminal arguments ^
 
     combine = id_finite_group_operation(); unsigned long generator_count = found_generators(group_elements_LL(argv));
