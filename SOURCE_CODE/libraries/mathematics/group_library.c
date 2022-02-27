@@ -54,9 +54,13 @@ const char *id_as_nouns() { return _as_nouns(*id_); }
 const char *id_as_adjective() { return _as_adjective(*id_); }
 // ^ wrapper for the above block of five functions
 
-__finite_field_operation _finite_group_operation(int id)
-{ return (id) ? mod_multiply : mod_add; }
-__finite_field_operation id_finite_group_operation() { return _finite_group_operation(*id_); }
+field_operation _finite_group_operation(int id) { return (id) ? mod_multiply : mod_add; }
+field_operation id_finite_group_operation() { return _finite_group_operation(*id_); }
+
+/*
+infinite_field_operation _infinite_group_operation(int id) { return (id) ? _multiply : _add; }
+infinite_field_operation id_infinite_group_operation() { return _infinite_group_operation(*id_); }
+*/
 
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line) {
     fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", argv_ZERO, TO_BE_APPENDED_logbook_line);

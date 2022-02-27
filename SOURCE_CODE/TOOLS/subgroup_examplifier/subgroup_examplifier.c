@@ -16,8 +16,8 @@ struct LL_ { struct LL_ *next; unsigned long e; };
 struct crux { unsigned long *base_permutation; char **ASCII; unsigned long **permutation; unsigned long *perm_length; };
 // ^^ type definitions
 
-struct crux *lookup_table; unsigned long group_cardinality_ = 0; unsigned long *permutation_of_FIRST_GEN; __finite_field_operation combine; unsigned long horizontal_offset = 0;
-//     ^ global variables                 ^                           ^                                      ^                                                  ^
+struct crux *lookup_table; unsigned long group_cardinality_ = 0; unsigned long *permutation_of_FIRST_GEN; __finite_field_operation combine; unsigned long horizontal_offset;
+//           ^ global variables          ^                                      ^                                                  ^                      ^
 
 void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
     struct LL_ *new_LL_element = (struct LL_ *) malloc(sizeof(struct LL_)); new_LL_element->e = new_ulong; new_LL_element->next = NULL; // create and initialize new element
@@ -93,8 +93,8 @@ int main(int argc, char **argv) { argv_location = &argv;
     if (!mod || !(mod - 1) && id)  conditional_goodbye(n(n(error_message(invalid_group_parameters, -3))));
     // process mandatory terminal arguments (mod and group identity) ^ 
 
-    n(n(error_specification(horizontal_offset_failed_to_parse, 3 < argc && str_represents_ul(argv[3], &horizontal_offset, 1)))); unsigned long __vertical_offset = 0;
-    n(n(error_specification(__vertical_offset_failed_to_parse, 4 < argc && str_represents_ul(argv[4], &__vertical_offset, 1))));
+                  horizontal_offset = 0; n(n(error_specification(horizontal_offset_failed_to_parse, 3 < argc && str_represents_ul(argv[3], &horizontal_offset, 1))));
+    unsigned long __vertical_offset = 0; n(n(error_specification(__vertical_offset_failed_to_parse, 4 < argc && str_represents_ul(argv[4], &__vertical_offset, 1))));
     // process optional terminal arguments ^
 
     combine = id_finite_group_operation(); unsigned long generator_count = found_generators(group_elements_LL(argv));

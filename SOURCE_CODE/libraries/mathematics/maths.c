@@ -1,6 +1,4 @@
-/* This library contains all the math functions which are not verbose.
- *
- * See the header file for function descriptions. */
+// This library contains all of the mathematics for (modular) arithmetic.
 #include <stdlib.h>
 #include <stdarg.h>
 #include "maths.h"
@@ -58,10 +56,8 @@ unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned
 unsigned long DH_public_key(STRUCT_DH_parameters *DH_parameters, unsigned long DH_private_key) { return _exponentiate(DH_parameters->b, DH_private_key, DH_parameters->a); }
 void print_DH_parameters(STRUCT_DH_parameters *DH_parameters, FILE *fs) { fprintf(fs, "(\u2115/%lu\u2115*, %lu)", DH_parameters->a, DH_parameters->b); }
 
-/*
-infinite_field_operation _operation_from_ID(unsigned long ID) { return (ID) ? _multiply : _add; }
-finite_field_operation operation_from_ID(unsigned long ID) { return (ID) ? mod_multiply : mod_add; }
-*/
+field_operation ___field_operation(unsigned long id) { return (id) ? mod_multiply : mod_add; }
+// field_operation id_field_operation() { return ___field_operation(*id_); }
 
 unsigned long *UL_array_of_SIZE(int SIZE) { unsigned long *ret_val = (unsigned long *) malloc(sizeof(unsigned long) * SIZE); return ret_val; }
 unsigned long INDEX_within_UL_array(unsigned long *UL_array, unsigned long array_size, unsigned long number) { for (unsigned long INDEX = 0; INDEX < array_size; INDEX++) if (UL_array[INDEX] == number) return INDEX;}
