@@ -7,9 +7,7 @@
 #include "../functional/string.h"
 #include "group_library.h"
 
-int _identity;
-
-char *path_to_FILE;
+char *path_to_group;
 
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line) {
     fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", argv_ZERO, TO_BE_APPENDED_logbook_line);
@@ -36,17 +34,17 @@ FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, cons
     sprintf(name_of_FILE, "%s%s%s", adjective, FILENAME_BODY, group_MOD);
     // ^^ Prepare the filename
 
-    path_to_FILE = (char *) malloc(sizeof(char) * (str_len(ARCHIVE_FOLDER) + str_len(name_of_FILE) + 1));
-    sprintf(path_to_FILE, ARCHIVE_FOLDER "%s", name_of_FILE);
+    path_to_group = (char *) malloc(sizeof(char) * (str_len(ARCHIVE_FOLDER) + str_len(name_of_FILE) + 1));
+    sprintf(path_to_group, ARCHIVE_FOLDER "%s", name_of_FILE);
     // ^^ Prepare the path
 
     // ### Begin program operation ===>
     FILE *group_fs = NULL;
-    if (group_fs = fopen(path_to_FILE, "r")) { sprintf(LINE, "Successfully opened '%s'", path_to_FILE); append_to_LOGBOOK(LINE); free(LINE); }
+    if (group_fs = fopen(path_to_group, "r")) { sprintf(LINE, "Successfully opened '%s'", path_to_group); append_to_LOGBOOK(LINE); free(LINE); }
     // ^ open peacefully
 
     else {
-	sprintf(LINE, "Could not open '%s'", path_to_FILE); append_to_LOGBOOK(LINE);
+	sprintf(LINE, "Could not open '%s'", path_to_group); append_to_LOGBOOK(LINE);
 	// ^^ Explain that the needed file does not exist 
 
 	sprintf(LINE, "Assuming the 'ARCHIVE/' folder was there and it wasn't a permission thing, I will try to use '"ELEMENT_EXPORTER"' to autonomously archive \u2115%s%s", group_MOD, symbol);
@@ -66,7 +64,7 @@ FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, cons
 	FILE *group_exporter_STDOUT = fdopen(fd[0], "r");
 	// ^^ Fix a new file descriptor
 
-	FILE *NEEDED_FILE = fopen(path_to_FILE, "w"); // << Create a filestream for the file we are about to create
+	FILE *NEEDED_FILE = fopen(path_to_group, "w"); // << Create a filestream for the file we are about to create
 	unsigned long element; while (fscanf(group_exporter_STDOUT, "%lu\n", &element) == 1) { fprintf(NEEDED_FILE, "%lu\n", element); } fclose(NEEDED_FILE);
 	// ^^ Extract elements from "group_exporter" output and "fprintf()" them into an empty file with the appropiate name
 
@@ -75,7 +73,7 @@ FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, cons
 	// ^^ Wait for the child process to finish
 
 	int ELEMENT_EXPORTER_exit_status = WEXITSTATUS(ELEMENT_EXPORTER_exit_status_RAW);
-	if (!ELEMENT_EXPORTER_exit_status && (group_fs = fopen(path_to_FILE, "r"))) {
+	if (!ELEMENT_EXPORTER_exit_status && (group_fs = fopen(path_to_group, "r"))) {
 	    sprintf(LINE, ELEMENT_EXPORTER " returned an exit status of '%i' \u21D2 \u2115%s%s should be registered now", ELEMENT_EXPORTER_exit_status, group_MOD, symbol);
 	    append_to_LOGBOOK(LINE);
 	} else {
@@ -86,7 +84,7 @@ FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, cons
 }
 
 void close_group(char *mod, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", mod, id_as_operation_symbol(), path_to_FILE); append_to_LOGBOOK(BUFFER); fclose(opened_group);
-    sprintf(BUFFER, "Closed '%s'", path_to_FILE); free(path_to_FILE); append_to_LOGBOOK(BUFFER); free(BUFFER); close_logbook();
+    sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", mod, id_as_operation_symbol(), path_to_group); append_to_LOGBOOK(BUFFER); fclose(opened_group);
+    sprintf(BUFFER, "Closed '%s'", path_to_group); free(path_to_group); append_to_LOGBOOK(BUFFER); free(BUFFER); close_logbook();
 } void close_logbook() { fclose(logbook_fs); }
 // ^ ^ close group and logbook
