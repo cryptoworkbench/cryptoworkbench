@@ -1,7 +1,6 @@
-/* Illustrates the Diffie-Hellman Key Exchange Protocol (can be abbreviated DH-KAP)
+/* Illustrates the Diffie-Hellman Key Exchange Protocol (can be abbreviated DH-KAP).
  *
- * DEVELOPERS NOTES:
- * Upon parsing failure, use urandom
+ * Uses 'ARCHIVE/'
  */
 #include <stdio.h>
 #include "../../libraries/functional/string.h"

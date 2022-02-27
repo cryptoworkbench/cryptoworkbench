@@ -71,10 +71,8 @@ int identity_SELECTOR(char *arg) {
     } unparsed_arg = arg; return 10;
 }
 
-int identity_(int SELECTOR)
-{ return (SELECTOR % 2) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY ; }
-int identity_set(int *id_, int SELECTOR, int exit_status)
-{ if (SELECTOR == 10) return exit_status; *id_ = identity_(SELECTOR); return 0; }
+int identity_(int SELECTOR) { return (SELECTOR % 2) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY ; }
+int identity_set(int *id_, int SELECTOR, int exit_status) { if (SELECTOR == 10) return exit_status; *id_ = identity_(SELECTOR); return 0; }
 // functions for setting the global int variable 'id_'
 
 void identity_SELECTOR_error()
