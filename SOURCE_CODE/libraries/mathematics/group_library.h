@@ -15,9 +15,6 @@ int identity_(int SELECTOR);
 int identity_set(int *id_, int SELECTOR, int exit_status);
 // identity functions ^
 
-const char *_as_number(int id); const char *_as_operation_symbol(int id); const char *_as_noun(int id); const char *_as_nouns(int id); const char *_as_adjective(int id);
-const char *id_as_number(); const char *id_as_operation_symbol(); const char *id_as_noun(); const char *id_as_nouns(); const char *id_as_adjective();
-
 field_operation _finite_group_operation(int id);
 // __finite_field_operation id_finite_group_operation();
 

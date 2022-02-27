@@ -6,6 +6,10 @@
 
 FILE *urandom = NULL;
 const char *_standard_prime_table_filename = "shared_prime_table";
+
+const char *additive_signs[] = {"0", "+", "addition", "additions", "additive", 0};
+const char *multiplicative_signs[] = {"1", "*", "multiplication", "multiplications", "multiplicative", 0};
+
 char *_REPORT_standard_prime_table_filename() { return (char *) _standard_prime_table_filename; }
 char *_open_prime_table = NULL; char *_REPORT_open_prime_table() { return (char *) _open_prime_table; }
 // Two global variables and two functions for access to these global variables in other files/libraries
@@ -13,51 +17,75 @@ char *_open_prime_table = NULL; char *_REPORT_open_prime_table() { return (char 
 struct ordered_pair _isomorphism() { struct ordered_pair ret_val = { ADDITIVE_IDENTITY, MULTIPLICATIVE_IDENTITY }; return ret_val; }
 // a general function which a lot of functions in this library make use of ^^
 
+/* FUNCTIONS THAT HAVE TO DO WITH mod_ FOLLOW: */
 unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_) { return (mod_) ? result % mod_ : result; }
 unsigned long mod_conditional_field_cap(unsigned long result) { return (*mod_) ? _conditional_field_cap(result, *mod_) : result; }
-// take a modulus if it was set ^^
-
 unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a + b, mod_); }
 unsigned long mod_add(unsigned long a, unsigned long b) { return _add(a, b, *mod_); }
-// support for (modular) adding ^^
-
 unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_) { return _conditional_field_cap(mod_ - _conditional_field_cap(element_of_additive_group, mod_), mod_); }
 unsigned long mod_inverse(unsigned long element_of_additive_group) { return _inverse(element_of_additive_group, *mod_); }
-// support for additive inverses ^^
-
 unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a + _inverse(b, mod_), mod_); }
 unsigned long mod_subtract(unsigned long a, unsigned long b) { return _subtract(a, b, *mod_); }
-// support for (modular) subtraction ^^
-
 unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a * b, mod_); }
 unsigned long mod_multiply(unsigned long a, unsigned long b) { return mod_conditional_field_cap(a * b); } 
-// support for (modular) multipication ^^
-
 unsigned long _divide(unsigned long numerator, unsigned long denominator, unsigned long mod_)
 { if (mod_) while (numerator % denominator != 0) numerator += mod_; return _conditional_field_cap(numerator / denominator, mod_); }
 unsigned long mod_divide(unsigned long numerator, unsigned long denominator) { return _divide(numerator, denominator, *mod_); }
-// support for (modular) division
 
+/* FUNCTIONS THAT HAVE TO DO WITH mod_exponentiate FOLLOW: */
 unsigned long exponentiate(unsigned long base, unsigned long exponent)
 { unsigned long exponentiation_RESULT = (0 < base); for (unsigned long iter = 0; iter < exponent; iter++) exponentiation_RESULT *= base; return exponentiation_RESULT; } 
-
 unsigned long least_base_TWO_log(unsigned long power_of_TWO) {
     if (power_of_TWO == 0) return 0; unsigned long return_value = ADDITIVE_IDENTITY; unsigned long multiplicative_accumulator = MULTIPLICATIVE_IDENTITY;
     while (multiplicative_accumulator < power_of_TWO) { multiplicative_accumulator *= 2; return_value++; } if (multiplicative_accumulator > power_of_TWO) return_value--; return return_value;
-}
-
-unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_) {
+} unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_) {
     if (base == 0 || exponent == 0) return 1; unsigned long minimum_log = least_base_TWO_log(exponent); unsigned long *backbone = (unsigned long *) malloc(sizeof(unsigned long) * (minimum_log + 1));
     unsigned long i = ADDITIVE_IDENTITY; backbone[i] = _conditional_field_cap(base, mod_); while (i < minimum_log) { backbone[i + 1] = _multiply(backbone[i], backbone[i], mod_); i++; }
     unsigned long ret_val = MULTIPLICATIVE_IDENTITY;
     while (exponent != 0) { ret_val = _multiply(ret_val, backbone[minimum_log], mod_); exponent -= exponentiate(2, minimum_log); minimum_log = least_base_TWO_log(exponent); } free(backbone); return ret_val;
 } unsigned long mod_exponentiate(unsigned long base, unsigned long exponent) { return _exponentiate(base, exponent, *mod_); }
 
-unsigned long DH_public_key(STRUCT_DH_parameters *DH_parameters, unsigned long DH_private_key) { return _exponentiate(DH_parameters->b, DH_private_key, DH_parameters->a); }
-void print_DH_parameters(STRUCT_DH_parameters *DH_parameters, FILE *fs) { fprintf(fs, "(\u2115/%lu\u2115*, %lu)", DH_parameters->a, DH_parameters->b); }
+/* FUNCTIONS THAT HAVE TO DO WITH id_ FOLLOW: */
+const char *_as_number(int id) { return (id) ? multiplicative_signs[0] : additive_signs[0]; } const char *id_as_number() { return _as_number(*id_); }
+const char *_as_operation_symbol(int id) { return (id) ? multiplicative_signs[1] : additive_signs[1]; } const char *id_as_operation_symbol() { return _as_operation_symbol(*id_); }
+const char *_as_noun(int id) { return (id) ? multiplicative_signs[2] : additive_signs[2]; } const char *id_as_noun() { return _as_noun(*id_); }
+const char *_as_nouns(int id) { return (id) ? multiplicative_signs[3] : additive_signs[3]; } const char *id_as_nouns() { return _as_nouns(*id_); }
+const char *_as_adjective(int id) { return (id) ? multiplicative_signs[4] : additive_signs[4]; } const char *id_as_adjective() { return _as_adjective(*id_); }
+// to get the identity represented as number, operation symbol, noun, noun in multiple, or as adjective ^^^^^
 
 field_operation ___field_operation(unsigned long id) { return (id) ? mod_multiply : mod_add; }
 field_operation id_field_operation() { return ___field_operation(*id_); }
+
+int identity_SELECTOR(char *arg) {
+    if (arg) {
+	if (strcmp(arg, additive_signs[0]) == 0) return 0;
+	else if (strcmp(arg, multiplicative_signs[0]) == 0) return 1;
+	else if (strcmp(arg, additive_signs[1]) == 0) return 2;
+	else if (strcmp(arg, multiplicative_signs[1]) == 0) return 3;
+	else if (strcmp(arg, additive_signs[2]) == 0) return 4;
+	else if (strcmp(arg, multiplicative_signs[2]) == 0) return 5;
+	else if (strcmp(arg, additive_signs[3]) == 0) return 6;
+	else if (strcmp(arg, multiplicative_signs[3]) == 0) return 7;
+	else if (strcmp(arg, additive_signs[4]) == 0) return 8;
+	else if (strcmp(arg, multiplicative_signs[4]) == 0) return 9;
+    } unparsed_arg = arg; return 10;
+}
+
+int identity_(int SELECTOR)
+{ return (SELECTOR % 2) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY ; }
+int identity_set(int *id_, int SELECTOR, int exit_status)
+{ if (SELECTOR == 10) return exit_status; *id_ = identity_(SELECTOR); return 0; }
+// functions for setting the global int variable 'id_'
+
+void identity_SELECTOR_error()
+{
+    fprintf(stderr, "\n\nFailed to find '%s' in one of the following lists:\n", unparsed_arg);
+    fprintf(stderr, "- '%s', '%s', '%s', '%s' or '%s'\n", additive_signs[4], additive_signs[2], additive_signs[3], additive_signs[0], additive_signs[1]);
+    fprintf(stderr, "- '%s', '%s', '%s', '%s' or '%s'", multiplicative_signs[4], multiplicative_signs[2], multiplicative_signs[3], multiplicative_signs[0], multiplicative_signs[1]);
+}
+
+unsigned long DH_public_key(STRUCT_DH_parameters *DH_parameters, unsigned long DH_private_key) { return _exponentiate(DH_parameters->b, DH_private_key, DH_parameters->a); }
+void print_DH_parameters(STRUCT_DH_parameters *DH_parameters, FILE *fs) { fprintf(fs, "(\u2115/%lu\u2115*, %lu)", DH_parameters->a, DH_parameters->b); }
 
 unsigned long *UL_array_of_SIZE(int SIZE) { unsigned long *ret_val = (unsigned long *) malloc(sizeof(unsigned long) * SIZE); return ret_val; }
 unsigned long INDEX_within_UL_array(unsigned long *UL_array, unsigned long array_size, unsigned long number) { for (unsigned long INDEX = 0; INDEX < array_size; INDEX++) if (UL_array[INDEX] == number) return INDEX;}

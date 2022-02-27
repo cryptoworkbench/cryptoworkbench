@@ -11,57 +11,6 @@ int _identity;
 
 char *path_to_FILE;
 
-const char *additive_signs[] = {"0", "+", "addition", "additions", "additive", 0};
-const char *multiplicative_signs[] = {"1", "*", "multiplication", "multiplications", "multiplicative", 0};
-
-void identity_SELECTOR_error()
-{
-    fprintf(stderr, "\n\nFailed to find '%s' in one of the following lists:\n", failed_identity);
-    fprintf(stderr, "- '%s', '%s', '%s', '%s' or '%s'\n", additive_signs[4], additive_signs[2], additive_signs[3], additive_signs[0], additive_signs[1]);
-    fprintf(stderr, "- '%s', '%s', '%s', '%s' or '%s'", multiplicative_signs[4], multiplicative_signs[2], multiplicative_signs[3], multiplicative_signs[0], multiplicative_signs[1]);
-}
-
-int identity_SELECTOR(char *arg)
-{ if (arg) {
-	if (strcmp(arg, additive_signs[0]) == 0) return 0;
-	else if (strcmp(arg, multiplicative_signs[0]) == 0) return 1;
-	else if (strcmp(arg, additive_signs[1]) == 0) return 2;
-	else if (strcmp(arg, multiplicative_signs[1]) == 0) return 3;
-	else if (strcmp(arg, additive_signs[2]) == 0) return 4;
-	else if (strcmp(arg, multiplicative_signs[2]) == 0) return 5;
-	else if (strcmp(arg, additive_signs[3]) == 0) return 6;
-	else if (strcmp(arg, multiplicative_signs[3]) == 0) return 7;
-	else if (strcmp(arg, additive_signs[4]) == 0) return 8;
-	else if (strcmp(arg, multiplicative_signs[4]) == 0) return 9;
-    } failed_identity = arg; return 10;
-}
-
-int identity_(int SELECTOR) { return (SELECTOR % 2) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY ; }
-int identity_set(int *id_, int SELECTOR, int exit_status) { if (SELECTOR == 10) return exit_status; *id_ = identity_(SELECTOR); return 0; }
-// ^^ functions for figuring out what identity element to start the subgroups with
-
-const char *_as_number(int id) { return (id) ? multiplicative_signs[0] : additive_signs[0]; }
-const char *_as_operation_symbol(int id) { return (id) ? multiplicative_signs[1] : additive_signs[1]; }
-const char *_as_noun(int id) { return (id) ? multiplicative_signs[2] : additive_signs[2]; }
-const char *_as_nouns(int id) { return (id) ? multiplicative_signs[3] : additive_signs[3]; }
-const char *_as_adjective(int id) { return (id) ? multiplicative_signs[4] : additive_signs[4]; }
-// ^ returns one of the names
-
-const char *id_as_number() { return _as_number(*id_); }
-const char *id_as_operation_symbol() { return _as_operation_symbol(*id_); }
-const char *id_as_noun() { return _as_noun(*id_); }
-const char *id_as_nouns() { return _as_nouns(*id_); }
-const char *id_as_adjective() { return _as_adjective(*id_); }
-// ^ wrapper for the above block of five functions
-
-field_operation _finite_group_operation(int id) { return (id) ? mod_multiply : mod_add; }
-field_operation id_finite_group_operation() { return _finite_group_operation(*id_); }
-
-/*
-infinite_field_operation _infinite_group_operation(int id) { return (id) ? _multiply : _add; }
-infinite_field_operation id_infinite_group_operation() { return _infinite_group_operation(*id_); }
-*/
-
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line) {
     fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", argv_ZERO, TO_BE_APPENDED_logbook_line);
     fflush(logbook_fs);

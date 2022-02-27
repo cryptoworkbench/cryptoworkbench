@@ -14,60 +14,42 @@ char *_REPORT_open_prime_table(); // < for access in other files to 'char * _ope
 
 struct ordered_pair _isomorphism();
 
+/* FUNCTIONS THAT HAVE TO DO WITH mod_ FOLLOW: */
 unsigned long exponentiate(unsigned long base, unsigned long exponent); unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_);
-unsigned long mod_exponentiate(unsigned long base, unsigned long exponent);
-// required exponentiation functions ^^^
+unsigned long mod_exponentiate(unsigned long base, unsigned long exponent); // required exponentiation functions <^^
+unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_); unsigned long mod_conditional_field_cap(unsigned long result); // functions for (modular) arithmetic <<
+unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_); unsigned long mod_inverse(unsigned long element_of_additive_group); // functions for taking the additive inverse <<
+unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_); unsigned long mod_add(unsigned long a, unsigned long b); // functions for (modular) addition
+unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_); unsigned long mod_subtract(unsigned long a, unsigned long b); // functions for (modular) subtraction
+unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_); unsigned long mod_multiply(unsigned long a, unsigned long b); // functions for (modular) multiplication
+unsigned long _divide(unsigned long numerator, unsigned long denominator, unsigned long mod_); unsigned long mod_divide(unsigned long numerator, unsigned long denominator); // functions for (modular) division
+unsigned long _polynomial(unsigned long x, unsigned long *coefficient, int coefficients, unsigned long mod_); unsigned long mod_polynomial(unsigned long x, unsigned long *coefficient, int coefficients); // for polynomials
 
-unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_);
-unsigned long mod_conditional_field_cap(unsigned long result);
-// takes a modulus value if set ^^
+/* FUNCTIONS THAT HAVE TO DO WITH id_ FOLLOW: */
+field_operation ___field_operation(unsigned long id); field_operation id_field_operation(); // functions for performing field operations <<
+const char *_as_number(int id); const char *id_as_number(); const char *_as_operation_symbol(int id); const char *id_as_operation_symbol(); const char *_as_noun(int id); const char *id_as_noun();
+const char *_as_nouns(int id); const char *id_as_nouns(); const char *_as_adjective(int id); const char *id_as_adjective(); // get one of five possible representations of a group's identity << ^^^
 
-unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_);
-unsigned long mod_add(unsigned long a, unsigned long b);
-// add (under modular) arithmetic ^^
+int identity_SELECTOR(char *arg); // translation purpose: 'arg' > 'identity selector'
+int identity_(int SELECTOR); // translation purpose 'identity selector' > 'identity'
+int identity_set(int *id_, int SELECTOR, int exit_status); void identity_SELECTOR_error(); // if fails to change 'SELECTOR' > '*id_', complain identity_SELECTOR_error() then return 'exit_status' <<
 
-unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_);
-unsigned long mod_inverse(unsigned long element_of_additive_group); // mod_ must be set! <--
-// take the additive inverse ^^
-
-unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_);
-unsigned long mod_subtract(unsigned long a, unsigned long b);
-// subtract (under modular) arithmetic ^^
-
-unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_);
-unsigned long mod_multiply(unsigned long a, unsigned long b);
-// multiply (under modular) arithmetic ^^
-
-unsigned long _divide(unsigned long numerator, unsigned long denominator, unsigned long mod_);
-unsigned long mod_divide(unsigned long member_from_equivalence_class_representing_the_numerator, unsigned long denominator);
-// divide (under modular) arithmetic ^^
-
-unsigned long _polynomial(unsigned long x, unsigned long *coefficient, int number_of_coefficients, unsigned long mod_);
-unsigned long mod_polynomial(unsigned long x, unsigned long *coefficient, int number_of_coefficients);
-// calculate a polynomial mapping under (modular) arithmetic ^^
-
-field_operation ___field_operation(unsigned long id);
+/* REMAINING FUNCTIONS FOLLOW: */
+unsigned long LCM(unsigned long a, unsigned long b); unsigned long UNRESTRICTED_LCM(unsigned long *array, unsigned long array_size);
+unsigned long GCD(unsigned long a, unsigned long b); unsigned long UNRESTRICTED_GCD(unsigned long *array, unsigned long array_size);
+// functions for calculating the LCM and the GCD ^^
 
 typedef struct ordered_pair STRUCT_DH_parameters;
 void print_DH_parameters(STRUCT_DH_parameters *DH_parameters, FILE *fs);
 unsigned long DH_public_key(STRUCT_DH_parameters *DH_parameters, unsigned long private_key);
 // functions for DH and DH based scemes (i.e. Elgamal) ^
 
-unsigned long LCM(unsigned long a, unsigned long b);
-unsigned long UNRESTRICTED_LCM(unsigned long *array, unsigned long array_size);
-// two functions for calculating the Least Common Multiple (LCM) ^
-
-unsigned long GCD(unsigned long a, unsigned long b);
-unsigned long UNRESTRICTED_GCD(unsigned long *array, unsigned long array_size);
-// two functions for calculating the Greatest Common Divisor (GCD) ^
-
 unsigned long extended_gcd(unsigned long a, unsigned long b, unsigned long *x, unsigned long *y);
 unsigned long multiplicative_inverse(unsigned long a);
 int coprime(unsigned long a, unsigned long b);
 unsigned long totient(unsigned long a);
 
-
-unsigned long least_base_TWO_log(unsigned long power_of_TWO);
+unsigned long least_base_TWO_log(unsigned long power_of_TWO); // required by '_exponentiate'
 unsigned long *UL_array_of_SIZE(int SIZE);
 unsigned long INDEX_within_UL_array(unsigned long *UL_array, unsigned long UL_array_SIZE, unsigned long number);
 struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *to_be_updated, unsigned long minimum);

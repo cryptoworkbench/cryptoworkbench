@@ -97,7 +97,7 @@ int main(int argc, char **argv) { argv_location = &argv;
     unsigned long __vertical_offset = 0; n(n(error_specification(__vertical_offset_failed_to_parse, 4 < argc && str_represents_ul(argv[4], &__vertical_offset, 1))));
     // process optional terminal arguments ^
 
-    combine = id_finite_group_operation(); unsigned long generator_count = found_generators(group_elements_LL(argv));
+    combine = id_field_operation(); unsigned long generator_count = found_generators(group_elements_LL(argv));
     unsigned long index = __vertical_offset; do { print_permutation(index); index = _add(index, 1, group_cardinality_); } while (index != __vertical_offset); fprintf(stdout, "\n");
     //   examplify subgroups ^
 
