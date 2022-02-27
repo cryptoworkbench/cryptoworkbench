@@ -1,0 +1,155 @@
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
+/usr/bin/ld: .jacobi_symbol.o: in function `main':
+jacobi_symbol.c:(.text+0x44d): undefined reference to `STDIN_factorization_engine'
+collect2: error: ld returned 1 exit status
+make: *** [makefile:14: jacobi_symbol] Error 1
+make: *** No rule to make target '../../libraries/functional/LOGBOOK_library.h', needed by '../../libraries/functional/.LOGBOOK_library.o'.  Stop.
