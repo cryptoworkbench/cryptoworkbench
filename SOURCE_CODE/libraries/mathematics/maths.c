@@ -57,7 +57,7 @@ unsigned long DH_public_key(STRUCT_DH_parameters *DH_parameters, unsigned long D
 void print_DH_parameters(STRUCT_DH_parameters *DH_parameters, FILE *fs) { fprintf(fs, "(\u2115/%lu\u2115*, %lu)", DH_parameters->a, DH_parameters->b); }
 
 field_operation ___field_operation(unsigned long id) { return (id) ? mod_multiply : mod_add; }
-// field_operation id_field_operation() { return ___field_operation(*id_); }
+field_operation id_field_operation() { return ___field_operation(*id_); }
 
 unsigned long *UL_array_of_SIZE(int SIZE) { unsigned long *ret_val = (unsigned long *) malloc(sizeof(unsigned long) * SIZE); return ret_val; }
 unsigned long INDEX_within_UL_array(unsigned long *UL_array, unsigned long array_size, unsigned long number) { for (unsigned long INDEX = 0; INDEX < array_size; INDEX++) if (UL_array[INDEX] == number) return INDEX;}

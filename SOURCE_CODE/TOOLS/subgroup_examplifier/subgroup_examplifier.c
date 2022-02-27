@@ -16,8 +16,8 @@ struct LL_ { struct LL_ *next; unsigned long e; };
 struct crux { unsigned long *base_permutation; char **ASCII; unsigned long **permutation; unsigned long *perm_length; };
 // ^^ type definitions
 
-struct crux *lookup_table; unsigned long group_cardinality_ = 0; unsigned long *permutation_of_FIRST_GEN; __finite_field_operation combine; unsigned long horizontal_offset;
-//           ^ global variables          ^                                      ^                                                  ^                      ^
+struct crux *lookup_table; unsigned long group_cardinality_ = 0; unsigned long *permutation_of_FIRST_GEN; field_operation combine; unsigned long horizontal_offset;
+//           ^ global variables          ^                                      ^                                         ^                      ^
 
 void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
     struct LL_ *new_LL_element = (struct LL_ *) malloc(sizeof(struct LL_)); new_LL_element->e = new_ulong; new_LL_element->next = NULL; // create and initialize new element
@@ -84,7 +84,7 @@ void invalid_group_parameters()
     else fprintf(stderr, "for multiplicative groups the modulus needs to be at least 2! (since multiplicative groups do not include the element '0')");
 }
 
-void mod_error() { fprintf(stderr, "Please supply as first argument the modulus of the group to examplify!"); }
+void mod_error() { fprintf(stderr, "Please supply as first argument the modulus of the group whose subgroups to examplify"); }
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { argv_location = &argv;
