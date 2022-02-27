@@ -11,11 +11,9 @@ failed_builds=0
 cd 2_n_Shamir_Secret_Sharing && make 2_n_Shamir_Secret_Sharing > /dev/null 2>> ../../../initialization_errors
 if [ $? -eq 0 ]
 then
-  echo "Successfully build '2_n_Shamir_Secret_Sharing'"
-  successfull_builds=$(( $successfull_builds + 1 ))
+  echo "Successfully build '2_n_Shamir_Secret_Sharing'"; successfull_builds=$(( $successfull_builds + 1 ));
 else
-  echo "                   '2_n_Shamir_Secret_Sharing' FAILED TO BUILD!"
-  failed_builds=$(( $failed_builds + 1 ))
+  echo "                   '2_n_Shamir_Secret_Sharing' FAILED TO BUILD!"; failed_builds=$(( $failed_builds + 1 ))
 fi; cd ../
 
 cd 3_n_Shamir_Secret_Sharing && make 3_n_Shamir_Secret_Sharing > /dev/null 2>> ../../../initialization_errors
