@@ -1,6 +1,9 @@
 #!/bin/bash
 # Still need to add all the tools from 'random_numbers'
 
+mkdir WORKBENCH/
+mkdir WORKBENCH/ARCHIVE
+
 cd SOURCE_CODE/TOOLS
 
 successfull_builds=0
@@ -205,6 +208,66 @@ else
   failed_builds=$(( $failed_builds + 1 ))
 fi; cd ../
 
+cd sieve_of_eratosthenes && make sieve_of_eratosthenes > /dev/null 2>> ../../../initialization_errors
+if [ $? -eq 0 ]
+then
+  echo "Successfully build 'sieve_of_eratosthenes'"
+  successfull_builds=$(( $successfull_builds + 1 ))
+else
+  echo "                   'sieve_of_eratosthenes' FAILED TO BUILD!"
+  failed_builds=$(( $failed_builds + 1 ))
+fi; cd ../
+
+cd subgroup_examplifier && make subgroup_examplifier > /dev/null 2>> ../../../initialization_errors
+if [ $? -eq 0 ]
+then
+  echo "Successfully build 'subgroup_examplifier'"
+  successfull_builds=$(( $successfull_builds + 1 ))
+else
+  echo "                   'subgroup_examplifier' FAILED TO BUILD!"
+  failed_builds=$(( $failed_builds + 1 ))
+fi; cd ../
+
+cd system_of_congruences && make system_of_congruences > /dev/null 2>> ../../../initialization_errors
+if [ $? -eq 0 ]
+then
+  echo "Successfully build 'system_of_congruences'"
+  successfull_builds=$(( $successfull_builds + 1 ))
+else
+  echo "                   'system_of_congruences' FAILED TO BUILD!"
+  failed_builds=$(( $failed_builds + 1 ))
+fi; cd ../
+
+cd View_LOGBOOK && make View_LOGBOOK > /dev/null 2>> ../../../initialization_errors
+if [ $? -eq 0 ]
+then
+  echo "Successfully build 'View_LOGBOOK'"
+  successfull_builds=$(( $successfull_builds + 1 ))
+else
+  echo "                   'View_LOGBOOK' FAILED TO BUILD!"
+  failed_builds=$(( $failed_builds + 1 ))
+fi; cd ../
+
+cd Wipe_ARCHIVE && make Wipe_ARCHIVE > /dev/null 2>> ../../../initialization_errors
+if [ $? -eq 0 ]
+then
+  echo "Successfully build 'Wipe_ARCHIVE'"
+  successfull_builds=$(( $successfull_builds + 1 ))
+else
+  echo "                   'Wipe_ARCHIVE' FAILED TO BUILD!"
+  failed_builds=$(( $failed_builds + 1 ))
+fi; cd ../
+
+cd Wipe_LOGBOOK && make Wipe_LOGBOOK > /dev/null 2>> ../../../initialization_errors
+if [ $? -eq 0 ]
+then
+  echo "Successfully build 'Wipe_LOGBOOK'"
+  successfull_builds=$(( $successfull_builds + 1 ))
+else
+  echo "                   'Wipe_LOGBOOK' FAILED TO BUILD!"
+  failed_builds=$(( $failed_builds + 1 ))
+fi; cd ../
+
 echo ""
-echo "$failed_builds applications failed to compile."
+echo "$failed_builds APPLICATIONS FAILED TO COMPILE!"
 echo "$successfull_builds applications were successfully compiled."
