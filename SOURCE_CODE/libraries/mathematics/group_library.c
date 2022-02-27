@@ -1,8 +1,8 @@
 // See dev note at line 28. That is the only issue.
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h> // <<< Needed for "execvp()"
-#include <sys/wait.h> // <<< Needed for "waitpid()"
+#include <unistd.h> // needed for "execvp()"
+#include <sys/wait.h> // needed for "waitpid()"
 #include "maths.h"
 #include "../functional/string.h"
 #include "group_library.h"
