@@ -1,8 +1,8 @@
 #!/bin/bash
 # Still need to add all the tools from 'random_numbers'
 
-mkdir WORKBENCH/
-mkdir WORKBENCH/ARCHIVE
+mkdir WORKBENCH/; echo "Created directory 'WORKBENCH/'"
+mkdir WORKBENCH/ARCHIVE; echo "Created directory 'WORKBENCH/ARCHIVE'"
 
 cd SOURCE_CODE/TOOLS
 
