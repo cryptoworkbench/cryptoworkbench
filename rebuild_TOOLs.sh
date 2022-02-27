@@ -1,4 +1,4 @@
 #!/bin/bash
 
 rm -r WORKBENCH/
-./build_TOOLs.sh
+./__build_TOOLs.sh
