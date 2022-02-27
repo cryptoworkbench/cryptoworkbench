@@ -1,6 +1,5 @@
 #!/bin/bash
 
-clear
 mkdir WORKBENCH/; echo "Created directory 'WORKBENCH/'"
 mkdir WORKBENCH/ARCHIVE; echo "Created directory 'WORKBENCH/ARCHIVE'"
 
@@ -90,29 +89,29 @@ if [ $? -eq 0 ]; then echo "Successfully compiled 'Wipe_LOGBOOK'"; successfull_b
 else echo "                      'Wipe_LOGBOOK' FAILED TO COMPILE!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ../
 
 echo ""
-echo "==================================================================\\"
-echo "| $___failed_builds TOOLS FAILED TO COMPILE! $successfull_builds tools were successfully compiled. |"
-echo "==================================================================/"
+echo " /=================================================================\\"
+echo " | $___failed_builds TOOLS FAILED TO COMPILE! $successfull_builds tools were successfully compiled. |"
+echo " \\=================================================================/";
 
 ___failed_builds=0
 successfull_builds=0
-echo ""; echo ""; echo "COPYING THE SCRIPTS: -->"
+echo ""; echo ""; echo "INITIALIZING THE SCRIPTS: -->"
 cd subgroup_examplifier_SCRIPT && make subgroup_examplifier_SCRIPT > /dev/null 2>> ../../../initialization_errors
 if [ $? -eq 0 ];
-then echo "Successfully copied 'subgroup_examplifier.sh'"; successfull_builds=$(( $successfull_builds + 1 ));
-else echo "                    'subgroup_examplifier.sh' COPY FAILURE!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ../
+then echo "Successfully initialized 'subgroup_examplifier.sh'"; successfull_builds=$(( $successfull_builds + 1 ));
+else echo "                         'subgroup_examplifier.sh' failed to initialize!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ../
 
 cd dh_key_agreement_SCRIPT && make dh_key_agreement_SCRIPT > /dev/null 2>> ../../../initialization_errors
 if [ $? -eq 0 ];
-then echo "Successfully copied 'dh_key_agreement.sh'"; successfull_builds=$(( $successfull_builds + 1 ));
-else echo "                    'dh_key_agreement.sh' COPY FAILURE!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ../
+then echo "Successfully initialized 'dh_key_agreement.sh'"; successfull_builds=$(( $successfull_builds + 1 ));
+else echo "                         'dh_key_agreement.sh' failed to initialize!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ../
 
 cd prime_factorize_SCRIPT && make prime_factorize_SCRIPT > /dev/null 2>> ../../../initialization_errors
 if [ $? -eq 0 ];
-then echo "Successfully copied 'prime_factorize.sh'"; successfull_builds=$(( $successfull_builds + 1 ));
-else echo "                    'prime_factorize.sh' COPY FAILURE!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ../
+then echo "Successfully initialized 'prime_factorize.sh'"; successfull_builds=$(( $successfull_builds + 1 ));
+else echo "                         'prime_factorize.sh' failed to initialize!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ../
 
 echo ""
-echo "=======================================================================\\"
-echo "| Failed to install $___failed_builds scripts ! $successfull_builds scripts were successfully installed. |"
-echo "=======================================================================/"
+echo " /==========================================================================\\"
+echo " | $___failed_builds scripts failed to initialize! $successfull_builds scripts were successfully initialized. |"
+echo " \\==========================================================================/"
