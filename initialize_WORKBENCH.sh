@@ -59,7 +59,7 @@ cd ../prime_factorize && make prime_factorize && echo "#######===> The following
 "
 cd ../factorization_based_primality_test && make factorization_based_primality_test && echo "#######===> The following tool has been assemblied/linked: factorization_based_primality_test
 "
-cd ../group_element_table_generator && make group_element_table_generator && echo "#######===> The following tool has been assemblied/linked: group_element_table_generator
+cd ../group_element_exporter && make group_element_exporter && echo "#######===> The following tool has been assemblied/linked: group_element_exporter
 "
 cd ../subgroup_examplifier && make subgroup_examplifier && echo "#######===> The following tool has been assemblied/linked: subgroup_examplifier
 "
@@ -72,7 +72,7 @@ echo "#######===> SOME MORE TOOLS HAVE BEEN ASSEMBLED/LINKED: -->               
 ~ prime_table_exporter
 ~ factorize
 ~ prime_factorize
-~ modular_group_element_table_generator 
+~ group_element_exporter 
 ~ subgroup_examplifier
 ~ quadratic_residue
 ~ quadratic_residue_with_root
