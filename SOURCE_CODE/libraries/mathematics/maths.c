@@ -56,7 +56,7 @@ const char *_as_adjective(int id) { return (id) ? multiplicative_signs[4] : addi
 field_operation ___field_operation(unsigned long id) { return (id) ? mod_multiply : mod_add; }
 field_operation id_field_operation() { return ___field_operation(*id_); }
 
-int identity_SELECTOR(char *arg) {
+int identity_parse_str(char *arg) {
     if (arg) {
 	if (strcmp(arg, additive_signs[0]) == 0) return 0;
 	else if (strcmp(arg, multiplicative_signs[0]) == 0) return 1;
@@ -75,7 +75,7 @@ int identity_(int SELECTOR) { return (SELECTOR % 2) ? MULTIPLICATIVE_IDENTITY : 
 int identity_set(int *id_, int SELECTOR, int exit_status) { if (SELECTOR == 10) return exit_status; *id_ = identity_(SELECTOR); return 0; }
 // functions for setting the global int variable 'id_'
 
-void identity_SELECTOR_error()
+void identity_parse_str_error()
 {
     fprintf(stderr, "\n\nFailed to find '%s' in one of the following lists:\n", unparsed_arg);
     fprintf(stderr, "- '%s', '%s', '%s', '%s' or '%s'\n", additive_signs[4], additive_signs[2], additive_signs[3], additive_signs[0], additive_signs[1]);
