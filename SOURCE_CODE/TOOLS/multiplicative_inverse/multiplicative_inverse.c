@@ -16,10 +16,10 @@ void mod_error() { fprintf(stderr, "Please provide as first argument a modulus s
 void not_a_member_of_an_equivalence_class_from_the_quotient_group()
 {
     fprintf(stderr, "%lu | %lu  &&  %lu | %lu\n", common_divisor, denominator, common_divisor, *mod_);
-    fprintf(stderr, "--> GCD(%lu, %lu) > %i\n", denominator, *mod_, NUMERATOR);
+    fprintf(stderr, "--> %i < GCD(%lu, %lu) > %i\n", NUMERATOR, denominator, *mod_, NUMERATOR);
     fprintf(stderr, "--> %lu is not coprime to %lu\n", denominator, *mod_);
-    fprintf(stderr, "--> %lu is neither element from \u2115%lu*, nor from \u2115/%lu\u2115*; or representing an element from \u2115/%lu\u2115* !\n", denominator, *mod_, *mod_, *mod_);
-    fprintf(stderr, "--> Within the finite field F%lu %lu does not have a multiplicative inverse!", *mod_, denominator);
+    fprintf(stderr, "--> %lu is neither an element from \u2115%lu*, nor from \u2115/%lu\u2115*; or representing an element from \u2115/%lu\u2115* !\n", denominator, *mod_, *mod_, *mod_);
+    fprintf(stderr, "--> Within the finite field \U0001D53D%lu %lu does not have a multiplicative inverse!", *mod_, denominator);
 
     // fprintf(stderr, " %lu | %lu  &&  %lu | %lu\n-->  1 < GCD(%lu, %lu)\n-->  %lu is not coprime with %lu\n-->  %lu is neither from \u2115%lu*; nor from \u2115/%lu\u2115*\n-->  within the finite field F%lu %lu does not have a multiplicative inverse!", common_divisor, *mod_, common_divisor, *mod_, denominator, *mod_, denominator, *mod_, denominator, *mod_, *mod_, *mod_, denominator);
 }
