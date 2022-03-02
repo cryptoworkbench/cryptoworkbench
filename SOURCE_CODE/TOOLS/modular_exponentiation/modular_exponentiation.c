@@ -11,8 +11,8 @@ void mod_error() { fprintf(stderr, "\nFailed to understand '%s' as the value to 
 // error functions ^^^
 
 int main(int argc, char **argv) { unsigned long mod;
-    mod_ = &mod;            conditional_goodbye(n(n(error_specification(mod_error, str_represents_ul(argv[1], mod_, -1)))));
-    unsigned long base;     conditional_goodbye(n(n(error_specification(base_error, str_represents_ul(argv[2], &base, -1)))));
-    unsigned long exponent; conditional_goodbye(n(n(error_specification(exponent_error, str_represents_ul(argv[3], &exponent, -1)))));
+    mod_ = &mod;            conditional_goodbye(n(n(error_specification(mod_error, ul_parse_str(argv[1], mod_, -1)))));
+    unsigned long base;     conditional_goodbye(n(n(error_specification(base_error, ul_parse_str(argv[2], &base, -1)))));
+    unsigned long exponent; conditional_goodbye(n(n(error_specification(exponent_error, ul_parse_str(argv[3], &exponent, -1)))));
     fprintf(stdout, "%lu^%lu %% %lu = %lu\n", base, exponent, mod, mod_exponentiate(base, exponent)); return 0;
 }

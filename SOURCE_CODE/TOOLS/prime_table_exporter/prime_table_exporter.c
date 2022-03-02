@@ -7,7 +7,7 @@
 void limit_error() { fprintf(stderr, "Failed to understand '%s' as the limit to my sieve.", unparsed_arg); }
 
 int main(int argc, char **argv) { unparsed_arg = argv[1];
-    unsigned long limit; conditional_goodbye(n(n(error_specification(limit_error, n(str_represents_ul(unparsed_arg, &limit, -1))))));
+    unsigned long limit; conditional_goodbye(n(n(error_specification(limit_error, n(ul_parse_str(unparsed_arg, &limit, -1))))));
     char *output_filename = _REPORT_standard_prime_table_filename(); if (2 < argc) output_filename = argv[2];
     // process terminal arguments ^
 

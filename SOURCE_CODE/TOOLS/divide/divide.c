@@ -8,9 +8,9 @@ void denominator_error() { fprintf(stderr, "Please provide as third argument the
 // error functions ^^^
 
 int main(int argc, char **argv) {
-    unsigned long mod;         conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul(argv[1], &mod, -1))))));
-    unsigned long numerator;   conditional_goodbye(n(n(error_specification(numerator_error, n(str_represents_ul(argv[2], &numerator, -2))))));
-    unsigned long denominator; conditional_goodbye(n(n(error_specification(denominator_error, n(str_represents_ul(argv[3], &denominator, -3))))));
+    unsigned long mod;         conditional_goodbye(n(n(error_specification(mod_error, n(ul_parse_str(argv[1], &mod, -1))))));
+    unsigned long numerator;   conditional_goodbye(n(n(error_specification(numerator_error, n(ul_parse_str(argv[2], &numerator, -2))))));
+    unsigned long denominator; conditional_goodbye(n(n(error_specification(denominator_error, n(ul_parse_str(argv[3], &denominator, -3))))));
     // take in necessary information from terminal arguments ^^^
 
     if (numerator >= mod || mod <= denominator) fprintf(stderr, "%lu / %lu \u2261 ", numerator, denominator); mod_ = &mod; numerator = mod_conditional_field_cap(numerator); // *

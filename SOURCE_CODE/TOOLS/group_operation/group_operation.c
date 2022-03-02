@@ -9,10 +9,10 @@ void __a_not_parsable() { fprintf(stderr, "Please specify as third argument the 
 void mod_not_parsable() { fprintf(stderr, "Please specify as first argument the modulus of the group operation (0 to act upon the infinite group of integers)."); }
 
 int main(int argc, char **argv) {
-    unsigned long mod; conditional_goodbye(n(n(error_specification(mod_not_parsable, n(str_represents_ul(argv[1], &mod, -1))))));         mod_ = &mod;
+    unsigned long mod; conditional_goodbye(n(n(error_specification(mod_not_parsable, n(ul_parse_str(argv[1], &mod, -1))))));         mod_ = &mod;
     int id;            conditional_goodbye(n(error_message(identity_SELECTOR_error, identity_set(&id, identity_SELECTOR(argv[2]), -2)))); id_ = &id;
-    unsigned long a;   conditional_goodbye(n(n(error_specification(__a_not_parsable, n(str_represents_ul(argv[3], &a, -3))))));
-    unsigned long b;   conditional_goodbye(n(n(error_specification(__b_not_parsable, n(str_represents_ul(argv[4], &b, -4))))));
+    unsigned long a;   conditional_goodbye(n(n(error_specification(__a_not_parsable, n(ul_parse_str(argv[3], &a, -3))))));
+    unsigned long b;   conditional_goodbye(n(n(error_specification(__b_not_parsable, n(ul_parse_str(argv[4], &b, -4))))));
     // take in arguments ^^^^
 
     field_operation group_operation = ___field_operation(id);

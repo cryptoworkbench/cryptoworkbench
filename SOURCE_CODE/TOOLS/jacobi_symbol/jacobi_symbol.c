@@ -57,8 +57,8 @@ _error_selector error_selector(int SELECTOR) { switch (SELECTOR) {
 // the only error function in this program is a combination of a single fprintf() along with str_not_parsable_as_number() ^
 
 int main(int argc, char **argv) { unparsed_arg = argv[1];
-    unsigned long N; if (2 > argc || !str_represents_ul(unparsed_arg, &N)) error_message(error_selector(1), -1); unparsed_arg = argv[2];
-    unsigned long q; if (3 > argc || !str_represents_ul(unparsed_arg, &q)) error_message(error_selector(2), -2); 
+    unsigned long N; if (2 > argc || !ul_parse_str(unparsed_arg, &N)) error_message(error_selector(1), -1); unparsed_arg = argv[2];
+    unsigned long q; if (3 > argc || !ul_parse_str(unparsed_arg, &q)) error_message(error_selector(2), -2); 
     if (GCD(N, q) != 1) { fprintf(stderr, "%lu is not an element from \u2115/%lu\u2115\n\n", N, q); error_message(numbers_not_coprime, -3); }
     char *ptr = argv[3]; if (!ptr) ptr = query_preferences_file();
     if (!(_preferred_factorization_engine = factorization_method(SELECTOR_from_str_representing_factorization_method(ptr)))) {

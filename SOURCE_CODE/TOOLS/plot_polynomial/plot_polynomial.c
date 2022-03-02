@@ -19,9 +19,9 @@ void coefficients__display() { fprintf(stdout, "%c = %lu", 'a' + i, coefficient[
 // functions for coefficient handling ^
 
 int main(int argc, char **argv) { unsigned long mod;
-        conditional_goodbye(n(n(error_specification(__________________mod_error, n(str_represents_ul(argv[1], &mod, -1)))))); mod_ = &mod;
+        conditional_goodbye(n(n(error_specification(__________________mod_error, n(ul_parse_str(argv[1], &mod, -1)))))); mod_ = &mod;
         conditional_goodbye(n(n(error_message      (_______wrong_argument_count, -4 * (!(number_of_coefficients = argc - 2)))))); coefficients_allocate(); for (i = 0; i < number_of_coefficients; i++)
-	conditional_goodbye(n(n(error_specification(coefficient_failed_to_parse, n(str_represents_ul(argv[i + 2], coefficient + i, -3)))))); i = 0;
+	conditional_goodbye(n(n(error_specification(coefficient_failed_to_parse, n(ul_parse_str(argv[i + 2], coefficient + i, -3)))))); i = 0;
     fprintf(stdout, "Plotting polynomial with coefficients:\n"); coefficients__display(); fprintf(stdout, "\n\n");
     // handle terminal inputs ^
 

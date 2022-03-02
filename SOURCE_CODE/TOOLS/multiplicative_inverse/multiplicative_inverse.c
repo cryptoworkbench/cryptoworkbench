@@ -26,8 +26,8 @@ void not_a_member_of_an_equivalence_class_from_the_quotient_group()
 // error functions for incorrect usage ^^
 
 int main(int argc, char **argv) { argv_location = &argv; 
-    unsigned long multiplicative_group_modulus;   conditional_goodbye(n(n(error_specification(mod_error, n(str_represents_ul(argv[1], &multiplicative_group_modulus, -1)))))); mod_ = &multiplicative_group_modulus;
-    int numerator = 1;                            conditional_goodbye(n(n(error_specification(multiplicative_group_element_error, n(str_represents_ul(argv[2], &denominator, -2))))));
+    unsigned long multiplicative_group_modulus;   conditional_goodbye(n(n(error_specification(mod_error, n(ul_parse_str(argv[1], &multiplicative_group_modulus, -1)))))); mod_ = &multiplicative_group_modulus;
+    int numerator = 1;                            conditional_goodbye(n(n(error_specification(multiplicative_group_element_error, n(ul_parse_str(argv[2], &denominator, -2))))));
     conditional_goodbye(error_message(not_a_member_of_an_equivalence_class_from_the_quotient_group, -3 * !(!((common_divisor = GCD(denominator, multiplicative_group_modulus)) - 1))));
     // process terminal arguments using this genious construction ^^^
 

@@ -14,7 +14,7 @@ void str_not_parsable_as_number() { fprintf(stderr, "parsing of '%s' failed: '%s
 int error_message(_error_selector error_explainer, int exit_status)
 { if (exit_status) { fflush(stdout); fprintf(stderr, "### THE FOLLOWING ERROR OCCURRED --> "); error_explainer(); } return exit_status; }
 
-int str_represents_ul(char *str, unsigned long *ul_ptr, int exit_status)
+int ul_parse_str(char *str, unsigned long *ul_ptr, int exit_status)
 { 
     unparsed_arg = str; // <-- dodge having to use the wrapper for the error function (in case anything goes wrong)
     if (!str) return n(error_message(str_not_parsable_as_number, exit_status)); unsigned long length_of_string = 0;

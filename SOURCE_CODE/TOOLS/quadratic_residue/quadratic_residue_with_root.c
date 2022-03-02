@@ -22,7 +22,7 @@ void least_to_most_INSERT(struct LL_ **tracer, unsigned long first_root, unsigne
 }
 
 int main(int argc, char **argv) { unsigned long mod; mod_ = &mod; unparsed_arg = argv[1];
-    if (!str_represents_ul(unparsed_arg, mod_)) { fprintf(stderr, "Mod incorrect!\n"); exit(-1); } // <-- Make an error function specifically for this case!
+    if (!ul_parse_str(unparsed_arg, mod_)) { fprintf(stderr, "Mod incorrect!\n"); exit(-1); } // <-- Make an error function specifically for this case!
     for (unsigned long i = 1; i <= mod / 2; i++) if (GCD(i, mod) == 1) least_to_most_INSERT(&quadratic_residue_LL, i, mod_multiply(i, i)); // # (1.
     printf("Quadratic residue with roots for \u2115/%lu\u2115:\n", mod);
     for (; quadratic_residue_LL; quadratic_residue_LL = quadratic_residue_LL->next)

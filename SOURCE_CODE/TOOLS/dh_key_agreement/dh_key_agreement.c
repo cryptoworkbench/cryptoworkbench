@@ -36,16 +36,16 @@ void _third_argument_instruction() { fprintf(stderr, "Please supply as third arg
 void fourth_argument_instruction() { fprintf(stderr, "Please supply as fourth argument Alice's private key!"); }
 
 int main(int argc, char **argv) { argv_location = &argv; DH_parameters = (STRUCT_DH_parameters *) malloc(sizeof(STRUCT_DH_parameters)); mod_ = &DH_parameters->a;
-    i = 1; conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(str_represents_ul(argv[i], mod_, -i))))));
+    i = 1; conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(ul_parse_str(argv[i], mod_, -i))))));
     // take in mod ^
 
     i = 2;
-    conditional_goodbye(n(n(error_specification(generator_failed_to_parse, n( -i * ( str_represents_ul(argv[i], &DH_parameters->b, 1)))))));
+    conditional_goodbye(n(n(error_specification(generator_failed_to_parse, n( -i * ( ul_parse_str(argv[i], &DH_parameters->b, 1)))))));
     conditional_goodbye(n(n(error_specification(generator_failed_to_parse, n(n(error_message(coprime_error, -2 * ( !coprime(DH_parameters->b, *mod_) ))))))));
     // two checks on second input ^^
 
-    unsigned long __priv_bob; i = 3; if (argc > 3) conditional_goodbye(n(n(error_specification(_third_argument_instruction, n(str_represents_ul(argv[i], &__priv_bob, -i)))))); else __priv_bob = urandom_number(*mod_);
-    unsigned long priv_alice; i = 4; if (argc > 4) conditional_goodbye(n(n(error_specification(fourth_argument_instruction, n(str_represents_ul(argv[i], &priv_alice, -i)))))); else priv_alice = urandom_number(*mod_);
+    unsigned long __priv_bob; i = 3; if (argc > 3) conditional_goodbye(n(n(error_specification(_third_argument_instruction, n(ul_parse_str(argv[i], &__priv_bob, -i)))))); else __priv_bob = urandom_number(*mod_);
+    unsigned long priv_alice; i = 4; if (argc > 4) conditional_goodbye(n(n(error_specification(fourth_argument_instruction, n(ul_parse_str(argv[i], &priv_alice, -i)))))); else priv_alice = urandom_number(*mod_);
     // take complain about 
 
     group_cardinality_ = totient(*mod_); struct ordered_pair iso = _isomorphism(); do { iso.b = mod_multiply(iso.b, DH_parameters->b); iso.a++; if (iso.b == MULTIPLICATIVE_IDENTITY) break; } while (1);
