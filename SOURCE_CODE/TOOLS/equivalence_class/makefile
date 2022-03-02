@@ -8,4 +8,4 @@
 	gcc -c equivalence_class.c -o .equivalence_class.o
 
 equivalence_class: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .equivalence_class.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .equivalence_class.o -o ../../../WORKBENCH/equivalence_class
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .equivalence_class.o -o ../../../TOOLS/equivalence_class

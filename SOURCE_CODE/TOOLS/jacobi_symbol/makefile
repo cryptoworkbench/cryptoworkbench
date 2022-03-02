@@ -11,4 +11,4 @@
 	gcc -c jacobi_symbol.c -o .jacobi_symbol.o
 
 jacobi_symbol: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o .jacobi_symbol.o .jacobi_symbol.sh
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o .jacobi_symbol.o -o ../../../WORKBENCH/jacobi_symbol && cp .jacobi_symbol.sh ../../../WORKBENCH/jacobi_symbol.sh
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o .jacobi_symbol.o -o ../../../TOOLS/jacobi_symbol && cp .jacobi_symbol.sh ../../../TOOLS/jacobi_symbol.sh

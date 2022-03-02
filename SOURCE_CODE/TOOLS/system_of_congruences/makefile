@@ -8,4 +8,4 @@
 	gcc -c system_of_congruences.c -o .system_of_congruences.o
 
 system_of_congruences: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .system_of_congruences.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .system_of_congruences.o -o ../../../WORKBENCH/system_of_congruences
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .system_of_congruences.o -o ../../../TOOLS/system_of_congruences

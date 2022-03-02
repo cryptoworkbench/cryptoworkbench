@@ -14,4 +14,4 @@
 	gcc -c dh_key_agreement.c -o .dh_key_agreement.o
 
 dh_key_agreement: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_library.o .dh_key_agreement.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_library.o .dh_key_agreement.o -o ../../../WORKBENCH/dh_key_agreement
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_library.o .dh_key_agreement.o -o ../../../TOOLS/dh_key_agreement

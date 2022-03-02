@@ -1,7 +1,7 @@
 #!/bin/bash
 
-mkdir WORKBENCH/; echo "Created directory 'WORKBENCH/'"
-mkdir WORKBENCH/ARCHIVE; echo "Created directory 'WORKBENCH/ARCHIVE'"
+mkdir TOOLS/; echo "Created directory 'TOOLS/'"
+mkdir TOOLS/ARCHIVE; echo "Created directory 'TOOLS/ARCHIVE'"
 
 cd SOURCE_CODE/TOOLS
 

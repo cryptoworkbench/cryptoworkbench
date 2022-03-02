@@ -14,4 +14,4 @@
 	gcc -c prime_factorize.c -o .prime_factorize.o
 
 prime_factorize: ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o .prime_factorize.o
-	gcc ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o .prime_factorize.o -o ../../../WORKBENCH/prime_factorize
+	gcc ../../libraries/functional/.string.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o .prime_factorize.o -o ../../../TOOLS/prime_factorize

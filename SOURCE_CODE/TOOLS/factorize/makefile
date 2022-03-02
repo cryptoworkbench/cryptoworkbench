@@ -11,4 +11,4 @@
 	gcc -c factorize.c -o .factorize.o
 
 factorize: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o .factorize.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o .factorize.o -o ../../../WORKBENCH/factorize
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/mathematics/.factorization_methods.o .factorize.o -o ../../../TOOLS/factorize

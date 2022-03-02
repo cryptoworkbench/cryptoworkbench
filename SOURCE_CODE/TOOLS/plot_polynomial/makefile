@@ -8,4 +8,4 @@
 	gcc -c plot_polynomial.c -o .plot_polynomial.o
 
 plot_polynomial: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .plot_polynomial.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .plot_polynomial.o -o ../../../WORKBENCH/plot_polynomial
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .plot_polynomial.o -o ../../../TOOLS/plot_polynomial

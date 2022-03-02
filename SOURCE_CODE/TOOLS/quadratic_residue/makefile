@@ -11,10 +11,10 @@
 	gcc -c quadratic_residue.c -o .quadratic_residue.o
 
 quadratic_residue: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o .quadratic_residue.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o .quadratic_residue.o -o ../../../WORKBENCH/quadratic_residue
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o .quadratic_residue.o -o ../../../TOOLS/quadratic_residue
 
 .quadratic_residue_with_root.o: quadratic_residue_with_root.c
 	gcc -c quadratic_residue_with_root.c -o .quadratic_residue_with_root.o
 
 quadratic_residue_with_root: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o .quadratic_residue_with_root.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o .quadratic_residue_with_root.o -o ../../../WORKBENCH/quadratic_residue_with_root
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o .quadratic_residue_with_root.o -o ../../../TOOLS/quadratic_residue_with_root

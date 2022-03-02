@@ -8,4 +8,4 @@
 	gcc -c least_common_multiple.c -o .least_common_multiple.o
 
 least_common_multiple: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .least_common_multiple.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .least_common_multiple.o -o ../../../WORKBENCH/least_common_multiple
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .least_common_multiple.o -o ../../../TOOLS/least_common_multiple

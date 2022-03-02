@@ -8,4 +8,4 @@
 	gcc -c sieve_of_eratosthenes.c -o .sieve_of_eratosthenes.o
 
 sieve_of_eratosthenes: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .sieve_of_eratosthenes.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .sieve_of_eratosthenes.o -o ../../../WORKBENCH/sieve_of_eratosthenes
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .sieve_of_eratosthenes.o -o ../../../TOOLS/sieve_of_eratosthenes

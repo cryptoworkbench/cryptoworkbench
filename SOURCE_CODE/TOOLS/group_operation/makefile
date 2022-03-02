@@ -8,4 +8,4 @@
 	gcc -c group_operation.c -o .group_operation.o
 
 group_operation: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .group_operation.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .group_operation.o -o ../../../WORKBENCH/group_operation
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .group_operation.o -o ../../../TOOLS/group_operation

@@ -14,4 +14,4 @@
 	gcc -c group_element_exporter.c -o .group_element_exporter.o
 
 group_element_exporter: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .group_element_exporter.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .group_element_exporter.o -o ../../../WORKBENCH/group_element_exporter
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .group_element_exporter.o -o ../../../TOOLS/group_element_exporter

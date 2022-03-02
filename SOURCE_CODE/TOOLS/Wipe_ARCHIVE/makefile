@@ -11,4 +11,4 @@
 	gcc -c Wipe_ARCHIVE.c -o .Wipe_ARCHIVE.o
 
 Wipe_ARCHIVE: .Wipe_ARCHIVE.o ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o
-	gcc .Wipe_ARCHIVE.o ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o -o ../../../WORKBENCH/Wipe_ARCHIVE && .Wipe_ARCHIVE.o
+	gcc .Wipe_ARCHIVE.o ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.LOGBOOK_library.o -o ../../../TOOLS/Wipe_ARCHIVE && .Wipe_ARCHIVE.o

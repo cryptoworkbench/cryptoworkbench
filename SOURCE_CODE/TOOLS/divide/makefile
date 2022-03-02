@@ -8,4 +8,4 @@
 	gcc -c divide.c -o .divide.o
 
 divide: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .divide.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .divide.o -o ../../../WORKBENCH/divide
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .divide.o -o ../../../TOOLS/divide

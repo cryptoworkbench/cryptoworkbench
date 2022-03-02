@@ -8,4 +8,4 @@
 	gcc -c greatest_common_divisor.c -o .greatest_common_divisor.o
 
 greatest_common_divisor: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .greatest_common_divisor.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .greatest_common_divisor.o -o ../../../WORKBENCH/greatest_common_divisor
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .greatest_common_divisor.o -o ../../../TOOLS/greatest_common_divisor

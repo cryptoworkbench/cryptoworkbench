@@ -8,4 +8,4 @@
 	gcc -c random_numbers.c -o .random_numbers.o
 
 random_numbers: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .random_numbers.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .random_numbers.o -o ../../../WORKBENCH/random_numbers
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .random_numbers.o -o ../../../TOOLS/random_numbers
