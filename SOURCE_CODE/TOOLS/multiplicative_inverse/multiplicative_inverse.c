@@ -31,7 +31,7 @@ int main(int argc, char **argv) { argv_location = &argv;
     conditional_goodbye(n(error_message(not_a_member_of_an_equivalence_class_from_the_quotient_group, -3 * !(!((common_divisor = GCD(denominator, multiplicative_group_modulus)) - 1)))));
     // process terminal arguments using this genious construction ^^^
 
-    fprintf(stdout, "%lu^-1 \u2261 %i / %lu \u2261 ", denominator, NUMERATOR, denominator);
+    fprintf(stdout, "%lu^-%i \u2261 %i / %lu \u2261 ", denominator, NUMERATOR, NUMERATOR, denominator);
     if (denominator != mod_conditional_field_cap(denominator)) fprintf(stdout, "%i / %lu \u2261 ", NUMERATOR, denominator = mod_conditional_field_cap(denominator));
     fprintf(stdout, "%lu	(mod %lu)\n", mod_divide(NUMERATOR, denominator), *mod_); return 0;
     // (verbosely) print the result ^^^
