@@ -73,7 +73,12 @@ int identity_SELECTOR(char *arg) {
 
 int identity_(int SELECTOR) { return (SELECTOR % 2) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY ; }
 int identity_parse_str(int *id_, char *str, int exit_status)
-{ unparsed_arg = str; int SELECTOR; if ((SELECTOR = identity_SELECTOR(str)) == 10) return n(error_message(identity_SELECTOR_error, exit_status)); *id_ = identity_(SELECTOR); return 0; }
+{
+    if (str && _match(str, 5, multiplicative_signs)) *id_ = 1;
+    else if (str && _match(str, 5, additive_signs)) *id_ = 0;
+    else { unparsed_arg = str; return n(error_message(identity_SELECTOR_error, exit_status)); }
+    return 0;
+}
 // functions for setting the global int variable 'id_'
 
 void identity_SELECTOR_error()

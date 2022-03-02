@@ -90,7 +90,19 @@ int match_case_insensitive(char *INPUT, const char *char_PTR_array[], unsigned l
     return 0;
 }
 
-int match(char *INPUT, const char *char_PTR_array[]) { int i = 0; do { if (strcmp(char_PTR_array[i], INPUT) == 0) return 1; else i++; } while (char_PTR_array[i] != 0); return 0; }
+int match(char *INPUT, const char *char_PTR_array[]) {
+    int i = 0;
+    do {
+	if (strcmp(char_PTR_array[i], INPUT) == 0) return 1;
+	else i++;
+    } while (char_PTR_array[i] != 0);
+    return 0;
+}
+
+int _match(char *str, int array_SIZE, const char *char_PTR_array[])
+{
+    for (int i = 0; i < array_SIZE; i++) if (strcmp(char_PTR_array[i], str) == 0) return 1; return 0;
+}
 
 int match_variadic(char *INPUT, int number_of_comparisons, ...) {
     va_list ap;
