@@ -56,22 +56,6 @@ const char *_as_adjective(int id) { return (id) ? multiplicative_signs[4] : addi
 field_operation ___field_operation(unsigned long id) { return (id) ? mod_multiply : mod_add; }
 field_operation id_field_operation() { return ___field_operation(*id_); }
 
-int identity_SELECTOR(char *arg) {
-    if (arg) {
-	if (strcmp(arg, additive_signs[0]) == 0) return 0;
-	else if (strcmp(arg, multiplicative_signs[0]) == 0) return 1;
-	else if (strcmp(arg, additive_signs[1]) == 0) return 2;
-	else if (strcmp(arg, multiplicative_signs[1]) == 0) return 3;
-	else if (strcmp(arg, additive_signs[2]) == 0) return 4;
-	else if (strcmp(arg, multiplicative_signs[2]) == 0) return 5;
-	else if (strcmp(arg, additive_signs[3]) == 0) return 6;
-	else if (strcmp(arg, multiplicative_signs[3]) == 0) return 7;
-	else if (strcmp(arg, additive_signs[4]) == 0) return 8;
-	else if (strcmp(arg, multiplicative_signs[4]) == 0) return 9;
-    } unparsed_arg = arg; return 10;
-}
-
-int identity_(int SELECTOR) { return (SELECTOR % 2) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY ; }
 int identity_parse_str(int *id_, char *str, int exit_status)
 {
     if (str && _match(str, 5, multiplicative_signs)) *id_ = 1;
