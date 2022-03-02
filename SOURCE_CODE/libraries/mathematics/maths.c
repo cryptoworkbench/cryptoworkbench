@@ -60,17 +60,17 @@ int identity_parse_str(int *id_, char *str, int exit_status)
 {
     if (str && _match(str, 5, multiplicative_signs)) *id_ = 1;
     else if (str && _match(str, 5, additive_signs)) *id_ = 0;
-    else { unparsed_arg = str; return n(error_message(identity_SELECTOR_error, exit_status)); }
+    else { unparsed_arg = str; return n(error_message(identity_error, exit_status)); }
     return 0;
 }
 // functions for setting the global int variable 'id_'
 
-void identity_SELECTOR_error()
+void identity_error()
 {
     fprintf(stderr, "parsing of '%s' failed: could not match '%s' with any plausable group identity description.", unparsed_arg, unparsed_arg);
 }
 
-void identity_lists()
+void identity_error_elaboration()
 {
     fprintf(stderr, "Failed to find '%s' in one of the following lists:\n", unparsed_arg);
     fprintf(stderr, "- '%s', '%s', '%s', '%s' or '%s'\n", additive_signs[4], additive_signs[2], additive_signs[3], additive_signs[0], additive_signs[1]);

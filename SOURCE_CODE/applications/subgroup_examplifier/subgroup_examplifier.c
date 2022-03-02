@@ -89,7 +89,7 @@ void mod_error() { fprintf(stderr, "Please supply as first argument the modulus 
 
 int main(int argc, char **argv) { argv_location = &argv;
     unsigned long mod; mod_ = &mod;conditional_goodbye(n(n(error_specification(mod_error, n(ul_parse_str(argv[1], mod_, -1))))));
-    int id; id_ = &id;             conditional_goodbye(n(n(error_specification(identity_lists, n(identity_parse_str(&id, argv[2], -2))))));
+    int id; id_ = &id;             conditional_goodbye(n(n(error_specification(identity_error_elaboration, n(identity_parse_str(&id, argv[2], -2))))));
     if (!mod || !(mod - 1) && id)  conditional_goodbye(n(n(error_message(invalid_group_parameters, -3))));
     // process mandatory terminal arguments (mod and group identity) ^ 
 
