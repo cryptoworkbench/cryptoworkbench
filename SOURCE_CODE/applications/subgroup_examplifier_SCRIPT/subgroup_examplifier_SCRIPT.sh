@@ -13,18 +13,12 @@
 
 #!/bin/bash
 
-#for i in $(seq 1 $1); do
-i=0;
-while true
-do
-    clear
-    echo "Current horizontal offset: $i
-    ";
-    ./subgroup_examplifier $1 $2 "$i" $4;
-    echo "
-    ";
-    echo "refresh rate: every $3s.
-    ";
-    i=$(( $i + 1 ))
-    sleep $3
-done
+if [ -z "$3" ];
+then echo "Please set the cycle rate as third argument (in seconds). Exiting '-1'. Goodbye."; exit -1;
+else for i in {9..1..1}; do
+    clear;
+    echo "Examplifying the cyclic subgroups of the group identified by characteristics 'modulus = $1' && 'identity = $2'"; echo "";
+    echo "Cycling through the cyclic subgroups exactly 1 step per $3 second(s)."; echo ""; echo "Starting in $i .. .."; sleep 1; done
+fi
+
+i=0; while true; do clear; echo "Current horizontal offset: $i"; echo ""; ./subgroup_examplifier $1 $2 "$i" $4; echo ""; echo "refresh rate: every $3s."; i=$(( $i + 1 )); sleep $3; done
