@@ -10,7 +10,7 @@ void mod_not_parsable() { fprintf(stderr, "Please specify as first argument the 
 
 int main(int argc, char **argv) {
     unsigned long mod; conditional_goodbye(n(n(error_specification(mod_not_parsable, n(ul_parse_str(argv[1], &mod, -1))))));         mod_ = &mod;
-    int id;            conditional_goodbye(n(error_message(identity_parse_str_error, identity_set(&id, identity_parse_str(argv[2]), -2)))); id_ = &id;
+    int id;            conditional_goodbye(n(n(error_specification(identity_lists, n(identity_parse_str(&id, argv[2], -2)))))); id_ = &id;
     unsigned long a;   conditional_goodbye(n(n(error_specification(__a_not_parsable, n(ul_parse_str(argv[3], &a, -3))))));
     unsigned long b;   conditional_goodbye(n(n(error_specification(__b_not_parsable, n(ul_parse_str(argv[4], &b, -4))))));
     // take in arguments ^^^^

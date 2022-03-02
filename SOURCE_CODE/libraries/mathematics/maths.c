@@ -56,7 +56,7 @@ const char *_as_adjective(int id) { return (id) ? multiplicative_signs[4] : addi
 field_operation ___field_operation(unsigned long id) { return (id) ? mod_multiply : mod_add; }
 field_operation id_field_operation() { return ___field_operation(*id_); }
 
-int identity_parse_str(char *arg) {
+int identity_SELECTOR(char *arg) {
     if (arg) {
 	if (strcmp(arg, additive_signs[0]) == 0) return 0;
 	else if (strcmp(arg, multiplicative_signs[0]) == 0) return 1;
@@ -72,12 +72,18 @@ int identity_parse_str(char *arg) {
 }
 
 int identity_(int SELECTOR) { return (SELECTOR % 2) ? MULTIPLICATIVE_IDENTITY : ADDITIVE_IDENTITY ; }
-int identity_set(int *id_, int SELECTOR, int exit_status) { if (SELECTOR == 10) return exit_status; *id_ = identity_(SELECTOR); return 0; }
+int identity_parse_str(int *id_, char *str, int exit_status)
+{ unparsed_arg = str; int SELECTOR; if ((SELECTOR = identity_SELECTOR(str)) == 10) return n(error_message(identity_SELECTOR_error, exit_status)); *id_ = identity_(SELECTOR); return 0; }
 // functions for setting the global int variable 'id_'
 
-void identity_parse_str_error()
+void identity_SELECTOR_error()
 {
-    fprintf(stderr, "\n\nFailed to find '%s' in one of the following lists:\n", unparsed_arg);
+    fprintf(stderr, "parsing of '%s' failed: could not match '%s' with any plausable group identity description.", unparsed_arg, unparsed_arg);
+}
+
+void identity_lists()
+{
+    fprintf(stderr, "Failed to find '%s' in one of the following lists:\n", unparsed_arg);
     fprintf(stderr, "- '%s', '%s', '%s', '%s' or '%s'\n", additive_signs[4], additive_signs[2], additive_signs[3], additive_signs[0], additive_signs[1]);
     fprintf(stderr, "- '%s', '%s', '%s', '%s' or '%s'", multiplicative_signs[4], multiplicative_signs[2], multiplicative_signs[3], multiplicative_signs[0], multiplicative_signs[1]);
 }
