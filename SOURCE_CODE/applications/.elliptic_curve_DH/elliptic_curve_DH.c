@@ -82,7 +82,9 @@ void print_multiple_of_ECC_point(unsigned long multiplier, struct coordinates *r
 struct coordinates *entire_calculation(unsigned long multiplier, struct coordinates *base)
 { struct coordinates *i = point_multiplication(multiplier, base); fprintf(stdout, "%lu * (%lu,%lu) = (%lu,%lu)\n", multiplier, base->x, base->y, i->x, i->y); return i; }
 
+// void mod_failed_to_parse() {}
 int main(int argc, char **argv) {
+    // conditional_goodbye(n(n(error_specification(
     if (2 > argc || !STR_could_be_parsed_into_UL(argv[1], &m)) argv_ERROR(1, argv);
     if (3 > argc || !STR_could_be_parsed_into_UL(argv[2], &a)) argv_ERROR(2, argv); a %= m;
     if (4 > argc || !STR_could_be_parsed_into_UL(argv[3], &b)) argv_ERROR(3, argv); b %= m;

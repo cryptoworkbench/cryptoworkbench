@@ -84,12 +84,13 @@ void invalid_group_parameters()
     else fprintf(stderr, "for multiplicative groups the modulus needs to be at least 2! (since multiplicative groups do not include the element '0')");
 }
 
-void mod_error() { fprintf(stderr, "Please supply as first argument the modulus of the group whose subgroups to examplify"); }
+void id_error() { fprintf(stderr, "Please specify as second argument the identity element of the group whose subgroups to examplify."); list_plausable_group_identity_descriptions(); }
+void mod_error() { fprintf(stderr, "Please specify as first argument the modulus of the group whose subgroups to examplify."); }
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { argv_location = &argv;
     unsigned long mod; mod_ = &mod;conditional_goodbye(n(n(error_specification(mod_error, n(ul_parse_str(argv[1], mod_, -1))))));
-    int id; id_ = &id;             conditional_goodbye(n(n(error_specification(identity_error_elaboration, n(identity_parse_str(&id, argv[2], -2))))));
+    int id; id_ = &id;             conditional_goodbye(n(n(error_specification(id_error, n(identity_parse_str(&id, argv[2], -2))))));
     if (!mod || !(mod - 1) && id)  conditional_goodbye(n(n(error_message(invalid_group_parameters, -3))));
     // process mandatory terminal arguments (mod and group identity) ^ 
 

@@ -68,13 +68,19 @@ int identity_parse_str(int *id_, char *str, int exit_status)
 void identity_error()
 {
     fprintf(stderr, "parsing of '%s' failed: could not match '%s' with any plausable group identity description.", unparsed_arg, unparsed_arg);
-}
-
-void identity_error_elaboration()
-{
+    /*
     fprintf(stderr, "Failed to find '%s' in one of the following lists:\n", unparsed_arg);
     fprintf(stderr, "- '%s', '%s', '%s', '%s' or '%s'\n", additive_signs[4], additive_signs[2], additive_signs[3], additive_signs[0], additive_signs[1]);
     fprintf(stderr, "- '%s', '%s', '%s', '%s' or '%s'", multiplicative_signs[4], multiplicative_signs[2], multiplicative_signs[3], multiplicative_signs[0], multiplicative_signs[1]);
+    */
+}
+
+void list_plausable_group_identity_descriptions()
+{
+    fflush(stderr);
+    fprintf(stderr, "\n\nWhat is a 'plausable group identity description' ?\n");
+    fprintf(stderr, "- 'plausable' group identity descriptions for additive groups: '%s', '%s', '%s', '%s' and '%s'\n", additive_signs[4], additive_signs[2], additive_signs[3], additive_signs[0], additive_signs[1]);
+    fprintf(stderr, "- 'plausable' group identity descriptions for multiplicative groups: '%s', '%s', '%s', '%s' and '%s'", multiplicative_signs[4], multiplicative_signs[2], multiplicative_signs[3], multiplicative_signs[0], multiplicative_signs[1]);
 }
 
 unsigned long DH_public_key(STRUCT_DH_parameters *DH_parameters, unsigned long DH_private_key) { return _exponentiate(DH_parameters->b, DH_private_key, DH_parameters->a); }

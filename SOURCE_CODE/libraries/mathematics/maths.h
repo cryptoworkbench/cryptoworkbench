@@ -31,6 +31,7 @@ const char *_as_number(int id); const char *id_as_number(); const char *_as_oper
 const char *_as_nouns(int id); const char *id_as_nouns(); const char *_as_adjective(int id); const char *id_as_adjective(); // get one of five possible representations of a group's identity << ^^^
 
 int identity_parse_str(int *id_, char *str, int exit_status); void identity_error(); // if fails to change 'SELECTOR' > '*id_', complain identity_error() then return 'exit_status' <<
+void list_plausable_group_identity_descriptions();
 void identity_error_elaboration();
 
 /* REMAINING FUNCTIONS FOLLOW: */
