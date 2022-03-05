@@ -69,14 +69,8 @@ unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair
     unsigned long cell_width = char_in_val(((struct LL_ *) element_CHANNEL_PTR_pair.iterator)->e);
     // determine the neccessary cell width for the widest cell ^
 
-    // lookup_table = (struct crux *) malloc(sizeof(struct crux));
-    // allocate the custom data type which contains all the pointers on heap memory ^
-
     permutation_of_FIRST_GEN = lookup_table.base_permutation = array_from_LL((struct LL_ **) element_CHANNEL_PTR_pair.head, &group_cardinality_);
-    // point the singular unsigned long pointer 'base_permutation' to an array containing the group's elements in the order from the external file (exported by 'group_element_exporter' from 'group_library') ^
-    // 'permutation_of_FIRST_GEN' must also point to this permutation ^^
-
-    lookup_table.permutation = (unsigned long **) malloc(sizeof(unsigned long *) * group_cardinality_);
+    // register a base permutation which we can reference and which we can change ^
 
     lookup_table.perm_length = (unsigned long *) malloc(sizeof(unsigned long) * group_cardinality_);
     // point the singular unsigned long pointer 'perm_length' to a newly accolated unsigned long array (will use this array to store the lengths of the subgroups) ^
@@ -84,17 +78,24 @@ unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair
     lookup_table.perm_length[0] = 1;
     // the first element from the group is always the identity element if 'group_element_exporter' did it's work properly
 
+    lookup_table.ASCII = (char **) malloc(sizeof(char *) * group_cardinality_);
+    lookup_table.permutation = (unsigned long **) malloc(sizeof(unsigned long *) * group_cardinality_);
+    // create the arrays which will contain arrays ^
+
     *(lookup_table.permutation[0] = (unsigned long *) malloc(sizeof(unsigned long) * MULTIPLICATIVE_IDENTITY)) = 0;
     // the identity element always only yields itself when you combine it with itself ^
 
-    lookup_table.ASCII = (char **) malloc(sizeof(char *) * group_cardinality_);
-    // set the signular pointer to an unsigned long pointer to an array of unsigned long pointers (which each can store a reference to an array of unsigned longs)
 
     unsigned long index; for (index = 0; index < group_cardinality_; index++) lookup_table.ASCII[index] = str_from_ul(lookup_table.base_permutation[index], cell_width);
     // enter this array and create the cells (set the plural references / fill the unsigned long pointer pointer array)
 
     if (*id_) // in the case of dealing with multiplicative groups <--
     {
+	if (*mod_ == 2) {
+	    lookup_table.perm_length[0] = group_cardinality_;
+	    return 1;
+	}
+
 	for (index = 1; index < group_cardinality_; index++) if ((lookup_table.perm_length[index] = count_of_GENERATED_subgroup_elements(index)) == group_cardinality_) break;
 	// find the first generator ^
 
