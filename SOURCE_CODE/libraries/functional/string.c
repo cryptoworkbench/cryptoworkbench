@@ -158,7 +158,7 @@ unsigned long char_in_val(unsigned long a) {
     return char_index;
 }
 
-char *str_from_ul(unsigned long a, unsigned long min_out_length) { // Works!
+char *_str_from_ul(unsigned long a, unsigned long min_out_length) { // Works!
     unsigned long char_index = char_in_val(a);
     unsigned long number_of_heading_zeros = 0; // Start off assuming there is no need for heading zeros
     if (min_out_length > char_index) // Check to see if there is any need for heading zeros
@@ -182,7 +182,7 @@ char *str_from_ul(unsigned long a, unsigned long min_out_length) { // Works!
 
 char *width_str_from_ul(unsigned long a)
 {
-    return str_from_ul(a, (unsigned long) *width_);
+    return _str_from_ul(a, (unsigned long) *width_);
 }
 
 void ignored_arguments(int argc, char **argv, int used_arguments) {

@@ -49,7 +49,7 @@ unsigned long ul_from_str(char *string); // Returns the numeric value represente
 int string_to_int(char *string); // Returns the numeric value represented by the string pointed to by char *string as int
 
 unsigned long char_in_val(unsigned long a); // Calculates the number of characters needed to display a in base BASE notation (BASE = 10)
-char *str_from_ul(unsigned long a, unsigned long min_out_length); // Converts from ul to string with a minimum of min_out_length characters, heading zeros are fixed if needed, call as str_from_ul(unsigned long a, characters_in_val(a))
+char *_str_from_ul(unsigned long a, unsigned long min_out_length); // Converts from ul to string with a minimum of min_out_length characters, heading zeros are fixed if needed, call as _str_from_ul(unsigned long a, characters_in_val(a))
 char *width_str_from_ul(unsigned long a);
 
 
