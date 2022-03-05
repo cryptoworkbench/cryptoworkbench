@@ -158,32 +158,27 @@ unsigned long char_in_val(unsigned long a) {
     return char_index;
 }
 
-char *_str_from_ul(unsigned long a, unsigned long min_out_length) { // Works!
-    unsigned long char_index = char_in_val(a);
-    unsigned long number_of_heading_zeros = 0; // Start off assuming there is no need for heading zeros
-    if (min_out_length > char_index) // Check to see if there is any need for heading zeros
-	number_of_heading_zeros = min_out_length - char_index; // If there is need for heading zeros, the number of heading zeros that are needed is the difference calculation
+char *_str_transform_ul(unsigned long ul, unsigned int width_) { // Works!
+    unsigned int base_ten_width = char_in_val(ul);
+    unsigned int number_of_heading_zeros = 0; // Start off assuming there is no need for heading zeros
+    if (width_ > base_ten_width) // Check to see if there is any need for heading zeros
+	number_of_heading_zeros = width_ - base_ten_width; // If there is need for heading zeros, the number of heading zeros that are needed is the difference calculation
 
-    /* Assign the space needed */
-    char *unsigned_long_as_string = (char *) malloc(sizeof(char) * (char_index + number_of_heading_zeros + 1)); // + 1 for the string terminating NULL character
-    unsigned_long_as_string[number_of_heading_zeros + char_index] = 0; // Set this string terminating NULL character
+    char *transformed_str; *(number_of_heading_zeros + base_ten_width + (transformed_str = (char *) malloc(sizeof(char) * (base_ten_width + number_of_heading_zeros + 1)))) = 0;
+    // allocate the needed char pointer array ^
 
-    for (unsigned long iter = 0; iter < number_of_heading_zeros; iter++)
-	unsigned_long_as_string[iter] = ASCII_BASE;
+    for (unsigned int i = 0; i < number_of_heading_zeros; i++) transformed_str[i] = ASCII_BASE;
+    // prepare the array ^
 
-    unsigned long a_copy = a; /* Start creating the string */
-    for (unsigned long remainder = a_copy; char_index != 0; char_index--) {
+    for (unsigned long remainder = ul; base_ten_width != 0; base_ten_width--) {
 	remainder %= NUMERIC_BASE; // Calculate remainder
-	unsigned_long_as_string[number_of_heading_zeros + char_index - 1] = remainder + ASCII_BASE; // Put remainder in string
-	a_copy -= remainder; a_copy = a_copy / NUMERIC_BASE; // Update a_copy
-	remainder = a_copy; // Restore our remainder variable so that we can remainder %= NUMERIC_BASE
-    } return unsigned_long_as_string;
+	transformed_str[number_of_heading_zeros + base_ten_width - 1] = remainder + ASCII_BASE; // Put remainder in string
+	ul -= remainder; ul = ul / NUMERIC_BASE; // Update ul
+	remainder = ul; // Restore our remainder variable so that we can remainder %= NUMERIC_BASE
+    } return transformed_str;
 }
 
-char *width_str_from_ul(unsigned long a)
-{
-    return _str_from_ul(a, (unsigned long) *width_);
-}
+char *width_str_from_ul(unsigned long ul) { return _str_transform_ul(ul, *width_); }
 
 void ignored_arguments(int argc, char **argv, int used_arguments) {
     unsigned long difference = argc - 1 - used_arguments; if (difference) {
