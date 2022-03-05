@@ -66,8 +66,8 @@ unsigned long CONSULT_permutation_of_FIRST_GEN(unsigned long index) { unsigned l
 }
 
 unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) {
-    unsigned long cell_width = char_in_val(((struct LL_ *) element_CHANNEL_PTR_pair.iterator)->e);
-    // determine the neccessary cell width for the widest cell ^
+    *(width_ = (unsigned int *) malloc(sizeof(unsigned int))) = char_in_val(((struct LL_ *) element_CHANNEL_PTR_pair.iterator)->e);
+    // set the unsigned int pointer 'width_str_from_ul' needs in order to function properly ^
 
     permutation_of_FIRST_GEN = lookup_table.base_permutation = array_from_LL((struct LL_ **) element_CHANNEL_PTR_pair.head, &group_cardinality_);
     // register a base permutation which we can reference and which we can change ^
@@ -83,37 +83,11 @@ unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair
     // create the arrays which will contain arrays ^
 
     *(lookup_table.permutation[0] = (unsigned long *) malloc(sizeof(unsigned long) * MULTIPLICATIVE_IDENTITY)) = 0;
-    // the identity element always only yields itself when you combine it with itself ^
+    unsigned long index; for (index = 0; index < group_cardinality_; index++) lookup_table.ASCII[index] = width_str_from_ul(lookup_table.base_permutation[index]);
 
-
-    unsigned long index; for (index = 0; index < group_cardinality_; index++) lookup_table.ASCII[index] = str_from_ul(lookup_table.base_permutation[index], cell_width);
-    // enter this array and create the cells (set the plural references / fill the unsigned long pointer pointer array)
-
-    if (*id_) // in the case of dealing with multiplicative groups <--
-    {
-	if (*mod_ == 2) return 1;
-
-	for (index = 1; index < group_cardinality_; index++) if ((lookup_table.perm_length[index] = count_of_GENERATED_subgroup_elements(index)) == group_cardinality_) break;
-	// find the first generator ^
-
-	if (index == group_cardinality_) return 0;
-	// return 0 if zero generators were found ^ (in the meanwhile the rest has been set!)
-
-       	permutation_of_FIRST_GEN = lookup_table.permutation[index];
-	// make the global unsigned long pointer 'permutation_of_FIRST_GEN' point to the first generator's permutation ^
-
-       	return CONSULT_permutation_of_FIRST_GEN(index + 1);
-	// complete the examplifications of subgroups using the new value for 'permutation_of_FIRST_GEN' ^
-    }   // multiplicative groups have been dealt with ^
-
-    lookup_table.perm_length[1] = group_cardinality_;
-    // if the case of additive groups the second element (the element at index '1') is always going to be 1, so it's a generator (so it's subgroup's cardinality is equal to the group overal cardinality) ^
-
-    lookup_table.permutation[1] = lookup_table.base_permutation;
-    // also say that the permutation of the second any of any additive group is equal to the order in which 'group_element_exporter' exports an additive or a multiplicative group ^
-
-    return CONSULT_permutation_of_FIRST_GEN(2);
-    // 'CONSULT_permutation_of_FIRST_GEN' completes the interlinked structure of arrays using the information about the first generator in the group ^
+    if (*id_) { if (*mod_ == 2) return 1; for (index = 1; index < group_cardinality_; index++) if ((lookup_table.perm_length[index] = count_of_GENERATED_subgroup_elements(index)) == group_cardinality_) break;
+	if (index == group_cardinality_) return 0; permutation_of_FIRST_GEN = lookup_table.permutation[index]; return CONSULT_permutation_of_FIRST_GEN(index + 1);
+    } lookup_table.perm_length[1] = group_cardinality_; lookup_table.permutation[1] = lookup_table.base_permutation; return CONSULT_permutation_of_FIRST_GEN(2);
 }
 
 void horizontal_offset_failed_to_parse() { fprintf(stderr, "Failed to interpret horizontal table offset! --- ^"); }
@@ -135,6 +109,8 @@ int main(int argc, char **argv) { argv_location = &argv;
     if (!mod || !(mod - 1) && id)  conditional_goodbye(n(n(error_message(invalid_group_parameters, -3))));
     // process mandatory terminal arguments (mod and group identity) ^ 
 
+
+    // char *width_str_from_ul(unsigned long a);
                   horizontal_offset = 0; n(n(error_specification(horizontal_offset_failed_to_parse, 3 < argc && ul_parse_str(argv[3], &horizontal_offset, 1))));
     unsigned long __vertical_offset = 0; n(n(error_specification(__vertical_offset_failed_to_parse, 4 < argc && ul_parse_str(argv[4], &__vertical_offset, 1))));
     // process optional terminal arguments ^
@@ -151,5 +127,5 @@ int main(int argc, char **argv) { argv_location = &argv;
     //   list generators afterwards ^
 
     for (unsigned long i = 0; i < group_cardinality_; i++) { free(lookup_table.permutation[i]); free(lookup_table.ASCII[i]); } free(lookup_table.perm_length);
-    if (id) free(lookup_table.base_permutation); return 0;
+    if (id) free(lookup_table.base_permutation); free(width_); return 0;
 } // * = 'member a will hold y offset, member b will hold x offset'

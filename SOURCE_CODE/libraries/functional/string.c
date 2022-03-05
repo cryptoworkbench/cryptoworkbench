@@ -180,6 +180,11 @@ char *str_from_ul(unsigned long a, unsigned long min_out_length) { // Works!
     } return unsigned_long_as_string;
 }
 
+char *width_str_from_ul(unsigned long a)
+{
+    return str_from_ul(a, (unsigned long) *width_);
+}
+
 void ignored_arguments(int argc, char **argv, int used_arguments) {
     unsigned long difference = argc - 1 - used_arguments; if (difference) {
 	fprintf(stderr, "The following %lu unused argument(s) were unneccesary: ", difference);

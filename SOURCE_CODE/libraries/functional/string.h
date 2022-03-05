@@ -11,6 +11,7 @@
 // ^^^ Necessary definitions that are needed in "string.c"
 
 char ***argv_location; char *unparsed_arg; // enable easy access to these variables outside of 'main()' <
+unsigned int *width_; // used by 'width_str_from_ul()'
 
 typedef void (*_error_selector) (); // this we will use for 'error_message'
 _error_selector _str_not_parsable_as_number(char *str); void str_not_parsable_as_number();
@@ -49,6 +50,7 @@ int string_to_int(char *string); // Returns the numeric value represented by the
 
 unsigned long char_in_val(unsigned long a); // Calculates the number of characters needed to display a in base BASE notation (BASE = 10)
 char *str_from_ul(unsigned long a, unsigned long min_out_length); // Converts from ul to string with a minimum of min_out_length characters, heading zeros are fixed if needed, call as str_from_ul(unsigned long a, characters_in_val(a))
+char *width_str_from_ul(unsigned long a);
 
 
 void ignored_arguments(int argc, char **argv, int used_arguments);
