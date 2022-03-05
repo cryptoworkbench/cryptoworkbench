@@ -91,10 +91,7 @@ unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair
 
     if (*id_) // in the case of dealing with multiplicative groups <--
     {
-	if (*mod_ == 2) {
-	    lookup_table.perm_length[0] = group_cardinality_;
-	    return 1;
-	}
+	if (*mod_ == 2) return 1;
 
 	for (index = 1; index < group_cardinality_; index++) if ((lookup_table.perm_length[index] = count_of_GENERATED_subgroup_elements(index)) == group_cardinality_) break;
 	// find the first generator ^
