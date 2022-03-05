@@ -16,8 +16,8 @@ struct LL_ { struct LL_ *next; unsigned long e; };
 struct crux { unsigned long *base_permutation; char **ASCII; unsigned long **permutation; unsigned long *perm_length; };
 // ^^ type definitions
 
-struct crux *lookup_table; unsigned long group_cardinality_ = 0; unsigned long *permutation_of_FIRST_GEN; field_operation combine; unsigned long horizontal_offset;
-//           ^ global variables          ^                                      ^                                         ^                      ^
+struct crux lookup_table; unsigned long group_cardinality_ = 0; unsigned long *permutation_of_FIRST_GEN; field_operation combine; unsigned long horizontal_offset;
+//          ^ global variables          ^                                      ^                                         ^                      ^
 
 void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
     struct LL_ *new_LL_element = (struct LL_ *) malloc(sizeof(struct LL_)); new_LL_element->e = new_ulong; new_LL_element->next = NULL; // create and initialize new element
@@ -26,10 +26,10 @@ void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
 }
 
 void print_permutation(unsigned long index) {
-    fprintf(stdout, "<%s> = {", lookup_table->ASCII[index]);
+    fprintf(stdout, "<%s> = {", lookup_table.ASCII[index]);
     unsigned long i = 0; do {
-	fprintf(stdout, "%s", lookup_table->ASCII[lookup_table->permutation[index][(horizontal_offset + i) % lookup_table->perm_length[index]]]); i++;
-	if (i == lookup_table->perm_length[index]) break;
+	fprintf(stdout, "%s", lookup_table.ASCII[lookup_table.permutation[index][(horizontal_offset + i) % lookup_table.perm_length[index]]]); i++;
+	if (i == lookup_table.perm_length[index]) break;
 	else fprintf(stdout, ", ");
     } while (1); fprintf(stdout, "}\n");
 }
@@ -47,32 +47,75 @@ unsigned long *array_from_LL(struct LL_ **head_TRACER, unsigned long *required_a
 unsigned long count_of_GENERATED_subgroup_elements(unsigned long index) { unsigned long ret_val = 0;
     struct VOID_ptr_ptr_PAIR permutation_LL_pair = initialize_CHANNEL_ptr_pair();
     unsigned long generated_element = *id_; do {
-	INSERT((struct LL_ ***) &permutation_LL_pair.iterator, INDEX_within_UL_array(lookup_table->base_permutation, group_cardinality_, generated_element)); ret_val++;
-	generated_element = combine(generated_element, lookup_table->base_permutation[index]);
+	INSERT((struct LL_ ***) &permutation_LL_pair.iterator, INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality_, generated_element)); ret_val++;
+	generated_element = combine(generated_element, lookup_table.base_permutation[index]);
     } while (generated_element != *id_);
-    lookup_table->permutation[index] = array_from_LL((struct LL_ **) permutation_LL_pair.head, &ret_val);
+    lookup_table.permutation[index] = array_from_LL((struct LL_ **) permutation_LL_pair.head, &ret_val);
     return ret_val;
 }
 
-unsigned long finish(unsigned long index) { unsigned long generator_count = 1;
+unsigned long CONSULT_permutation_of_FIRST_GEN(unsigned long index) { unsigned long generator_count = 1;
     for (index; index < group_cardinality_; index++) {
-	unsigned long discrete_log = INDEX_within_UL_array(permutation_of_FIRST_GEN, group_cardinality_, INDEX_within_UL_array(lookup_table->base_permutation, group_cardinality_, lookup_table->base_permutation[index]));
-	lookup_table->perm_length[index] = (group_cardinality_ / GCD(discrete_log, group_cardinality_)); if (lookup_table->perm_length[index] == group_cardinality_) generator_count++;
-	lookup_table->permutation[index] = malloc(sizeof(unsigned long) * lookup_table->perm_length[index]);
-	unsigned long j = 0; lookup_table->permutation[index][j] = INDEX_within_UL_array(lookup_table->base_permutation, group_cardinality_, lookup_table->base_permutation[0]);
-	for (; j + 1 < lookup_table->perm_length[index]; j++) lookup_table->permutation[index][j + 1]
-	    = INDEX_within_UL_array(lookup_table->base_permutation, group_cardinality_, combine(lookup_table->base_permutation[index], lookup_table->base_permutation[lookup_table->permutation[index][j]]));
+	unsigned long discrete_log = INDEX_within_UL_array(permutation_of_FIRST_GEN, group_cardinality_, INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality_, lookup_table.base_permutation[index]));
+	lookup_table.perm_length[index] = (group_cardinality_ / GCD(discrete_log, group_cardinality_)); if (lookup_table.perm_length[index] == group_cardinality_) generator_count++;
+	lookup_table.permutation[index] = malloc(sizeof(unsigned long) * lookup_table.perm_length[index]);
+	unsigned long j = 0; lookup_table.permutation[index][j] = INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality_, lookup_table.base_permutation[0]);
+	for (; j + 1 < lookup_table.perm_length[index]; j++) lookup_table.permutation[index][j + 1]
+	    = INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality_, combine(lookup_table.base_permutation[index], lookup_table.base_permutation[lookup_table.permutation[index][j]]));
     } return generator_count;
 }
 
-unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) { unsigned long cell_width = char_in_val(((struct LL_ *) element_CHANNEL_PTR_pair.iterator)->e);
-    lookup_table = (struct crux *) malloc(sizeof(struct crux)); permutation_of_FIRST_GEN = lookup_table->base_permutation = array_from_LL((struct LL_ **) element_CHANNEL_PTR_pair.head, &group_cardinality_);
-    lookup_table->permutation = (unsigned long **) malloc(sizeof(unsigned long *) * group_cardinality_); lookup_table->perm_length = (unsigned long *) malloc(sizeof(unsigned long) * group_cardinality_);
-    lookup_table->perm_length[0] = 1; *(lookup_table->permutation[0] = malloc(sizeof(unsigned long *))) = 0; lookup_table->ASCII = (char **) malloc(sizeof(char *) * group_cardinality_); unsigned long index;
-    for (index = 0; index < group_cardinality_; index++) lookup_table->ASCII[index] = str_from_ul(lookup_table->base_permutation[index], cell_width);
-    if (*id_) { for (index = 1; index < group_cardinality_; index++) if ((lookup_table->perm_length[index] = count_of_GENERATED_subgroup_elements(index)) == group_cardinality_) break;
-	if (index == group_cardinality_) return 0; permutation_of_FIRST_GEN = lookup_table->permutation[index]; return finish(index + 1); }
-    lookup_table->perm_length[1] = group_cardinality_; lookup_table->permutation[1] = lookup_table->base_permutation; return finish(2);
+unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) {
+    unsigned long cell_width = char_in_val(((struct LL_ *) element_CHANNEL_PTR_pair.iterator)->e);
+    // determine the neccessary cell width for the widest cell ^
+
+    // lookup_table = (struct crux *) malloc(sizeof(struct crux));
+    // allocate the custom data type which contains all the pointers on heap memory ^
+
+    permutation_of_FIRST_GEN = lookup_table.base_permutation = array_from_LL((struct LL_ **) element_CHANNEL_PTR_pair.head, &group_cardinality_);
+    // point the singular unsigned long pointer 'base_permutation' to an array containing the group's elements in the order from the external file (exported by 'group_element_exporter' from 'group_library') ^
+    // 'permutation_of_FIRST_GEN' must also point to this permutation ^^
+
+    lookup_table.permutation = (unsigned long **) malloc(sizeof(unsigned long *) * group_cardinality_);
+
+    lookup_table.perm_length = (unsigned long *) malloc(sizeof(unsigned long) * group_cardinality_);
+    // point the singular unsigned long pointer 'perm_length' to a newly accolated unsigned long array (will use this array to store the lengths of the subgroups) ^
+
+    lookup_table.perm_length[0] = 1;
+    // the first element from the group is always the identity element if 'group_element_exporter' did it's work properly
+
+    *(lookup_table.permutation[0] = (unsigned long *) malloc(sizeof(unsigned long) * MULTIPLICATIVE_IDENTITY)) = 0;
+    // the identity element always only yields itself when you combine it with itself ^
+
+    lookup_table.ASCII = (char **) malloc(sizeof(char *) * group_cardinality_);
+    // set the signular pointer to an unsigned long pointer to an array of unsigned long pointers (which each can store a reference to an array of unsigned longs)
+
+    unsigned long index; for (index = 0; index < group_cardinality_; index++) lookup_table.ASCII[index] = str_from_ul(lookup_table.base_permutation[index], cell_width);
+    // enter this array and create the cells (set the plural references / fill the unsigned long pointer pointer array)
+
+    if (*id_) // in the case of dealing with multiplicative groups <--
+    {
+	for (index = 1; index < group_cardinality_; index++) if ((lookup_table.perm_length[index] = count_of_GENERATED_subgroup_elements(index)) == group_cardinality_) break;
+	// find the first generator ^
+
+	if (index == group_cardinality_) return 0;
+	// return 0 if zero generators were found ^ (in the meanwhile the rest has been set!)
+
+       	permutation_of_FIRST_GEN = lookup_table.permutation[index];
+	// make the global unsigned long pointer 'permutation_of_FIRST_GEN' point to the first generator's permutation ^
+
+       	return CONSULT_permutation_of_FIRST_GEN(index + 1);
+	// complete the examplifications of subgroups using the new value for 'permutation_of_FIRST_GEN' ^
+    }   // multiplicative groups have been dealt with ^
+
+    lookup_table.perm_length[1] = group_cardinality_;
+    // if the case of additive groups the second element (the element at index '1') is always going to be 1, so it's a generator (so it's subgroup's cardinality is equal to the group overal cardinality) ^
+
+    lookup_table.permutation[1] = lookup_table.base_permutation;
+    // also say that the permutation of the second any of any additive group is equal to the order in which 'group_element_exporter' exports an additive or a multiplicative group ^
+
+    return CONSULT_permutation_of_FIRST_GEN(2);
+    // 'CONSULT_permutation_of_FIRST_GEN' completes the interlinked structure of arrays using the information about the first generator in the group ^
 }
 
 void horizontal_offset_failed_to_parse() { fprintf(stderr, "Failed to interpret horizontal table offset! --- ^"); }
@@ -105,10 +148,10 @@ int main(int argc, char **argv) { argv_location = &argv;
     if (generator_count) {
 	fprintf(stdout, "%lu generators are present within \u2115/\u2115%s%s:\n", generator_count, argv[1], id_as_operation_symbol());
 	for (unsigned long printed_gens = 0, index = __vertical_offset; printed_gens < generator_count; index = _add(index, 1, group_cardinality_))
-	{ while (lookup_table->perm_length[index] != group_cardinality_) index = _add(index, 1, group_cardinality_); print_permutation(index); printed_gens++; }
+	{ while (lookup_table.perm_length[index] != group_cardinality_) index = _add(index, 1, group_cardinality_); print_permutation(index); printed_gens++; }
     } else fprintf(stdout, "There are no generators in this group.\n");
     //   list generators afterwards ^
 
-    for (unsigned long i = 0; i < group_cardinality_; i++) { free(lookup_table->permutation[i]); free(lookup_table->ASCII[i]); } free(lookup_table->perm_length);
-    if (id) free(lookup_table->base_permutation); free(lookup_table); return 0;
+    for (unsigned long i = 0; i < group_cardinality_; i++) { free(lookup_table.permutation[i]); free(lookup_table.ASCII[i]); } free(lookup_table.perm_length);
+    if (id) free(lookup_table.base_permutation); return 0;
 } // * = 'member a will hold y offset, member b will hold x offset'
