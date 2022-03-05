@@ -66,7 +66,8 @@ unsigned long CONSULT_permutation_of_FIRST_GEN(unsigned long index) { unsigned l
 }
 
 unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) {
-    *(width_ = (unsigned int *) malloc(sizeof(unsigned int))) = char_in_val(((struct LL_ *) element_CHANNEL_PTR_pair.iterator)->e);
+    // *(width_ = (unsigned int *) malloc(sizeof(unsigned int))) = char_in_val(((struct LL_ *) element_CHANNEL_PTR_pair.iterator)->e);
+    unsigned int width = (unsigned int) char_in_val(((struct LL_ *) element_CHANNEL_PTR_pair.iterator)->e); width_ = &width;
     // set the unsigned int pointer 'width_str_from_ul' needs in order to function properly ^
 
     permutation_of_FIRST_GEN = lookup_table.base_permutation = array_from_LL((struct LL_ **) element_CHANNEL_PTR_pair.head, &group_cardinality_);
@@ -127,5 +128,5 @@ int main(int argc, char **argv) { argv_location = &argv;
     //   list generators afterwards ^
 
     for (unsigned long i = 0; i < group_cardinality_; i++) { free(lookup_table.permutation[i]); free(lookup_table.ASCII[i]); } free(lookup_table.perm_length);
-    if (id) free(lookup_table.base_permutation); free(width_); return 0;
+    if (id) free(lookup_table.base_permutation); return 0;
 } // * = 'member a will hold y offset, member b will hold x offset'
