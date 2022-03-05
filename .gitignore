@@ -5,8 +5,6 @@
 *.o
 
 # Save a local collection of project to do's
-.initialization_errors.regarding_application_builds
-.initialization_errors.regarding_mkdir
-.initialization_errors.regarding_scripts
+.initialization_errors
 /SOURCE_CODE/under_development/
 /applications/
