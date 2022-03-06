@@ -178,25 +178,6 @@ unsigned long chinese_remainder_theorem(unsigned long remainder, unsigned long *
     } return isomorphism.a;
 }
 
-// HERE FOLLOW IMPORTANT FUNCTIONS:
-//
-unsigned long coprime_check_last_a, coprime_check_last_b;
-
-int coprime_check(unsigned long ul_a, unsigned long ul_b, int exit_status)
-{
-    coprime_check_last_a = ul_a; coprime_check_last_b = ul_b;
-    // remember the checked pairs of numbers ^^
-
-    if (coprime(coprime_check_last_a, coprime_check_last_b)) return 0;
-    return error_message(coprime_check_error, exit_status);
-}
-
-void coprime_check_error() {
-    fprintf(stderr, " GCD(%lu, %lu) != 1 -->  ", coprime_check_last_a, coprime_check_last_b);
-    fprintf(stderr, "%lu is not coprime to %lu -->  ", coprime_check_last_b, coprime_check_last_a);
-    fprintf(stderr, "%lu is neither from \u2115%lu* nor from \u2115/%lu\u2115* !", coprime_check_last_a, coprime_check_last_b, coprime_check_last_b);
-}
-
 int pair_of_strs_represents_pair_of_coprime_ULs(_error_selector _first_instruction, _error_selector second_instruction, unsigned long *ptr_one, unsigned long *ptr_two, int _first_index, int second_index, int exit_status) {
     // requires 'argv_location' to be set ^
 
@@ -204,6 +185,11 @@ int pair_of_strs_represents_pair_of_coprime_ULs(_error_selector _first_instructi
     if (error_specification(second_instruction, n(ul_parse_str((*argv_location)[second_index], ptr_two, 1)))) return - second_index;
     // interpret the numbers ^^
 
-    return coprime_check(*ptr_one, *ptr_two, exit_status);
+    if (coprime(*ptr_one, *ptr_two)) return 0;
     // perform the coprimality check ^
+
+    fprintf(stderr, " GCD(%s, %s) != 1 -->  ", (*argv_location)[_first_index], (*argv_location)[second_index]);
+    fprintf(stderr, "%s is not coprime to %s -->  ", (*argv_location)[second_index], (*argv_location)[_first_index]);
+    fprintf(stderr, "%s is neither from \u2115%s* nor from \u2115/%s\u2115* !", (*argv_location)[_first_index], (*argv_location)[second_index], (*argv_location)[second_index]);
+    return exit_status;
 }
