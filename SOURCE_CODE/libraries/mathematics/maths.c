@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include "maths.h"
-#include "../functional/string.h"
 
 FILE *urandom = NULL;
 const char *_standard_prime_table_filename = "shared_prime_table";
@@ -179,6 +178,8 @@ unsigned long chinese_remainder_theorem(unsigned long remainder, unsigned long *
     } return isomorphism.a;
 }
 
+// HERE FOLLOW IMPORTANT FUNCTIONS:
+//
 unsigned long coprime_check_last_a, coprime_check_last_b;
 
 int coprime_check(unsigned long ul_a, unsigned long ul_b, int exit_status)
@@ -187,11 +188,22 @@ int coprime_check(unsigned long ul_a, unsigned long ul_b, int exit_status)
     // remember the checked pairs of numbers ^^
 
     if (coprime(coprime_check_last_a, coprime_check_last_b)) return 0;
-    return n(error_message(coprime_check_error, exit_status));
+    return error_message(coprime_check_error, exit_status);
 }
 
 void coprime_check_error() {
     fprintf(stderr, " GCD(%lu, %lu) != 1 -->  ", coprime_check_last_a, coprime_check_last_b);
-    fprintf(stderr, "%lu is not coprime to %lu -->  ", coprime_check_last_a, coprime_check_last_b);
-    fprintf(stderr, "%lu is neither an element from \u2115%lu* nor an element from \u2115/%lu\u2115* !", coprime_check_last_a, coprime_check_last_b, coprime_check_last_b);
+    fprintf(stderr, "%lu is not coprime to %lu -->  ", coprime_check_last_b, coprime_check_last_a);
+    fprintf(stderr, "%lu is neither from \u2115%lu* nor from \u2115/%lu\u2115* !", coprime_check_last_a, coprime_check_last_b, coprime_check_last_b);
+}
+
+int coprime_arguments(_error_selector _first_instruction, _error_selector second_instruction, unsigned long *ptr_one, unsigned long *ptr_two, int _first_index, int second_index, int exit_status) {
+    // requires 'argv_location' to be set ^
+
+    if (error_specification(_first_instruction, n(ul_parse_str((*argv_location)[_first_index], ptr_one, 1)))) return - _first_index;
+    if (error_specification(second_instruction, n(ul_parse_str((*argv_location)[second_index], ptr_two, 1)))) return - second_index;
+    // interpret the numbers ^^
+
+    return coprime_check(*ptr_one, *ptr_two, exit_status);
+    // perform the coprimality check ^
 }
