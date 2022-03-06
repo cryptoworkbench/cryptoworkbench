@@ -50,15 +50,29 @@ int jacobi_symbol(unsigned long p, unsigned long C) {
     return m;
 }
 
+/*
 _error_selector error_selector(int SELECTOR) { switch (SELECTOR) {
     case 1: fprintf(stderr, "Please provide as first argument the numerator to the Jacobi symbol.\n\n"); return str_not_parsable_as_number;
     case 2: fprintf(stderr, "Please provide as second argument the denominator to the Jacobi symbol.\n\n"); return str_not_parsable_as_number;
 }; }
-// the only error function in this program is a combination of a single fprintf() along with str_not_parsable_as_number() ^
+*/
 
-int main(int argc, char **argv) { unparsed_arg = argv[1];
+unsigned long N, q;
+
+void numerator_fail() { fprintf(stderr, "Please provide as first argument the numerator to the Jacobi symbol."); }
+void denominator_fail() { fprintf(stderr, "Please provide as second argument the denominator to the Jacobi symbol."); }
+
+int main(int argc, char **argv) {
+    conditional_goodbye(n(n(error_specification(numerator_error, n(ul_parse_str(argv + 1, &N, -1))))));
+    conditional_goodbye(n(n(error_specification(denominator_error, n(ul_parse_str(argv + 2, &q, -1))))));
+    conditional_goodbye(n(n(error_specification(number_not_coprime, n(n(error_message(coprime_error, -2 * ( !coprime(DH_parameters->b, *mod_) ))))))));
+
+
+    /*
+    unparsed_arg = argv[1];
     unsigned long N; if (2 > argc || !ul_parse_str(unparsed_arg, &N)) error_message(error_selector(1), -1); unparsed_arg = argv[2];
     unsigned long q; if (3 > argc || !ul_parse_str(unparsed_arg, &q)) error_message(error_selector(2), -2); 
+    */
     if (GCD(N, q) != 1) { fprintf(stderr, "%lu is not an element from \u2115/%lu\u2115\n\n", N, q); error_message(numbers_not_coprime, -3); }
     char *ptr = argv[3]; if (!ptr) ptr = query_preferences_file();
     if (!(_preferred_factorization_engine = factorization_method(SELECTOR_from_str_representing_factorization_method(ptr)))) {

@@ -28,9 +28,9 @@ struct VOID_ptr_ptr_PAIR group_elements_LL(char **argv) { FILE *ELEMENT_database
 }
 
 int i;
-void mod_failed_to_parse() { fprintf(stderr, "Please provide as first argument a modulus specifying the multiplicative group to use. '\u2115/%s\u2115*' makes no sense to me.", (*argv_location)[1]); }
-void coprime_error() { fprintf(stderr, "gcd(%s, %s) != 1: %s is not an element from \u2115/%s\u2115*.", (*argv_location)[i], (*argv_location)[1], (*argv_location)[i], (*argv_location)[1]); }
-void generator_failed_to_parse() { fprintf(stderr, "Please provide as second argument a generator from \u2115/%s\u2115*.", (*argv_location)[1]); }
+void mod_failed_to_parse() { fprintf(stderr, "Please provide as first argument a modulus specifying the multiplicative group to use. '\u2115%s*' makes no sense to me.", (*argv_location)[1]); }
+void coprime_error() { fprintf(stderr, "gcd(%s, %s) != 1: %s is not an element from \u2115%s*.", (*argv_location)[i], (*argv_location)[1], (*argv_location)[i], (*argv_location)[1]); }
+void generator_failed_to_parse() { fprintf(stderr, "Please provide as second argument a generator from \u2115%s*.", (*argv_location)[1]); }
 
 void _third_argument_instruction() { fprintf(stderr, "Please supply as third argument Bob's private key!"); }
 void fourth_argument_instruction() { fprintf(stderr, "Please supply as fourth argument Alice's private key!"); }
@@ -50,7 +50,7 @@ int main(int argc, char **argv) { argv_location = &argv; DH_parameters = (STRUCT
 
     group_cardinality_ = totient(*mod_); struct ordered_pair iso = _isomorphism(); do { iso.b = mod_multiply(iso.b, DH_parameters->b); iso.a++; if (iso.b == MULTIPLICATIVE_IDENTITY) break; } while (1);
     if (iso.a != group_cardinality_) {
-	fprintf(stderr, "WARNING: %s only covers %.2f %% (1/%lu) of \u2115/%s\u2115*  (|\u2115/%s\u2115*| / %lu  =  \u03C6(%s) / %lu  =  %lu / %lu  = %lu), continue? ('n' of 'N' for exit): ",
+	fprintf(stderr, "WARNING: %s only covers %.2f %% (1/%lu) of \u2115%s*  (|\u2115%s*| / %lu  =  \u03C6(%s) / %lu  =  %lu / %lu  = %lu), continue? ('n' of 'N' for exit): ",
 		argv[2],
 		((float) 1 / (group_cardinality_ / iso.a)) * 100,
 		group_cardinality_ / iso.a,
