@@ -101,7 +101,7 @@ void invalid_group_parameters()
 }
 
 void id_error() { fprintf(stderr, "Please specify as second argument the identity element of the group whose subgroups to examplify."); list_plausable_group_identity_descriptions(); }
-void mod_error() { fprintf(stderr, "Please specify as first argument the modulus of the group whose subgroups to examplify."); }
+void mod_error() { fprintf(stderr, "Please specify as first argument the modulus of the group whose subgroups to examplify. '\u2115%s*' makes no sense to me.", (*argv_location)[1]); }
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { argv_location = &argv;
@@ -121,7 +121,7 @@ int main(int argc, char **argv) { argv_location = &argv;
     //   examplify subgroups ^
 
     if (generator_count) {
-	fprintf(stdout, "%lu generators are present within \u2115/\u2115%s%s:\n", generator_count, argv[1], id_as_operation_symbol());
+	fprintf(stdout, "%lu generators are present within \u2115%s%s:\n", generator_count, argv[1], id_as_operation_symbol());
 	for (unsigned long printed_gens = 0, index = __vertical_offset; printed_gens < generator_count; index = _add(index, 1, group_cardinality_))
 	{ while (lookup_table.perm_length[index] != group_cardinality_) index = _add(index, 1, group_cardinality_); print_permutation(index); printed_gens++; }
     } else fprintf(stdout, "There are no generators in this group.\n");
