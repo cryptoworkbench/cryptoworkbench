@@ -100,7 +100,14 @@ void invalid_group_parameters()
     else fprintf(stderr, "for multiplicative groups the modulus needs to be at least 2! (since multiplicative groups do not include the element '0')");
 }
 
-void id_error() { fprintf(stderr, "Please specify as second argument the identity element of the group whose subgroups to examplify."); list_plausable_group_identity_descriptions(); }
+void id_error() {
+    fprintf(stderr, "Please specify as second argument the operation associated with \u2115%s ->", (*argv_location)[1]);
+
+    // fprintf(stderr, "Please specify as second argument the identity element of the group whose subgroups to examplify (or the pair of operations associated with \u2115%s:", (*argv_location)[1]);
+    // fprintf(stderr, " addition and subtraction or multiplication and division, \u2115%s+ or \u2115%s*)", (*argv_location)[1], (*argv_location)[1]);
+    list_plausable_group_identity_descriptions();
+}
+
 void mod_error() { fprintf(stderr, "Please specify as first argument the modulus of the group whose subgroups to examplify. '\u2115%s*' makes no sense to me.", (*argv_location)[1]); }
 // error functions ^ (function header format fits typedef '_error_message')
 
@@ -118,7 +125,7 @@ int main(int argc, char **argv) { argv_location = &argv;
 
     combine = id_field_operation(); unsigned long generator_count = found_generators(group_elements_LL(argv));
     unsigned long index = __vertical_offset; do { print_permutation(index); index = _add(index, 1, group_cardinality_); } while (index != __vertical_offset); fprintf(stdout, "\n");
-    //   examplify subgroups ^
+    // examplify subgroups ^
 
     if (generator_count) {
 	fprintf(stdout, "%lu generators are present within \u2115%s%s:\n", generator_count, argv[1], id_as_operation_symbol());
