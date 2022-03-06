@@ -61,14 +61,7 @@ void denominator_fail() { fprintf(stderr, "Please specify in the first argument 
 void numerator_fail() { fprintf(stderr, "Please specify in the second argument an element from \u2115%s*", (*argv_location)[1]); }
 
 int main(int argc, char **argv) { argv_location = &argv;
-    conditional_goodbye(n(n(coprime_arguments(denominator_fail, numerator_fail, &D, &N, 1, 2, -3))));
-    _preferred_factorization_engine = factorization_method_retrieve(argv[3]);
-
-    /*
-    conditional_goodbye(n(n(error_specification(denominator_fail, n(ul_parse_str(argv[1], &D, -1))))));
-    conditional_goodbye(n(n(error_specification(numerator_fail, n(ul_parse_str(argv[2], &N, -2)))))); if (N > D) N %= D;
-    conditional_goodbye(n(n(error_specification(coprime_fail, coprime_check(N, D, -3)))));
-    */
+    conditional_goodbye(n(n(pair_of_strs_represents_pair_of_coprime_ULs(denominator_fail, numerator_fail, &D, &N, 1, 2, -3)))); _preferred_factorization_engine = factorization_method_retrieve(argv[3]);
     // take in denominator, numerator, check if they are coprime, and overrule external file '/applications/.global_preference.factorization_engine' if requested ^^^
 
     mod_ = &D;

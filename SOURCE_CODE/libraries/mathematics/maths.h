@@ -74,4 +74,4 @@ unsigned long chinese_remainder_theorem(unsigned long remainder, unsigned long *
 int coprime_check(unsigned long ul_a, unsigned long ul_b, int exit_status);
 void coprime_check_error(); // food for 'error_message' or 'error_specification' <--
 
-int coprime_arguments(_error_selector _first_instruction, _error_selector second_instruction, unsigned long *ptr_one, unsigned long *ptr_two, int _first_index, int second_index, int exit_status);
+int pair_of_strs_represents_pair_of_coprime_ULs(_error_selector _first_instruction, _error_selector second_instruction, unsigned long *ptr_one, unsigned long *ptr_two, int _first_index, int second_index, int exit_status);
