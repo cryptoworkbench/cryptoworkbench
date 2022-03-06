@@ -162,7 +162,8 @@ FILE *prime_table_open(char *prime_table_filename) {
     return prime_table;
 } void prime_table_close(FILE *prime_table) { fclose(prime_table); _open_prime_table = NULL; }
 
-int eulers_criterion(unsigned long odd_prime_p, unsigned long odd_prime_q) { return (odd_prime_q - 1 - _exponentiate(odd_prime_p, (odd_prime_q - 1) / 2, odd_prime_q)) ? 1 : -1; }
+int _eulers_criterion(unsigned long odd_prime_p, unsigned long odd_prime_q) { return (odd_prime_q - 1 - _exponentiate(odd_prime_p, (odd_prime_q - 1) / 2, odd_prime_q)) ? 1 : -1; }
+int mod_eulers_criterion(unsigned long odd_prime_p) { return _eulers_criterion(odd_prime_p, *mod_); }
 
 void open_urandom() { urandom = fopen("/dev/urandom", "r"); }
 void close_urandom() { if (urandom) fclose(urandom); }
@@ -178,6 +179,19 @@ unsigned long chinese_remainder_theorem(unsigned long remainder, unsigned long *
     } return isomorphism.a;
 }
 
-void numbers_not_coprime() {
-    fprintf(stderr, "\nTwo user-input values which should have been coprime were not.\n\n");
+unsigned long coprime_check_last_a, coprime_check_last_b;
+
+int coprime_check(unsigned long ul_a, unsigned long ul_b, int exit_status)
+{
+    coprime_check_last_a = ul_a; coprime_check_last_b = ul_b;
+    // remember the checked pairs of numbers ^^
+
+    if (coprime(coprime_check_last_a, coprime_check_last_b)) return 0;
+    return n(error_message(coprime_check_error, exit_status));
+}
+
+void coprime_check_error() {
+    fprintf(stderr, " GCD(%lu, %lu) != 1 -->  ", coprime_check_last_a, coprime_check_last_b);
+    fprintf(stderr, "%lu is not coprime to %lu -->  ", coprime_check_last_a, coprime_check_last_b);
+    fprintf(stderr, "%lu is neither an element from \u2115%lu* nor an element from \u2115/%lu\u2115* !", coprime_check_last_a, coprime_check_last_b, coprime_check_last_b);
 }

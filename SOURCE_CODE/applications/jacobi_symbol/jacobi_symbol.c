@@ -24,10 +24,14 @@
 #include "../../libraries/mathematics/factorization_methods.h"
 
 // Legendre symbol for composite numerator and odd prime denominator
-int _legendre_symbol(unsigned long N, unsigned long D, int multiplicative_accumulator, int index, struct _PRIME_FACTORIZATION *prime_factorization) {
-    if (index == prime_factorization->number_of_distinct_prime_factors) { PRIME_FACTORIZATION_free(prime_factorization); return multiplicative_accumulator; }
-    int i = eulers_criterion(prime_factorization->prime_factor[index], D); if (!(i + 1 || prime_factorization->log[index] % 2)) i = 1;
-    return _legendre_symbol(N, D, multiplicative_accumulator * i, index + 1, prime_factorization);
+int _legendre_symbol(unsigned long N, unsigned long D, int multiplicative_accumulator, int index, struct _PRIME_FACTORIZATION *N_factorization) {
+    // recursive function ^
+
+    if (index == N_factorization->number_of_distinct_prime_factors) { PRIME_FACTORIZATION_free(N_factorization); return multiplicative_accumulator; }
+    // return conditional ^
+
+    int i = mod_eulers_criterion(N_factorization->prime_factor[index]); if (!(i + 1 || N_factorization->log[index] % 2)) i = 1;
+    return _legendre_symbol(N, D, multiplicative_accumulator * i, index + 1, N_factorization);
 }
 
 // Same as above but adds support for even prime and 1
@@ -44,7 +48,6 @@ int jacobi_symbol(unsigned long p, unsigned long C) {
     for (int i = 0; i < prime_factorization->number_of_distinct_prime_factors; i++) {
 	int leg = legendre_symbol(p % prime_factorization->prime_factor[i], prime_factorization->prime_factor[i]);
 	if (leg == -1 && prime_factorization->log[i] % 2 == 0) leg = 1; // if (!(leg + 1 || prime_factorization->log[i] % 2)) leg = 1;
-	// printf("legende_symbol of ( %lu / %lu )^%i = %i\n", p % prime_factorization->prime_factor[i], prime_factorization->prime_factor[i], prime_factorization->log[i], leg);
 	m *= leg;
     }
     return m;
@@ -53,19 +56,18 @@ int jacobi_symbol(unsigned long p, unsigned long C) {
 unsigned long D; // Denominator <--
 unsigned long N; // Numerator <--
 
-// void coprime_error() { fprintf(stderr, "gcd(%s, %s) != 1: %s is not an element from \u2115%s*.", (*argv_location)[i], (*argv_location)[1], (*argv_location)[i], (*argv_location)[1]); }
-void coprime_fail() { fprintf(stderr, "%s is neither an element from \u2115/%s\u2115* nor from \u2115%s*", (*argv_location)[2], (*argv_location)[1], (*argv_location)[1]); }
+void coprime_fail() { fprintf(stderr, "Jaman", (*argv_location)[2], (*argv_location)[1], (*argv_location)[1]); }
 void denominator_fail() { fprintf(stderr, "Please specify in the first argument a multiplicative group specification (goes as denominator into the Jacobi symbol)."); }
 void numerator_fail() { fprintf(stderr, "Please specify in the second argument an element from \u2115%s*", (*argv_location)[1]); }
 
 int main(int argc, char **argv) {
     conditional_goodbye(n(n(error_specification(denominator_fail, n(ul_parse_str(argv[1], &D, -1)))))); argv_location = &argv;
-    conditional_goodbye(n(n(error_specification(numerator_fail, n(ul_parse_str(argv[2], &N, -1))))));
-    conditional_goodbye(n(n(error_message(coprime_fail, -2 * !coprime(N, D))))); if (N > D) N %= D;
-    // verify arguments validity ^^^
+    conditional_goodbye(n(n(error_specification(numerator_fail, n(ul_parse_str(argv[2], &N, -2)))))); if (N > D) N %= D;
+    conditional_goodbye(n(n(error_specification(coprime_fail, coprime_check(N, D, -3))))); _preferred_factorization_engine = factorization_method_retrieve(argv[3]);
+    // conditional_goodbye(n(n(error_message(coprime_fail, -2 * !coprime(N, D))))); _preferred_factorization_engine = factorization_method_retrieve(argv[3]);
+    // take in denominator, numerator, check if they are coprime, and overrule external file '/applications/.global_preference.factorization_engine' if requested ^^^
 
-    _preferred_factorization_engine = factorization_method_retrieve(argv[3]);
-
+    mod_ = &D;
     unsigned long ans;
     if (!primality_test_based_on_preferred_factorization_engine(D)) ans = jacobi_symbol(N, D);
     else ans = legendre_symbol(N, D);

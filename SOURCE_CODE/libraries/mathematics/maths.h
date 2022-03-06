@@ -59,10 +59,16 @@ char *sieve_of_eratosthenes(unsigned long limit);
 unsigned long primes_printed_from_sieve_array_to_FS(char *sieve, unsigned long limit, FILE *FS);
 FILE *prime_table_open(char *prime_table_filename); // < I want this to eventually try to cooperate with the logbook instead of stderr
 void prime_table_close(FILE *prime_table); // < closes FS and resets char * variable '_open_prime_table' to NULL
-int eulers_criterion(unsigned long odd_prime_p, unsigned long odd_prime_q);
+
+int _eulers_criterion(unsigned long odd_prime_p, unsigned long odd_prime_q);
+int mod_eulers_criterion(unsigned long odd_prime_p);
+// new pair ^^
+
 void open_urandom();
 void close_urandom();
 unsigned long urandom_number(unsigned long upper_bound);
 
 unsigned long chinese_remainder_theorem(unsigned long remainder, unsigned long **moduli, unsigned long modulis);
-void numbers_not_coprime(); // food for error_message() <--
+
+int coprime_check(unsigned long ul_a, unsigned long ul_b, int exit_status);
+void coprime_check_error(); // food for 'error_message' or 'error_specification' <--
