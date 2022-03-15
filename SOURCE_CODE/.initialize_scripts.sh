@@ -21,8 +21,7 @@ if [ $? -eq 0 ];
 then echo "successfully initialized          'prime_factorize.sh'"; successfull_builds=$(( $successfull_builds + 1 ));
 else echo "                                  'prime_factorize.sh'        failed to initialize!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ../
 
-cd ../..; echo "" >> .initialization_errors; echo "" >> .initialization_errors;
-echo ""
+cd ../..; echo "" >> .initialization_errors; echo "" >> .initialization_errors; echo ""
 echo " /==============================================================================\\"
 echo " | $___failed_builds script(s) failed to initialize! $successfull_builds script(s) were successfully initialized. |"
 echo " \\==============================================================================/"
