@@ -99,7 +99,7 @@ char *STDIN_factorization_preference() {
 void write_to_preferences_file(char *str, FILE *file) { fprintf(file, "%s\n", str); fclose(file); }
 
 char *query_preferences_file() { FILE *file;
-    if (!(file = fopen(_preferred_factorization_engine_file, "r"))) { fprintf(stderr, "Failed to open global preferences file '%s'.\n\n", _preferred_factorization_engine_file);
+    if (!(file = fopen(_preferred_factorization_engine_file, "r"))) { fprintf(stderr, "Failed to open hidden preferences file '%s'.\n\n", _preferred_factorization_engine_file);
 	if (!(file = fopen(_preferred_factorization_engine_file, "w"))) error_message(factorization_engine_preference_file_ERROR, -1);
 	char *str = STDIN_factorization_preference(); write_to_preferences_file(str, file); free(str);
 	fprintf(stdout, "Saved preference.\n\n"); return query_preferences_file();

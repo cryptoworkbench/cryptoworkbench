@@ -136,7 +136,7 @@ if [ $? -eq 0 ];
 then echo "successfully build application    'Wipe_LOGBOOK'"; successfull_builds=$(( $successfull_builds + 1 ));
 else echo "                   application    'Wipe_LOGBOOK'         FAILED TO BUILD!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ..
 
-cd ../..; echo "" >> .initialization_errors; echo "" >> .initialization_errors; 
+cd ../..; echo "" >> .initialization_errors; echo "" >> .initialization_errors; echo ""
 echo " /==============================================================================\\"
 echo " | $___failed_builds APPLICATION(S) FAILED TO BUILD! $successfull_builds application(s) were successfully build. |"
 echo " \\==============================================================================/";
