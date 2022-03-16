@@ -34,7 +34,7 @@ int main(int argc, char **argv) { argv_location = &argv;
     // process terminal arguments using this genious construction ^^^
 
     fprintf(stdout, "%lu^-%i \u2261 %i / %lu \u2261 ", denominator, NUMERATOR, NUMERATOR, denominator); mod_ = &multiplicative_group_specification;
-    if (denominator != mod_conditional_field_cap(denominator)) fprintf(stdout, "%i / %lu \u2261 ", NUMERATOR, denominator = mod_conditional_field_cap(denominator));
+    if (denominator != mod_conditional_cap(denominator)) fprintf(stdout, "%i / %lu \u2261 ", NUMERATOR, denominator = mod_conditional_cap(denominator));
     fprintf(stdout, "%lu	(mod %lu)\n", mod_divide(NUMERATOR, denominator), *mod_); return 0;
     // (verbosely) print the result ^^^
 }

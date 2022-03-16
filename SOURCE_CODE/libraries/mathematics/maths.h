@@ -18,7 +18,7 @@ struct ordered_pair _isomorphism();
 /* FUNCTIONS THAT HAVE TO DO WITH mod_ FOLLOW: */
 unsigned long exponentiate(unsigned long base, unsigned long exponent); unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_);
 unsigned long mod_exponentiate(unsigned long base, unsigned long exponent); // required exponentiation functions <^^
-unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_); unsigned long mod_conditional_field_cap(unsigned long result); // functions for (modular) arithmetic <<
+unsigned long _conditional_cap(unsigned long result, unsigned long mod_); unsigned long mod_conditional_cap(unsigned long result); // functions for (modular) arithmetic <<
 unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_); unsigned long mod_inverse(unsigned long element_of_additive_group); // functions for taking the additive inverse <<
 unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_); unsigned long mod_add(unsigned long a, unsigned long b); // functions for (modular) addition
 unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_); unsigned long mod_subtract(unsigned long a, unsigned long b); // functions for (modular) subtraction

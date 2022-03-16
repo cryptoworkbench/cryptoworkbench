@@ -59,7 +59,7 @@ int main(int argc, char **argv) { argv_location = &argv; DH_parameters = (STRUCT
 		iso.a);
 	char y_or_n; fscanf(stdin, " %c", &y_or_n); if (y_or_n == 'n' || y_or_n == 'N') exit(-1);
     } // detect when the permutation basis does not cover the group ^
-    fprintf(stdout, "Alice and Bob use %lu within \u2115%s*.\n\nDiffie-Hellman key exchange example:\n", mod_conditional_field_cap(DH_parameters->b), argv[1]);
+    fprintf(stdout, "Alice and Bob use %lu within \u2115%s*.\n\nDiffie-Hellman key exchange example:\n", mod_conditional_cap(DH_parameters->b), argv[1]);
     fprintf(stdout, "Bob's private key: %lu\n", __priv_bob);
     fprintf(stdout, "Alice's private key: %lu\n", priv_alice);
 

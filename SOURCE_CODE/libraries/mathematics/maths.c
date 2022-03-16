@@ -17,18 +17,18 @@ struct ordered_pair _isomorphism() { struct ordered_pair ret_val = { ADDITIVE_ID
 // a general function which a lot of functions in this library make use of ^^
 
 /* FUNCTIONS THAT HAVE TO DO WITH mod_ FOLLOW: */
-unsigned long _conditional_field_cap(unsigned long result, unsigned long mod_) { return (mod_) ? result % mod_ : result; }
-unsigned long mod_conditional_field_cap(unsigned long result) { return (*mod_) ? _conditional_field_cap(result, *mod_) : result; }
-unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a + b, mod_); }
+unsigned long _conditional_cap(unsigned long result, unsigned long mod_) { return (mod_) ? result % mod_ : result; }
+unsigned long mod_conditional_cap(unsigned long result) { return (*mod_) ? _conditional_cap(result, *mod_) : result; }
+unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_cap(a + b, mod_); }
 unsigned long mod_add(unsigned long a, unsigned long b) { return _add(a, b, *mod_); }
-unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_) { return _conditional_field_cap(mod_ - _conditional_field_cap(element_of_additive_group, mod_), mod_); }
+unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_) { return _conditional_cap(mod_ - _conditional_cap(element_of_additive_group, mod_), mod_); }
 unsigned long mod_inverse(unsigned long element_of_additive_group) { return _inverse(element_of_additive_group, *mod_); }
-unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a + _inverse(b, mod_), mod_); }
+unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_cap(a + _inverse(b, mod_), mod_); }
 unsigned long mod_subtract(unsigned long a, unsigned long b) { return _subtract(a, b, *mod_); }
-unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_field_cap(a * b, mod_); }
-unsigned long mod_multiply(unsigned long a, unsigned long b) { return mod_conditional_field_cap(a * b); } 
+unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_cap(a * b, mod_); }
+unsigned long mod_multiply(unsigned long a, unsigned long b) { return mod_conditional_cap(a * b); } 
 unsigned long _divide(unsigned long numerator, unsigned long denominator, unsigned long mod_)
-{ if (mod_) while (numerator % denominator != 0) numerator += mod_; return _conditional_field_cap(numerator / denominator, mod_); }
+{ if (mod_) while (numerator % denominator != 0) numerator += mod_; return _conditional_cap(numerator / denominator, mod_); }
 unsigned long mod_divide(unsigned long numerator, unsigned long denominator) { return _divide(numerator, denominator, *mod_); }
 
 /* FUNCTIONS THAT HAVE TO DO WITH mod_exponentiate FOLLOW: */
@@ -39,7 +39,7 @@ unsigned long least_base_TWO_log(unsigned long power_of_TWO) {
     while (multiplicative_accumulator < power_of_TWO) { multiplicative_accumulator *= 2; return_value++; } if (multiplicative_accumulator > power_of_TWO) return_value--; return return_value;
 } unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_) {
     if (base == 0 || exponent == 0) return 1; unsigned long minimum_log = least_base_TWO_log(exponent); unsigned long *backbone = (unsigned long *) malloc(sizeof(unsigned long) * (minimum_log + 1));
-    unsigned long i = ADDITIVE_IDENTITY; backbone[i] = _conditional_field_cap(base, mod_); while (i < minimum_log) { backbone[i + 1] = _multiply(backbone[i], backbone[i], mod_); i++; }
+    unsigned long i = ADDITIVE_IDENTITY; backbone[i] = _conditional_cap(base, mod_); while (i < minimum_log) { backbone[i + 1] = _multiply(backbone[i], backbone[i], mod_); i++; }
     unsigned long ret_val = MULTIPLICATIVE_IDENTITY;
     while (exponent != 0) { ret_val = _multiply(ret_val, backbone[minimum_log], mod_); exponent -= exponentiate(2, minimum_log); minimum_log = least_base_TWO_log(exponent); } free(backbone); return ret_val;
 } unsigned long mod_exponentiate(unsigned long base, unsigned long exponent) { return _exponentiate(base, exponent, *mod_); }
@@ -129,8 +129,8 @@ unsigned long multiplicative_inverse(unsigned long a) { // Yield a^-1 mod b
     extended_gcd(a, *mod_, &x, &y);
 
     // return x; // doesn't work
-    // return mod_conditional_field_cap(x); // doesn't work
-    return mod_conditional_field_cap(*mod_ + x); // works // return (*mod_ + x) % *mod_; // also works
+    // return mod_conditional_cap(x); // doesn't work
+    return mod_conditional_cap(*mod_ + x); // works // return (*mod_ + x) % *mod_; // also works
     // return x % *mod_; // doesn't work
 }
 
@@ -169,7 +169,7 @@ void close_urandom() { if (urandom) fclose(urandom); }
 
 unsigned long urandom_number(unsigned long upper_bound) { if (!(urandom)) open_urandom();
     unsigned long ret_val; fread(&ret_val, sizeof(unsigned long), 1, urandom);
-    ret_val = _conditional_field_cap(ret_val, upper_bound); return ret_val;
+    ret_val = _conditional_cap(ret_val, upper_bound); return ret_val;
 }
 
 unsigned long chinese_remainder_theorem(unsigned long remainder, unsigned long **moduli, unsigned long modulis) { struct ordered_pair isomorphism = _isomorphism();

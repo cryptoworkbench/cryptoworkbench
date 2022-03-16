@@ -13,8 +13,8 @@ int main(int argc, char **argv) {
     unsigned long denominator; conditional_goodbye(n(n(error_specification(denominator_failed_to_parse, n(ul_parse_str(&denominator, argv[3], -3))))));
     // take in necessary information from terminal arguments ^^^
 
-    if (__numerator >= ________mod || ________mod <= denominator) fprintf(stderr, "%lu / %lu \u2261 ", __numerator, denominator); mod_ = &________mod; __numerator = mod_conditional_field_cap(__numerator);
-    denominator = mod_conditional_field_cap(denominator); fprintf(stdout, "%lu / %lu \u2261 %lu (mod %lu)\n", __numerator, denominator, mod_divide(__numerator, denominator), ________mod);
+    if (__numerator >= ________mod || ________mod <= denominator) fprintf(stderr, "%lu / %lu \u2261 ", __numerator, denominator); mod_ = &________mod; __numerator = mod_conditional_cap(__numerator);
+    denominator = mod_conditional_cap(denominator); fprintf(stdout, "%lu / %lu \u2261 %lu (mod %lu)\n", __numerator, denominator, mod_divide(__numerator, denominator), ________mod);
     // calculate result and display it correctly ^^^ ^^
     return 0;
 }
