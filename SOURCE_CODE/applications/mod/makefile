@@ -4,8 +4,8 @@
 ../../libraries/mathematics/.maths.o: ../../libraries/mathematics/maths.h ../../libraries/mathematics/maths.c
 	gcc -c ../../libraries/mathematics/maths.c -o ../../libraries/mathematics/.maths.o
 
-.modulus_operation.o: modulus_operation.c
-	gcc -c modulus_operation.c -o .modulus_operation.o
+.mod.o: mod.c
+	gcc -c mod.c -o .mod.o
 
-modulus_operation: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .modulus_operation.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .modulus_operation.o -o ../../../applications/modulus_operation
+mod: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .mod.o
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .mod.o -o ../../../applications/mod
