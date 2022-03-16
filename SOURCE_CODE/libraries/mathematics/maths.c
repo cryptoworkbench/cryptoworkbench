@@ -6,8 +6,8 @@
 FILE *urandom = NULL;
 const char *_standard_prime_table_filename = "shared_prime_table";
 
-const char *additive_signs[] = {"0", "+", "addition", "additions", "additive", 0};
-const char *multiplicative_signs[] = {"1", "*", "multiplication", "multiplications", "multiplicative", 0};
+const char *additive_signs[] = {"0", "+", "addition", "additions", "additive", "add", 0};
+const char *multiplicative_signs[] = {"1", "*", "multiplication", "multiplications", "multiplicative", "multiply", 0};
 
 char *_REPORT_standard_prime_table_filename() { return (char *) _standard_prime_table_filename; }
 char *_open_prime_table = NULL; char *_REPORT_open_prime_table() { return (char *) _open_prime_table; }
@@ -50,6 +50,7 @@ const char *_as_operation_symbol(int id) { return (id) ? multiplicative_signs[1]
 const char *_as_noun(int id) { return (id) ? multiplicative_signs[2] : additive_signs[2]; } const char *id_as_noun() { return _as_noun(*id_); }
 const char *_as_nouns(int id) { return (id) ? multiplicative_signs[3] : additive_signs[3]; } const char *id_as_nouns() { return _as_nouns(*id_); }
 const char *_as_adjective(int id) { return (id) ? multiplicative_signs[4] : additive_signs[4]; } const char *id_as_adjective() { return _as_adjective(*id_); }
+const char *_as_verb(int id) { return (id) ? multiplicative_signs[5] : additive_signs[5]; } const char *id_as_verb() { return _as_verb(*id_); }
 // to get the identity represented as number, operation symbol, noun, noun in multiple, or as adjective ^^^^^
 
 field_operation ___field_operation(unsigned long id) { return (id) ? mod_multiply : mod_add; }
@@ -67,11 +68,11 @@ int identity_parse_str(int *id_, char *str, int exit_status)
 void identity_error()
 { fprintf(stderr, "parsing of '%s' failed: could not match '%s' with any imaginable group operation description.", unparsed_arg, unparsed_arg); }
 
-void list_plausable_group_identity_descriptions()
+void list_plausable_group_identity_descriptions(int argv_index)
 {
     fflush(stderr);
-    fprintf(stderr, "\n- \u2115%s+ could have been specified using '%s', '%s', '%s', '%s' or '%s'                   instead of '%s'", (*argv_location)[1], additive_signs[4], additive_signs[2], additive_signs[3], additive_signs[0], additive_signs[1], (*argv_location)[2]);
-    fprintf(stderr, "\n- \u2115%s+ could have been specified using '%s', '%s', '%s', '%s' or '%s' instead of '%s'", (*argv_location)[1], multiplicative_signs[4], multiplicative_signs[2], multiplicative_signs[3], multiplicative_signs[0], multiplicative_signs[1], (*argv_location)[2]);
+    fprintf(stderr, "\n- \u2115%s+ could have been specified using '%s', '%s', '%s', '%s' or '%s'                   instead of '%s'", (*argv_location)[1], additive_signs[4], additive_signs[2], additive_signs[3], additive_signs[0], additive_signs[1], (*argv_location)[argv_index]);
+    fprintf(stderr, "\n- \u2115%s+ could have been specified using '%s', '%s', '%s', '%s' or '%s' instead of '%s'", (*argv_location)[1], multiplicative_signs[4], multiplicative_signs[2], multiplicative_signs[3], multiplicative_signs[0], multiplicative_signs[1], (*argv_location)[argv_index]);
 }
 
 unsigned long DH_public_key(STRUCT_DH_parameters *DH_parameters, unsigned long DH_private_key) { return _exponentiate(DH_parameters->b, DH_private_key, DH_parameters->a); }

@@ -29,10 +29,11 @@ unsigned long _polynomial(unsigned long x, unsigned long *coefficient, int coeff
 /* FUNCTIONS THAT HAVE TO DO WITH id_ FOLLOW: */
 field_operation ___field_operation(unsigned long id); field_operation id_field_operation(); // functions for performing field operations <<
 const char *_as_number(int id); const char *id_as_number(); const char *_as_operation_symbol(int id); const char *id_as_operation_symbol(); const char *_as_noun(int id); const char *id_as_noun();
-const char *_as_nouns(int id); const char *id_as_nouns(); const char *_as_adjective(int id); const char *id_as_adjective(); // get one of five possible representations of a group's identity << ^^^
+const char *_as_nouns(int id); const char *id_as_nouns(); const char *_as_adjective(int id); const char *id_as_adjective(); const char *_as_verb(int id); const char *id_as_verb();
+// get one of six possible representations of a group's identity ^^^^^^
 
 int identity_parse_str(int *id_, char *str, int exit_status); void identity_error(); // if fails to change 'SELECTOR' > '*id_', complain identity_error() then return 'exit_status' <<
-void list_plausable_group_identity_descriptions();
+void list_plausable_group_identity_descriptions(int argv_index);
 void identity_error_elaboration();
 
 /* REMAINING FUNCTIONS FOLLOW: */

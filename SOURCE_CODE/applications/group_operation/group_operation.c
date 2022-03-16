@@ -4,20 +4,31 @@
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h"
 
-void __b_failed_to_parse() { fprintf(stderr, "Please specify as fourth argument the second value to do the group operation with."); }
-void __a_failed_to_parse() { fprintf(stderr, "Please specify as third argument the first value to do the group operation with."); }
-void _id_failed_to_parse() { fprintf(stderr, "Please specify as second argument the identity element of the group whose subgroups to examplify."); list_plausable_group_identity_descriptions(); }
-void mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument the modulus of the group operation (0 to act upon the infinite group of integers)."); }
+int function_arg_count, i, id; unsigned long *arguments_array; unsigned long ans, mod;
+// global variable declarations ^
 
-int main(int argc, char **argv) {
-    unsigned long mod; conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(      ul_parse_str(&mod, argv[1], -1)))))); mod_ = &mod;
-    int id;            conditional_goodbye(n(n(error_specification(_id_failed_to_parse, n(identity_parse_str( &id, argv[2], -2)))))); id_ = &id;
-    unsigned long a;   conditional_goodbye(n(n(error_specification(__a_failed_to_parse, n(      ul_parse_str(  &a, argv[3], -3))))));
-    unsigned long b;   conditional_goodbye(n(n(error_specification(__b_failed_to_parse, n(      ul_parse_str(  &b, argv[4], -4))))));
+void argument_failed_to_parse() { fprintf(stderr, "%ith argument failed to parse!", 3 + i); };
+void ___array_failed_to_parse() { fprintf(stderr, "This function requires at least two inputs!"); };
+void sp_array_failed_to_parse() {
+    fprintf(stderr, "Please specify from the second argument onward numbers to %s within the finite field F%s.", id_as_verb(), (*argv_location)[1]);
+}
+void ______id_failed_to_parse() { fprintf(stderr, "Please specify as second argument the identity element of the group whose subgroups to examplify."); list_plausable_group_identity_descriptions(2); }
+void _____mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument the modulus of the group operation (0 to act upon the infinite group of integers)."); }
+
+int main(int argc, char **argv) { mod = id = ADDITIVE_IDENTITY; argv_location = &argv;
+    conditional_goodbye(n(n(error_specification(_____mod_failed_to_parse, n(                                                      ul_parse_str(&mod, argv[1], -1)))))); id_ = &id;
+    conditional_goodbye(n(n(error_specification(______id_failed_to_parse, n(                                                identity_parse_str(& id, argv[2], -2))))));
+    conditional_goodbye(n(n(error_specification(sp_array_failed_to_parse, n(n(error_message(___array_failed_to_parse, (2 > (function_arg_count = argc -3))  * -3)))))));
+    arguments_array = UL_array_of_SIZE(function_arg_count); for (i = 0; i < function_arg_count; i++)
+    conditional_goodbye(n(n(error_specification(argument_failed_to_parse, n(ul_parse_str(i + arguments_array, argv[3 + i], -(4 + i)))))));
     // take in arguments ^^^^
 
-    field_operation group_operation = ___field_operation(id);
-    fprintf(stdout,    "%lu %s %lu ", a, id_as_operation_symbol(), b); if (mod) fprintf(stdout, "\u2261"); else fprintf(stdout, "="); fprintf(stdout, " %lu", group_operation(a, b));
-    if (mod) fprintf(stdout, "	(mod %lu)", mod); fprintf(stdout, "\n");
+    mod_ = &mod; field_operation group_operation = id_field_operation();
+    const char *symb = id_as_operation_symbol(); ans = id; i = 0;
+    do {ans = group_operation(ans, arguments_array[i]);
+	fprintf(stdout, "%lu", arguments_array[i]);
+	if (i + 1 == function_arg_count) break; i++; fprintf(stdout, " %s ", symb);
+    } while (1); fprintf(stdout, " \u2261 %lu", ans); if (mod) fprintf(stdout, "	(mod %s)", argv[1]); fprintf(stdout, "\n");
+
     return 0;
 }
