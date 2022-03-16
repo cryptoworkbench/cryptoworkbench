@@ -1,25 +1,21 @@
 /* PROGRAM DESCRIPTION:
- * Takes the modulus of a number.
- *
- * Can be used to find out which equivalence class best represents a member from a quotient group. .. ..
- *
- * DEVELOPERs NOTEs:
- * Nothing to be improved here.
+ * Takes the modulus of a number. Can be used to find out which equivalence class best represents a member from a quotient group.
  */
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h"
 // library inclusions ^
 
-void mod_error() { fprintf(stderr, "'%s' is not a suitable value for the field modulus!", unparsed_arg); }
-void a_error() { fprintf(stderr, "'%s' is not a suitable value to take a modulus of!", unparsed_arg); }
+void mod_error() { fprintf(stderr, "Please specify as first argument a modulus.\n\nNeither \'\u2115%s\' nor '\u2115/%s\u2115' represent a group!", (*argv_location)[1], (*argv_location)[1]); }
+void a_error() { fprintf(stderr, "'%s' is not a suitable value to take a modulus of!", (*argv_location)[2]); }
 // error functions ^
 
-int main(int argc, char **argv) { unparsed_arg = argv[1]; unsigned long mod; mod_ = &mod; 
-    conditional_goodbye(n(n(error_specification(mod_error, n(ul_parse_str(unparsed_arg, mod_, -1)))))); unparsed_arg = argv[2]; unsigned long a;
-    conditional_goodbye(n(n(error_specification(a_error, n(ul_parse_str(unparsed_arg, &a, -2))))));
+int main(int argc, char **argv) { argv_location = &argv;
+    unsigned long mod; conditional_goodbye(n(n(error_specification(mod_error, n(ul_parse_str(argv[1], &mod, -1))))));  mod_ = &mod;
+    unsigned long a;   conditional_goodbye(n(n(error_specification(a_error, n(ul_parse_str(argv[2], &a, -2))))));
     // take in variables ^
 
-    fprintf(stdout, "%lu \u2261 %lu (%% %lu) -> %lu %% %lu = %lu\n", a, a % mod, mod, a, mod, a % mod); return 0;
+    unsigned long result;
+    fprintf(stdout, "%lu mod %lu = %lu -> %lu \u2261 %lu (mod %lu)\n", a, mod, result = mod_conditional_field_cap(a), a, result, mod); return 0;
     // finish cleanly ^
 }
