@@ -11,8 +11,8 @@
 
 unsigned long denominator, common_divisor;
 
-void multiplicative_group_element_error() { fprintf(stderr, "Please provide as second argument an element within \u2115/\u2115%s*.", (*argv_location)[1]); }
-void mod_error() { fprintf(stderr, "Please provide as first argument a modulus so I know what multiplicative group to take the inverse within."); }
+void ______group_element_failed_to_parse() { fprintf(stderr, "Please provide as second argument an element within \u2115/\u2115%s*.", (*argv_location)[1]); }
+void group_specification_failed_to_parse() { fprintf(stderr, "Please provide as first argument a modulus so I know what multiplicative group to take the inverse within."); }
 void not_a_member_of_an_equivalence_class_from_the_quotient_group()
 {
     fprintf(stderr, "%lu | %lu  &&  %lu | %lu\n", common_divisor, denominator, common_divisor, *mod_);
@@ -26,12 +26,14 @@ void not_a_member_of_an_equivalence_class_from_the_quotient_group()
 // error functions for incorrect usage ^^
 
 int main(int argc, char **argv) { argv_location = &argv; 
-    unsigned long multiplicative_group_modulus;   conditional_goodbye(n(n(error_specification(mod_error, n(ul_parse_str(argv[1], &multiplicative_group_modulus, -1)))))); mod_ = &multiplicative_group_modulus;
-    int numerator = 1;                            conditional_goodbye(n(n(error_specification(multiplicative_group_element_error, n(ul_parse_str(argv[2], &denominator, -2))))));
-    conditional_goodbye(error_message(not_a_member_of_an_equivalence_class_from_the_quotient_group, -3 * !(!((common_divisor = GCD(denominator, multiplicative_group_modulus)) - 1))));
+    unsigned long multiplicative_group_specification; conditional_goodbye(n(n(error_specification(group_specification_failed_to_parse, n(ul_parse_str(&multiplicative_group_specification, argv[1], -1))))));
+    int numerator = 1;                                conditional_goodbye(n(n(error_specification(______group_element_failed_to_parse, n(ul_parse_str(&denominator, argv[2], -2))))));
+    // fix multiplicative group, inverse of inverse and numerator to the division function (namely 'mod_divide')
+
+    conditional_goodbye(error_message(not_a_member_of_an_equivalence_class_from_the_quotient_group, -3 * !(!((common_divisor = GCD(denominator, multiplicative_group_specification)) - 1))));
     // process terminal arguments using this genious construction ^^^
 
-    fprintf(stdout, "%lu^-%i \u2261 %i / %lu \u2261 ", denominator, NUMERATOR, NUMERATOR, denominator);
+    fprintf(stdout, "%lu^-%i \u2261 %i / %lu \u2261 ", denominator, NUMERATOR, NUMERATOR, denominator); mod_ = &multiplicative_group_specification;
     if (denominator != mod_conditional_field_cap(denominator)) fprintf(stdout, "%i / %lu \u2261 ", NUMERATOR, denominator = mod_conditional_field_cap(denominator));
     fprintf(stdout, "%lu	(mod %lu)\n", mod_divide(NUMERATOR, denominator), *mod_); return 0;
     // (verbosely) print the result ^^^

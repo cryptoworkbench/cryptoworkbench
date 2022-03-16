@@ -5,14 +5,14 @@
 #include "../../libraries/mathematics/maths.h"
 // library inclusions ^
 
-void exponent_error() { fprintf(stderr, "\nFailed to understand '%s' as the value to use for the exponent.", unparsed_arg); }
-void base_error() { fprintf(stderr, "\nFailed to understand '%s' as the value to use as the base.", unparsed_arg); }
-void mod_error() { fprintf(stderr, "\nFailed to understand '%s' as the value to use as the modulus.", unparsed_arg); }
+void exponent_failed_to_parse() { fprintf(stderr, "\nFailed to understand '%s' as the value to use for the exponent.", unparsed_arg); }
+void ____base_failed_to_parse() { fprintf(stderr, "\nFailed to understand '%s' as the value to use as the base.", unparsed_arg); }
+void _____mod_failed_to_parse() { fprintf(stderr, "\nFailed to understand '%s' as the value to use as the modulus.", unparsed_arg); }
 // error functions ^^^
 
-int main(int argc, char **argv) { unsigned long mod;
-    mod_ = &mod;            conditional_goodbye(n(n(error_specification(mod_error, ul_parse_str(argv[1], mod_, -1)))));
-    unsigned long base;     conditional_goodbye(n(n(error_specification(base_error, ul_parse_str(argv[2], &base, -1)))));
-    unsigned long exponent; conditional_goodbye(n(n(error_specification(exponent_error, ul_parse_str(argv[3], &exponent, -1)))));
-    fprintf(stdout, "%lu^%lu %% %lu = %lu\n", base, exponent, mod, mod_exponentiate(base, exponent)); return 0;
+int main(int argc, char **argv) {
+    unsigned long mod;      conditional_goodbye(n(n(error_specification(_____mod_failed_to_parse, ul_parse_str(     &mod, argv[1], -1)))));
+    unsigned long base;     conditional_goodbye(n(n(error_specification(____base_failed_to_parse, ul_parse_str(    &base, argv[2], -2)))));
+    unsigned long exponent; conditional_goodbye(n(n(error_specification(exponent_failed_to_parse, ul_parse_str(&exponent, argv[3], -3))))); mod_ = &mod;
+    fprintf(stdout, "%lu^%lu modulus %lu = %lu\n", base, exponent, mod, mod_exponentiate(base, exponent)); return 0;
 }

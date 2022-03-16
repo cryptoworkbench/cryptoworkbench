@@ -181,8 +181,8 @@ unsigned long chinese_remainder_theorem(unsigned long remainder, unsigned long *
 int pair_of_strs_represents_pair_of_coprime_ULs(_error_selector _first_instruction, _error_selector second_instruction, unsigned long *ptr_one, unsigned long *ptr_two, int _first_index, int second_index, int exit_status) {
     // requires 'argv_location' to be set ^
 
-    if (error_specification(_first_instruction, n(ul_parse_str((*argv_location)[_first_index], ptr_one, 1)))) return - _first_index;
-    if (error_specification(second_instruction, n(ul_parse_str((*argv_location)[second_index], ptr_two, 1)))) return - second_index;
+    if (error_specification(_first_instruction, n(ul_parse_str(ptr_one, (*argv_location)[_first_index], 1)))) return - _first_index;
+    if (error_specification(second_instruction, n(ul_parse_str(ptr_two, (*argv_location)[second_index], 1)))) return - second_index;
     // interpret the numbers ^^
 
     if (coprime(*ptr_one, *ptr_two)) return 0;

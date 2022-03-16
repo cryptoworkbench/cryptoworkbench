@@ -17,6 +17,6 @@ void args_list() { fprintf(stdout, "%lu", arguments_array[i]); if (i + 1 == lcm_
 int main(int argc, char **argv) { argv_location = &argv;
     conditional_goodbye(n(n(error_specification(argument_count, -(2 > (lcm_function_argument_count = argc - 1))))));
     arguments_array = (unsigned long *) malloc(sizeof(unsigned long) * lcm_function_argument_count); for (i = 0; i < lcm_function_argument_count; i++)
-    conditional_goodbye(n(n(error_specification(argument_parse, n(ul_parse_str(argv[1 + i], i + arguments_array, -(2 + i))))))); i = 0;
+    conditional_goodbye(n(n(error_specification(argument_parse, n(ul_parse_str(i + arguments_array, argv[1 + i], -(2 + i))))))); i = 0;
     fprintf(stdout, "LCM("); args_list(); fprintf(stdout, ") = %lu\n", UNRESTRICTED_LCM(arguments_array, lcm_function_argument_count)); return 0;
 }

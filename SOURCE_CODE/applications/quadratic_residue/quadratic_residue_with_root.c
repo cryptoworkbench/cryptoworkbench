@@ -1,9 +1,9 @@
 /* Program description:
- * Prints a list of quadratic residues.
+ * Used to print a list of quadratic residues along with their roots.
  *
- * Should do.
+ * Worked until I changed 'ul_parse_str'.
  *
- * I think it works.
+ * Need to make this work again.
  */
 #include <stdio.h>
 #include <stdlib.h>

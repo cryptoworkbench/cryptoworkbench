@@ -53,11 +53,11 @@ void ______________mod_error() { fprintf(stderr, "Please provide as first argume
 // index[2]: c variable
 
 int main(int argc, char **argv) { SET_k(K); unsigned long mod;
-    conditional_goodbye(n(n(error_specification(______________mod_error, n(ul_parse_str(argv[1], &mod, -1)))))); mod_ = &mod; equation = equations_ALLOCATE(K);
-    conditional_goodbye(n(n(error_specification(first_x_failed_to_parse, n(ul_parse_str(argv[2], 1 + equation[0], -2))))));
-    conditional_goodbye(n(n(error_specification(first_y_failed_to_parse, n(ul_parse_str(argv[3], 0 + equation[0], -3))))));
-    conditional_goodbye(n(n(error_specification(_last_x_failed_to_parse, n(ul_parse_str(argv[4], 1 + equation[1], -4))))));
-    conditional_goodbye(n(n(error_specification(_last_y_failed_to_parse, n(ul_parse_str(argv[5], 0 + equation[1], -5))))));
+    conditional_goodbye(n(n(error_specification(______________mod_error, n(ul_parse_str(&mod,            argv[1], -1)))))); mod_ = &mod; equation = equations_ALLOCATE(K);
+    conditional_goodbye(n(n(error_specification(first_x_failed_to_parse, n(ul_parse_str(1 + equation[0], argv[2], -2))))));
+    conditional_goodbye(n(n(error_specification(first_y_failed_to_parse, n(ul_parse_str(0 + equation[0], argv[3], -3))))));
+    conditional_goodbye(n(n(error_specification(_last_x_failed_to_parse, n(ul_parse_str(1 + equation[1], argv[4], -4))))));
+    conditional_goodbye(n(n(error_specification(_last_y_failed_to_parse, n(ul_parse_str(0 + equation[1], argv[5], -5))))));
     if (6 < argc) ignored_arguments(argc, argv, 5); fprintf(stdout, "Supplied sample mappings:\n%lu -> %lu\n%lu -> %lu\n\n", equation[0][1], equation[0][0], equation[1][1], equation[1][0]);
     // handle terminal inputs ^ 
 

@@ -39,8 +39,8 @@ int main(int argc, char **argv) { argv_location = &argv; DH_parameters = (STRUCT
     conditional_goodbye(n(n(pair_of_strs_represents_pair_of_coprime_ULs(mod_failed_to_parse, generator_failed_to_parse, mod_, &DH_parameters->b, 1, 2, -3))));
     // take in multiplicative group and element from multiplicative group ^
 
-    unsigned long __priv_bob; i = 3; if (argc > 3) conditional_goodbye(n(n(error_specification(_third_argument_instruction, n(ul_parse_str(argv[3], &__priv_bob, -3)))))); else __priv_bob = urandom_number(*mod_);
-    unsigned long priv_alice; i = 4; if (argc > 4) conditional_goodbye(n(n(error_specification(fourth_argument_instruction, n(ul_parse_str(argv[4], &priv_alice, -4)))))); else priv_alice = urandom_number(*mod_);
+    unsigned long __priv_bob; i = 3; if (argc > 3) conditional_goodbye(n(n(error_specification(_third_argument_instruction, n(ul_parse_str(&__priv_bob, argv[3], -3)))))); else __priv_bob = urandom_number(*mod_);
+    unsigned long priv_alice; i = 4; if (argc > 4) conditional_goodbye(n(n(error_specification(fourth_argument_instruction, n(ul_parse_str(&priv_alice, argv[4], -4)))))); else priv_alice = urandom_number(*mod_);
     // take complain about 
 
     group_cardinality_ = totient(*mod_); struct ordered_pair iso = _isomorphism(); do { iso.b = mod_multiply(iso.b, DH_parameters->b); iso.a++; if (iso.b == MULTIPLICATIVE_IDENTITY) break; } while (1);
