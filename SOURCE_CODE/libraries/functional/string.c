@@ -14,9 +14,11 @@ void str_not_parsable_as_number() { fprintf(stderr, "parsing of '%s' failed: '%s
 int error_message(_error_selector error_explainer, int exit_status)
 { if (exit_status) { fflush(stdout); fprintf(stderr, "### THE FOLLOWING ERROR OCCURRED --> "); error_explainer(); } return exit_status; }
 
+int number_parse_str_failure(int exit_status) { return n(error_message(str_not_parsable_as_number, exit_status)); }
+
 int ul_parse_str(unsigned long *ul_ptr, char *str, int exit_status) { 
-    unparsed_arg = str; if (!str) return n(error_message(str_not_parsable_as_number, exit_status)); int index = 0;
-    do {if (str[index] < ASCII_BASE || str[index] > ASCII_BASE + 10) return n(error_message(str_not_parsable_as_number, exit_status));
+    unparsed_arg = str; if (!str) return number_parse_str_failure(exit_status); int index = 0;
+    do {if (str[index] < ASCII_BASE || str[index] > ASCII_BASE + 10) return number_parse_str_failure(exit_status);
 	if (str[index + 1] == STRING_TERMINATING_CHARACTER) break; index++;
     } while (1); *ul_ptr = 0; int log = 0; char *current_digit = str + index; while (current_digit != str) { *ul_ptr += (*current_digit - ASCII_BASE) * exponentiate(NUMERIC_BASE, log); log++; current_digit--; }
     *ul_ptr += (*current_digit - ASCII_BASE) * (exponentiate(NUMERIC_BASE, index)); return 0;
