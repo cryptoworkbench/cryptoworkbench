@@ -21,10 +21,8 @@ int error_message(_error_selector error_explainer, int exit_status);
 int error_specification(_error_selector error_explainer, int exit_status);
 int n(int pass_through);
 void conditional_goodbye(int exit_status);
-int ul_parse_str(unsigned long *ul_ptr, char *str, int exit_status);
-// ^^^ Puts the numeric value of "str" at the location pointed at by "ul_ptr".
-// 
-// Returns "VOID" if "str" is not parsable as a base-10 number.
+int ul_parse_str(unsigned long *ul_ptr, char *str, int exit_status); // to parse unsigned longs
+int ui_parse_str(unsigned int *ui_ptr, char *str, int exit_status); // to parse unsigned ints
 
 char *BUFFER_OF_SIZE(unsigned int SIZE);
 
