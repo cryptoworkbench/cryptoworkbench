@@ -14,25 +14,12 @@ void str_not_parsable_as_number() { fprintf(stderr, "parsing of '%s' failed: '%s
 int error_message(_error_selector error_explainer, int exit_status)
 { if (exit_status) { fflush(stdout); fprintf(stderr, "### THE FOLLOWING ERROR OCCURRED --> "); error_explainer(); } return exit_status; }
 
-int ul_parse_str(char *str, unsigned long *ul_ptr, int exit_status)
-{
-    unparsed_arg = str;
-    // 'str_not_parsable_as_number' may be called, so prepare the library local char pointer 'unparsed_arg' ^
-
-    if (!str) return n(error_message(str_not_parsable_as_number, exit_status)); int str_length = 0;
-    do {
-	if (str[str_length] >= ASCII_BASE && str[str_length] < ASCII_BASE + 10) str_length++;
-	else return n(error_message(str_not_parsable_as_number, exit_status));
-    } while (str[str_length] != STRING_TERMINATING_CHARACTER); str_length--;
-
-    // check to see if control needs to be handed over to 'str_not_parsable_as_number'
-
-    *ul_ptr = 0; int log = 0;
-    char *current_character = (str + str_length);
-    while (current_character != str) { *ul_ptr += (*current_character - ASCII_BASE) * exponentiate(NUMERIC_BASE, log); log++; current_character--; }
-    *ul_ptr += (*current_character - ASCII_BASE) * (exponentiate(NUMERIC_BASE, str_length));
-
-    return 0;
+int ul_parse_str(char *str, unsigned long *ul_ptr, int exit_status) { 
+    unparsed_arg = str; if (!str) return n(error_message(str_not_parsable_as_number, exit_status)); int index = 0;
+    do {if (str[index] < ASCII_BASE || str[index] > ASCII_BASE + 10) return n(error_message(str_not_parsable_as_number, exit_status));
+	if (str[index + 1] == STRING_TERMINATING_CHARACTER) break; index++;
+    } while (1); *ul_ptr = 0; int log = 0; char *character = str + index; while (character != str) { *ul_ptr += (*character - ASCII_BASE) * exponentiate(NUMERIC_BASE, log); log++; character--; }
+    *ul_ptr += (*character - ASCII_BASE) * (exponentiate(NUMERIC_BASE, index)); return 0;
 }
 
 int error_specification(_error_selector error_explainer, int exit_status)
