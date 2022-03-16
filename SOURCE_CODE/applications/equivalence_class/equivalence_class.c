@@ -6,7 +6,16 @@
 #include "../../libraries/mathematics/maths.h"
 // library inclusions ^
 
-void mod_error() { fprintf(stderr, "Please specify as first argument a modulus.\n\nNeither \'\u2115%s\' nor '\u2115/%s\u2115' represent a group!", (*argv_location)[1], (*argv_location)[1]); }
+void mod_error() {
+    fprintf(stderr, "\'\u2124%s\', \'\u2124/\u2124%s\', \'\u2115%s\', and \'\u2115/\u2115%s\' do not represent any (finite (quotient)) group, neither does \U0001D53D%s represent any field!\n\n",
+	    (*argv_location)[1],
+	    (*argv_location)[1],
+	    (*argv_location)[1],
+	    (*argv_location)[1],
+	    (*argv_location)[1]);
+    fprintf(stderr, "Please specify as first argument the modulus to work with!		(0 not divide \u2115)");
+}
+
 void a_error() { fprintf(stderr, "'%s' is not a suitable value to take a modulus of!", (*argv_location)[2]); }
 // error functions ^
 
