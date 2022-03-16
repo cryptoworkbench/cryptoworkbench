@@ -69,5 +69,5 @@ void open_urandom();
 void close_urandom();
 unsigned long urandom_number(unsigned long upper_bound);
 
-unsigned long chinese_remainder_theorem(unsigned long remainder, unsigned long **moduli, unsigned long modulis);
+unsigned long chinese_remainder_theorem(unsigned long remainder, unsigned long *moduli, unsigned long modulis);
 int pair_of_strs_represents_pair_of_coprime_ULs(_error_selector _first_instruction, _error_selector second_instruction, unsigned long *ptr_one, unsigned long *ptr_two, int _first_index, int second_index, int exit_status);

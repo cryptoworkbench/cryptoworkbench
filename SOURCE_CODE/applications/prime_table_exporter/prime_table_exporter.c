@@ -4,10 +4,12 @@
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h"
 
+unsigned long limit;
+
 void limit_error() { fprintf(stderr, "Failed to understand '%s' as the limit to my sieve.", (*argv_location)[1]); }
 
-int main(int argc, char **argv) { argv_location = &argv;
-    unsigned long limit; conditional_goodbye(n(n(error_specification(limit_error, n(ul_parse_str(&limit, argv[1], -1))))));
+int main(int argc, char **argv) { limit = ADDITIVE_IDENTITY; argv_location = &argv;
+    conditional_goodbye(n(n(error_specification(limit_error, n(ul_parse_str(&limit, argv[1], -1))))));
     char *output_filename = _REPORT_standard_prime_table_filename(); if (2 < argc) output_filename = argv[2];
     // process terminal arguments ^
 

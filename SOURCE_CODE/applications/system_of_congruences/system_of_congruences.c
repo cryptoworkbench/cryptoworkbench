@@ -1,45 +1,44 @@
-/* Solves a system of congruences using the maths library function chinese_remainder_theorem().
+/* PROGRAM DESCRIPTION:
+ * Solves a system of congruences using the maths library function chinese_remainder_theorem().
  *
- * The answer is checked at line 30.
- *
- * Check not work with terminal inputs 2 3 7 11.
+ * PROBLEMS:
+ * ~ Does not work with terminal inputs 2 3 7 11 (try!)
  */
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/maths.h"
 // library inclusions ^
 
-int i; char *unparsed_modulus;
+int i; char *unparsed_modulus; unsigned long *modulis; unsigned long ans, mod;
 // global variables ^
 
-void RESULT_ERROR() { fprintf(stderr, "\nThe check on the result from chinese_remainder_theorem() failed.\n\n"); }
-void number_unparsable() { fprintf(stderr, "\n%s is not a number.\n\n", unparsed_arg); }
+void sanity_check_result() { fprintf(stderr, "sanity check on chinese_remainder_theorem() failed."); }
+void sanity_check_result_specification() { fprintf(stderr, "chinese_remainder_theorem() returned '%lu', but '%lu' is not congruent to '%lu' mod '%lu'; it is congruency to '%lu' mod '%lu'.", ans, ans, mod, modulis[i], ans % modulis[i], modulis[i]); }
 void not_a_system() { fprintf(stderr, "\nAt least one congruence must be supplied.\n\n"); }
 void moduli_not_coprime() { fprintf(stderr, "\n\nIt turned out not all moduli were coprime with one another. Hence the Chinese Remainder Theorem cannot be used to solve this problem."); }
-_error_selector arg_error(int SELECTOR) { switch (SELECTOR) { case 1: return number_unparsable; case 2: return not_a_system; case 3: return moduli_not_coprime; case 4: return RESULT_ERROR; }; }
 // error functions ^ ^^^
 
 void ______system_not_provided() { fprintf(stderr, "Please provide besides a remainder also a system of congruences."); }
 void remainder_failed_to_parse() { fprintf(stderr, "Please provide as first argument the remainder."); }
 void __modulus_failed_to_parse() { fprintf(stderr, "Failed to understand '%s' as the %ith modulus.", unparsed_modulus, i + 1); }
 
-int main(int argc, char **argv) { unparsed_arg = argv[1];
-    unsigned long remainder; conditional_goodbye(n(n(error_specification(remainder_failed_to_parse, n(ul_parse_str(&remainder, argv[1], -1))))));
-                             conditional_goodbye(n(n(error_specification(______system_not_provided, -2 * (argc == 2)))));
+int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY; argv_location = &argv;
+    conditional_goodbye(n(n(error_specification(remainder_failed_to_parse, n(ul_parse_str(&mod, argv[1], -1))))));
+    conditional_goodbye(n(n(error_specification(______system_not_provided,               (argc == 2)  *  -2))));
     // interpret remainder ^
 
-    unsigned long moduli = argc - 2; unsigned long **array_of_moduli = (unsigned long **) malloc(sizeof(unsigned long *) * moduli); unsigned long i;
-    for (i = 0; i < moduli; i++) array_of_moduli[i] = (unsigned long *) malloc(sizeof(unsigned long));
-    for (i = 0; i < moduli; i++) { unparsed_modulus = argv[2 + i]; conditional_goodbye(n(n(error_specification(__modulus_failed_to_parse, n(ul_parse_str(array_of_moduli[i], unparsed_modulus, - (2 + i))))))); }
+    unsigned long moduli = argc - 2; modulis = (unsigned long *) malloc(sizeof(unsigned long) * moduli);
+    for (i = 0; i < moduli; i++) { unparsed_modulus = argv[2 + i]; conditional_goodbye(n(n(error_specification(__modulus_failed_to_parse, n(ul_parse_str(i + modulis, unparsed_modulus, - (2 + i))))))); }
 
-    for (i = 0; i < moduli; i++) for (unsigned long j = i + 1; j < moduli; j++) if (GCD(*array_of_moduli[i], *array_of_moduli[j]) != 1) conditional_goodbye(n(n(error_message(moduli_not_coprime, -3))));
+    for (i = 0; i < moduli; i++) for (unsigned long j = i + 1; j < moduli; j++) if (GCD(modulis[i], modulis[j]) != 1) conditional_goodbye(n(n(error_message(moduli_not_coprime, -3))));
     // check to see if all moduli are coprime to each other ^
 
-    unsigned long ans = chinese_remainder_theorem(remainder, array_of_moduli, moduli);
-    for (i = 0; i < moduli; i++) { if (ans % *array_of_moduli[i] != remainder) error_message(arg_error(4), -4); fprintf(stdout, "%lu \u2261 %lu (mod %lu)\n", ans, remainder, *array_of_moduli[i]); }
-    // verify the result from chinese_remainder_theorem() ^
-
-    for (i = 0; i < moduli; i++) free(array_of_moduli[i]); free(array_of_moduli);
-    // free all allocated memory ^
+    ans = chinese_remainder_theorem(mod, modulis, moduli);
+    for (i = 0; i < moduli; i++) {
+	if (ans % modulis[i] != mod)
+	    conditional_goodbye(n(n(error_specification(sanity_check_result_specification, n(n(error_message(sanity_check_result, -4)))))));
+	fprintf(stdout, "%lu \u2261 %lu (mod %lu)\n", ans, mod, modulis[i]);
+    }
+    // verify and display the result from chinese_remainder_theorem() ^
 
     return 0;
 }

@@ -11,7 +11,7 @@
 struct LL_ { unsigned long e; struct LL_ *next; };
 // type definitions ^
 
-STRUCT_DH_parameters *DH_parameters; unsigned long group_cardinality_;
+STRUCT_DH_parameters DH_parameters; unsigned long group_cardinality_;
 // global variables ^
 
 void RESULT_ERROR() { fprintf(stderr, "\nAlice and Bob did not derive the same shared secret.\n\n"); }
@@ -35,15 +35,15 @@ void generator_failed_to_parse() { fprintf(stderr, "Please provide as second arg
 void _third_argument_instruction() { fprintf(stderr, "Please supply as third argument Bob's private key!"); }
 void fourth_argument_instruction() { fprintf(stderr, "Please supply as fourth argument Alice's private key!"); }
 
-int main(int argc, char **argv) { argv_location = &argv; DH_parameters = (STRUCT_DH_parameters *) malloc(sizeof(STRUCT_DH_parameters)); mod_ = &DH_parameters->a;
-    conditional_goodbye(n(n(pair_of_strs_represents_pair_of_coprime_ULs(mod_failed_to_parse, generator_failed_to_parse, mod_, &DH_parameters->b, 1, 2, -3))));
-    // take in multiplicative group and element from multiplicative group ^
+int main(int argc, char **argv) { argv_location = &argv;
+    conditional_goodbye(n(n(pair_of_strs_represents_pair_of_coprime_ULs(mod_failed_to_parse, generator_failed_to_parse, &DH_parameters.a, &DH_parameters.b, 1, 2, -3)))); mod_ = &DH_parameters.a;
+    // take in multiplicative group and element from multiplicative group using function 'pair_of_strs_represents_pair_of_coprime_ULs' ^
 
-    unsigned long __priv_bob; i = 3; if (argc > 3) conditional_goodbye(n(n(error_specification(_third_argument_instruction, n(ul_parse_str(&__priv_bob, argv[3], -3)))))); else __priv_bob = urandom_number(*mod_);
-    unsigned long priv_alice; i = 4; if (argc > 4) conditional_goodbye(n(n(error_specification(fourth_argument_instruction, n(ul_parse_str(&priv_alice, argv[4], -4)))))); else priv_alice = urandom_number(*mod_);
+    unsigned long __priv_bob = 0; i = 3; if (argc > 3) conditional_goodbye(n(n(error_specification(_third_argument_instruction, n(ul_parse_str(&__priv_bob, argv[3], -3)))))); else __priv_bob = urandom_number(*mod_);
+    unsigned long priv_alice = 0; i = 4; if (argc > 4) conditional_goodbye(n(n(error_specification(fourth_argument_instruction, n(ul_parse_str(&priv_alice, argv[4], -4)))))); else priv_alice = urandom_number(*mod_);
     // take complain about 
 
-    group_cardinality_ = totient(*mod_); struct ordered_pair iso = _isomorphism(); do { iso.b = mod_multiply(iso.b, DH_parameters->b); iso.a++; if (iso.b == MULTIPLICATIVE_IDENTITY) break; } while (1);
+    group_cardinality_ = totient(*mod_); struct ordered_pair iso = _isomorphism(); do { iso.b = mod_multiply(iso.b, DH_parameters.b); iso.a++; if (iso.b == MULTIPLICATIVE_IDENTITY) break; } while (1);
     if (iso.a != group_cardinality_) {
 	fprintf(stderr, "WARNING: %s only covers %.2f %% (1/%lu) of \u2115%s*  (|\u2115%s*| / %lu  =  \u03C6(%s) / %lu  =  %lu / %lu  = %lu), continue? ('n' of 'N' for exit): ",
 		argv[2],
@@ -59,20 +59,20 @@ int main(int argc, char **argv) { argv_location = &argv; DH_parameters = (STRUCT
 		iso.a);
 	char y_or_n; fscanf(stdin, " %c", &y_or_n); if (y_or_n == 'n' || y_or_n == 'N') exit(-1);
     } // detect when the permutation basis does not cover the group ^
-    fprintf(stdout, "Alice and Bob use %lu within \u2115%s*.\n\nDiffie-Hellman key exchange example:\n", mod_conditional_cap(DH_parameters->b), argv[1]);
+    fprintf(stdout, "Alice and Bob use %lu within \u2115%s*.\n\nDiffie-Hellman key exchange example:\n", mod_conditional_cap(DH_parameters.b), argv[1]);
     fprintf(stdout, "Bob's private key: %lu\n", __priv_bob);
     fprintf(stdout, "Alice's private key: %lu\n", priv_alice);
 
-    unsigned long pub_bob; fprintf(stdout, "\nBob's public key:\n%lu^%lu \u2261 %lu (mod %lu)\n", DH_parameters->b, __priv_bob, (pub_bob = DH_public_key(DH_parameters, __priv_bob)), *mod_);
+    unsigned long pub_bob; fprintf(stdout, "\nBob's public key:\n%lu^%lu \u2261 %lu (mod %lu)\n", DH_parameters.b, __priv_bob, (pub_bob = DH_public_key(&DH_parameters, __priv_bob)), *mod_);
 
-    unsigned long pub_alice; fprintf(stdout, "\nAlice's public key:\n%lu^%lu \u2261 %lu (mod %lu)\n", DH_parameters->b, priv_alice, (pub_alice = DH_public_key(DH_parameters, priv_alice)), *mod_);
+    unsigned long pub_alice; fprintf(stdout, "\nAlice's public key:\n%lu^%lu \u2261 %lu (mod %lu)\n", DH_parameters.b, priv_alice, (pub_alice = DH_public_key(&DH_parameters, priv_alice)), *mod_);
     // calculate public key's
 
     fprintf(stdout, "\nBob receives Alice's public key '%lu'.\n", pub_alice);
     fprintf(stdout, "Alice receives Bob's public key '%lu'.\n", pub_bob);
 
     unsigned long SS_according_to_Bob;   fprintf(stdout, "\nBob calculates '%lu^%lu \u2261 %lu (mod %lu)'.\n", pub_alice, __priv_bob, (SS_according_to_Bob = mod_exponentiate(pub_alice, __priv_bob)), *mod_);
-    unsigned long SS_according_to_Alice; fprintf(stdout, "Alice calculates '%lu^%lu \u2261 %lu (mod %lu)'.\n", pub_bob, priv_alice, (SS_according_to_Alice = mod_exponentiate(pub_bob, priv_alice)), *mod_); free(mod_);
+    unsigned long SS_according_to_Alice; fprintf(stdout, "Alice calculates '%lu^%lu \u2261 %lu (mod %lu)'.\n", pub_bob, priv_alice, (SS_according_to_Alice = mod_exponentiate(pub_bob, priv_alice)), *mod_);
 
     if (SS_according_to_Bob == SS_according_to_Alice)
     { fprintf(stdout, "\nBoth derived %lu by raising the other's public key to their own private key: KEY EXCHANGE COMPLETE.\n", SS_according_to_Bob); return 0; }

@@ -20,21 +20,19 @@ int _parse_str_NULL_check(char *str, int exit_status) { unparsed_arg = str; if (
 
 int ul_parse_str(unsigned long *ul_ptr, char *str, int exit_status)
 {
-    int index = 0; if (index = _parse_str_NULL_check(str, exit_status)) return index;
-    do {if (str[index] < ASCII_BASE || str[index] > ASCII_BASE + 10) return _parse_str_failure(exit_status);
-	if (str[index + 1] == STRING_TERMINATING_CHARACTER) break; index++;
-    } while (1); *ul_ptr = 0;
-
-    int log = 0; do { *ul_ptr += exponentiate(NUMERIC_BASE, log) * (str[index - log] - ASCII_BASE); log++; if (index + 1 - log == 0) break; } while (1);
+    int i = 0; if (i = _parse_str_NULL_check(str, exit_status)) return i;
+    do {if (str[i] < ASCII_BASE || str[i] > ASCII_BASE + 10) return _parse_str_failure(exit_status);
+	if (str[i + 1] == STRING_TERMINATING_CHARACTER) break; i++;
+    } while (1); int log = 0; do { *ul_ptr += exponentiate(NUMERIC_BASE, log) * (str[i - log] - ASCII_BASE); log++; if (i + 1 - log == 0) break; } while (1);
     return 0;
 }
 
 int ui_parse_str(unsigned int *ui_ptr, char *str, int exit_status)
 {
-    int index = 0; if (index = _parse_str_NULL_check(str, exit_status)) return index;
-    do {if (str[index] < ASCII_BASE || str[index] > ASCII_BASE + 10) return _parse_str_failure(exit_status);
-	if (str[index + 1] == STRING_TERMINATING_CHARACTER) break; index++;
-    } while (1); *ui_ptr = 0; int log = 0; do {*ui_ptr += (unsigned int) exponentiate(NUMERIC_BASE, log) * (str[index - log] - ASCII_BASE); log++; if (index + 1 - log == 0) break; } while (1);
+    int i = 0; if (i = _parse_str_NULL_check(str, exit_status)) return i;
+    do {if (str[i] < ASCII_BASE || str[i] > ASCII_BASE + 10) return _parse_str_failure(exit_status);
+	if (str[i + 1] == STRING_TERMINATING_CHARACTER) break; i++;
+    } while (1); int log = 0; do {*ui_ptr += (unsigned int) exponentiate(NUMERIC_BASE, log) * (str[i - log] - ASCII_BASE); log++; if (i + 1 - log == 0) break; } while (1);
     return 0;
 }
 

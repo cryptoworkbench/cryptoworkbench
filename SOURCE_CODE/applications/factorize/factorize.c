@@ -13,6 +13,8 @@
 #include "../../libraries/mathematics/factorization_methods.h"
 #define COMPOSITE_NOT_INTERPRETABLE "Failed to interpret composite '%s'!\n\n"
 
+unsigned long composite;
+
 void domain_display(unsigned long a, unsigned long b) { fprintf(stdout, " and checking for all 'x <= %lu' if x divides %lu.", a, b); }
 
 _factorization_method explain_configuration(unsigned long composite) {
@@ -45,8 +47,8 @@ _factorization_method explain_configuration(unsigned long composite) {
 
 void composite_parsing_error() { fprintf(stderr, "Please provide as first argument the composite to factorize."); }
 
-int main(int argc, char **argv) {
-    unsigned long composite; conditional_goodbye(n(n(error_specification(composite_parsing_error, n(ul_parse_str(&composite, argv[1], -1))))));
+int main(int argc, char **argv) { composite = 0;
+    conditional_goodbye(n(n(error_specification(composite_parsing_error, n(ul_parse_str(&composite, argv[1], -1))))));
     // take in composite ^
 
     _preferred_factorization_engine = factorization_method_retrieve(argv[2]);

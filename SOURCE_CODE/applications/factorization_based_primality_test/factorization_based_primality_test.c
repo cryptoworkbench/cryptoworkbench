@@ -3,10 +3,12 @@
 #include "../../libraries/functional/string.h"
 #include "../../libraries/mathematics/factorization_methods.h"
 
+unsigned long potential_prime;
+
 void composite_parse_error() { fprintf(stderr, "Please provide as first argument the number to check if it is prime."); }
 
-int main(int argc, char **argv) {
-    unsigned long potential_prime; conditional_goodbye(n(n(error_specification(composite_parse_error, n(ul_parse_str(&potential_prime, argv[1], -1))))));
+int main(int argc, char **argv) { potential_prime = 0;
+    conditional_goodbye(n(n(error_specification(composite_parse_error, n(ul_parse_str(&potential_prime, argv[1], -1))))));
     
     _preferred_factorization_engine = factorization_method_retrieve(argv[2]);
     fprintf(stdout, "Using the factorization engine \"%s\" as the basis for my primality test on %lu.", _factorization_engine_description(_preferred_factorization_engine), potential_prime);

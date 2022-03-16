@@ -109,13 +109,11 @@ void mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument t
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { argv_location = &argv;
-    unsigned long mod; mod_ = &mod; conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(      ul_parse_str(mod_, argv[1], -1))))));
-    int id; id_ = &id;              conditional_goodbye(n(n(error_specification(_id_failed_to_parse, n(identity_parse_str( &id, argv[2], -2))))));
+    unsigned long mod = 0; mod_ = &mod; conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(      ul_parse_str(mod_, argv[1], -1))))));
+    int id = 0; id_ = &id;              conditional_goodbye(n(n(error_specification(_id_failed_to_parse, n(identity_parse_str( &id, argv[2], -2))))));
     if (!mod || !(mod - 1) && id)   conditional_goodbye(n(n(error_message(invalid_group_parameters, -3))));
     // process mandatory terminal arguments (mod and group identity) ^ 
 
-
-    // char *width_str_from_ul(unsigned long a);
                   horizontal_offset = 0; n(n(error_specification(horizontal_offset_failed_to_parse, 3 < argc && ul_parse_str(&horizontal_offset, argv[3], 1))));
     unsigned long __vertical_offset = 0; n(n(error_specification(__vertical_offset_failed_to_parse, 4 < argc && ul_parse_str(&__vertical_offset, argv[4], 1))));
     // process optional terminal arguments ^
