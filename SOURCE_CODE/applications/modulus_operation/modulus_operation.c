@@ -18,7 +18,8 @@ int main(int argc, char **argv) { argv_location = &argv;
     unsigned long a;   conditional_goodbye(n(n(error_specification(a_error, n(ul_parse_str(argv[2], &a, -2))))));
     // take in variables ^
 
-    unsigned long result;
-    fprintf(stdout, "%lu mod %lu = %lu -> %lu \u2261 %lu (mod %lu)\n", a, mod, result = mod_conditional_field_cap(a), a, result, mod); return 0;
-    // finish cleanly ^
+    unsigned long result; fprintf(stdout, "%lu mod %lu = %lu -> %lu \u2261 %lu (mod %lu)\n", a, mod, result = mod_conditional_field_cap(a), a, result, mod);
+    // explain the modulus operation ^
+
+    return 0;
 }

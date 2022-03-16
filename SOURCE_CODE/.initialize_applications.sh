@@ -31,10 +31,10 @@ if [ $? -eq 0 ];
 then echo "successfully build application    'divide'"; successfull_builds=$(( $successfull_builds + 1 ));
 else echo "                   application    'divide'         FAILED TO BUILD!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ..
 
-cd equivalence_class && make equivalence_class > /dev/null 2>> ../../../.initialization_errors
+cd modulus_operation && make modulus_operation > /dev/null 2>> ../../../.initialization_errors
 if [ $? -eq 0 ];
-then echo "successfully build application    'equivalence_class'"; successfull_builds=$(( $successfull_builds + 1 ));
-else echo "                   application    'equivalence_class'         FAILED TO BUILD!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ..
+then echo "successfully build application    'modulus_operation'"; successfull_builds=$(( $successfull_builds + 1 ));
+else echo "                   application    'modulus_operation'         FAILED TO BUILD!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ..
 
 cd factorization_based_primality_test && make factorization_based_primality_test > /dev/null 2>> ../../../.initialization_errors
 if [ $? -eq 0 ];

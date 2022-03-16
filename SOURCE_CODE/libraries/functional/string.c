@@ -15,25 +15,23 @@ int error_message(_error_selector error_explainer, int exit_status)
 { if (exit_status) { fflush(stdout); fprintf(stderr, "### THE FOLLOWING ERROR OCCURRED --> "); error_explainer(); } return exit_status; }
 
 int ul_parse_str(char *str, unsigned long *ul_ptr, int exit_status)
-{ 
-    unparsed_arg = str; // <-- dodge having to use the wrapper for the error function (in case anything goes wrong)
-    if (!str) return n(error_message(str_not_parsable_as_number, exit_status)); unsigned long length_of_string = 0;
-    do { if (str[length_of_string] >= ASCII_BASE && str[length_of_string] < ASCII_BASE + 10) length_of_string++; else return n(error_message(str_not_parsable_as_number, exit_status)); }
-    while (str[length_of_string] != STRING_TERMINATING_CHARACTER);
-    // ^^^ Checks to see if the proposed char array at index is even parsable as an unsigned long, returns NULL if not
+{
+    unparsed_arg = str;
+    // 'str_not_parsable_as_number' may be called, so prepare the library local char pointer 'unparsed_arg' ^
 
-    unsigned long iteration_count, str_as_UL; // Declare needed variables
-    iteration_count = str_as_UL = 0; // Initialize variables
+    if (!str) return n(error_message(str_not_parsable_as_number, exit_status)); int str_length = 0;
+    do {
+	if (str[str_length] >= ASCII_BASE && str[str_length] < ASCII_BASE + 10) str_length++;
+	else return n(error_message(str_not_parsable_as_number, exit_status));
+    } while (str[str_length] != STRING_TERMINATING_CHARACTER); str_length--;
 
-    // char *current_character = &(str[length_of_string - 1]);
-    char *current_character = (str + (length_of_string - 1));
-    while (current_character != str) {
-	str_as_UL += ((unsigned int) *current_character - ASCII_BASE) * exponentiate(NUMERIC_BASE, iteration_count);
-	iteration_count++; // Update the iteration count (appriopiate log)
-	current_character = (current_character - 1); // Move back one character
-    } str_as_UL += (*current_character - ASCII_BASE) * (exponentiate(NUMERIC_BASE, length_of_string - 1));
+    // check to see if control needs to be handed over to 'str_not_parsable_as_number'
 
-    *ul_ptr = str_as_UL; // <<< Inserts the parsed variable into the INSERTMENT_SLOTH (see header file "string.h")
+    *ul_ptr = 0; int log = 0;
+    char *current_character = (str + str_length);
+    while (current_character != str) { *ul_ptr += (*current_character - ASCII_BASE) * exponentiate(NUMERIC_BASE, log); log++; current_character--; }
+    *ul_ptr += (*current_character - ASCII_BASE) * (exponentiate(NUMERIC_BASE, str_length));
+
     return 0;
 }
 
