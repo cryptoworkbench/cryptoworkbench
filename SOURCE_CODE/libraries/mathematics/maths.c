@@ -58,8 +58,8 @@ field_operation id_field_operation() { return ___field_operation(*id_); }
 
 int identity_parse_str(int *id_, char *str, int exit_status)
 {
-    if (str && _match(str, 5, multiplicative_signs)) *id_ = 1;
-    else if (str && _match(str, 5, additive_signs)) *id_ = 0;
+    if (str && _match(str, 6, multiplicative_signs)) *id_ = 1;
+    else if (str && _match(str, 6, additive_signs)) *id_ = 0;
     else { unparsed_arg = str; return n(error_message(identity_error, exit_status)); }
     return 0;
 }
@@ -71,8 +71,8 @@ void identity_error()
 void list_plausable_group_identity_descriptions(int argv_index)
 {
     fflush(stderr);
-    fprintf(stderr, "\n- \u2115%s+ could have been specified using '%s', '%s', '%s', '%s' or '%s'                   instead of '%s'", (*argv_location)[1], additive_signs[4], additive_signs[2], additive_signs[3], additive_signs[0], additive_signs[1], (*argv_location)[argv_index]);
-    fprintf(stderr, "\n- \u2115%s+ could have been specified using '%s', '%s', '%s', '%s' or '%s' instead of '%s'", (*argv_location)[1], multiplicative_signs[4], multiplicative_signs[2], multiplicative_signs[3], multiplicative_signs[0], multiplicative_signs[1], (*argv_location)[argv_index]);
+    fprintf(stderr, "\n- \u2115%s+ could have been specified using '%s', '%s', '%s', '%s', '%s' or '%s'                        		instead of '%s'", (*argv_location)[1], additive_signs[5], additive_signs[4], additive_signs[2], additive_signs[3], additive_signs[0], additive_signs[1], (*argv_location)[argv_index]);
+    fprintf(stderr, "\n- \u2115%s* could have been specified using '%s', '%s', '%s', '%s', '%s' or '%s'		instead of '%s'", (*argv_location)[1], multiplicative_signs[5], multiplicative_signs[4], multiplicative_signs[2], multiplicative_signs[3], multiplicative_signs[0], multiplicative_signs[1], (*argv_location)[argv_index]);
 }
 
 unsigned long DH_public_key(STRUCT_DH_parameters *DH_parameters, unsigned long DH_private_key) { return _exponentiate(DH_parameters->b, DH_private_key, DH_parameters->a); }
