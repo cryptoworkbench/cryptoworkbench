@@ -48,13 +48,13 @@ void _first_x_failed_to_parse() { fprintf(stderr, "Please provide as second argu
 void _____mod_failed_to_parse() { fprintf(stderr, "Please provide as first argument a finite field specification!"); }
 
 int main(int argc, char **argv) { SET_k(K);
-    unsigned long mod;      conditional_goodbye(n(n(error_specification(_____mod_failed_to_parse, n(ul_parse_str(           &mod,      argv[1],      -1)))))); mod_ = &mod; unsigned long **equation = equations_ALLOCATE(K);
-    unparsed_arg = argv[2]; conditional_goodbye(n(n(error_specification(_first_x_failed_to_parse, n(ul_parse_str(1 + equation[0], unparsed_arg, -2))))));
-    unparsed_arg = argv[3]; conditional_goodbye(n(n(error_specification(_first_y_failed_to_parse, n(ul_parse_str(0 + equation[0], unparsed_arg, -3))))));
-    unparsed_arg = argv[4]; conditional_goodbye(n(n(error_specification(second_x_failed_to_parse, n(ul_parse_str(1 + equation[1], unparsed_arg, -4))))));
-    unparsed_arg = argv[5]; conditional_goodbye(n(n(error_specification(second_y_failed_to_parse, n(ul_parse_str(0 + equation[1], unparsed_arg, -5))))));
-    unparsed_arg = argv[6]; conditional_goodbye(n(n(error_specification(__last_x_failed_to_parse, n(ul_parse_str(1 + equation[2], unparsed_arg, -6))))));
-    unparsed_arg = argv[7]; conditional_goodbye(n(n(error_specification(__last_y_failed_to_parse, n(ul_parse_str(0 + equation[2], unparsed_arg, -7))))));
+    unsigned long mod; conditional_goodbye(n(n(error_specification(_____mod_failed_to_parse, n(ul_parse_str(           &mod, argv[1], -1)))))); mod_ = &mod; unsigned long **equation = equations_ALLOCATE(K);
+                       conditional_goodbye(n(n(error_specification(_first_x_failed_to_parse, n(ul_parse_str(1 + equation[0], argv[2], -2))))));
+                       conditional_goodbye(n(n(error_specification(_first_y_failed_to_parse, n(ul_parse_str(0 + equation[0], argv[3], -3))))));
+                       conditional_goodbye(n(n(error_specification(second_x_failed_to_parse, n(ul_parse_str(1 + equation[1], argv[4], -4))))));
+                       conditional_goodbye(n(n(error_specification(second_y_failed_to_parse, n(ul_parse_str(0 + equation[1], argv[5], -5))))));
+                       conditional_goodbye(n(n(error_specification(__last_x_failed_to_parse, n(ul_parse_str(1 + equation[2], argv[6], -6))))));
+                       conditional_goodbye(n(n(error_specification(__last_y_failed_to_parse, n(ul_parse_str(0 + equation[2], argv[7], -7))))));
     if (8 < argc) ignored_arguments(argc, argv, 7); // complain and about unneccesary command line arguments <--
     // interpret command line arguments ^
 
@@ -74,13 +74,13 @@ int main(int argc, char **argv) { SET_k(K);
     // ^ Prepare other equations
 
     unsigned long *coefficient = UL_array_of_SIZE(K);
-    coefficient[2] = mod_divide(final_linear_equation[0], final_linear_equation[2]);
-    coefficient[1] = mod_divide(mod_subtract(equation_ONE_and_TWO[0], mod_multiply(equation_ONE_and_TWO[2], coefficient[2])), equation_ONE_and_TWO[1]);
-    coefficient[0] = mod_subtract(equation[0][0], mod_add(mod_multiply(coefficient[1], equation[0][1]), (mod_multiply(coefficient[2], _exponentiate(equation[0][1], 2, mod)))));
+    coefficient[0] = mod_divide(final_linear_equation[0], final_linear_equation[2]);
+    coefficient[1] = mod_divide(mod_subtract(equation_ONE_and_TWO[0], mod_multiply(equation_ONE_and_TWO[2], coefficient[0])), equation_ONE_and_TWO[1]);
+    coefficient[2] = mod_subtract(equation[0][0], mod_add(mod_multiply(coefficient[1], equation[0][1]), (mod_multiply(coefficient[0], _exponentiate(equation[0][1], 2, mod)))));
     // ^ Put the coefficients into an unsigned long array
 
     fprintf(stdout, "Second-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", mod);
-    fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(modulus %lu)\n", coefficient[2], coefficient[1], coefficient[0], mod);
+    fprintf(stdout, "f(x) \u2261 %lu * x^2 + %lu * x + %lu	(modulus %lu)\n", coefficient[0], coefficient[1], coefficient[2], mod);
     fprintf(stdout, "\nThe shared secret was '%lu'.\n", mod_polynomial(0, coefficient, K));
     free(coefficient); equations_DELETE(equation); return 0;
 }
