@@ -65,11 +65,12 @@ int main(int argc, char **argv) { SET_k(K); unsigned long mod;
     // prepare equations ^
 
     unsigned long *coefficient = UL_array_of_SIZE(K); // make an alternate version which DOES yield a zero terminated ul string <--
-    coefficient[1] = mod_divide(equation_ONE_WITH_TWO[0], equation_ONE_WITH_TWO[1]); // the difference in y <-
-    coefficient[0] = mod_subtract(equation[0][0], mod_multiply(equation[0][1], coefficient[1]));
+    coefficient[0] = mod_divide(equation_ONE_WITH_TWO[0], equation_ONE_WITH_TWO[1]); // the difference in y <-
+    coefficient[1] = mod_subtract(equation[0][0], mod_multiply(equation[0][1], coefficient[0]));
 
     fprintf(stdout, "First-degree polynomial function that follows the behaviour of supplied mappings over \U0001D53D%lu:\n", mod);
-    fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", coefficient[1], coefficient[0], mod);
+    fprintf(stdout, "f(x) \u2261 %lu * x + %lu	(modulus %lu)\n", coefficient[0], coefficient[1], mod);
     fprintf(stdout, "\nThe shared secret was '%lu'.\n", mod_polynomial(0, coefficient, K));
+    // fprintf(stdout, "\nThe shared secret was '%lu'.\n", mod_polynomial(0, coefficient, K)); for some reason does not work with 
     free(coefficient); equations_DELETE(equation); return 0;
 }

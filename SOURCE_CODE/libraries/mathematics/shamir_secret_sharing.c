@@ -30,7 +30,11 @@ unsigned long *coefficient_cancel(unsigned long *first_equation, unsigned long *
 { return (first_equation[index] == second_equation[index]) ? equation_SUBTRACT(first_equation, second_equation) : equation_MULTIPLY(first_equation, mod_divide(first_equation[index], mod_inverse(second_equation[index])));}
 
 unsigned long **equations_ALLOCATE()
-{ unsigned long **ret_val = (unsigned long **) malloc(sizeof(unsigned long *) * k); for (int i = 0; i < k; i++) ret_val[i] = UL_array_of_SIZE(k + 2); return ret_val; }
+{
+    unsigned long **ret_val = (unsigned long **) malloc(sizeof(unsigned long *) * k);
+    for (int i = 0; i < k; i++) ret_val[i] = UL_array_of_SIZE(k + 2);
+    return ret_val;
+}
 
 void equations_DELETE(unsigned long **equation)
 { for (int i = 0; i < k; i++) free(equation[i]); free(equation); }
