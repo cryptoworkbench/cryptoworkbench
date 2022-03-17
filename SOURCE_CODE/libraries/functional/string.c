@@ -39,10 +39,10 @@ int error_specification(_error_function error_explainer, int exit_status)
 { if (exit_status) { fflush(stdout); error_explainer(); } return exit_status; }
 
 int n(int exit_status) { if (exit_status) fprintf(stderr, "\n"); return exit_status; }
-int h(int exit_status) { if (exit_status) fprintf(stderr, "#\n"); return exit_status; }
+int h(int exit_status) { if (exit_status) fprintf(stderr, "\n#"); return exit_status; }
 
 void conditional_goodbye(int exit_status)
-{ if (!exit_status) return; fprintf(stderr, "# ^ ^ ^  THE ABOVE WAS A FATAL ERROR!  ^ ^ ^  #\n# Terminating with exit status '%i'. Goodbye. #\n", exit_status); exit(exit_status); }
+{ if (!exit_status) return; fprintf(stderr, "\n# ^ ^ ^  THE ABOVE WAS A FATAL ERROR!  ^ ^ ^  #\n# Terminating with exit status '%i'. Goodbye. #\n", exit_status); exit(exit_status); }
 
 char *BUFFER_OF_SIZE(unsigned int SIZE) {
     char *return_value = (char *) malloc(sizeof(char) * SIZE);
