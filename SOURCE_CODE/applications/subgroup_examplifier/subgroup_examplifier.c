@@ -102,7 +102,7 @@ void invalid_group_parameters()
 
 void _id_failed_to_parse() {
     fprintf(stderr, "Please specify as second argument the operation associated with \u2115%s ->", (*argv_location)[1]);
-    list_plausable_group_identity_descriptions();
+    list_plausable_group_identity_descriptions(2);
 }
 
 void mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument the modulus of the group whose subgroups to examplify. '\u2115%s*' makes no sense to me.", (*argv_location)[1]); }
