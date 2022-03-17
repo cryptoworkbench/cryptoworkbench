@@ -101,14 +101,14 @@ void invalid_group_parameters()
 }
 
 void _id_failed_to_parse() {
-    fprintf(stderr, "Please specify as second argument the operation associated with \u2115%s ->", (*argv_location)[1]);
+    fprintf(stderr, "Please specify as second argument the operation associated with \u2115%s ->", (*argv_loc)[1]);
     list_plausable_group_identity_descriptions(2);
 }
 
-void mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument the modulus of the group whose subgroups to examplify. '\u2115%s*' makes no sense to me.", (*argv_location)[1]); }
+void mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument the modulus of the group whose subgroups to examplify. '\u2115%s*' makes no sense to me.", (*argv_loc)[1]); }
 // error functions ^ (function header format fits typedef '_error_message')
 
-int main(int argc, char **argv) { argv_location = &argv;
+int main(int argc, char **argv) { argv_loc = &argv;
     unsigned long mod = 0; mod_ = &mod; conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(      ul_parse_str(mod_, argv[1], -1))))));
     int id = 0; id_ = &id;              conditional_goodbye(n(n(error_specification(_id_failed_to_parse, n(identity_parse_str( &id, argv[2], -2))))));
     if (!mod || !(mod - 1) && id)   conditional_goodbye(n(n(error_message(invalid_group_parameters, -3))));

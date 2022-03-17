@@ -10,13 +10,13 @@ unsigned long mod, a;
 // global variable declarations ^ 
 
 void mod_failed_to_parse() {
-    fprintf(stderr, "\'\u2124%s\', \'\u2124/\u2124%s\', \'\u2115%s\', and \'\u2115/\u2115%s\' do not represent any (finite (quotient)) group, neither does \'\U0001D53D%s\' represent any field!\n\n", (*argv_location)[1], (*argv_location)[1], (*argv_location)[1], (*argv_location)[1], (*argv_location)[1]); fprintf(stderr, "Please specify as first argument the modulus to work with!		(0 to not divide \u2115)");
+    fprintf(stderr, "\'\u2124%s\', \'\u2124/\u2124%s\', \'\u2115%s\', and \'\u2115/\u2115%s\' do not represent any (finite (quotient)) group, neither does \'\U0001D53D%s\' represent any field!\n\n", (*argv_loc)[1], (*argv_loc)[1], (*argv_loc)[1], (*argv_loc)[1], (*argv_loc)[1]); fprintf(stderr, "Please specify as first argument the modulus to work with!		(0 to not divide \u2115)");
 }
 
-void __a_failed_to_parse() { fprintf(stderr, "'%s' is not a suitable value to take a modulus of!", (*argv_location)[2]); }
+void __a_failed_to_parse() { fprintf(stderr, "'%s' is not a suitable value to take a modulus of!", (*argv_loc)[2]); }
 // error functions ^
 
-int main(int argc, char **argv) { mod = a = ADDITIVE_IDENTITY; argv_location = &argv;
+int main(int argc, char **argv) { mod = a = ADDITIVE_IDENTITY; argv_loc = &argv;
     conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(ul_parse_str(&mod, argv[1], -1))))));
     conditional_goodbye(n(n(error_specification(__a_failed_to_parse, n(ul_parse_str(&  a, argv[2], -2))))));
     // take in variables ^

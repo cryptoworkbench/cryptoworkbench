@@ -6,11 +6,11 @@
 
 unsigned long upper_bound, quantity;
 
-void _____mod_failed_to_parse() { fprintf(stderr, "Please provide as first argument the maximum size to the random numbers.", (*argv_location)[1]); }
-void quantity_failed_to_parse() { fprintf(stderr, "Failed to interpet '%s' as amount of random numbers to generate.", (*argv_location)[2]); }
+void _____mod_failed_to_parse() { fprintf(stderr, "Please provide as first argument the maximum size to the random numbers.", (*argv_loc)[1]); }
+void quantity_failed_to_parse() { fprintf(stderr, "Failed to interpet '%s' as amount of random numbers to generate.", (*argv_loc)[2]); }
 // error functions ^
 
-int main(int argc, char **argv) { upper_bound = quantity = ADDITIVE_IDENTITY; argv_location = &argv;
+int main(int argc, char **argv) { upper_bound = quantity = ADDITIVE_IDENTITY; argv_loc = &argv;
     conditional_goodbye(n(n(error_specification(_____mod_failed_to_parse, n(ul_parse_str(&upper_bound, argv[1], -1))))));
     conditional_goodbye(n(n(error_specification(quantity_failed_to_parse, n(ul_parse_str(&   quantity, argv[2], -2))))));
     // interpret terminal arguments ^

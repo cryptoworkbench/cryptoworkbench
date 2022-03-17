@@ -10,7 +10,7 @@
 #define ASCII_BASE 48
 // ^^^ Necessary definitions that are needed in "string.c"
 
-char ***argv_location; char *unparsed_arg; // enable easy access to these variables outside of 'main()' <
+char ***argv_loc; char *unparsed_arg; // enable easy access to these variables outside of 'main()' <
 unsigned int *width_; // used by 'width_str_transform_ul()'
 
 typedef void (*_error_selector) (); // this we will use for 'error_message'

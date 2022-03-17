@@ -13,9 +13,9 @@ void error_and_exit(char *argv_one) { int exit_status = - 1;
     exit(exit_status);
 }
 
-void limit_failed_to_parse() { fprintf(stderr, "Failed to understand '%s' as the limit for the sieve function.", (*argv_location)[1]); }
+void limit_failed_to_parse() { fprintf(stderr, "Failed to understand '%s' as the limit for the sieve function.", (*argv_loc)[1]); }
 
-int main(int argc, char **argv) { limit = ADDITIVE_IDENTITY; argv_location = &argv;
+int main(int argc, char **argv) { limit = ADDITIVE_IDENTITY; argv_loc = &argv;
     conditional_goodbye(n(n(error_specification(limit_failed_to_parse, n(ul_parse_str(&limit, argv[1], -1))))));
     fprintf(stdout, "\nPrinted %lu primes.\n", primes_printed_from_sieve_array_to_FS(sieve_of_eratosthenes(limit), limit, stdout));
     return 0;

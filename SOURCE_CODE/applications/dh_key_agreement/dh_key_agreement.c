@@ -28,14 +28,14 @@ struct VOID_ptr_ptr_PAIR group_elements_LL(char **argv) { FILE *ELEMENT_database
 }
 
 int i;
-void mod_failed_to_parse() { fprintf(stderr, "Please provide as first argument a modulus specifying the multiplicative group to use. '\u2115%s*' makes no sense to me.", (*argv_location)[1]); }
-void coprime_error() { fprintf(stderr, "gcd(%s, %s) != 1: %s is not an element from \u2115%s*.", (*argv_location)[i], (*argv_location)[1], (*argv_location)[i], (*argv_location)[1]); }
-void generator_failed_to_parse() { fprintf(stderr, "Please provide as second argument a generator from \u2115%s*.", (*argv_location)[1]); }
+void mod_failed_to_parse() { fprintf(stderr, "Please provide as first argument a modulus specifying the multiplicative group to use. '\u2115%s*' makes no sense to me.", (*argv_loc)[1]); }
+void coprime_error() { fprintf(stderr, "gcd(%s, %s) != 1: %s is not an element from \u2115%s*.", (*argv_loc)[i], (*argv_loc)[1], (*argv_loc)[i], (*argv_loc)[1]); }
+void generator_failed_to_parse() { fprintf(stderr, "Please provide as second argument a generator from \u2115%s*.", (*argv_loc)[1]); }
 
 void _third_argument_instruction() { fprintf(stderr, "Please supply as third argument Bob's private key!"); }
 void fourth_argument_instruction() { fprintf(stderr, "Please supply as fourth argument Alice's private key!"); }
 
-int main(int argc, char **argv) { argv_location = &argv;
+int main(int argc, char **argv) { argv_loc = &argv;
     conditional_goodbye(n(n(pair_of_strs_represents_pair_of_coprime_ULs(mod_failed_to_parse, generator_failed_to_parse, &DH_parameters.a, &DH_parameters.b, 1, 2, -3)))); mod_ = &DH_parameters.a;
     // take in multiplicative group and element from multiplicative group using function 'pair_of_strs_represents_pair_of_coprime_ULs' ^
 

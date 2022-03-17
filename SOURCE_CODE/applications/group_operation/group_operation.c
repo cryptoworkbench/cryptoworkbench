@@ -10,12 +10,12 @@ int function_arg_count, i, id; unsigned long *arguments_array; unsigned long ans
 void argument_failed_to_parse() { fprintf(stderr, "%ith argument failed to parse!", 3 + i); };
 void ___array_failed_to_parse() { fprintf(stderr, "This function requires at least two inputs!"); };
 void sp_array_failed_to_parse() {
-    fprintf(stderr, "Please specify from the second argument onward numbers to %s within the finite field F%s.", id_as_verb(), (*argv_location)[1]);
+    fprintf(stderr, "Please specify from the second argument onward numbers to %s within the finite field F%s.", id_as_verb(), (*argv_loc)[1]);
 }
 void ______id_failed_to_parse() { fprintf(stderr, "Please specify as second argument the identity element of the group whose subgroups to examplify."); list_plausable_group_identity_descriptions(2); }
 void _____mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument the modulus of the group operation (0 to act upon the infinite group of integers)."); }
 
-int main(int argc, char **argv) { mod = id = ADDITIVE_IDENTITY; argv_location = &argv;
+int main(int argc, char **argv) { mod = id = ADDITIVE_IDENTITY; argv_loc = &argv;
     conditional_goodbye(n(n(error_specification(_____mod_failed_to_parse, n(                                                      ul_parse_str(&mod, argv[1], -1)))))); id_ = &id;
     conditional_goodbye(n(n(error_specification(______id_failed_to_parse, n(                                                identity_parse_str(& id, argv[2], -2))))));
     conditional_goodbye(n(n(error_specification(sp_array_failed_to_parse, n(n(error_message(___array_failed_to_parse, (2 > (function_arg_count = argc -3))  * -3)))))));

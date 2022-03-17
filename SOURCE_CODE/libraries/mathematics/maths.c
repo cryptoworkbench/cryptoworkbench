@@ -71,8 +71,8 @@ void identity_error()
 void list_plausable_group_identity_descriptions(int argv_index)
 {
     fflush(stderr);
-    fprintf(stderr, "\n- \u2115%s+ could have been specified using '%s', '%s', '%s', '%s', '%s' or '%s'                        		instead of '%s'", (*argv_location)[1], additive_signs[5], additive_signs[4], additive_signs[2], additive_signs[3], additive_signs[0], additive_signs[1], (*argv_location)[argv_index]);
-    fprintf(stderr, "\n- \u2115%s* could have been specified using '%s', '%s', '%s', '%s', '%s' or '%s'		instead of '%s'", (*argv_location)[1], multiplicative_signs[5], multiplicative_signs[4], multiplicative_signs[2], multiplicative_signs[3], multiplicative_signs[0], multiplicative_signs[1], (*argv_location)[argv_index]);
+    fprintf(stderr, "\n- \u2115%s+ could have been specified using '%s', '%s', '%s', '%s', '%s' or '%s'                        		instead of '%s'", (*argv_loc)[1], additive_signs[5], additive_signs[4], additive_signs[2], additive_signs[3], additive_signs[0], additive_signs[1], (*argv_loc)[argv_index]);
+    fprintf(stderr, "\n- \u2115%s* could have been specified using '%s', '%s', '%s', '%s', '%s' or '%s'		instead of '%s'", (*argv_loc)[1], multiplicative_signs[5], multiplicative_signs[4], multiplicative_signs[2], multiplicative_signs[3], multiplicative_signs[0], multiplicative_signs[1], (*argv_loc)[argv_index]);
 }
 
 unsigned long DH_public_key(STRUCT_DH_parameters *DH_parameters, unsigned long DH_private_key) { return _exponentiate(DH_parameters->b, DH_private_key, DH_parameters->a); }
@@ -180,17 +180,17 @@ unsigned long chinese_remainder_theorem(unsigned long remainder, unsigned long *
 }
 
 int pair_of_strs_represents_pair_of_coprime_ULs(_error_selector _first_instruction, _error_selector second_instruction, unsigned long *ptr_one, unsigned long *ptr_two, int _first_index, int second_index, int exit_status) {
-    // requires 'argv_location' to be set ^
+    // requires 'argv_loc' to be set ^
 
-    if (error_specification(_first_instruction, n(ul_parse_str(ptr_one, (*argv_location)[_first_index], 1)))) return - _first_index;
-    if (error_specification(second_instruction, n(ul_parse_str(ptr_two, (*argv_location)[second_index], 1)))) return - second_index;
+    if (error_specification(_first_instruction, n(ul_parse_str(ptr_one, (*argv_loc)[_first_index], 1)))) return - _first_index;
+    if (error_specification(second_instruction, n(ul_parse_str(ptr_two, (*argv_loc)[second_index], 1)))) return - second_index;
     // interpret the numbers ^^
 
     if (coprime(*ptr_one, *ptr_two)) return 0;
     // perform the coprimality check ^
 
-    fprintf(stderr, " GCD(%s, %s) != 1 -->  ", (*argv_location)[_first_index], (*argv_location)[second_index]);
-    fprintf(stderr, "%s is not coprime to %s -->  ", (*argv_location)[second_index], (*argv_location)[_first_index]);
-    fprintf(stderr, "%s is neither from \u2115%s* nor from \u2115/%s\u2115* !", (*argv_location)[_first_index], (*argv_location)[second_index], (*argv_location)[second_index]);
+    fprintf(stderr, " GCD(%s, %s) != 1 -->  ", (*argv_loc)[_first_index], (*argv_loc)[second_index]);
+    fprintf(stderr, "%s is not coprime to %s -->  ", (*argv_loc)[second_index], (*argv_loc)[_first_index]);
+    fprintf(stderr, "%s is neither from \u2115%s* nor from \u2115/%s\u2115* !", (*argv_loc)[_first_index], (*argv_loc)[second_index], (*argv_loc)[second_index]);
     return exit_status;
 }
