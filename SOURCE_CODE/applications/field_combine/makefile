@@ -4,8 +4,8 @@
 ../../libraries/mathematics/.maths.o: ../../libraries/mathematics/maths.h ../../libraries/mathematics/maths.c
 	gcc -c ../../libraries/mathematics/maths.c -o ../../libraries/mathematics/.maths.o
 
-.group_operation.o: group_operation.c
-	gcc -c group_operation.c -o .group_operation.o
+.field_combine.o: field_combine.c
+	gcc -c field_combine.c -o .field_combine.o
 
-group_operation: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .group_operation.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .group_operation.o -o ../../../applications/group_operation
+field_combine: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .field_combine.o
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .field_combine.o -o ../../../applications/field_combine
