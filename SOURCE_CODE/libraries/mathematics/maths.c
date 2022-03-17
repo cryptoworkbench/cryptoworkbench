@@ -158,7 +158,7 @@ unsigned long primes_printed_from_sieve_array_to_FS(char *sieve, unsigned long l
 
 FILE *prime_table_open(char *prime_table_filename) {
     FILE *prime_table; if (prime_table = fopen(prime_table_filename, "r")) _open_prime_table = prime_table_filename;
-    else { fprintf(stderr, PRIME_TABLE_UNAVAILABLE_ERROR EXIT_STATUS_GOODBYE, prime_table_filename, -1); exit(-1); }
+    else { fprintf(stderr, PRIME_TABLE_UNAVAILABLE_ERROR, prime_table_filename, -1); exit(-1); }
     return prime_table;
 } void prime_table_close(FILE *prime_table) { fclose(prime_table); _open_prime_table = NULL; }
 
@@ -179,7 +179,7 @@ unsigned long chinese_remainder_theorem(unsigned long remainder, unsigned long *
     } return isomorphism.a;
 }
 
-int pair_of_strs_represents_pair_of_coprime_ULs(_error_selector _first_instruction, _error_selector second_instruction, unsigned long *ptr_one, unsigned long *ptr_two, int _first_index, int second_index, int exit_status) {
+int pair_of_strs_represents_pair_of_coprime_ULs(_error_function _first_instruction, _error_function second_instruction, unsigned long *ptr_one, unsigned long *ptr_two, int _first_index, int second_index, int exit_status) {
     // requires 'argv_loc' to be set ^
 
     if (error_specification(_first_instruction, n(ul_parse_str(ptr_one, (*argv_loc)[_first_index], 1)))) return - _first_index;

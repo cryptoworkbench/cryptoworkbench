@@ -10,7 +10,7 @@
 
 void str_not_parsable_as_number() { fprintf(stderr, "parsing of '%s' failed: '%s' is not a number.", unparsed_arg, unparsed_arg); }
 
-int error_message(_error_selector error_explainer, int exit_status)
+int error_message(_error_function error_explainer, int exit_status)
 { if (exit_status) { fflush(stdout); fprintf(stderr, "### THE FOLLOWING ERROR OCCURRED --> "); error_explainer(); } return exit_status; }
 
 int _parse_str_failure(int exit_status) { return n(error_message(str_not_parsable_as_number, exit_status)); }
@@ -35,7 +35,7 @@ int ui_parse_str(unsigned int *ui_ptr, char *str, int exit_status)
     return 0;
 }
 
-int error_specification(_error_selector error_explainer, int exit_status)
+int error_specification(_error_function error_explainer, int exit_status)
 { if (exit_status) { fflush(stdout); error_explainer(); } return exit_status; }
 
 int n(int exit_status) { if (exit_status) fprintf(stderr, "\n"); return exit_status; }

@@ -1,21 +1,22 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
-// ^^^ Necessary library inclusions that are needed in "string.c"
+// library inclusions ^^^
 
 #define STRING_TERMINATING_CHARACTER 0
 #define NUMERIC_BASE 10
 #define ASCII_BASE 48
-// ^^^ Necessary definitions that are needed in "string.c"
+// definitions ^^^
 
-char ***argv_loc; char *unparsed_arg; // enable easy access to these variables outside of 'main()' <
-unsigned int *width_; // used by 'width_str_from_ul'
+typedef void (*_error_function) ();
+// variable type declarations ^
 
-typedef void (*_error_selector) (); // this we will use for 'error_message'
+unsigned int *width_; char ***argv_loc; char *unparsed_arg;
+// global variable declarations ^^^
+
 void str_not_parsable_as_number();
-
-int error_message(_error_selector error_explainer, int exit_status);
-int error_specification(_error_selector error_explainer, int exit_status);
+int error_message(_error_function error_explainer, int exit_status);
+int error_specification(_error_function error_explainer, int exit_status);
 int n(int pass_through);
 void conditional_goodbye(int exit_status);
 int ul_parse_str(unsigned long *ul_ptr, char *str, int exit_status); // to parse unsigned longs
