@@ -11,7 +11,7 @@
 typedef void (*_error_function) ();
 // variable type declarations ^
 
-unsigned int *width_; char ***argv_loc; char *unparsed_arg;
+unsigned int *width_; char ***argv_ptr; char *unparsed_arg;
 // global variable declarations ^^^
 
 void str_not_parsable_as_number();

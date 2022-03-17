@@ -21,7 +21,7 @@ void ______system_not_provided() { fprintf(stderr, "Please provide besides a rem
 void remainder_failed_to_parse() { fprintf(stderr, "Please provide as first argument the remainder."); }
 void __modulus_failed_to_parse() { fprintf(stderr, "Failed to understand '%s' as the %ith modulus.", unparsed_modulus, i + 1); }
 
-int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY; argv_loc = &argv;
+int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY; argv_ptr = &argv;
     conditional_goodbye(n(n(error_specification(remainder_failed_to_parse, n(ul_parse_str(&mod, argv[1], -1))))));
     conditional_goodbye(n(n(error_specification(______system_not_provided,               (argc == 2)  *  -2))));
     // interpret remainder ^

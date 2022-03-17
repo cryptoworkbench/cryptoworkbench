@@ -8,7 +8,7 @@ void _id_failed_to_parse() { fprintf(stderr, "Please provide as second argument 
 void mod_failed_to_parse() { fprintf(stderr, "Please provide as first argument the additive group's or the multiplicative group's modulus."); }
 // error functions ^
 
-int main(int argc, char **argv) { mod = id = ADDITIVE_IDENTITY; argv_loc = &argv;
+int main(int argc, char **argv) { mod = id = ADDITIVE_IDENTITY; argv_ptr = &argv;
     conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(      ul_parse_str(&mod, argv[1], -1))))));
     conditional_goodbye(n(n(error_specification(_id_failed_to_parse, n(identity_parse_str( &id, argv[2], -2))))));
     unsigned long count = 0; for (unsigned long element = id; element < mod; element++) if (id == ADDITIVE_IDENTITY || GCD(mod, element) == MULTIPLICATIVE_IDENTITY) { fprintf(stdout, "%lu\n", element); count++; }

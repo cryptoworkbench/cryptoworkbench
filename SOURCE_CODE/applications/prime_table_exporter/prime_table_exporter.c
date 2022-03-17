@@ -6,9 +6,9 @@
 
 unsigned long limit;
 
-void limit_error() { fprintf(stderr, "Failed to understand '%s' as the limit to my sieve.", (*argv_loc)[1]); }
+void limit_error() { fprintf(stderr, "Failed to understand '%s' as the limit to my sieve.", (*argv_ptr)[1]); }
 
-int main(int argc, char **argv) { limit = ADDITIVE_IDENTITY; argv_loc = &argv;
+int main(int argc, char **argv) { limit = ADDITIVE_IDENTITY; argv_ptr = &argv;
     conditional_goodbye(n(n(error_specification(limit_error, n(ul_parse_str(&limit, argv[1], -1))))));
     char *output_filename = _REPORT_standard_prime_table_filename(); if (2 < argc) output_filename = argv[2];
     // process terminal arguments ^

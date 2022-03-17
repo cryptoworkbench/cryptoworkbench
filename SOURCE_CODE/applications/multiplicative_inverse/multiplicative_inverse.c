@@ -11,7 +11,7 @@
 
 unsigned long common_divisor, denominator, multiplicative_group_specification;
 
-void ______group_element_failed_to_parse() { fprintf(stderr, "Please provide as second argument an element within \u2115/\u2115%s*.", (*argv_loc)[1]); }
+void ______group_element_failed_to_parse() { fprintf(stderr, "Please provide as second argument an element within \u2115/\u2115%s*.", (*argv_ptr)[1]); }
 void group_specification_failed_to_parse() { fprintf(stderr, "Please provide as first argument a modulus so I know what multiplicative group to take the inverse within."); }
 void not_a_member_of_an_equivalence_class_from_the_quotient_group()
 {
@@ -25,7 +25,7 @@ void not_a_member_of_an_equivalence_class_from_the_quotient_group()
 }
 // error functions for incorrect usage ^^
 
-int main(int argc, char **argv) { multiplicative_group_specification = denominator = ADDITIVE_IDENTITY; argv_loc = &argv; 
+int main(int argc, char **argv) { multiplicative_group_specification = denominator = ADDITIVE_IDENTITY; argv_ptr = &argv; 
     conditional_goodbye(n(n(error_specification(group_specification_failed_to_parse, n(ul_parse_str(&multiplicative_group_specification, argv[1], -1)))))); int numerator = 1;                                
     conditional_goodbye(n(n(error_specification(______group_element_failed_to_parse, n(ul_parse_str(&denominator, argv[2], -2))))));
     conditional_goodbye(error_message(not_a_member_of_an_equivalence_class_from_the_quotient_group, -3 * !(!((common_divisor = GCD(denominator, multiplicative_group_specification)) - 1))));

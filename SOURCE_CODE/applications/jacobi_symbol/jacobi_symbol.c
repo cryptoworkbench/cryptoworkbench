@@ -56,11 +56,11 @@ int jacobi_symbol(unsigned long p, unsigned long C) {
 unsigned long D; // Denominator <--
 unsigned long N; // Numerator <--
 
-void coprime_fail() { fprintf(stderr, "Jaman", (*argv_loc)[2], (*argv_loc)[1], (*argv_loc)[1]); }
+void coprime_fail() { fprintf(stderr, "Jaman", (*argv_ptr)[2], (*argv_ptr)[1], (*argv_ptr)[1]); }
 void denominator_fail() { fprintf(stderr, "Please specify in the first argument a multiplicative group specification (goes as denominator into the Jacobi symbol)."); }
-void numerator_fail() { fprintf(stderr, "Please specify in the second argument an element from \u2115%s*", (*argv_loc)[1]); }
+void numerator_fail() { fprintf(stderr, "Please specify in the second argument an element from \u2115%s*", (*argv_ptr)[1]); }
 
-int main(int argc, char **argv) { argv_loc = &argv;
+int main(int argc, char **argv) { argv_ptr = &argv;
     conditional_goodbye(n(n(pair_of_strs_represents_pair_of_coprime_ULs(denominator_fail, numerator_fail, &D, &N, 1, 2, -3)))); _preferred_factorization_engine = factorization_method_retrieve(argv[3]);
     // take in denominator, numerator, check if they are coprime, and overrule external file '/applications/.global_preference.factorization_engine' if requested ^^^
 
