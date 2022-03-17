@@ -6,8 +6,8 @@
 
 const char *_preferred_factorization_engine_file = ".global.preference.factorization_engine"; // could rewrite this as definition <
 const char *_REPORT_preferred_factorization_engine_file() { return _preferred_factorization_engine_file; }
-const char *_a = "efficient_trial_division"; const char *_b = "less_efficient_trial_division"; const char *_c = "trial_division"; const char *_d = "TABLE_AIDED_efficient_trial_division";
-const char *_e = "TABLE_AIDED_less_efficient_trial_division"; const char *_f = "TABLE_AIDED_trial_division"; const char *_g = "fermats_factorization_method"; const char *_h = "shor_factorization";
+const char *_a = "efficient_trial_division"; const char *_b = "less_efficient_trial_division"; const char *_c = "trial_division"; const char *_d = "PRIME_TABLE_AIDED_efficient_trial_division";
+const char *_e = "PRIME_TABLE_AIDED_less_efficient_trial_division"; const char *_f = "PRIME_TABLE_AIDED_trial_division"; const char *_g = "fermats_factorization_method"; const char *_h = "shor_factorization";
 
 const char *_REPORT_a() { return _a; } const char *_REPORT_b() { return _b; } const char *_REPORT_c() { return _c; } const char *_REPORT_d() { return _d; } const char *_REPORT_e() { return _e; }
 const char *_REPORT_f() { return _f; } const char *_REPORT_g() { return _g; } const char *_REPORT_h() { return _h; } const char *_A = "a"; const char *_B = "b"; const char *_C = "c"; const char *_D = "d";

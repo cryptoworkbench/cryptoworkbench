@@ -156,13 +156,13 @@ unsigned long primes_printed_from_sieve_array_to_FS(char *sieve, unsigned long l
     return ret_val;
 }
 
-void _prime_table_unavailable() {
-    fprintf(stderr, "failed to access prime table '%s' !", _standard_prime_table_filename);
-}
+void _prime_table_unavailable() { fprintf(stderr, "failed to access prime table '%s' !\n", _standard_prime_table_filename); }
+
+void spec() { fprintf(stderr, "# you can create it using 'prime_table_exporter'.\n"); }
 
 FILE *prime_table_open() {
     FILE *prime_table; if (prime_table = fopen(_standard_prime_table_filename, "r")) _open_prime_table = (char *) _standard_prime_table_filename;
-    else conditional_goodbye(n(n(error_message(_prime_table_unavailable, -10))));
+    else conditional_goodbye(h(h(error_specification(spec, h(error_message(_prime_table_unavailable, -10))))));
     return prime_table;
 } void prime_table_close(FILE *prime_table) { fclose(prime_table); _open_prime_table = NULL; }
 

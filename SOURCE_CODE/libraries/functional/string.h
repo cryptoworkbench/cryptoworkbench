@@ -17,7 +17,7 @@ unsigned int *width_; char ***argv_loc; char *unparsed_arg;
 void str_not_parsable_as_number();
 int error_message(_error_function error_explainer, int exit_status);
 int error_specification(_error_function error_explainer, int exit_status);
-int n(int pass_through);
+int n(int pass_through); int h(int pass_through);
 void conditional_goodbye(int exit_status);
 int ul_parse_str(unsigned long *ul_ptr, char *str, int exit_status); // to parse unsigned longs
 int ui_parse_str(unsigned int *ui_ptr, char *str, int exit_status); // to parse unsigned ints
