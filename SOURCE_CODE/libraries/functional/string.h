@@ -3,19 +3,16 @@
 #include <stdarg.h>
 // ^^^ Necessary library inclusions that are needed in "string.c"
 
-#define GENERIC_PARSING_ERROR "'%s' is not something I am able to understand as a suitable number;"
-#define EXIT_STATUS_GOODBYE "" // still need this for now <--
 #define STRING_TERMINATING_CHARACTER 0
 #define NUMERIC_BASE 10
 #define ASCII_BASE 48
 // ^^^ Necessary definitions that are needed in "string.c"
 
 char ***argv_loc; char *unparsed_arg; // enable easy access to these variables outside of 'main()' <
-unsigned int *width_; // used by 'width_str_transform_ul()'
+unsigned int *width_; // used by 'width_str_from_ul'
 
 typedef void (*_error_selector) (); // this we will use for 'error_message'
-_error_selector _str_not_parsable_as_number(char *str); void str_not_parsable_as_number();
-typedef const char *(*arg_error_selector) (int); arg_error_selector local_error_selector;
+void str_not_parsable_as_number();
 
 int error_message(_error_selector error_explainer, int exit_status);
 int error_specification(_error_selector error_explainer, int exit_status);
@@ -41,15 +38,8 @@ int match(char *INPUT, const char *char_PTR_array[]); // <<< Inst the makes
 int _match(char *str, int array_SIZE, const char *char_PTR_array[]);
 int match_variadic(char *INPUT, int number_of_comparisons, ...); // Variadic function that can compare one string against a variable number of strings to compare it to
 
-char *copy_over(char *recipient_adress, const char *source_adress); // Copies over source onto recipient, terminating at the string terminating character 0 in the byte sequence pointed at by source_adress, then appends one onto the string pointed at by char *repicient_adress
-
-unsigned long ul_from_str(char *string); // Returns the numeric value represented by the string pointed to by char *string as unsigned long
-int string_to_int(char *string); // Returns the numeric value represented by the string pointed to by char *string as int
-
 unsigned long char_in_val(unsigned long a); // Calculates the number of characters needed to display a in base BASE notation (BASE = 10)
-char *_str_transform_ul(unsigned long a, unsigned int width_); // Converts from ul to string with a minimum of min_out_length characters, heading zeros are fixed if needed, call as _str_from_ul(unsigned long a, characters_in_val(a))
+char *_str_from_ul(unsigned long a, unsigned int width_); // Converts from ul to string with a minimum of min_out_length characters, heading zeros are fixed if needed, call as _str_from_ul(unsigned long a, characters_in_val(a))
 char *width_str_from_ul(unsigned long a);
 
-
 void ignored_arguments(int argc, char **argv, int used_arguments);
-void str_does_not_represent_suitable_ul(char **argv, int index);

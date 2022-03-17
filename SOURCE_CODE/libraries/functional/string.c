@@ -8,7 +8,6 @@
 #include "../mathematics/maths.h" // 'exponentiation()'
 #include <stdio.h>
 
-_error_selector _str_not_parsable_as_number(char *str) { unparsed_arg = str; return str_not_parsable_as_number; }
 void str_not_parsable_as_number() { fprintf(stderr, "parsing of '%s' failed: '%s' is not a number.", unparsed_arg, unparsed_arg); }
 
 int error_message(_error_selector error_explainer, int exit_status)
@@ -120,27 +119,6 @@ int str_len_int(char *string_pointer) {
     return index;
 }
 
-char *copy_over(char *recipient_adress, const char *source_adress) {
-    while (*source_adress != 0) {
-	*recipient_adress = *source_adress;
-	source_adress++; recipient_adress++;
-    } return recipient_adress;
-}
-
-int string_to_int(char *string) {
-    int iteration_count, string_as_integer, length_of_string; // Declare needed variables
-    iteration_count = string_as_integer = 0; length_of_string = str_len_int(string); // Initialize variables
-
-    char *current_character = (string + (length_of_string - 1));
-    while (current_character != string) {
-	string_as_integer += (*current_character - ASCII_BASE) * exponentiate(NUMERIC_BASE, iteration_count);
-
-	iteration_count++; // Update the iteration count
-	current_character = (current_character - 1); // Move back one character
-    } string_as_integer += (*current_character - ASCII_BASE) * exponentiate(NUMERIC_BASE, length_of_string - 1);
-    return string_as_integer;
-}
-
 unsigned long char_in_val(unsigned long a) {
     if (a == 0)
 	return 1;
@@ -157,7 +135,7 @@ unsigned long char_in_val(unsigned long a) {
     return char_index;
 }
 
-char *_str_transform_ul(unsigned long ul, unsigned int width_) { // Works!
+char *_str_from_ul(unsigned long ul, unsigned int width_) { // Works!
     unsigned int base_ten_width = char_in_val(ul);
     unsigned int number_of_heading_zeros = 0; // Start off assuming there is no need for heading zeros
     if (width_ > base_ten_width) // Check to see if there is any need for heading zeros
@@ -177,7 +155,7 @@ char *_str_transform_ul(unsigned long ul, unsigned int width_) { // Works!
     } return transformed_str;
 }
 
-char *width_str_from_ul(unsigned long ul) { return _str_transform_ul(ul, *width_); }
+char *width_str_from_ul(unsigned long ul) { return _str_from_ul(ul, *width_); }
 
 void ignored_arguments(int argc, char **argv, int used_arguments) {
     unsigned long difference = argc - 1 - used_arguments; if (difference) {
