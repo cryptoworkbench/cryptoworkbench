@@ -1,8 +1,8 @@
 ../../libraries/functional/.string.o: ../../libraries/functional/string.h ../../libraries/functional/string.c
 	gcc -c ../../libraries/functional/string.c -o ../../libraries/functional/.string.o
 
-../../libraries/mathematics/.maths.o: ../../libraries/mathematics/maths.h ../../libraries/mathematics/maths.c
-	gcc -c ../../libraries/mathematics/maths.c -o ../../libraries/mathematics/.maths.o
+../../libraries/mathematics/.math_extended.o: ../../libraries/mathematics/math_extended.h ../../libraries/mathematics/math_extended.c ../../libraries/mathematics/math_basic.h ../../libraries/mathematics/math_basic.c
+	cd ../../libraries/mathematics && make math_extended_LIBRARY
 
 ../../libraries/functional/.triple_ref_pointers.o: ../../libraries/functional/triple_ref_pointers.h ../../libraries/functional/triple_ref_pointers.c
 	gcc -c ../../libraries/functional/triple_ref_pointers.c -o ../../libraries/functional/.triple_ref_pointers.o
@@ -13,5 +13,5 @@
 .subgroup_examplifier.o: subgroup_examplifier.c
 	gcc -c subgroup_examplifier.c -o .subgroup_examplifier.o
 
-subgroup_examplifier: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_library.o .subgroup_examplifier.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_library.o .subgroup_examplifier.o -o ../../../applications/subgroup_examplifier
+subgroup_examplifier: ../../libraries/functional/.string.o ../../libraries/mathematics/.math_basic.o ../../libraries/mathematics/.math_extended.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_library.o .subgroup_examplifier.o
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.math_basic.o ../../libraries/mathematics/.math_extended.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_library.o .subgroup_examplifier.o -o ../../../applications/subgroup_examplifier

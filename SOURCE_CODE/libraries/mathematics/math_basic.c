@@ -1,7 +1,7 @@
 // This library contains all of the mathematics for (modular) arithmetic.
 #include <stdlib.h>
 #include <stdarg.h>
-#include "maths.h"
+#include "math_basic.h"
 
 FILE *urandom = NULL;
 const char *_standard_prime_table_filename = "shared_prime_table";
@@ -16,20 +16,14 @@ char *_open_prime_table = NULL; char *_REPORT_open_prime_table() { return (char 
 struct ordered_pair _isomorphism() { struct ordered_pair ret_val = { ADDITIVE_IDENTITY, MULTIPLICATIVE_IDENTITY }; return ret_val; }
 // a general function which a lot of functions in this library make use of ^^
 
-/* FUNCTIONS THAT HAVE TO DO WITH mod_ FOLLOW: */
+// FUNCTIONS THAT HAVE TO DO WITH mod_ FOLLOW:
 unsigned long _conditional_cap(unsigned long result, unsigned long mod_) { return (mod_) ? result % mod_ : result; }
-unsigned long mod_conditional_cap(unsigned long result) { return (*mod_) ? _conditional_cap(result, *mod_) : result; }
 unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_cap(a + b, mod_); }
-unsigned long mod_add(unsigned long a, unsigned long b) { return _add(a, b, *mod_); }
 unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_) { return _conditional_cap(mod_ - _conditional_cap(element_of_additive_group, mod_), mod_); }
-unsigned long mod_inverse(unsigned long element_of_additive_group) { return _inverse(element_of_additive_group, *mod_); }
 unsigned long _subtract(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_cap(a + _inverse(b, mod_), mod_); }
-unsigned long mod_subtract(unsigned long a, unsigned long b) { return _subtract(a, b, *mod_); }
 unsigned long _multiply(unsigned long a, unsigned long b, unsigned long mod_) { return _conditional_cap(a * b, mod_); }
-unsigned long mod_multiply(unsigned long a, unsigned long b) { return mod_conditional_cap(a * b); } 
 unsigned long _divide(unsigned long numerator, unsigned long denominator, unsigned long mod_)
 { if (mod_) while (numerator % denominator != 0) numerator += mod_; return _conditional_cap(numerator / denominator, mod_); }
-unsigned long mod_divide(unsigned long numerator, unsigned long denominator) { return _divide(numerator, denominator, *mod_); }
 
 unsigned long exponentiate(unsigned long base, unsigned long exponent)
 { unsigned long exponentiation_RESULT = (0 < base); for (unsigned long iter = 0; iter < exponent; iter++) exponentiation_RESULT *= base; return exponentiation_RESULT; } 
@@ -41,7 +35,7 @@ unsigned long least_base_TWO_log(unsigned long power_of_TWO) {
     unsigned long i = ADDITIVE_IDENTITY; backbone[i] = _conditional_cap(base, mod_); while (i < minimum_log) { backbone[i + 1] = _multiply(backbone[i], backbone[i], mod_); i++; }
     unsigned long ret_val = MULTIPLICATIVE_IDENTITY;
     while (exponent != 0) { ret_val = _multiply(ret_val, backbone[minimum_log], mod_); exponent -= exponentiate(2, minimum_log); minimum_log = least_base_TWO_log(exponent); } free(backbone); return ret_val;
-} unsigned long mod_exponentiate(unsigned long base, unsigned long exponent) { return _exponentiate(base, exponent, *mod_); }
+}
 // functions that have to do with mod_exponentiate ^^^^
 
 const char *_as_number(unsigned int id_) { return (id_) ? multiplicative_signs[0] : additive_signs[0]; }
@@ -52,16 +46,7 @@ const char *_as_adjective(unsigned int id_) { return (id_) ? multiplicative_sign
 const char *_as_verb(unsigned int id_) { return (id_) ? multiplicative_signs[5] : additive_signs[5]; }
 // get the identity represented by corresponding number, operation symbol, singular noun, plural noun, adjective, or verb
 
-const char *id_as_number() { return _as_number(*id_); }
-const char *id_as_operation_symbol() { return _as_operation_symbol(*id_); }
-const char *id_as_noun() { return _as_noun(*id_); }
-const char *id_as_nouns() { return _as_nouns(*id_); }
-const char *id_as_adjective() { return _as_adjective(*id_); }
-const char *id_as_verb() { return _as_verb(*id_); }
-// get the identity represented by corresponding number, operation symbol, singular noun, plural noun, adjective, or verb
-
-field_operation ___field_operation(unsigned int id_) { return (id_) ? mod_multiply : mod_add; }
-field_operation id_field_operation() { return ___field_operation(*id_); }
+// to get the appriopiate group operation ^
 
 int identity_parse_str(int *id_, char *str, int exit_status)
 { if (!str || (str && !((*id_ = _match(str, 6, multiplicative_signs)) || _match(str, 6, additive_signs)))) return n(error_message(not_parsable(identity_error, str), exit_status)); return 0; }
@@ -85,7 +70,6 @@ unsigned long INDEX_within_UL_array(unsigned long *UL_array, unsigned long array
 
 unsigned long _polynomial(unsigned long x, unsigned long *coefficient, int number_of_coefficients, unsigned long mod_) { struct ordered_pair iso = _isomorphism();
     int i = number_of_coefficients; do { i--; iso.a = _add(iso.a, _multiply(iso.b, coefficient[i], mod_), mod_); iso.b = _multiply(iso.b, x, mod_); } while (i != 0); return iso.a; }
-unsigned long mod_polynomial(unsigned long x, unsigned long *coefficient, int number_of_coefficients) { return _polynomial(x, coefficient, number_of_coefficients, *mod_); }
 
 unsigned long GCD(unsigned long a, unsigned long b) {
     unsigned long remainder = a % b;
@@ -127,15 +111,6 @@ unsigned long extended_gcd(unsigned long a, unsigned long b, unsigned long *x, u
     return gcd;
 }
 
-unsigned long multiplicative_inverse(unsigned long a) { // Yield a^-1 mod b
-    unsigned long x, y;
-    extended_gcd(a, *mod_, &x, &y);
-
-    // return x; // doesn't work
-    // return mod_conditional_cap(x); // doesn't work
-    return mod_conditional_cap(*mod_ + x); // works // return (*mod_ + x) % *mod_; // also works
-    // return x % *mod_; // doesn't work
-}
 
 unsigned long LCM(unsigned long a, unsigned long b) { unsigned long ret_val = a; if (a < b) ret_val = b; while (ret_val % a != 0 || ret_val % b != 0) ret_val++; return ret_val; }
 unsigned long UNRESTRICTED_LCM(unsigned long *array, unsigned long array_size) { unsigned long ret_val = array[0]; for (unsigned long i = 1; i < array_size; i++) ret_val = LCM(ret_val, array[i]); return ret_val; }
@@ -169,7 +144,6 @@ FILE *prime_table_open() {
 } void prime_table_close(FILE *prime_table) { fclose(prime_table); _open_prime_table = NULL; }
 
 int _eulers_criterion(unsigned long odd_prime_p, unsigned long odd_prime_q) { return (odd_prime_q - 1 - _exponentiate(odd_prime_p, (odd_prime_q - 1) / 2, odd_prime_q)) ? 1 : -1; }
-int mod_eulers_criterion(unsigned long odd_prime_p) { return _eulers_criterion(odd_prime_p, *mod_); }
 
 void open_urandom() { urandom = fopen("/dev/urandom", "r"); }
 void close_urandom() { if (urandom) fclose(urandom); }

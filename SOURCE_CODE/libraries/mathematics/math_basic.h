@@ -7,16 +7,16 @@
 struct ordered_pair { unsigned long a; unsigned long b; }; typedef unsigned long (*field_operation) (unsigned long, unsigned long); typedef unsigned long ul;
 // type declarations ^^^
 
-unsigned long *mod_; int *id_;
-// variable declarations ^^
-
 struct ordered_pair _isomorphism();
+// general function ^
 
-char *_REPORT_standard_prime_table_filename();
-char *_REPORT_open_prime_table();
+char *_REPORT_standard_prime_table_filename(); char *_REPORT_open_prime_table();
 // two function for handling prime tables ^^
 
-unsigned long exponentiate(unsigned long base, unsigned long exponent); unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_); // enable (square and multiply) exponentiation <--
+unsigned long exponentiate(unsigned long base, unsigned long exponent);
+// basic infinite field exponentiation ^
+
+unsigned long _exponentiate(unsigned long base, unsigned long exponent, unsigned long mod_);
 unsigned long _conditional_cap(unsigned long result, unsigned long mod_);
 unsigned long _inverse(unsigned long element_of_additive_group, unsigned long mod_);
 unsigned long _add(unsigned long a, unsigned long b, unsigned long mod_);
@@ -26,34 +26,19 @@ unsigned long _divide(unsigned long numerator, unsigned long denominator, unsign
 unsigned long _polynomial(unsigned long x, unsigned long *coefficient, int coefficients, unsigned long mod_);
 // basic (in)finite field operations ^
 
-unsigned long mod_conditional_cap(unsigned long result);
-unsigned long mod_exponentiate(unsigned long base, unsigned long exponent);
-unsigned long mod_inverse(unsigned long element_of_additive_group);
-unsigned long mod_add(unsigned long a, unsigned long b);
-unsigned long mod_subtract(unsigned long a, unsigned long b);
-unsigned long mod_multiply(unsigned long a, unsigned long b);
-unsigned long mod_divide(unsigned long numerator, unsigned long denominator);
-unsigned long mod_polynomial(unsigned long x, unsigned long *coefficient, int coefficients);
-// same basic (in)finite field operations but with fixed unsigned long variable 'mod_'
-
-field_operation ___field_operation(unsigned int id_); // get the group operation
-field_operation id_field_operation(); // get the group operation based on 'id_'
-// two functions 
-
 const char *_as_number(unsigned int id_);
 const char *_as_operation_symbol(unsigned int id_);
 const char *_as_noun(unsigned int id_);
 const char *_as_nouns(unsigned int id_);
 const char *_as_adjective(unsigned int id_);
 const char *_as_verb(unsigned int id_);
-// 
+// functions that have to do with the identity element ^
 
-const char *id_as_number(); const char *id_as_operation_symbol(); const char *id_as_noun(); const char *id_as_nouns(); const char *id_as_adjective(); const char *id_as_verb();
-//
+int _eulers_criterion(unsigned long odd_prime_p, unsigned long odd_prime_q); // one function in between  <-
 
-int identity_parse_str(int *id_, char *str, int exit_status); void identity_error(); // if fails to change 'SELECTOR' > '*id_', complain identity_error() then return 'exit_status' <<
+int identity_parse_str(int *id_, char *str, int exit_status); void identity_error();
 void list_plausable_group_identity_descriptions(int argv_index);
-void identity_error_elaboration();
+// more functions regarding the identity element
 
 /* REMAINING FUNCTIONS FOLLOW: */
 unsigned long LCM(unsigned long a, unsigned long b); unsigned long UNRESTRICTED_LCM(unsigned long *array, unsigned long array_size);
@@ -81,9 +66,6 @@ unsigned long primes_printed_from_sieve_array_to_FS(char *sieve, unsigned long l
 FILE *prime_table_open(); // < I want this to eventually try to cooperate with the logbook instead of stderr
 void prime_table_close(FILE *prime_table); // < closes FS and resets char * variable '_open_prime_table' to NULL
 
-int _eulers_criterion(unsigned long odd_prime_p, unsigned long odd_prime_q);
-int mod_eulers_criterion(unsigned long odd_prime_p);
-// new pair ^^
 
 void open_urandom();
 void close_urandom();
