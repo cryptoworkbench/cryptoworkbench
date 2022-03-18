@@ -40,19 +40,19 @@
 #include "../../libraries/mathematics/shamir_secret_sharing.h"
 #define K 2 // degree of polynomial that is resolved in other to retrieve secret encoded as contant term
 
-unsigned long **equation;
+unsigned long **equation; unsigned long mod;
 
 void _last_y_failed_to_parse() { fprintf(stderr, "Please provide as fifth argument the y coordinate of second point!"); equations_DELETE(equation); }
 void _last_x_failed_to_parse() { fprintf(stderr, "Please provide as fourth argument the x coordinate of second point!"); equations_DELETE(equation); }
 void first_y_failed_to_parse() { fprintf(stderr, "Please provide as third argument the y coordinate of first point!"); equations_DELETE(equation); }
 void first_x_failed_to_parse() { fprintf(stderr, "Please provide as second argument the x coordinate of first point!"); equations_DELETE(equation); }
-void ______________mod_error() { fprintf(stderr, "Please provide as first argument a finite field specification!", unparsed_arg); }
+void ______________mod_error() { fprintf(stderr, "Please provide as first argument a finite field specification!", (*argv_ptr)[1]); }
 
 // index[0]: y coordinate
 // index[1]: x coordinate
 // index[2]: c variable
 
-int main(int argc, char **argv) { SET_k(K); unsigned long mod;
+int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY; argv_ptr = &argv; SET_k(K);
     conditional_goodbye(n(n(error_specification(______________mod_error, n(ul_parse_str(&mod,            argv[1], -1)))))); mod_ = &mod; equation = equations_ALLOCATE(K);
     conditional_goodbye(n(n(error_specification(first_x_failed_to_parse, n(ul_parse_str(1 + equation[0], argv[2], -2))))));
     conditional_goodbye(n(n(error_specification(first_y_failed_to_parse, n(ul_parse_str(0 + equation[0], argv[3], -3))))));

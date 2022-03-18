@@ -9,10 +9,10 @@
 typedef void (*_error_function) ();
 // type declarations ^
 
-char ***argv_ptr; char *unparsed_arg; unsigned int *width_;
+char ***argv_ptr; char *unparsed_str; unsigned int *width_;
 // variable declarations ^^^
 
-char *BUFFER_OF_SIZE(unsigned int SIZE);
+_error_function not_parsable(_error_function error_function, char *unparsable_str);
 
 int ul_parse_str(unsigned long *ul_ptr, char *str, int exit_status); int ui_parse_str(unsigned int *ui_ptr, char *str, int exit_status);
 void str_not_parsable_as_number();
@@ -41,3 +41,5 @@ char *_str_from_ul(unsigned long a, unsigned int width_); // Converts from ul to
 char *width_str_from_ul(unsigned long a);
 
 void ignored_arguments(int argc, char **argv, int used_arguments);
+
+char *BUFFER_OF_SIZE(unsigned int SIZE);

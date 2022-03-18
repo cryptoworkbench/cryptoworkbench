@@ -7,12 +7,12 @@
 
 unsigned long mod, base, exponent;
 
-void exponent_failed_to_parse() { fprintf(stderr, "\nFailed to understand '%s' as the value to use for the exponent.", unparsed_arg); }
-void ____base_failed_to_parse() { fprintf(stderr, "\nFailed to understand '%s' as the value to use as the base.", unparsed_arg); }
-void _____mod_failed_to_parse() { fprintf(stderr, "\nFailed to understand '%s' as the value to use as the modulus.", unparsed_arg); }
+void exponent_failed_to_parse() { fprintf(stderr, "\nFailed to understand '%s' as the value to use for the exponent.", (*argv_ptr)[3]); }
+void ____base_failed_to_parse() { fprintf(stderr, "\nFailed to understand '%s' as the value to use as the base.", (*argv_ptr)[2]); }
+void _____mod_failed_to_parse() { fprintf(stderr, "\nFailed to understand '%s' as the value to use as the modulus.", (*argv_ptr)[1]); }
 // error functions ^^^
 
-int main(int argc, char **argv) { mod = base = exponent = ADDITIVE_IDENTITY;
+int main(int argc, char **argv) { mod = base = exponent = ADDITIVE_IDENTITY; argv_ptr = &argv;
     conditional_goodbye(n(n(error_specification(_____mod_failed_to_parse, ul_parse_str(&     mod, argv[1], -1)))));
     conditional_goodbye(n(n(error_specification(____base_failed_to_parse, ul_parse_str(&    base, argv[2], -2)))));
     conditional_goodbye(n(n(error_specification(exponent_failed_to_parse, ul_parse_str(&exponent, argv[3], -3)))));
