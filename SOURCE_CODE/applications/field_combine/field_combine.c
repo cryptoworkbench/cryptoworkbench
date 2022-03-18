@@ -23,7 +23,7 @@ int main(int argc, char **argv) { mod = id = ADDITIVE_IDENTITY; argv_ptr = &argv
     conditional_goodbye(n(n(error_specification(argument_failed_to_parse, n(ul_parse_str(i + arguments_array, argv[3 + i], -(4 + i)))))));
     // take in arguments ^^^^
 
-    mod_ = &mod; field_operation group_operation = id_field_operation();
+    mod_ = &mod; group_operation group_operation = id_group_operation();
     const char *symb = id_as_operation_symbol(); ans = id; i = 0;
     do {ans = group_operation(ans, arguments_array[i]);
 	fprintf(stdout, "%lu", arguments_array[i]);

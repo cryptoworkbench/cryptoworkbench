@@ -16,7 +16,7 @@ struct LL_ { struct LL_ *next; unsigned long e; };
 struct crux { unsigned long *base_permutation; char **ASCII; unsigned long **permutation; unsigned long *perm_length; };
 // ^^ type definitions
 
-struct crux lookup_table; unsigned long *permutation_of_FIRST_GEN; field_operation combine; unsigned int id; unsigned long group_cardinality, mod, horizontal_offset, vertical_offset;
+struct crux lookup_table; unsigned long *permutation_of_FIRST_GEN; group_operation combine; unsigned int id; unsigned long group_cardinality, mod, horizontal_offset, vertical_offset;
 //          ^ global variables          ^                                      ^                                         ^                      ^
 
 void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
@@ -118,7 +118,7 @@ int main(int argc, char **argv) { group_cardinality, mod, id, horizontal_offset,
     // process optional terminal arguments ^
 
     mod_ = &mod;
-    id_ = &id; combine = id_field_operation(); unsigned long generator_count = found_generators(group_elements_LL(argv));
+    id_ = &id; combine = id_group_operation(); unsigned long generator_count = found_generators(group_elements_LL(argv));
     unsigned long index = __vertical_offset; do { print_permutation(index); index = _add(index, 1, group_cardinality); } while (index != __vertical_offset); fprintf(stdout, "\n");
     // examplify subgroups ^
 

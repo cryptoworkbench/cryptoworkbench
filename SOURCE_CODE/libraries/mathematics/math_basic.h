@@ -4,7 +4,7 @@
 #define MULTIPLICATIVE_IDENTITY 1
 #define PRIME_TABLE_UNAVAILABLE_ERROR "Failed to open the prime table '%s'.\n\n"
 
-struct ordered_pair { unsigned long a; unsigned long b; }; typedef unsigned long (*field_operation) (unsigned long, unsigned long); typedef unsigned long ul;
+struct ordered_pair { unsigned long a; unsigned long b; }; typedef unsigned long (*group_operation) (unsigned long, unsigned long); typedef unsigned long ul;
 // type declarations ^^^
 
 struct ordered_pair _isomorphism();
