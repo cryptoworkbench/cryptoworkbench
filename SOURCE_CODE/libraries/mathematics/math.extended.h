@@ -37,5 +37,5 @@ const char *id_as_verb();
 
 int mod_eulers_criterion(unsigned long odd_prime_p);
 
-group_operation ___group_operation(unsigned int id_);
+group_operation _group_operation(unsigned int id_);
 group_operation id_group_operation();

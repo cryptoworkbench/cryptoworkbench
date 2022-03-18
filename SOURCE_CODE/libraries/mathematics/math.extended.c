@@ -19,8 +19,8 @@ const char *id_as_adjective() { return _as_adjective(*id_); }
 const char *id_as_verb() { return _as_verb(*id_); }
 // get the identity represented by corresponding number, operation symbol, singular noun, plural noun, adjective, or verb
 
-group_operation ___group_operation(unsigned int id_) { return (id_) ? mod_multiply : mod_add; }
-group_operation id_group_operation() { return ___group_operation(*id_); }
+group_operation _group_operation(unsigned int id_) { return (id_) ? mod_multiply : mod_add; }
+group_operation id_group_operation() { return _group_operation(*id_); }
 // to get the appriopiate group operation ^
 
 int mod_eulers_criterion(unsigned long odd_prime_p) { return _eulers_criterion(odd_prime_p, *mod_); }
