@@ -7,8 +7,12 @@
 #define PRIME_TABLE_UNAVAILABLE_ERROR "Failed to open the prime table '%s'.\n\n"
 // definitions ^^^
 
-struct ordered_pair { unsigned long a; unsigned long b; };
 typedef unsigned long ul;
+typedef ul *ul_ptr;
+
+typedef unsigned int ui;
+
+struct ordered_pair { ul a; ul b; };
 typedef unsigned long (*group_operation) (ul, ul);
 // type declarations ^^^
 
@@ -32,12 +36,12 @@ unsigned long _divide(ul numerator, ul denominator, ul mod_);
 unsigned long _polynomial(ul x, ul *coefficient, int coefficients, ul mod_);
 // basic (in)finite field operations ^
 
-const char *_as_number(unsigned int id_);
-const char *_as_operation_symbol(unsigned int id_);
-const char *_as_noun(unsigned int id_);
-const char *_as_nouns(unsigned int id_);
-const char *_as_adjective(unsigned int id_);
-const char *_as_verb(unsigned int id_);
+const char *_as_number(ui id_);
+const char *_as_operation_symbol(ui id_);
+const char *_as_noun(ui id_);
+const char *_as_nouns(ui id_);
+const char *_as_adjective(ui id_);
+const char *_as_verb(ui id_);
 // functions that have to do with the identity element ^
 
 int _eulers_criterion(ul odd_prime_p, ul odd_prime_q);
@@ -50,8 +54,8 @@ void list_plausable_group_identity_descriptions(int argv_index);
 unsigned long LCM(ul a, ul b);
 unsigned long GCD(ul a, ul b);
 
-unsigned long UNRESTRICTED_LCM(unsigned long *array, ul array_size);
-unsigned long UNRESTRICTED_GCD(unsigned long *array, ul array_size);
+unsigned long UNRESTRICTED_LCM(ul_ptr array, ul array_size);
+unsigned long UNRESTRICTED_GCD(ul_ptr array, ul array_size);
 // functions for calculating the LCM and the GCD ^^
 
 typedef struct ordered_pair STRUCT_DH_parameters;
@@ -66,7 +70,7 @@ unsigned long totient(ul a);
 
 unsigned long least_base_TWO_log(ul power_of_TWO); // required by '_exponentiate'
 unsigned long *UL_array_of_SIZE(int SIZE);
-unsigned long INDEX_within_UL_array(unsigned long *UL_array, ul UL_array_SIZE, ul number);
+unsigned long INDEX_within_UL_array(ul_ptr UL_array, ul UL_array_SIZE, ul number);
 struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *to_be_updated, ul minimum);
 unsigned long DOWN_ROUNDED_second_root(ul number);
 
@@ -80,5 +84,5 @@ void open_urandom();
 void close_urandom();
 unsigned long urandom_number(ul upper_bound);
 
-unsigned long chinese_remainder_theorem(ul remainder, unsigned long *moduli, ul modulis);
-int pair_of_strs_represents_pair_of_coprime_ULs(_error_function _first_instruction, _error_function second_instruction, unsigned long *ptr_one, unsigned long *ptr_two, int _first_index, int second_index, int exit_status);
+unsigned long chinese_remainder_theorem(ul remainder, ul_ptr moduli, ul modulis);
+int pair_of_strs_represents_pair_of_coprime_ULs(_error_function _first_instruction, _error_function second_instruction, ul_ptr ptr_one, ul_ptr ptr_two, int _first_index, int second_index, int exit_status);

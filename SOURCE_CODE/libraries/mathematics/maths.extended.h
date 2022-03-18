@@ -2,9 +2,9 @@
 // library inclusion ^
 
 /* Description of library:
- * This library is an extention for the 'maths.basic' library.
+ * This library is an extention for the 'maths.basic' library
  *
- * Two useful pointers are introduced, see line 21.
+ * Two useful pointers are introduced, see line 17 & 18
  *
  *
  *
@@ -14,11 +14,11 @@
  *
  */
 
-unsigned long *mod_;
+ul_ptr mod_;
 int *id_;
 // new variables (!) ^^
 
-group_operation _group_operation(unsigned int id_);
+group_operation _group_operation(ui id_);
 group_operation id_group_operation();
 
 /* =============================================================================== */
