@@ -1,30 +1,35 @@
 #include "maths.basic.h"
-// get all the function headers '_maths.c' needs ^
+// library inclusion ^
 
-unsigned long *mod_; int *id_;
-// variable declarations ^^
+/* Description of library:
+ * This library is an extention for the 'maths.basic' library.
+ *
+ * Two useful pointers are introduced, see line 21.
+ *
+ *
+ *
+ *
+ *
+ *
+ *
+ */
 
+unsigned long *mod_;
+int *id_;
+// new variables (!) ^^
 
+group_operation _group_operation(unsigned int id_);
+group_operation id_group_operation();
 
-
-
-
-
-
-
-
-
-
-
-
-unsigned long mod_exponentiate(unsigned long base, unsigned long exponent);
-unsigned long mod_conditional_cap(unsigned long result);
-unsigned long mod_inverse(unsigned long element_of_additive_group);
-unsigned long mod_add(unsigned long a, unsigned long b);
-unsigned long mod_subtract(unsigned long a, unsigned long b);
-unsigned long mod_multiply(unsigned long a, unsigned long b);
-unsigned long mod_divide(unsigned long numerator, unsigned long denominator);
-unsigned long mod_polynomial(unsigned long x, unsigned long *coefficient, int coefficients);
+/* =============================================================================== */
+unsigned long mod_exponentiate(ul base, ul exponent);
+unsigned long mod_conditional_cap(ul result);
+unsigned long mod_inverse(ul element_of_additive_group);
+unsigned long mod_add(ul a, ul b);
+unsigned long mod_subtract(ul a, ul b);
+unsigned long mod_multiply(ul a, ul b);
+unsigned long mod_divide(ul numerator, ul denominator);
+unsigned long mod_polynomial(ul x, ul *coefficient, int coefficients);
 // basic (in)finite field operations ^
 
 const char *id_as_number();
@@ -35,7 +40,5 @@ const char *id_as_adjective();
 const char *id_as_verb();
 // functions that have to do with the identity element ^
 
-int mod_eulers_criterion(unsigned long odd_prime_p);
-
-group_operation _group_operation(unsigned int id_);
-group_operation id_group_operation();
+int mod_eulers_criterion(ul odd_prime_p);
+/* =============================================================================== */
