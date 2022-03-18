@@ -31,7 +31,6 @@ unsigned long _divide(unsigned long numerator, unsigned long denominator, unsign
 { if (mod_) while (numerator % denominator != 0) numerator += mod_; return _conditional_cap(numerator / denominator, mod_); }
 unsigned long mod_divide(unsigned long numerator, unsigned long denominator) { return _divide(numerator, denominator, *mod_); }
 
-/* FUNCTIONS THAT HAVE TO DO WITH mod_exponentiate FOLLOW: */
 unsigned long exponentiate(unsigned long base, unsigned long exponent)
 { unsigned long exponentiation_RESULT = (0 < base); for (unsigned long iter = 0; iter < exponent; iter++) exponentiation_RESULT *= base; return exponentiation_RESULT; } 
 unsigned long least_base_TWO_log(unsigned long power_of_TWO) {
@@ -43,17 +42,25 @@ unsigned long least_base_TWO_log(unsigned long power_of_TWO) {
     unsigned long ret_val = MULTIPLICATIVE_IDENTITY;
     while (exponent != 0) { ret_val = _multiply(ret_val, backbone[minimum_log], mod_); exponent -= exponentiate(2, minimum_log); minimum_log = least_base_TWO_log(exponent); } free(backbone); return ret_val;
 } unsigned long mod_exponentiate(unsigned long base, unsigned long exponent) { return _exponentiate(base, exponent, *mod_); }
+// functions that have to do with mod_exponentiate ^^^^
 
-/* FUNCTIONS THAT HAVE TO DO WITH id_ FOLLOW: */
-const char *_as_number(int id) { return (id) ? multiplicative_signs[0] : additive_signs[0]; } const char *id_as_number() { return _as_number(*id_); }
-const char *_as_operation_symbol(int id) { return (id) ? multiplicative_signs[1] : additive_signs[1]; } const char *id_as_operation_symbol() { return _as_operation_symbol(*id_); }
-const char *_as_noun(int id) { return (id) ? multiplicative_signs[2] : additive_signs[2]; } const char *id_as_noun() { return _as_noun(*id_); }
-const char *_as_nouns(int id) { return (id) ? multiplicative_signs[3] : additive_signs[3]; } const char *id_as_nouns() { return _as_nouns(*id_); }
-const char *_as_adjective(int id) { return (id) ? multiplicative_signs[4] : additive_signs[4]; } const char *id_as_adjective() { return _as_adjective(*id_); }
-const char *_as_verb(int id) { return (id) ? multiplicative_signs[5] : additive_signs[5]; } const char *id_as_verb() { return _as_verb(*id_); }
-// to get the identity represented as number, operation symbol, noun, noun in multiple, or as adjective ^^^^^
+const char *_as_number(unsigned int id_) { return (id_) ? multiplicative_signs[0] : additive_signs[0]; }
+const char *_as_operation_symbol(unsigned int id_) { return (id_) ? multiplicative_signs[1] : additive_signs[1]; }
+const char *_as_noun(unsigned int id_) { return (id_) ? multiplicative_signs[2] : additive_signs[2]; }
+const char *_as_nouns(unsigned int id_) { return (id_) ? multiplicative_signs[3] : additive_signs[3]; }
+const char *_as_adjective(unsigned int id_) { return (id_) ? multiplicative_signs[4] : additive_signs[4]; }
+const char *_as_verb(unsigned int id_) { return (id_) ? multiplicative_signs[5] : additive_signs[5]; }
+// get the identity represented by corresponding number, operation symbol, singular noun, plural noun, adjective, or verb
 
-field_operation ___field_operation(unsigned long id) { return (id) ? mod_multiply : mod_add; }
+const char *id_as_number() { return _as_number(*id_); }
+const char *id_as_operation_symbol() { return _as_operation_symbol(*id_); }
+const char *id_as_noun() { return _as_noun(*id_); }
+const char *id_as_nouns() { return _as_nouns(*id_); }
+const char *id_as_adjective() { return _as_adjective(*id_); }
+const char *id_as_verb() { return _as_verb(*id_); }
+// get the identity represented by corresponding number, operation symbol, singular noun, plural noun, adjective, or verb
+
+field_operation ___field_operation(unsigned int id_) { return (id_) ? mod_multiply : mod_add; }
 field_operation id_field_operation() { return ___field_operation(*id_); }
 
 int identity_parse_str(int *id_, char *str, int exit_status)
