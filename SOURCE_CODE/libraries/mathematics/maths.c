@@ -65,12 +65,10 @@ field_operation id_field_operation() { return ___field_operation(*id_); }
 
 int identity_parse_str(int *id_, char *str, int exit_status)
 {
-    if (str && _match(str, 6, multiplicative_signs)) *id_ = 1;
-    else if (str && _match(str, 6, additive_signs)) *id_ = 0;
-    else { unparsed_arg = str; return n(error_message(identity_error, exit_status)); }
-    return 0;
+    if (!str || (str && !((*id_ = _match(str, 6, multiplicative_signs)) || _match(str, 6, additive_signs))))
+    { unparsed_arg = str; return n(error_message(identity_error, exit_status)); } return 0;
 }
-// functions for setting the global int variable 'id_'
+// functions for setting the global unsigned int variable 'id_'
 
 void identity_error()
 { fprintf(stderr, "parsing of '%s' failed: could not match '%s' with any imaginable group operation description.", unparsed_arg, unparsed_arg); }
