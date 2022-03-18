@@ -1,8 +1,11 @@
 ../../libraries/functional/.string.o: ../../libraries/functional/string.h ../../libraries/functional/string.c
 	gcc -c ../../libraries/functional/string.c -o ../../libraries/functional/.string.o
 
-../../libraries/mathematics/.math.extended.o: ../../libraries/mathematics/math.extended.h ../../libraries/mathematics/math.extended.c ../../libraries/mathematics/math.basic.h ../../libraries/mathematics/math.basic.c
-	cd ../../libraries/mathematics && make math.extended_LIBRARY
+../../libraries/mathematics/.math.basic.o: ../../libraries/mathematics/math.basic.h ../../libraries/mathematics/math.basic.c
+	gcc -c ../../libraries/mathematics/math.basic.c -o ../../libraries/mathematics/.math.basic.o
+
+../../libraries/mathematics/.math.extended.o: ../../libraries/mathematics/math.extended.h ../../libraries/mathematics/math.extended.c
+	gcc -c ../../libraries/mathematics/math.extended.c -o ../../libraries/mathematics/.math.extended.o
 
 ../../libraries/mathematics/.group_library.o: ../../libraries/mathematics/group_library.h ../../libraries/mathematics/group_library.c
 	gcc -c ../../libraries/mathematics/group_library.c -o ../../libraries/mathematics/.group_library.o
