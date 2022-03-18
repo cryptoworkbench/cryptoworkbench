@@ -9,7 +9,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/math.extended.h"
+#include "../../libraries/mathematics/maths.extended.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
 
 struct LL_ { struct LL_ *next; unsigned long e; }; struct LL_ *quadratic_residue_LL = NULL; unsigned long mod;

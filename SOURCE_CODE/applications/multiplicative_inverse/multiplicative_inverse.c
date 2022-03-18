@@ -5,7 +5,7 @@
 // Make the ouput of this program such that (mod %%) never changes.
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/math.extended.h"
+#include "../../libraries/mathematics/maths.extended.h"
 #define NUMERATOR 1
 // definit^on and l^brary ^nclus^ons
 

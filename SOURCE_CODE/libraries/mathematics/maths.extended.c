@@ -1,5 +1,5 @@
 /* This library is full of (wrapper) functions that support functions from 'maths.c' */
-#include "math.extended.h"
+#include "maths.extended.h"
 
 unsigned long mod_conditional_cap(unsigned long result) { return (*mod_) ? _conditional_cap(result, *mod_) : result; }
 unsigned long mod_add(unsigned long a, unsigned long b) { return _add(a, b, *mod_); }
@@ -9,7 +9,7 @@ unsigned long mod_multiply(unsigned long a, unsigned long b) { return mod_condit
 unsigned long mod_divide(unsigned long numerator, unsigned long denominator) { return _divide(numerator, denominator, *mod_); }
 unsigned long mod_exponentiate(unsigned long base, unsigned long exponent) { return _exponentiate(base, exponent, *mod_); }
 unsigned long mod_polynomial(unsigned long x, unsigned long *coefficient, int number_of_coefficients) { return _polynomial(x, coefficient, number_of_coefficients, *mod_); }
-// same basic (in)finite field functions as in the math.basic library ^^
+// same basic (in)finite field functions as in the maths.basic library ^^
 
 const char *id_as_number() { return _as_number(*id_); }
 const char *id_as_operation_symbol() { return _as_operation_symbol(*id_); }

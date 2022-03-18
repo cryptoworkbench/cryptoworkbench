@@ -1,7 +1,7 @@
 // Takes the GCD of an arbitrary number of numbers
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/math.basic.h"
+#include "../../libraries/mathematics/maths.basic.h"
 // library inclusions ^
 
 int gcd_function_argument_count, i; unsigned long *arguments_array;

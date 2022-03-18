@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/math.extended.h"
+#include "../../libraries/mathematics/maths.extended.h"
 
 void ___quotient_failed_to_parse() { fprintf(stderr, "Please provide as first argument the modulus."); }
 void __numerator_failed_to_parse() { fprintf(stderr, "Please provide as second argument the numerator."); }

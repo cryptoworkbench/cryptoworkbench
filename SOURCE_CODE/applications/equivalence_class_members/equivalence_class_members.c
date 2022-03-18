@@ -3,7 +3,7 @@
  */
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/math.extended.h"
+#include "../../libraries/mathematics/maths.extended.h"
 // library inclusions ^
 
 void quotient_group_failed_to_parse() {

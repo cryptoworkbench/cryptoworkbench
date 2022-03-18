@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/math.basic.h"
+#include "../../libraries/mathematics/maths.basic.h"
 // library inclusions ^
 
 unsigned long upper_bound, quantity;

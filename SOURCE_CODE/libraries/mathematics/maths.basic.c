@@ -1,7 +1,7 @@
 // This library contains all of the mathematics for (modular) arithmetic.
 #include <stdlib.h>
 #include <stdarg.h>
-#include "math.basic.h"
+#include "maths.basic.h"
 
 FILE *urandom = NULL;
 const char *_standard_prime_table_filename = "shared_prime_table";

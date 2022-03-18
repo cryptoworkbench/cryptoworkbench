@@ -13,14 +13,14 @@
 // However all the online calculators that I found also give this false answer:
 // - https://www.mymathtables.com/numbers/legendre-symbol-generator.html
 // - https://www.easycalculation.com/legendre-symbol.php
-// - http://math.fau.edu/richman/jacobi.htm
+// - http://maths.fau.edu/richman/jacobi.htm
 //
 // But M - 1 is never a quadratic residue, so I should probably just hard-code that (have the code reflect this (assumedly) inherent property).
 //
 // Haven't yet found a fail in legendre_symbol()
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/math.extended.h"
+#include "../../libraries/mathematics/maths.extended.h"
 #include "../../libraries/mathematics/factorization_methods.h"
 
 // Legendre symbol for composite numerator and odd prime denominator

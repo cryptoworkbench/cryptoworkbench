@@ -5,7 +5,7 @@
  * ~ Does not work with terminal inputs 2 3 7 11 (try!)
  */
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/math.basic.h"
+#include "../../libraries/mathematics/maths.basic.h"
 // library inclusions ^
 
 int i; char *unparsed_modulus; unsigned long *modulis; unsigned long ans, mod;

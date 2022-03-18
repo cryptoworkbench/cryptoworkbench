@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h> // needed for "execvp()"
 #include <sys/wait.h> // needed for "waitpid()"
-#include "math.extended.h"
+#include "maths.extended.h"
 #include "../functional/string.h"
 #include "group_library.h"
 
