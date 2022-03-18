@@ -4,7 +4,7 @@
  */
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/maths.h"
+#include "../../libraries/mathematics/math_extended.h"
 
 int number_of_coefficients, i; unsigned long *coefficient; unsigned long mod;
 // global variable definitions ^

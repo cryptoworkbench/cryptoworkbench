@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/maths.h"
+#include "../../libraries/mathematics/math_extended.h"
 
 int id; unsigned long mod;
 

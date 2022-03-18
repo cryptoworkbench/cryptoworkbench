@@ -1,7 +1,7 @@
 #include <stdio.h> // needed for 'fprintf()'
 #include "../functional/string.h" // needed for definition EXIT_STATUS_GOODBYE
 #include "factorization_methods.h" // need for function headers
-#include "maths.h" // needed for 'DOWN_ROUNDED_second_root()'
+#include "math_extended.h" // needed for 'DOWN_ROUNDED_second_root()'
 #include "group_library.h" // needed for 'BUFFER_OF_SIZE()'
 
 const char *_preferred_factorization_engine_file = ".global.preference.factorization_engine"; // could rewrite this as definition <

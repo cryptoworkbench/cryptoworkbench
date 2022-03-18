@@ -8,7 +8,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/maths.h"
+#include "../../libraries/mathematics/math_extended.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
 
 struct LL_ { struct LL_ *next; unsigned long e; unsigned long first_root; }; // << THIS I CAN ABSTRACT OUT. It is already in "factorization.h".

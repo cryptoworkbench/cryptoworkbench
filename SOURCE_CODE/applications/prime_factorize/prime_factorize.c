@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include "../../libraries/functional/string.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
-#include "../../libraries/mathematics/maths.h"
+#include "../../libraries/mathematics/math_extended.h"
 #include "../../libraries/mathematics/factorization_methods.h"
 
 unsigned long number;

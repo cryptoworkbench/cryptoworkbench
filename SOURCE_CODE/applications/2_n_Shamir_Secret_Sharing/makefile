@@ -10,5 +10,5 @@
 .2_n_Shamir_Secret_Sharing.o: 2_n_Shamir_Secret_Sharing.c
 	gcc -c 2_n_Shamir_Secret_Sharing.c -o .2_n_Shamir_Secret_Sharing.o
 
-2_n_Shamir_Secret_Sharing: ../../libraries/functional/.string.o ../../libraries/mathematics/.math_basic.o ../../libraries/mathematics/.math_extended.o ../../libraries/mathematics/.shamir_secret_sharing.o .2_n_Shamir_Secret_Sharing.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.math_basic.o ../../libraries/mathematics/.math_extended.o ../../libraries/mathematics/.shamir_secret_sharing.o .2_n_Shamir_Secret_Sharing.o -o ../../../applications/2_n_Shamir_Secret_Sharing
+2_n_Shamir_Secret_Sharing: ../../libraries/functional/.string.o ../../libraries/mathematics/.math_extended.o ../../libraries/mathematics/.math_basic.o ../../libraries/mathematics/.shamir_secret_sharing.o .2_n_Shamir_Secret_Sharing.o
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.math_extended.o ../../libraries/mathematics/.math_basic.o ../../libraries/mathematics/.shamir_secret_sharing.o .2_n_Shamir_Secret_Sharing.o -o ../../../applications/2_n_Shamir_Secret_Sharing
