@@ -1,9 +1,9 @@
-// Takes the additive mod_inverse of a number using the mathematics library 'math_extended.c' ||
+// Takes the additive mod_inverse of a number using the mathematics library 'math.extended.c' ||
 // "##### ===> END OF PROGRAM DESCRIPTION!                                 <=== ####" ||
 
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/math_extended.h"
+#include "../../libraries/mathematics/math.extended.h"
 
 unsigned long mod, inverse_of_additive_inverse;
 

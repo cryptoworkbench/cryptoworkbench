@@ -36,7 +36,7 @@
  */
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/math_extended.h"
+#include "../../libraries/mathematics/math.extended.h"
 #include "../../libraries/mathematics/shamir_secret_sharing.h"
 #define K 2 // degree of polynomial that is resolved in other to retrieve secret encoded as contant term
 

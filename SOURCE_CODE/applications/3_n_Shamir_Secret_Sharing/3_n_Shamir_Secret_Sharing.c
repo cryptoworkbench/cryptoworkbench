@@ -35,7 +35,7 @@
 #include <stdio.h>
 #include <stdlib.h> // 'exit()'
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/math_extended.h"
+#include "../../libraries/mathematics/math.extended.h"
 #include "../../libraries/mathematics/shamir_secret_sharing.h"
 #define K 3
 

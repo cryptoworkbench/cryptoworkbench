@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/math_extended.h"
+#include "../../libraries/mathematics/math.extended.h"
 // library inclusions ^
 
 unsigned long mod, base, exponent;

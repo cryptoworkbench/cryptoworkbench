@@ -1,5 +1,5 @@
 #include "shamir_secret_sharing.h"
-#include "math_extended.h"
+#include "math.extended.h"
 #include <stdlib.h>
 #include <stdio.h>
 

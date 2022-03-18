@@ -1,4 +1,4 @@
-#include "math_basic.h"
+#include "math.basic.h"
 // get all the function headers '_maths.c' needs ^
 
 unsigned long *mod_; int *id_;

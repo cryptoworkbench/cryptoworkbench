@@ -1,5 +1,5 @@
 /* This library is full of (wrapper) functions that support functions from 'maths.c' */
-#include "math_extended.h"
+#include "math.extended.h"
 
 unsigned long mod_conditional_cap(unsigned long result) { return (*mod_) ? _conditional_cap(result, *mod_) : result; }
 unsigned long mod_add(unsigned long a, unsigned long b) { return _add(a, b, *mod_); }

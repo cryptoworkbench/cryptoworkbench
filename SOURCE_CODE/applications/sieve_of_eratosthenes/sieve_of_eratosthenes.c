@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "../../libraries/functional/string.h" // contains: function 'str_represents_u()', definition 'EXIT_STATUS_GOODBYE'
-#include "../../libraries/mathematics/math_extended.h" // contains: function 'sieve_of_eratosthenes()', 'primes_printed_from_sieve_array_to_FS()', TYPE definition (typedef) 'ul', definition 'ADDITIVE_IDENTITY', 'extern ul mod'
+#include "../../libraries/mathematics/math.extended.h" // contains: function 'sieve_of_eratosthenes()', 'primes_printed_from_sieve_array_to_FS()', TYPE definition (typedef) 'ul', definition 'ADDITIVE_IDENTITY', 'extern ul mod'
 #define ERROR_MESSAGE "I am the sieve of eratosthenes. I am the most efficient algorithm for calculating all primes under a certain limit.\n\nTell me to what limit to calculate; '%s' is not interpretable as a number / limit.\n\n\n"
 
 unsigned long limit;

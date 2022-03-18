@@ -20,7 +20,7 @@
 // Haven't yet found a fail in legendre_symbol()
 #include <stdio.h>
 #include "../../libraries/functional/string.h"
-#include "../../libraries/mathematics/math_extended.h"
+#include "../../libraries/mathematics/math.extended.h"
 #include "../../libraries/mathematics/factorization_methods.h"
 
 // Legendre symbol for composite numerator and odd prime denominator
