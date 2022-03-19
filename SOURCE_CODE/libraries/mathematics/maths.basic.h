@@ -24,7 +24,7 @@ unsigned long exponentiate(ul base, ul exponent);
 
 /* ===================== corresponds to 'maths.extended.h' (!) ================== */
 int _identity_parse_str(ui_ptr id_, char *str, int exit_status);
-int _identity_parse_str_(ui_ptr id_, char *str, int exit_status); // <-- this variant also sets 'operation'
+int _identity_parse_str_(ui_ptr id_, char *str, int exit_status); // <-- this variant also sets 'operation' which may be used in conjunction with 'mod_group_operation'
 
 unsigned long _exponentiate(ul base, ul exponent, ul mod_);
 unsigned long _conditional_cap(ul result, ul mod_);

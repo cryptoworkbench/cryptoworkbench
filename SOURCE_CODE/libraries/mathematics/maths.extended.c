@@ -24,8 +24,8 @@ unsigned long mod_group_operation(ul a, ul b)
 
 
 
-group_operation _group_operation(unsigned int id_) { return (id_) ? mod_multiply : mod_add; }
-group_operation id_group_operation() { return _group_operation(*id_); }
+finite_group_operation _group_operation(unsigned int id_) { return (id_) ? mod_multiply : mod_add; }
+finite_group_operation id_group_operation() { return _group_operation(*id_); }
 // to get the appriopiate group operation ^
 
 /* ===================== corresponds to 'maths.basic.c' (!) ================== */

@@ -18,7 +18,7 @@ unsigned long *mod_;
 unsigned int *id_;
 // new variables (!) ^^
 
-typedef unsigned long (*group_operation) (ul, ul);
+typedef unsigned long (*finite_group_operation) (ul, ul);
 // new type
 unsigned long mod_group_operation(ul a, ul b);
 
@@ -51,5 +51,5 @@ const char *id_as_verb();
 int mod_eulers_criterion(ul odd_prime_p);
 /* ===================== corresponds to 'maths.basic.h' (!) ====================== */
 
-group_operation _group_operation(ui id_);
-group_operation id_group_operation();
+finite_group_operation _group_operation(ui id_);
+finite_group_operation id_group_operation();
