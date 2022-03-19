@@ -16,8 +16,13 @@ char *_open_prime_table = NULL; char *_REPORT_open_prime_table() { return (char 
 struct ordered_pair _isomorphism() { struct ordered_pair ret_val = { ADDITIVE_IDENTITY, MULTIPLICATIVE_IDENTITY }; return ret_val; }
 // a general function which a lot of functions in this library make use of ^^
 
+unsigned long least_base_TWO_log(ul power_of_TWO) {
+    if (power_of_TWO == 0) return 0; struct ordered_pair iso = _isomorphism(); while (iso.b < power_of_TWO) { iso.b *= 2; iso.a++; }
+    if (iso.b > power_of_TWO) iso.a--; return iso.a;
+}
+
 unsigned long exponentiate(ul base, ul exponent)
-{ unsigned long exponentiation_RESULT = (0 < base); for (ul iter = 0; iter < exponent; iter++) exponentiation_RESULT *= base; return exponentiation_RESULT; } 
+{ ul exponentiation_RESULT = (0 < base); for (ul iter = 0; iter < exponent; iter++) exponentiation_RESULT *= base; return exponentiation_RESULT; } 
 
 /* ===================== corresponds to 'maths.extended.c' (!) ================== */
 unsigned long _conditional_cap(ul result, ul mod_)
@@ -37,24 +42,26 @@ unsigned long _multiply(ul a, ul b, ul mod_)
 
 unsigned long _divide(ul numerator, ul denominator, ul mod_)
 { if (mod_) while (numerator % denominator != 0) numerator += mod_; return _conditional_cap(numerator / denominator, mod_); }
-/* ===================== corresponds to 'maths.extended.c' (!) ================== */
 
-unsigned long least_base_TWO_log(ul power_of_TWO) {
-    if (power_of_TWO == 0) return 0; struct ordered_pair iso = _isomorphism(); while (iso.b < power_of_TWO) { iso.b *= 2; iso.a++; }
-    if (iso.b > power_of_TWO) iso.a--; return iso.a;
-}
-unsigned long _exponentiate(ul base, ul exponent, ul mod_) {
+unsigned long _exponentiate(ul base, ul exponent, ul mod_)
+{
     if (base == 0 || exponent == 0) return 1;
     ul minimum_log = least_base_TWO_log(exponent); ul_ptr backbone = (ul_ptr ) malloc(sizeof(ul) * (minimum_log + 1));
     ul i = ADDITIVE_IDENTITY; backbone[i] = _conditional_cap(base, mod_);
     while (i < minimum_log) { backbone[i + 1] = _multiply(backbone[i], backbone[i], mod_); i++; }
-    ul ret_val = MULTIPLICATIVE_IDENTITY;
-    while (exponent != 0)
+    ul ret_val = MULTIPLICATIVE_IDENTITY; while (exponent != 0)
     { ret_val = _multiply(ret_val, backbone[minimum_log], mod_); exponent -= exponentiate(2, minimum_log); minimum_log = least_base_TWO_log(exponent); }
     free(backbone);
     return ret_val;
 }
-// functions that have to do with mod_exponentiate ^^^^
+
+unsigned long _polynomial(ul x, ul_ptr coefficient, int number_of_coefficients, ul mod_)
+{
+    struct ordered_pair iso = _isomorphism();
+    int i = number_of_coefficients;
+    do { i--; iso.a = _add(iso.a, _multiply(iso.b, coefficient[i], mod_), mod_); iso.b = _multiply(iso.b, x, mod_); } while (i != 0);
+    return iso.a;
+}
 
 const char *_as_number(unsigned int id_) { return (id_) ? multiplicative_signs[0] : additive_signs[0]; }
 const char *_as_operation_symbol(unsigned int id_) { return (id_) ? multiplicative_signs[1] : additive_signs[1]; }
@@ -62,7 +69,10 @@ const char *_as_noun(unsigned int id_) { return (id_) ? multiplicative_signs[2] 
 const char *_as_nouns(unsigned int id_) { return (id_) ? multiplicative_signs[3] : additive_signs[3]; }
 const char *_as_adjective(unsigned int id_) { return (id_) ? multiplicative_signs[4] : additive_signs[4]; }
 const char *_as_verb(unsigned int id_) { return (id_) ? multiplicative_signs[5] : additive_signs[5]; }
-// get the identity represented by corresponding number, operation symbol, singular noun, plural noun, adjective, or verb
+
+int _eulers_criterion(ul odd_prime_p, ul odd_prime_q)
+{ return (odd_prime_q - 1 - _exponentiate(odd_prime_p, (odd_prime_q - 1) / 2, odd_prime_q)) ? 1 : -1; }
+/* ===================== corresponds to 'maths.extended.c' (!) ================== */
 
 void identity_error() { fprintf(stderr, "parsing of '%s' failed: could not match '%s' with any imaginable group operation description.", unparsed_str, unparsed_str); }
 
@@ -91,9 +101,6 @@ void print_DH_parameters(STRUCT_DH_parameters *DH_parameters, FILE *fs) { fprint
 
 unsigned long *UL_array_of_SIZE(int SIZE) { unsigned long *ret_val = (unsigned long *) malloc(sizeof(unsigned long) * SIZE); return ret_val; }
 unsigned long INDEX_within_UL_array(ul_ptr UL_array, ul array_size, ul number) { for (unsigned long INDEX = 0; INDEX < array_size; INDEX++) if (UL_array[INDEX] == number) return INDEX;}
-
-unsigned long _polynomial(ul x, ul_ptr coefficient, int number_of_coefficients, ul mod_) { struct ordered_pair iso = _isomorphism();
-    int i = number_of_coefficients; do { i--; iso.a = _add(iso.a, _multiply(iso.b, coefficient[i], mod_), mod_); iso.b = _multiply(iso.b, x, mod_); } while (i != 0); return iso.a; }
 
 unsigned long GCD(ul a, ul b) {
     unsigned long remainder = a % b;
@@ -166,8 +173,6 @@ FILE *prime_table_open() {
     else conditional_goodbye(h(h(error_specification(spec, h(h(error_message(_prime_table_unavailable, -10)))))));
     return prime_table;
 } void prime_table_close(FILE *prime_table) { fclose(prime_table); _open_prime_table = NULL; }
-
-int _eulers_criterion(ul odd_prime_p, ul odd_prime_q) { return (odd_prime_q - 1 - _exponentiate(odd_prime_p, (odd_prime_q - 1) / 2, odd_prime_q)) ? 1 : -1; }
 
 void open_urandom() { urandom = fopen("/dev/urandom", "r"); }
 void close_urandom() { if (urandom) fclose(urandom); }

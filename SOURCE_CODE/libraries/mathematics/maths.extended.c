@@ -15,6 +15,11 @@ int id_identity_parse_str(char *str, int exit_status) { return _identity_parse_s
 
 
 
+
+
+
+
+
 group_operation _group_operation(unsigned int id_) { return (id_) ? mod_multiply : mod_add; }
 group_operation id_group_operation() { return _group_operation(*id_); }
 // to get the appriopiate group operation ^
@@ -39,11 +44,24 @@ unsigned long mod_divide(ul numerator, ul denominator)
 { return _divide(numerator, denominator, *mod_); }
 
 unsigned long mod_exponentiate(ul base, ul exponent)
-{ return _exponentiate(base, exponent, *mod_); }
+{
+
+ 
+
+
+
+
+
+    return _exponentiate(base, exponent, *mod_);
+}
 
 unsigned long mod_polynomial(ul x, ul *coefficient, int number_of_coefficients)
-{ return _polynomial(x, coefficient, number_of_coefficients, *mod_); }
-/* ===================== corresponds to 'maths.basic.c' (!) ================== */
+{
+
+
+
+    return _polynomial(x, coefficient, number_of_coefficients, *mod_);
+}
 
 const char *id_as_number() { return _as_number(*id_); }
 const char *id_as_operation_symbol() { return _as_operation_symbol(*id_); }
@@ -51,6 +69,7 @@ const char *id_as_noun() { return _as_noun(*id_); }
 const char *id_as_nouns() { return _as_nouns(*id_); }
 const char *id_as_adjective() { return _as_adjective(*id_); }
 const char *id_as_verb() { return _as_verb(*id_); }
-// get the identity represented by corresponding number, operation symbol, singular noun, plural noun, adjective, or verb
 
-int mod_eulers_criterion(ul odd_prime_p) { return _eulers_criterion(odd_prime_p, *mod_); }
+int mod_eulers_criterion(ul odd_prime_p)
+{ return _eulers_criterion(odd_prime_p, *mod_); }
+/* ===================== corresponds to 'maths.basic.c' (!) ================== */
