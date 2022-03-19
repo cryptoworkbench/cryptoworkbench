@@ -8,10 +8,10 @@
 // definitions ^^^
 
 struct ordered_pair { ul a; ul b; };
-typedef unsigned long (*group_operation_) (ul, ul, ul);
+typedef unsigned long (*group_operation) (ul, ul, ul);
 // type declarations ^^
 
-group_operation_ *operation;
+group_operation *operation;
 
 struct ordered_pair _isomorphism();
 // general function ^

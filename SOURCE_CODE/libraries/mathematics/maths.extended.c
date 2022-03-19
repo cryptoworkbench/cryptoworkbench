@@ -6,10 +6,10 @@ int id_identity_parse_str(char *str, int exit_status) { return _identity_parse_s
 int id_identity_parse_str_(char *str, int exit_status)
 { return _identity_parse_str_(id_, str, exit_status); }
 
-void group_parse(_error_function mod_failed_to_parse, _error_function _id_failed_to_parse, unsigned int argv_index)
+void group_parse(_error_function mod_instruction, _error_function _id_instruction, unsigned int argv_index)
 {
-    conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(     mod_ul_parse_str ((*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));
-    conditional_goodbye(n(n(error_specification(_id_failed_to_parse, n(id_identity_parse_str_((*argv_ptr)[argv_index + 1], - (argv_index + 1) ))))));
+    conditional_goodbye(n(n(error_specification(mod_instruction, n(     mod_ul_parse_str ((*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));
+    conditional_goodbye(n(n(error_specification(_id_instruction, n(id_identity_parse_str_((*argv_ptr)[argv_index + 1], - (argv_index + 1) ))))));
 }
 
 unsigned long mod_group_operation(ul a, ul b)
@@ -26,9 +26,6 @@ unsigned long mod_group_operation(ul a, ul b)
 
 
 
-finite_group_operation _group_operation(unsigned int id_) { return (id_) ? mod_multiply : mod_add; }
-finite_group_operation id_group_operation() { return _group_operation(*id_); }
-// to get the appriopiate group operation ^
 
 /* ===================== corresponds to 'maths.basic.c' (!) ================== */
 unsigned long mod_conditional_cap(ul result)

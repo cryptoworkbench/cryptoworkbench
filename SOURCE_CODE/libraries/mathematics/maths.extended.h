@@ -51,4 +51,4 @@ const char *id_as_verb();
 int mod_eulers_criterion(ul odd_prime_p);
 /* ===================== corresponds to 'maths.basic.h' (!) ====================== */
 
-void group_parse(_error_function mod_failed_to_parse, _error_function _id_failed_to_parse, unsigned int argv_index);
+void group_parse(_error_function mod_instruction, _error_function _id_instruction, unsigned int argv_index);
