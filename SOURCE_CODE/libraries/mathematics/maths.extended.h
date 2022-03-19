@@ -14,19 +14,19 @@
  *
  */
 
-ul_ptr mod_;
-ui_ptr id_;
+unsigned long *mod_;
+unsigned int *id_;
 // new variables (!) ^^
 
 
 
 
 
-
-
+/* ===================== corresponds to 'string.h' (!) =========================== */
 int mod_ul_parse_str(char *str, int exit_status);
+/* ===================== corresponds to 'string.h' (!) =========================== */
 
-/* =============================================================================== */
+/* ===================== corresponds to 'maths.basic.h' (!) ====================== */
 int id_identity_parse_str(char *str, int exit_status);
 
 unsigned long mod_exponentiate(ul base, ul exponent);
@@ -48,7 +48,7 @@ const char *id_as_verb();
 // functions that have to do with the identity element ^
 
 int mod_eulers_criterion(ul odd_prime_p);
-/* =============================================================================== */
+/* ===================== corresponds to 'maths.basic.h' (!) ====================== */
 
 group_operation _group_operation(ui id_);
 group_operation id_group_operation();

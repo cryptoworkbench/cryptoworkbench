@@ -12,7 +12,6 @@ typedef void (*_error_function) ();
 char ***argv_ptr; char *unparsed_str; unsigned int *width_;
 // variable declarations ^^^
 
-
 _error_function not_parsable(_error_function error_function, char *unparsable_str);
 
 void conditional_goodbye(int exit_status);
@@ -23,7 +22,10 @@ int h(int pass_through);
 int error_specification(_error_function error_explainer, int exit_status);
 int error_message(_error_function error_explainer, int exit_status);
 
+/* ===================== corresponds to 'maths.extended.h' (!) =================== */
 int _ul_parse_str(unsigned long *ul_ptr, char *str, int exit_status);
+/* ===================== corresponds to 'maths.extended.h' (!) =================== */
+
 int _ui_parse_str(unsigned int *ui_ptr, char *str, int exit_status);
 
 void str_not_parsable_as_number();

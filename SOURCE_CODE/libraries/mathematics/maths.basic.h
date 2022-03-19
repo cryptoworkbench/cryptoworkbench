@@ -26,7 +26,7 @@ char *_REPORT_standard_prime_table_filename(); char *_REPORT_open_prime_table();
 unsigned long exponentiate(ul base, ul exponent);
 // basic infinite field exponentiation ^
 
-/* =============================================================================== */
+/* ===================== corresponds to 'maths.extended.h' (!) ================== */
 int _identity_parse_str(ui_ptr id_, char *str, int exit_status);
 
 unsigned long _exponentiate(ul base, ul exponent, ul mod_);
@@ -48,7 +48,7 @@ const char *_as_verb(ui id_);
 // functions that have to do with the identity element ^
 
 int _eulers_criterion(ul odd_prime_p, ul odd_prime_q);
-/* =============================================================================== */
+/* ===================== corresponds to 'maths.extended.h' (!) ================== */
 
 void list_plausable_group_identity_descriptions(int argv_index);
 // more functions regarding the identity element
