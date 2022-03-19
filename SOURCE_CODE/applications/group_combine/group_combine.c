@@ -24,7 +24,7 @@ int main(int argc, char **argv) { i_ = &i; array_size_ = &function_arg_count; mo
     conditional_goodbye(n(n(error_specification(sp_array_failed_to_parse, n(n(error_message(___array_failed_to_parse, (2 > (function_arg_count = argc - STARTING_INDEX_OF_ARGS_LIST)) * - STARTING_INDEX_OF_ARGS_LIST)))))));
     // check amount of successive arguments ^
 
-    arguments_array = LOOP_ul_parse_str(argument_failed_to_parse, STARTING_INDEX_OF_ARGS_LIST);
+    LOOP_ul_parse_str(argument_failed_to_parse, STARTING_INDEX_OF_ARGS_LIST);
 
     group_operation group_operation = id_group_operation();
     const char *symb = id_as_operation_symbol(); ans = id; i = 0;
