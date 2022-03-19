@@ -116,6 +116,11 @@ if [ $? -eq 0 ];
 then echo "successfully build application    'subgroup_examplifier'"; successfull_builds=$(( $successfull_builds + 1 ));
 else echo "                   application    'subgroup_examplifier'         FAILED TO BUILD!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ..
 
+cd group_examplifier && make group_examplifier > /dev/null 2>> ../../../.initialization_errors
+if [ $? -eq 0 ];
+then echo "successfully build application    'group_examplifier'"; successfull_builds=$(( $successfull_builds + 1 ));
+else echo "                   application    'group_examplifier'         FAILED TO BUILD!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ..
+
 cd system_of_congruences && make system_of_congruences > /dev/null 2>> ../../../.initialization_errors
 if [ $? -eq 0 ];
 then echo "successfully build application    'system_of_congruences'"; successfull_builds=$(( $successfull_builds + 1 ));
