@@ -31,6 +31,9 @@ int _ul_parse_str(ul_ptr ul_ptr, char *str, int exit_status)
     return 0;
 }
 
+void LOOP_ul_parse_str(_error_function error_function, ul_ptr array, ui array_size, ui_ptr _i, ui start)
+{ for (*_i = 0; *_i < array_size; (*_i)++) conditional_goodbye(n(n(error_specification(error_function, n(_ul_parse_str(*_i + array, (*argv_ptr)[start + *_i], -(start + 1 + *_i))))))); }
+
 int _ui_parse_str(ui_ptr ui_ptr, char *str, int exit_status)
 {
     int i = 0; if (i = _parse_str_NULL_check(str, exit_status)) return i;
