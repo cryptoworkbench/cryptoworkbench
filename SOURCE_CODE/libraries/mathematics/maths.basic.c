@@ -91,7 +91,7 @@ int _identity_parse_str(ui_ptr id_, char *str, int exit_status)
 int _identity_parse_str_(ui_ptr id_, char *str, int exit_status)
 {
     if (!str || (str && !((*id_ = _match(str, 6, multiplicative_signs)) || _match(str, 6, additive_signs)))) return n(error_message(not_parsable(identity_error, str), exit_status));
-    if (*id_) *operation = _multiply; else *operation = _add;
+    if (*id_) *_group_operation = _multiply; else *_group_operation = _add;
     return 0;
 } // to get the appriopiate group operation ^
 

@@ -14,7 +14,7 @@ void group_parse(_error_function mod_instruction, _error_function _id_instructio
 
 unsigned long mod_group_operation(ul a, ul b)
 {
-    return (*operation)(a, b, *mod_);
+    return (*_group_operation)(a, b, *mod_);
 }
 
 

@@ -18,7 +18,7 @@ unsigned long *mod_;
 unsigned int *id_;
 // new variables (!) ^^
 
-typedef unsigned long (*finite_group_operation) (ul, ul);
+// typedef unsigned long (*finite_group_operation) (ul, ul);
 // new type
 unsigned long mod_group_operation(ul a, ul b);
 

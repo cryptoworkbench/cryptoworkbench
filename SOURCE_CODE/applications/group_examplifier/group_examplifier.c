@@ -14,7 +14,7 @@ struct crux { unsigned long *base_permutation; char **ASCII; unsigned long **per
 // ^^ type definitions
 
 struct crux lookup_table; unsigned long *permutation_of_FIRST_GEN; unsigned int id; unsigned long group_cardinality, mod, horizontal_offset, vertical_offset;
-group_operation_ group_oper;
+group_operation group_oper;
 //          ^ global variables          ^                                      ^                                         ^                      ^
 
 void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
@@ -105,7 +105,7 @@ void _id_failed_to_parse() {
 void mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument the modulus of the group whose subgroups to examplify. '\u2115%s*' makes no sense to me.", (*argv_ptr)[1]); }
 // error functions ^ (function header format fits typedef '_error_message')
 
-int main(int argc, char **argv) { group_cardinality, mod, id, horizontal_offset, vertical_offset = ADDITIVE_IDENTITY; mod_ = &mod; id_ = &id; operation = &group_oper; argv_ptr = &argv;
+int main(int argc, char **argv) { group_cardinality, mod, id, horizontal_offset, vertical_offset = ADDITIVE_IDENTITY; mod_ = &mod; id_ = &id; _group_operation = &group_oper; argv_ptr = &argv;
     group_parse(mod_failed_to_parse, _id_failed_to_parse, 1);
     if (!mod || !(mod - 1) && id) conditional_goodbye(n(n(error_message(invalid_group_parameters, -3))));
     // process mandatory terminal arguments (mod and group identity) ^ 
