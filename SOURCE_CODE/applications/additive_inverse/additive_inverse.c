@@ -2,7 +2,7 @@
 // "##### ===> END OF PROGRAM DESCRIPTION!                                 <=== ####" ||
 
 #include <stdio.h>
-#include "../../libraries/functional/string.h"
+#include "../../libraries/functional/string.basic.h"
 #include "../../libraries/mathematics/maths.extended.h"
 
 unsigned long mod, inverse_of_additive_inverse;

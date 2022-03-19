@@ -1,5 +1,5 @@
-../../libraries/functional/.string.o: ../../libraries/functional/string.h ../../libraries/functional/string.c
-	gcc -c ../../libraries/functional/string.c -o ../../libraries/functional/.string.o
+../../libraries/functional/.string.basic.o: ../../libraries/functional/string.basic.h ../../libraries/functional/string.basic.c
+	gcc -c ../../libraries/functional/string.basic.c -o ../../libraries/functional/.string.basic.o
 
 ../../libraries/mathematics/.maths.basic.o: ../../libraries/mathematics/maths.basic.h ../../libraries/mathematics/maths.basic.c
 	gcc -c ../../libraries/mathematics/maths.basic.c -o ../../libraries/mathematics/.maths.basic.o
@@ -16,5 +16,5 @@
 .group_element_exporter.o: group_element_exporter.c
 	gcc -c group_element_exporter.c -o .group_element_exporter.o
 
-group_element_exporter: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o .group_element_exporter.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o .group_element_exporter.o -o ../../../applications/group_element_exporter
+group_element_exporter: ../../libraries/functional/.string.basic.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o .group_element_exporter.o
+	gcc ../../libraries/functional/.string.basic.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o .group_element_exporter.o -o ../../../applications/group_element_exporter

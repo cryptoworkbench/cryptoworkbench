@@ -1,4 +1,4 @@
-#include "string.h"
+#include "string.basic.h"
 
 unsigned int *width_;
 

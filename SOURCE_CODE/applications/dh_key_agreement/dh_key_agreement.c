@@ -3,7 +3,7 @@
  * Uses 'ARCHIVE/'
  */
 #include <stdio.h>
-#include "../../libraries/functional/string.h"
+#include "../../libraries/functional/string.basic.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
 #include "../../libraries/mathematics/maths.extended.h"
 #include "../../libraries/mathematics/group_library.h"

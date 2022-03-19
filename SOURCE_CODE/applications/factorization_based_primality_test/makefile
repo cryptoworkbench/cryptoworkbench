@@ -1,5 +1,5 @@
-../../libraries/functional/.string.o: ../../libraries/functional/string.h ../../libraries/functional/string.c
-	gcc -c ../../libraries/functional/string.c -o ../../libraries/functional/.string.o
+../../libraries/functional/.string.basic.o: ../../libraries/functional/string.basic.h ../../libraries/functional/string.basic.c
+	gcc -c ../../libraries/functional/string.basic.c -o ../../libraries/functional/.string.basic.o
 
 ../../libraries/mathematics/.maths.basic.o: ../../libraries/mathematics/maths.basic.h ../../libraries/mathematics/maths.basic.c
 	gcc -c ../../libraries/mathematics/maths.basic.c -o ../../libraries/mathematics/.maths.basic.o
@@ -13,5 +13,5 @@
 .factorization_based_primality_test.o: factorization_based_primality_test.c
 	gcc -c factorization_based_primality_test.c -o .factorization_based_primality_test.o
 
-factorization_based_primality_test: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o ../../libraries/mathematics/.factorization_methods.o .factorization_based_primality_test.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o ../../libraries/mathematics/.factorization_methods.o .factorization_based_primality_test.o -o ../../../applications/factorization_based_primality_test
+factorization_based_primality_test: ../../libraries/functional/.string.basic.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o ../../libraries/mathematics/.factorization_methods.o .factorization_based_primality_test.o
+	gcc ../../libraries/functional/.string.basic.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o ../../libraries/mathematics/.factorization_methods.o .factorization_based_primality_test.o -o ../../../applications/factorization_based_primality_test

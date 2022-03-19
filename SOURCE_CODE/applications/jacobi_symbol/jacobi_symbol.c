@@ -19,7 +19,7 @@
 //
 // Haven't yet found a fail in legendre_symbol()
 #include <stdio.h>
-#include "../../libraries/functional/string.h"
+#include "../../libraries/functional/string.basic.h"
 #include "../../libraries/mathematics/maths.extended.h"
 #include "../../libraries/mathematics/factorization_methods.h"
 

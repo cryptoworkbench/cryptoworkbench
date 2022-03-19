@@ -8,7 +8,7 @@
 // When the program is ran for the first time it asks what factorization engine should be preferred and this is automatically saved to the external preferences file.
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../libraries/functional/string.h"
+#include "../../libraries/functional/string.basic.h"
 #include "../../libraries/mathematics/maths.extended.h"
 #include "../../libraries/mathematics/factorization_methods.h"
 #define COMPOSITE_NOT_INTERPRETABLE "Failed to interpret composite '%s'!\n\n"

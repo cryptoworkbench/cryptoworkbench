@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../functional/string.h"
+#include "../functional/string.basic.h"
 // library inclusions ^^
 
 #define ADDITIVE_IDENTITY 0

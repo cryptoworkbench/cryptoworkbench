@@ -4,7 +4,7 @@
  * PROBLEMS:
  * ~ Does not work with terminal inputs 2 3 7 11 (try!)
  */
-#include "../../libraries/functional/string.h"
+#include "../../libraries/functional/string.basic.h"
 #include "../../libraries/mathematics/maths.basic.h"
 // library inclusions ^
 

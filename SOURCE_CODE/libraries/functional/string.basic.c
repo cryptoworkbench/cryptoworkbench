@@ -4,9 +4,9 @@
  *
  * The warning for an implicit declaration of "exponentiate" during "gcc -c string.c -o .string.o" can be ignored. Just include .maths.o in the linking process.
  * */
-#include "string.h"
-#include "../mathematics/maths.basic.h" // 'exponentiation()'
 #include <stdio.h>
+#include "string.basic.h"
+#include "../mathematics/maths.basic.h" // 'exponentiation()'
 
 _error_function not_parsable(_error_function error_function, char *unparsable_str)
 {

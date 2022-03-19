@@ -1,6 +1,6 @@
 // doesn't get 'h'
 #include <stdio.h>
-#include "../../libraries/functional/string.h"
+#include "../../libraries/functional/string.basic.h"
 #include "../../libraries/mathematics/factorization_methods.h"
 
 unsigned long potential_prime;

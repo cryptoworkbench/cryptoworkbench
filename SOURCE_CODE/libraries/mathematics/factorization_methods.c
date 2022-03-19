@@ -1,5 +1,5 @@
 #include <stdio.h> // needed for 'fprintf()'
-#include "../functional/string.h" // needed for definition EXIT_STATUS_GOODBYE
+#include "../functional/string.basic.h" // needed for definition EXIT_STATUS_GOODBYE
 #include "factorization_methods.h" // need for function headers
 #include "maths.extended.h" // needed for 'DOWN_ROUNDED_second_root()'
 #include "group_library.h" // needed for 'BUFFER_OF_SIZE()'

@@ -35,7 +35,7 @@
  * #2). Determines "f(0)" using the Mod value and this set of coordinates. This equates to the calculation of the linear equation (first degree polynomial) parameter 'B'
  */
 #include <stdio.h>
-#include "../../libraries/functional/string.h"
+#include "../../libraries/functional/string.basic.h"
 #include "../../libraries/mathematics/maths.extended.h"
 #include "../../libraries/mathematics/shamir_secret_sharing.h"
 #define K 2 // degree of polynomial that is resolved in other to retrieve secret encoded as contant term

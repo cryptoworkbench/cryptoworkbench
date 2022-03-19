@@ -1,7 +1,7 @@
 // exports a prime table
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../libraries/functional/string.h"
+#include "../../libraries/functional/string.basic.h"
 #include "../../libraries/mathematics/maths.basic.h"
 
 unsigned long limit;

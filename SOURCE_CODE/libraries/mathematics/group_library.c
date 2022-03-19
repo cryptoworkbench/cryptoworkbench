@@ -4,7 +4,7 @@
 #include <unistd.h> // needed for "execvp()"
 #include <sys/wait.h> // needed for "waitpid()"
 #include "maths.extended.h"
-#include "../functional/string.h"
+#include "../functional/string.basic.h"
 #include "group_library.h"
 
 char *path_to_group;

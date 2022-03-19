@@ -1,5 +1,5 @@
-../../libraries/functional/.string.o: ../../libraries/functional/string.h ../../libraries/functional/string.c
-	gcc -c ../../libraries/functional/string.c -o ../../libraries/functional/.string.o
+../../libraries/functional/.string.basic.o: ../../libraries/functional/string.basic.h ../../libraries/functional/string.basic.c
+	gcc -c ../../libraries/functional/string.basic.c -o ../../libraries/functional/.string.basic.o
 
 ../../libraries/mathematics/.maths.basic.o: ../../libraries/mathematics/maths.basic.h ../../libraries/mathematics/maths.basic.c
 	gcc -c ../../libraries/mathematics/maths.basic.c -o ../../libraries/mathematics/.maths.basic.o
@@ -13,5 +13,5 @@
 .jacobi_symbol.o: jacobi_symbol.c
 	gcc -c jacobi_symbol.c -o .jacobi_symbol.o
 
-jacobi_symbol: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o ../../libraries/mathematics/.factorization_methods.o .jacobi_symbol.o .jacobi_symbol.sh
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o ../../libraries/mathematics/.factorization_methods.o .jacobi_symbol.o -o ../../../applications/jacobi_symbol && cp .jacobi_symbol.sh ../../../applications/jacobi_symbol.sh
+jacobi_symbol: ../../libraries/functional/.string.basic.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o ../../libraries/mathematics/.factorization_methods.o .jacobi_symbol.o .jacobi_symbol.sh
+	gcc ../../libraries/functional/.string.basic.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o ../../libraries/mathematics/.factorization_methods.o .jacobi_symbol.o -o ../../../applications/jacobi_symbol && cp .jacobi_symbol.sh ../../../applications/jacobi_symbol.sh

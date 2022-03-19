@@ -2,7 +2,7 @@
 // Factorizes a number to it's bare prime divisors.
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../libraries/functional/string.h"
+#include "../../libraries/functional/string.basic.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
 #include "../../libraries/mathematics/maths.extended.h"
 #include "../../libraries/mathematics/factorization_methods.h"

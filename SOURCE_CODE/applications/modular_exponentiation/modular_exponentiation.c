@@ -1,7 +1,7 @@
 // Program description: performs modular exponentiation using the 'square and multiply' method for modular exponentiation (which is implemented in maths.c). Not much to be said here.
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../libraries/functional/string.h"
+#include "../../libraries/functional/string.basic.h"
 #include "../../libraries/mathematics/maths.extended.h"
 // library inclusions ^
 

@@ -1,7 +1,7 @@
 // DEVELOPERs note:
 // I need to make this program cooperative again with some generic function which uses 'mod_' and 'id_'
 #include <stdio.h>
-#include "../../libraries/functional/string.h"
+#include "../../libraries/functional/string.basic.h"
 #include "../../libraries/mathematics/maths.extended.h"
 
 int function_arg_count, i, id; unsigned long *arguments_array; unsigned long ans, mod;

@@ -2,7 +2,7 @@
  * Takes the modulus of a number. Can be used to find out which equivalence class best represents a member from a quotient group.
  */
 #include <stdio.h>
-#include "../../libraries/functional/string.h"
+#include "../../libraries/functional/string.basic.h"
 #include "../../libraries/mathematics/maths.extended.h"
 // library inclusions ^
 
