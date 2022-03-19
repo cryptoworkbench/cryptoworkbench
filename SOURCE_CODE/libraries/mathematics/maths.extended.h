@@ -20,6 +20,7 @@ unsigned int *id_;
 
 typedef unsigned long (*group_operation) (ul, ul);
 // new type
+unsigned long mod_group_operation(ul a, ul b);
 
 
 /* ===================== corresponds to 'string.h' (!) =========================== */
@@ -28,7 +29,7 @@ int mod_ul_parse_str(char *str, int exit_status);
 
 /* ===================== corresponds to 'maths.basic.h' (!) ====================== */
 int id_identity_parse_str(char *str, int exit_status);
-
+int id_identity_parse_str_(char *str, int exit_status);
 unsigned long mod_exponentiate(ul base, ul exponent);
 unsigned long mod_conditional_cap(ul result);
 unsigned long mod_inverse(ul element_of_additive_group);

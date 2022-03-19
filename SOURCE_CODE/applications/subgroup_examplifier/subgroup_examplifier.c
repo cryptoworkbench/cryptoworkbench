@@ -2,6 +2,7 @@
  * Examplifies subgroups. Feed it a modulus and a group identity as command-line arguments and it will examplify all subgroups within specified group. It also lists the generators that are within the group.
  *
  * DEVELOPERS NOTES:
+ * NOW MAKE IT USE 'operation'
  * When you put it with 2 1 it says there are no generators there.
  */
 #include <stdio.h>
@@ -16,7 +17,8 @@ struct LL_ { struct LL_ *next; unsigned long e; };
 struct crux { unsigned long *base_permutation; char **ASCII; unsigned long **permutation; unsigned long *perm_length; };
 // ^^ type definitions
 
-struct crux lookup_table; unsigned long *permutation_of_FIRST_GEN; group_operation combine; unsigned int id; unsigned long group_cardinality, mod, horizontal_offset, vertical_offset;
+struct crux lookup_table; unsigned long *permutation_of_FIRST_GEN; unsigned int id; unsigned long group_cardinality, mod, horizontal_offset, vertical_offset;
+group_operation_ group_oper;
 //          ^ global variables          ^                                      ^                                         ^                      ^
 
 void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
@@ -48,7 +50,7 @@ unsigned long count_of_GENERATED_subgroup_elements(unsigned long index) { unsign
     struct VOID_ptr_ptr_PAIR permutation_LL_pair = initialize_CHANNEL_ptr_pair();
     unsigned long generated_element = *id_; do {
 	INSERT((struct LL_ ***) &permutation_LL_pair.iterator, INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality, generated_element)); ret_val++;
-	generated_element = combine(generated_element, lookup_table.base_permutation[index]);
+	generated_element = mod_group_operation(generated_element, lookup_table.base_permutation[index]);
     } while (generated_element != *id_);
     lookup_table.permutation[index] = array_from_LL((struct LL_ **) permutation_LL_pair.head, &ret_val);
     return ret_val;
@@ -61,7 +63,7 @@ unsigned long CONSULT_permutation_of_FIRST_GEN(unsigned long index) { unsigned l
 	lookup_table.permutation[index] = malloc(sizeof(unsigned long) * lookup_table.perm_length[index]);
 	unsigned long j = 0; lookup_table.permutation[index][j] = INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality, lookup_table.base_permutation[0]);
 	for (; j + 1 < lookup_table.perm_length[index]; j++) lookup_table.permutation[index][j + 1]
-	    = INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality, combine(lookup_table.base_permutation[index], lookup_table.base_permutation[lookup_table.permutation[index][j]]));
+	    = INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality, mod_group_operation(lookup_table.base_permutation[index], lookup_table.base_permutation[lookup_table.permutation[index][j]]));
     } return generator_count;
 }
 
@@ -107,9 +109,9 @@ void _id_failed_to_parse() {
 void mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument the modulus of the group whose subgroups to examplify. '\u2115%s*' makes no sense to me.", (*argv_ptr)[1]); }
 // error functions ^ (function header format fits typedef '_error_message')
 
-int main(int argc, char **argv) { group_cardinality, mod, id, horizontal_offset, vertical_offset = ADDITIVE_IDENTITY; mod_ = &mod; id_ = &id; argv_ptr = &argv;
-        conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(     mod_ul_parse_str(argv[1], -1))))));
-        conditional_goodbye(n(n(error_specification(_id_failed_to_parse, n(id_identity_parse_str(argv[2], -2)))))); if (!mod || !(mod - 1) && id)
+int main(int argc, char **argv) { group_cardinality, mod, id, horizontal_offset, vertical_offset = ADDITIVE_IDENTITY; mod_ = &mod; id_ = &id; operation = &group_oper; argv_ptr = &argv;
+        conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(     mod_ul_parse_str (argv[1], -1))))));
+        conditional_goodbye(n(n(error_specification(_id_failed_to_parse, n(id_identity_parse_str_(argv[2], -2)))))); if (!mod || !(mod - 1) && id)
 	conditional_goodbye(n(n(error_message(invalid_group_parameters, -3))));
     // process mandatory terminal arguments (mod and group identity) ^ 
 
@@ -117,7 +119,7 @@ int main(int argc, char **argv) { group_cardinality, mod, id, horizontal_offset,
     unsigned long __vertical_offset = 0; n(n(error_specification(__vertical_offset_failed_to_parse, 4 < argc && _ul_parse_str(&__vertical_offset, argv[4], 1))));
     // process optional terminal arguments ^
 
-    combine = id_group_operation(); unsigned long generator_count = found_generators(group_elements_LL(argv));
+    unsigned long generator_count = found_generators(group_elements_LL(argv));
     unsigned long index = __vertical_offset; do { print_permutation(index); index = _add(index, 1, group_cardinality); } while (index != __vertical_offset); fprintf(stdout, "\n");
     // examplify subgroups ^
 
