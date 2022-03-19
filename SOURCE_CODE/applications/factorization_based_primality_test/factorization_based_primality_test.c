@@ -10,7 +10,7 @@ void composite_parse_error() { fprintf(stderr, "Please provide as first argument
 int main(int argc, char **argv) { potential_prime = 0;
     conditional_goodbye(n(n(error_specification(composite_parse_error, n(_ul_parse_str(&potential_prime, argv[1], -1))))));
     
-    _preferred_factorization_engine = factorization_method_retrieve(argv[2]);
+    factorization_method_set(argv[2]);
     fprintf(stdout, "Using the factorization engine \"%s\" as the basis for my primality test on %lu.", _factorization_engine_description(_preferred_factorization_engine), potential_prime);
     if (!(argc < 3)) fprintf(stdout, "	(as specified by terminal argument)"); fprintf(stdout, "\n\n");
 

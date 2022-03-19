@@ -51,7 +51,7 @@ int main(int argc, char **argv) { composite = 0;
     conditional_goodbye(n(n(error_specification(composite_parsing_error, n(_ul_parse_str(&composite, argv[1], -1))))));
     // take in composite ^
 
-    _preferred_factorization_engine = factorization_method_retrieve(argv[2]);
+    factorization_method_set(argv[2]);
     explain_configuration(composite); if (argv[2]) fprintf(stdout, "	(manually specified)"); fprintf(stdout, "\n\n");
 
     struct ordered_pair factor_a_and_b = factorize(composite, NULL);
