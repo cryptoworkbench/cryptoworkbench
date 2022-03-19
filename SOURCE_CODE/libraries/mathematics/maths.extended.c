@@ -6,14 +6,16 @@ int id_identity_parse_str(char *str, int exit_status) { return _identity_parse_s
 int id_identity_parse_str_(char *str, int exit_status)
 { return _identity_parse_str_(id_, str, exit_status); }
 
-
-
+void group_parse(_error_function mod_failed_to_parse, _error_function _id_failed_to_parse, unsigned int argv_index)
+{
+    conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(     mod_ul_parse_str ((*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));
+    conditional_goodbye(n(n(error_specification(_id_failed_to_parse, n(id_identity_parse_str_((*argv_ptr)[argv_index + 1], - (argv_index + 1) ))))));
+}
 
 unsigned long mod_group_operation(ul a, ul b)
 {
     return (*operation)(a, b, *mod_);
 }
-
 
 
 
