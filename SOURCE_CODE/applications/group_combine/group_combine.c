@@ -25,9 +25,9 @@ int main(int argc, char **argv) { i_ = &i; mod = id = ADDITIVE_IDENTITY; mod_ = 
     // check amount of successive arguments ^
 
     arguments_array = UL_array_of_SIZE(function_arg_count);
-    LOOP_ul_parse_str(argument_failed_to_parse, arguments_array, function_arg_count, STARTING_INDEX_OF_ARGS_LIST);
+    LOOP_ul_parse_str(argument_failed_to_parse, STARTING_INDEX_OF_ARGS_LIST);
 
-    mod_ = &mod; group_operation group_operation = id_group_operation();
+    group_operation group_operation = id_group_operation();
     const char *symb = id_as_operation_symbol(); ans = id; i = 0;
     do {ans = group_operation(ans, arguments_array[i]);
 	fprintf(stdout, "%lu", arguments_array[i]);
