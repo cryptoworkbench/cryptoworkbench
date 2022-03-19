@@ -37,9 +37,9 @@ struct VOID_ptr_ptr_PAIR group_elements_LL(char **argv)
     while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { INSERT((struct LL_ ***) &element_CHANNEL_ptr_pair.iterator, group_ELEMENT); group_cardinality++; } close_group(argv[1], ELEMENT_database);
     return element_CHANNEL_ptr_pair; }
 
-unsigned long *array_from_LL(struct LL_ **head_TRACER, unsigned long *required_array_size) {
-    struct LL_ *iter; if (!(iter = (struct LL_ *) _close_CHANNEL((void **) head_TRACER))) return NULL; unsigned long *ulong_array = (unsigned long *) malloc(sizeof(unsigned long) * *required_array_size);
-    for (unsigned long i = 0; i < *required_array_size; i++) { struct LL_ *process = iter; ulong_array[i] = process->e; iter = process->next; free(process); } return ulong_array;
+unsigned long *array_from_LL(struct LL_ **head_TRACER, ul required_array_size) {
+    struct LL_ *iter; if (!(iter = (struct LL_ *) _close_CHANNEL((void **) head_TRACER))) return NULL; unsigned long *ulong_array = (unsigned long *) malloc(sizeof(unsigned long) * required_array_size);
+    for (unsigned long i = 0; i < required_array_size; i++) { struct LL_ *process = iter; ulong_array[i] = process->e; iter = process->next; free(process); } return ulong_array;
 }
 
 unsigned long count_of_GENERATED_subgroup_elements(unsigned long index) { unsigned long ret_val = 0;
@@ -48,7 +48,7 @@ unsigned long count_of_GENERATED_subgroup_elements(unsigned long index) { unsign
 	INSERT((struct LL_ ***) &permutation_LL_pair.iterator, INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality, generated_element)); ret_val++;
 	generated_element = mod_group_operation(generated_element, lookup_table.base_permutation[index]);
     } while (generated_element != *id_);
-    lookup_table.permutation[index] = array_from_LL((struct LL_ **) permutation_LL_pair.head, &ret_val);
+    lookup_table.permutation[index] = array_from_LL((struct LL_ **) permutation_LL_pair.head, ret_val);
     return ret_val;
 }
 
@@ -67,7 +67,7 @@ unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair
     unsigned int width = (unsigned int) char_in_val(((struct LL_ *) element_CHANNEL_PTR_pair.iterator)->e); width_ = &width;
     // set the unsigned int pointer 'width_str_from_ul' needs in order to function properly ^
 
-    permutation_of_FIRST_GEN = lookup_table.base_permutation = array_from_LL((struct LL_ **) element_CHANNEL_PTR_pair.head, &group_cardinality);
+    permutation_of_FIRST_GEN = lookup_table.base_permutation = array_from_LL((struct LL_ **) element_CHANNEL_PTR_pair.head, group_cardinality);
     // register a base permutation which we can reference and which we can change ^
 
     lookup_table.perm_length = UL_array_of_SIZE((unsigned int) group_cardinality);
