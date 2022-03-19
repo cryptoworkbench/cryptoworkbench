@@ -18,8 +18,8 @@ unsigned long *mod_;
 unsigned int *id_;
 // new variables (!) ^^
 
-
-
+typedef unsigned long (*group_operation) (ul, ul);
+// new type
 
 
 /* ===================== corresponds to 'string.h' (!) =========================== */
