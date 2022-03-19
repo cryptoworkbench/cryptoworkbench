@@ -22,12 +22,12 @@ void remainder_failed_to_parse() { fprintf(stderr, "Please provide as first argu
 void __modulus_failed_to_parse() { fprintf(stderr, "Failed to understand '%s' as the %ith modulus.", unparsed_modulus, i + 1); }
 
 int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY; argv_ptr = &argv;
-    conditional_goodbye(n(n(error_specification(remainder_failed_to_parse, n(ul_parse_str(&mod, argv[1], -1))))));
+    conditional_goodbye(n(n(error_specification(remainder_failed_to_parse, n(_ul_parse_str(&mod, argv[1], -1))))));
     conditional_goodbye(n(n(error_specification(______system_not_provided,               (argc == 2)  *  -2))));
     // interpret remainder ^
 
     unsigned long moduli = argc - 2; modulis = (unsigned long *) malloc(sizeof(unsigned long) * moduli);
-    for (i = 0; i < moduli; i++) { unparsed_modulus = argv[2 + i]; conditional_goodbye(n(n(error_specification(__modulus_failed_to_parse, n(ul_parse_str(i + modulis, unparsed_modulus, - (2 + i))))))); }
+    for (i = 0; i < moduli; i++) { unparsed_modulus = argv[2 + i]; conditional_goodbye(n(n(error_specification(__modulus_failed_to_parse, n(_ul_parse_str(i + modulis, unparsed_modulus, - (2 + i))))))); }
 
     for (i = 0; i < moduli; i++) for (unsigned long j = i + 1; j < moduli; j++) if (GCD(modulis[i], modulis[j]) != 1) conditional_goodbye(n(n(error_message(moduli_not_coprime, -3))));
     // check to see if all moduli are coprime to each other ^

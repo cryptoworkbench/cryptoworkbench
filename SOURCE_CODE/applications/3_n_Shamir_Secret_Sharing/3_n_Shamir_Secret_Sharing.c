@@ -48,13 +48,13 @@ void _first_x_failed_to_parse() { fprintf(stderr, "Please provide as second argu
 void _____mod_failed_to_parse() { fprintf(stderr, "Please provide as first argument a finite field specification!"); }
 
 int main(int argc, char **argv) { SET_k(K);
-    unsigned long mod; conditional_goodbye(n(n(error_specification(_____mod_failed_to_parse, n(ul_parse_str(           &mod, argv[1], -1)))))); mod_ = &mod; unsigned long **equation = equations_ALLOCATE(K);
-                       conditional_goodbye(n(n(error_specification(_first_x_failed_to_parse, n(ul_parse_str(1 + equation[0], argv[2], -2))))));
-                       conditional_goodbye(n(n(error_specification(_first_y_failed_to_parse, n(ul_parse_str(0 + equation[0], argv[3], -3))))));
-                       conditional_goodbye(n(n(error_specification(second_x_failed_to_parse, n(ul_parse_str(1 + equation[1], argv[4], -4))))));
-                       conditional_goodbye(n(n(error_specification(second_y_failed_to_parse, n(ul_parse_str(0 + equation[1], argv[5], -5))))));
-                       conditional_goodbye(n(n(error_specification(__last_x_failed_to_parse, n(ul_parse_str(1 + equation[2], argv[6], -6))))));
-                       conditional_goodbye(n(n(error_specification(__last_y_failed_to_parse, n(ul_parse_str(0 + equation[2], argv[7], -7))))));
+    unsigned long mod; conditional_goodbye(n(n(error_specification(_____mod_failed_to_parse, n(_ul_parse_str(           &mod, argv[1], -1)))))); mod_ = &mod; unsigned long **equation = equations_ALLOCATE(K);
+                       conditional_goodbye(n(n(error_specification(_first_x_failed_to_parse, n(_ul_parse_str(1 + equation[0], argv[2], -2))))));
+                       conditional_goodbye(n(n(error_specification(_first_y_failed_to_parse, n(_ul_parse_str(0 + equation[0], argv[3], -3))))));
+                       conditional_goodbye(n(n(error_specification(second_x_failed_to_parse, n(_ul_parse_str(1 + equation[1], argv[4], -4))))));
+                       conditional_goodbye(n(n(error_specification(second_y_failed_to_parse, n(_ul_parse_str(0 + equation[1], argv[5], -5))))));
+                       conditional_goodbye(n(n(error_specification(__last_x_failed_to_parse, n(_ul_parse_str(1 + equation[2], argv[6], -6))))));
+                       conditional_goodbye(n(n(error_specification(__last_y_failed_to_parse, n(_ul_parse_str(0 + equation[2], argv[7], -7))))));
     if (8 < argc) ignored_arguments(argc, argv, 7); // complain and about unneccesary command line arguments <--
     // interpret command line arguments ^
 

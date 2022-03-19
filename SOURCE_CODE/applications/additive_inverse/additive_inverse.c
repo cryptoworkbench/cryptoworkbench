@@ -11,8 +11,8 @@ void mod_failed_to_parse() { fprintf(stderr, "Please provide as first argument t
 void _id_failed_to_parse() { fprintf(stderr, "Please provide as second argument the number to take the additive inverse of."); }
 
 int main(int argc, char **argv) { mod = inverse_of_additive_inverse = ADDITIVE_IDENTITY;
-    conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(ul_parse_str(                        &mod, argv[1], -1))))));
-    conditional_goodbye(n(n(error_specification(_id_failed_to_parse, n(ul_parse_str(&inverse_of_additive_inverse, argv[2], -2)))))); mod_ = &mod;
+    conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(_ul_parse_str(                        &mod, argv[1], -1))))));
+    conditional_goodbye(n(n(error_specification(_id_failed_to_parse, n(_ul_parse_str(&inverse_of_additive_inverse, argv[2], -2)))))); mod_ = &mod;
 
     fprintf(stdout, "x - %lu \u2261 ", inverse_of_additive_inverse);
     if (inverse_of_additive_inverse != mod_conditional_cap(inverse_of_additive_inverse)) fprintf(stdout, "x - %lu \u2261 ", inverse_of_additive_inverse = mod_conditional_cap(inverse_of_additive_inverse));

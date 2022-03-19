@@ -26,8 +26,8 @@ void not_a_member_of_an_equivalence_class_from_the_quotient_group()
 // error functions for incorrect usage ^^
 
 int main(int argc, char **argv) { multiplicative_group_specification = denominator = ADDITIVE_IDENTITY; argv_ptr = &argv; 
-    conditional_goodbye(n(n(error_specification(group_specification_failed_to_parse, n(ul_parse_str(&multiplicative_group_specification, argv[1], -1)))))); int numerator = 1;                                
-    conditional_goodbye(n(n(error_specification(______group_element_failed_to_parse, n(ul_parse_str(&denominator, argv[2], -2))))));
+    conditional_goodbye(n(n(error_specification(group_specification_failed_to_parse, n(_ul_parse_str(&multiplicative_group_specification, argv[1], -1)))))); int numerator = 1;                                
+    conditional_goodbye(n(n(error_specification(______group_element_failed_to_parse, n(_ul_parse_str(&denominator, argv[2], -2))))));
     conditional_goodbye(error_message(not_a_member_of_an_equivalence_class_from_the_quotient_group, -3 * !(!((common_divisor = GCD(denominator, multiplicative_group_specification)) - 1))));
     // fix multiplicative group, inverse of inverse and numerator to the division function (namely 'mod_divide')
 

@@ -17,6 +17,6 @@ void args_list() { fprintf(stdout, "%lu", arguments_array[i]); if (i + 1 == gcd_
 int main(int argc, char **argv) { argv_ptr = &argv;
     conditional_goodbye(n(n(error_specification(argument_count_failure, -(2 > (gcd_function_argument_count = argc - 1))))));
     arguments_array = UL_array_of_SIZE(gcd_function_argument_count); for (i = 0; i < gcd_function_argument_count; i++)
-    conditional_goodbye(n(n(error_specification(argument_parse_failure, n(ul_parse_str(i + arguments_array, argv[1 + i], -(2 + i)))))));
+    conditional_goodbye(n(n(error_specification(argument_parse_failure, n(_ul_parse_str(i + arguments_array, argv[1 + i], -(2 + i)))))));
     i = 0; fprintf(stdout, "GCD("); args_list(); fprintf(stdout, ") = %lu\n", UNRESTRICTED_GCD(arguments_array, gcd_function_argument_count)); return 0;
 }

@@ -11,7 +11,7 @@ void limit_failed_to_parse() { fprintf(stderr, "Failed to understand '%s' as the
 // '_failed_to_parse' functions ^
 
 int main(int argc, char **argv) { limit = ADDITIVE_IDENTITY; argv_ptr = &argv;
-    conditional_goodbye(n(n(error_specification(limit_failed_to_parse, n(ul_parse_str(&limit, argv[1], -1))))));
+    conditional_goodbye(n(n(error_specification(limit_failed_to_parse, n(_ul_parse_str(&limit, argv[1], -1))))));
     fprintf(stdout, "\nPrinted %lu primes.\n", primes_printed_from_sieve_array_to_FS(sieve_of_eratosthenes(limit), limit, stdout));
     return 0;
 }

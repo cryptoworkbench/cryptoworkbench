@@ -11,8 +11,8 @@ void quantity_failed_to_parse() { fprintf(stderr, "Failed to interpet '%s' as am
 // error functions ^
 
 int main(int argc, char **argv) { upper_bound = quantity = ADDITIVE_IDENTITY; argv_ptr = &argv;
-    conditional_goodbye(n(n(error_specification(_____mod_failed_to_parse, n(ul_parse_str(&upper_bound, argv[1], -1))))));
-    conditional_goodbye(n(n(error_specification(quantity_failed_to_parse, n(ul_parse_str(&   quantity, argv[2], -2))))));
+    conditional_goodbye(n(n(error_specification(_____mod_failed_to_parse, n(_ul_parse_str(&upper_bound, argv[1], -1))))));
+    conditional_goodbye(n(n(error_specification(quantity_failed_to_parse, n(_ul_parse_str(&   quantity, argv[2], -2))))));
     // interpret terminal arguments ^
 
     unsigned long i = 1; do { fprintf(stdout, "Random number %lu: %lu\n", i, urandom_number(upper_bound)); i++; } while (i != quantity + 1); close_urandom(); return 0; }

@@ -24,7 +24,7 @@ void least_to_most_INSERT(struct LL_ **tracer, unsigned long quadratic_residue) 
 }
 
 int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY;
-    conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(ul_parse_str(&mod, argv[1], -1)))))); mod_ = &mod;
+    conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(_ul_parse_str(&mod, argv[1], -1)))))); mod_ = &mod;
     for (unsigned long i = 1; i <= mod / 2; i++) if (GCD(i, mod) == 1) least_to_most_INSERT(&quadratic_residue_LL, mod_multiply(i, i));
     fprintf(stdout, "Quadratic residue in \u2115/%lu\u2115:\n", mod);
     for (; quadratic_residue_LL; quadratic_residue_LL = quadratic_residue_LL->next) fprintf(stdout, "%lu\n", quadratic_residue_LL->e);

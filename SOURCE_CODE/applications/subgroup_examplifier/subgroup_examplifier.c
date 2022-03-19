@@ -107,18 +107,17 @@ void _id_failed_to_parse() {
 void mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument the modulus of the group whose subgroups to examplify. '\u2115%s*' makes no sense to me.", (*argv_ptr)[1]); }
 // error functions ^ (function header format fits typedef '_error_message')
 
-int main(int argc, char **argv) { group_cardinality, mod, id, horizontal_offset, vertical_offset = ADDITIVE_IDENTITY; argv_ptr = &argv;
-                                  conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(      ul_parse_str(&mod, argv[1], -1))))));
-                                  conditional_goodbye(n(n(error_specification(_id_failed_to_parse, n(identity_parse_str( &id, argv[2], -2))))));
+int main(int argc, char **argv) { group_cardinality, mod, id, horizontal_offset, vertical_offset = ADDITIVE_IDENTITY; mod_ = &mod; id_ = &id; argv_ptr = &argv;
+                                  conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(     mod_ul_parse_str(argv[1], -1))))));
+                                  conditional_goodbye(n(n(error_specification(_id_failed_to_parse, n(id_identity_parse_str(argv[2], -2))))));
     if (!mod || !(mod - 1) && id) conditional_goodbye(n(n(error_message(invalid_group_parameters, -3))));
     // process mandatory terminal arguments (mod and group identity) ^ 
 
-                  horizontal_offset = 0; n(n(error_specification(horizontal_offset_failed_to_parse, 3 < argc && ul_parse_str(&horizontal_offset, argv[3], 1))));
-    unsigned long __vertical_offset = 0; n(n(error_specification(__vertical_offset_failed_to_parse, 4 < argc && ul_parse_str(&__vertical_offset, argv[4], 1))));
+                  horizontal_offset = 0; n(n(error_specification(horizontal_offset_failed_to_parse, 3 < argc && _ul_parse_str(&horizontal_offset, argv[3], 1))));
+    unsigned long __vertical_offset = 0; n(n(error_specification(__vertical_offset_failed_to_parse, 4 < argc && _ul_parse_str(&__vertical_offset, argv[4], 1))));
     // process optional terminal arguments ^
 
-    mod_ = &mod;
-    id_ = &id; combine = id_group_operation(); unsigned long generator_count = found_generators(group_elements_LL(argv));
+    combine = id_group_operation(); unsigned long generator_count = found_generators(group_elements_LL(argv));
     unsigned long index = __vertical_offset; do { print_permutation(index); index = _add(index, 1, group_cardinality); } while (index != __vertical_offset); fprintf(stdout, "\n");
     // examplify subgroups ^
 

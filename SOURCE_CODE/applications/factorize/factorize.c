@@ -48,7 +48,7 @@ _factorization_method explain_configuration(unsigned long composite) {
 void composite_parsing_error() { fprintf(stderr, "Please provide as first argument the composite to factorize."); }
 
 int main(int argc, char **argv) { composite = 0;
-    conditional_goodbye(n(n(error_specification(composite_parsing_error, n(ul_parse_str(&composite, argv[1], -1))))));
+    conditional_goodbye(n(n(error_specification(composite_parsing_error, n(_ul_parse_str(&composite, argv[1], -1))))));
     // take in composite ^
 
     _preferred_factorization_engine = factorization_method_retrieve(argv[2]);

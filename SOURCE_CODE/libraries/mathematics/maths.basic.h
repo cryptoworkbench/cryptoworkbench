@@ -47,7 +47,7 @@ const char *_as_verb(ui id_);
 int _eulers_criterion(ul odd_prime_p, ul odd_prime_q);
 /* =============================================================================== */
 
-int identity_parse_str(int *id_, char *str, int exit_status); void identity_error();
+int _identity_parse_str(int *id_, char *str, int exit_status); void identity_error();
 void list_plausable_group_identity_descriptions(int argv_index);
 // more functions regarding the identity element
 
@@ -64,7 +64,6 @@ unsigned long DH_public_key(STRUCT_DH_parameters *DH_parameters, ul private_key)
 // functions for DH and DH based scemes (i.e. Elgamal) ^
 
 unsigned long extended_gcd(ul a, ul b, ul *x, ul *y);
-unsigned long multiplicative_inverse(ul a);
 int coprime(ul a, ul b);
 unsigned long totient(ul a);
 

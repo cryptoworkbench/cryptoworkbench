@@ -17,8 +17,8 @@ void __a_failed_to_parse() { fprintf(stderr, "'%s' is not a suitable value to ta
 // error functions ^
 
 int main(int argc, char **argv) { mod = a = ADDITIVE_IDENTITY; argv_ptr = &argv;
-    conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(ul_parse_str(&mod, argv[1], -1))))));
-    conditional_goodbye(n(n(error_specification(__a_failed_to_parse, n(ul_parse_str(&  a, argv[2], -2))))));
+    conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(_ul_parse_str(&mod, argv[1], -1))))));
+    conditional_goodbye(n(n(error_specification(__a_failed_to_parse, n(_ul_parse_str(&  a, argv[2], -2))))));
     // take in variables ^
 
     mod_ = &mod; unsigned long result; fprintf(stdout, "%lu mod %lu = %lu -> %lu \u2261 %lu (mod %lu)\n", a, mod, result = mod_conditional_cap(a), a, result, mod);

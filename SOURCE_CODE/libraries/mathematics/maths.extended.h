@@ -18,6 +18,9 @@ ul_ptr mod_;
 int *id_;
 // new variables (!) ^^
 
+int mod_ul_parse_str(char *str, int exit_status);
+int id_identity_parse_str(char *str, int exit_status);
+
 group_operation _group_operation(ui id_);
 group_operation id_group_operation();
 

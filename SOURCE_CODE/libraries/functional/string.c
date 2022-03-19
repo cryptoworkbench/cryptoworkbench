@@ -22,7 +22,7 @@ int _parse_str_failure(int exit_status) { return n(error_message(str_not_parsabl
 
 int _parse_str_NULL_check(char *str, int exit_status) { unparsed_str = str; if (!str) return _parse_str_failure(exit_status); return 0; }
 
-int ul_parse_str(unsigned long *ul_ptr, char *str, int exit_status)
+int _ul_parse_str(unsigned long *ul_ptr, char *str, int exit_status)
 {
     int i = 0; if (i = _parse_str_NULL_check(str, exit_status)) return i;
     do {if (str[i] < ASCII_BASE || str[i] > ASCII_BASE + 10) return _parse_str_failure(exit_status);
@@ -31,7 +31,7 @@ int ul_parse_str(unsigned long *ul_ptr, char *str, int exit_status)
     return 0;
 }
 
-int ui_parse_str(unsigned int *ui_ptr, char *str, int exit_status)
+int _ui_parse_str(unsigned int *ui_ptr, char *str, int exit_status)
 {
     int i = 0; if (i = _parse_str_NULL_check(str, exit_status)) return i;
     do {if (str[i] < ASCII_BASE || str[i] > ASCII_BASE + 10) return _parse_str_failure(exit_status);

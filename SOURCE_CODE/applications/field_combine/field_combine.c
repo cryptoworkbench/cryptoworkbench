@@ -16,11 +16,11 @@ void ______id_failed_to_parse() { fprintf(stderr, "Please specify as second argu
 void _____mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument the modulus of the group operation (0 to act upon the infinite group of integers)."); }
 
 int main(int argc, char **argv) { mod = id = ADDITIVE_IDENTITY; argv_ptr = &argv;
-    conditional_goodbye(n(n(error_specification(_____mod_failed_to_parse, n(                                                      ul_parse_str(&mod, argv[1], -1)))))); id_ = &id;
-    conditional_goodbye(n(n(error_specification(______id_failed_to_parse, n(                                                identity_parse_str(& id, argv[2], -2))))));
+    conditional_goodbye(n(n(error_specification(_____mod_failed_to_parse, n(                                                      _ul_parse_str(&mod, argv[1], -1)))))); id_ = &id;
+    conditional_goodbye(n(n(error_specification(______id_failed_to_parse, n(                                                _identity_parse_str(& id, argv[2], -2))))));
     conditional_goodbye(n(n(error_specification(sp_array_failed_to_parse, n(n(error_message(___array_failed_to_parse, (2 > (function_arg_count = argc -3))  * -3)))))));
     arguments_array = UL_array_of_SIZE(function_arg_count); for (i = 0; i < function_arg_count; i++)
-    conditional_goodbye(n(n(error_specification(argument_failed_to_parse, n(ul_parse_str(i + arguments_array, argv[3 + i], -(4 + i)))))));
+    conditional_goodbye(n(n(error_specification(argument_failed_to_parse, n(_ul_parse_str(i + arguments_array, argv[3 + i], -(4 + i)))))));
     // take in arguments ^^^^
 
     mod_ = &mod; group_operation group_operation = id_group_operation();

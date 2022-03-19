@@ -12,14 +12,21 @@ typedef void (*_error_function) ();
 char ***argv_ptr; char *unparsed_str; unsigned int *width_;
 // variable declarations ^^^
 
+
 _error_function not_parsable(_error_function error_function, char *unparsable_str);
 
-int ul_parse_str(unsigned long *ul_ptr, char *str, int exit_status); int ui_parse_str(unsigned int *ui_ptr, char *str, int exit_status);
-void str_not_parsable_as_number();
-int error_message(_error_function error_explainer, int exit_status);
-int error_specification(_error_function error_explainer, int exit_status);
-int n(int pass_through); int h(int pass_through);
 void conditional_goodbye(int exit_status);
+
+int n(int pass_through);
+int h(int pass_through);
+
+int error_specification(_error_function error_explainer, int exit_status);
+int error_message(_error_function error_explainer, int exit_status);
+
+int _ul_parse_str(unsigned long *ul_ptr, char *str, int exit_status);
+int _ui_parse_str(unsigned int *ui_ptr, char *str, int exit_status);
+
+void str_not_parsable_as_number();
 // functions for parsing terminal arguments ^
 
 unsigned long str_len(const char *string_pointer); // str_len function Just like in the standard library, but with unsigned long

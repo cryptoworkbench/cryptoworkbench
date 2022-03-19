@@ -48,7 +48,7 @@ const char *_as_verb(unsigned int id_) { return (id_) ? multiplicative_signs[5] 
 
 // to get the appriopiate group operation ^
 
-int identity_parse_str(int *id_, char *str, int exit_status)
+int _identity_parse_str(int *id_, char *str, int exit_status)
 { if (!str || (str && !((*id_ = _match(str, 6, multiplicative_signs)) || _match(str, 6, additive_signs)))) return n(error_message(not_parsable(identity_error, str), exit_status)); return 0; }
 // functions for setting the global unsigned int variable 'id_'
 
@@ -162,8 +162,8 @@ unsigned long chinese_remainder_theorem(ul remainder, ul_ptr moduli, ul modulis)
 int pair_of_strs_represents_pair_of_coprime_ULs(_error_function _first_instruction, _error_function second_instruction, ul_ptr ptr_one, ul_ptr ptr_two, int _first_index, int second_index, int exit_status) {
     // requires 'argv_ptr' to be set ^
 
-    if (error_specification(_first_instruction, n(ul_parse_str(ptr_one, (*argv_ptr)[_first_index], 1)))) return - _first_index;
-    if (error_specification(second_instruction, n(ul_parse_str(ptr_two, (*argv_ptr)[second_index], 1)))) return - second_index;
+    if (error_specification(_first_instruction, n(_ul_parse_str(ptr_one, (*argv_ptr)[_first_index], 1)))) return - _first_index;
+    if (error_specification(second_instruction, n(_ul_parse_str(ptr_two, (*argv_ptr)[second_index], 1)))) return - second_index;
     // interpret the numbers ^^
 
     if (coprime(*ptr_one, *ptr_two)) return 0;

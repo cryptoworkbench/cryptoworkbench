@@ -1,6 +1,27 @@
 /* This library is full of (wrapper) functions that support functions from 'maths.c' */
 #include "maths.extended.h"
 
+int mod_ul_parse_str(char *str, int exit_status) { return _ul_parse_str(mod_, str, exit_status); }
+int id_identity_parse_str(char *str, int exit_status) { return _identity_parse_str(id_, str, exit_status); }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+group_operation _group_operation(unsigned int id_) { return (id_) ? mod_multiply : mod_add; }
+group_operation id_group_operation() { return _group_operation(*id_); }
+// to get the appriopiate group operation ^
+
 unsigned long mod_conditional_cap(unsigned long result) { return (*mod_) ? _conditional_cap(result, *mod_) : result; }
 unsigned long mod_add(unsigned long a, unsigned long b) { return _add(a, b, *mod_); }
 unsigned long mod_inverse(unsigned long element_of_additive_group) { return _inverse(element_of_additive_group, *mod_); }
@@ -19,10 +40,4 @@ const char *id_as_adjective() { return _as_adjective(*id_); }
 const char *id_as_verb() { return _as_verb(*id_); }
 // get the identity represented by corresponding number, operation symbol, singular noun, plural noun, adjective, or verb
 
-group_operation _group_operation(unsigned int id_) { return (id_) ? mod_multiply : mod_add; }
-group_operation id_group_operation() { return _group_operation(*id_); }
-// to get the appriopiate group operation ^
-
 int mod_eulers_criterion(unsigned long odd_prime_p) { return _eulers_criterion(odd_prime_p, *mod_); }
-
-unsigned long multiplicative_inverse(unsigned long a) { unsigned long x, y; extended_gcd(a, *mod_, &x, &y); return mod_conditional_cap(*mod_ + x); }
