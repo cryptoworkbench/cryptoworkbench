@@ -28,10 +28,10 @@ int main(int argc, char **argv) { i_ = &i; array_size_ = &function_arg_count; mo
 
     group_operation group_operation = id_group_operation();
     const char *symb = id_as_operation_symbol(); ans = id; i = 0;
-    do {ans = group_operation(ans, arguments_array[i]);
-	fprintf(stdout, "%lu", arguments_array[i]);
+    do {ans = group_operation(ans, LOOP_array[i]);
+	fprintf(stdout, "%lu", LOOP_array[i]);
 	if (i + 1 == function_arg_count) break; i++; fprintf(stdout, " %s ", symb);
     } while (1); fprintf(stdout, " \u2261 %lu", ans); if (mod) fprintf(stdout, "	(mod %s)", argv[1]); fprintf(stdout, "\n");
-    free(arguments_array);
+    free(LOOP_array);
     return 0;
 }
