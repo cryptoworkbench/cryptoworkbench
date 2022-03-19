@@ -40,14 +40,19 @@ unsigned long _divide(ul numerator, ul denominator, ul mod_)
 /* ===================== corresponds to 'maths.extended.c' (!) ================== */
 
 unsigned long least_base_TWO_log(ul power_of_TWO) {
-    if (power_of_TWO == 0) return 0; unsigned long return_value = ADDITIVE_IDENTITY; unsigned long multiplicative_accumulator = MULTIPLICATIVE_IDENTITY;
-    while (multiplicative_accumulator < power_of_TWO) { multiplicative_accumulator *= 2; return_value++; } if (multiplicative_accumulator > power_of_TWO) return_value--; return return_value;
+    if (power_of_TWO == 0) return 0; struct ordered_pair iso = _isomorphism(); while (iso.b < power_of_TWO) { iso.b *= 2; iso.a++; }
+    if (iso.b > power_of_TWO) iso.a--; return iso.a;
 }
 unsigned long _exponentiate(ul base, ul exponent, ul mod_) {
-    if (base == 0 || exponent == 0) return 1; unsigned long minimum_log = least_base_TWO_log(exponent); unsigned long *backbone = (unsigned long *) malloc(sizeof(unsigned long) * (minimum_log + 1));
-    unsigned long i = ADDITIVE_IDENTITY; backbone[i] = _conditional_cap(base, mod_); while (i < minimum_log) { backbone[i + 1] = _multiply(backbone[i], backbone[i], mod_); i++; }
-    unsigned long ret_val = MULTIPLICATIVE_IDENTITY;
-    while (exponent != 0) { ret_val = _multiply(ret_val, backbone[minimum_log], mod_); exponent -= exponentiate(2, minimum_log); minimum_log = least_base_TWO_log(exponent); } free(backbone); return ret_val;
+    if (base == 0 || exponent == 0) return 1;
+    ul minimum_log = least_base_TWO_log(exponent); ul_ptr backbone = (ul_ptr ) malloc(sizeof(ul) * (minimum_log + 1));
+    ul i = ADDITIVE_IDENTITY; backbone[i] = _conditional_cap(base, mod_);
+    while (i < minimum_log) { backbone[i + 1] = _multiply(backbone[i], backbone[i], mod_); i++; }
+    ul ret_val = MULTIPLICATIVE_IDENTITY;
+    while (exponent != 0)
+    { ret_val = _multiply(ret_val, backbone[minimum_log], mod_); exponent -= exponentiate(2, minimum_log); minimum_log = least_base_TWO_log(exponent); }
+    free(backbone);
+    return ret_val;
 }
 // functions that have to do with mod_exponentiate ^^^^
 
