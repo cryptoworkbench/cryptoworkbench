@@ -5,7 +5,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../libraries/functional/string.extended.h"
+#include "../../libraries/functional/string.basic.h"
 #include "../../libraries/mathematics/maths.extended.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
 #include "../../libraries/mathematics/group_library.h"
@@ -16,7 +16,7 @@ struct crux { unsigned long *base_permutation; char **ASCII; unsigned long **per
 // ^^ type definitions
 
 struct crux lookup_table; unsigned long *permutation_of_FIRST_GEN; unsigned int id; unsigned long group_cardinality, mod, horizontal_offset, vertical_offset;
-group_operation_ group_oper;
+group_operation group_oper;
 //          ^ global variables          ^                                      ^                                         ^                      ^
 
 void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
@@ -66,7 +66,7 @@ unsigned long CONSULT_permutation_of_FIRST_GEN(unsigned long index) { unsigned l
 }
 
 unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair) {
-    unsigned int width = (unsigned int) char_in_val(((struct LL_ *) element_CHANNEL_PTR_pair.iterator)->e); width_ = &width;
+    unsigned int width = (unsigned int) char_in_val(((struct LL_ *) element_CHANNEL_PTR_pair.iterator)->e);
     // set the unsigned int pointer 'width_str_from_ul' needs in order to function properly ^
 
     permutation_of_FIRST_GEN = lookup_table.base_permutation = array_from_LL((struct LL_ **) element_CHANNEL_PTR_pair.head, group_cardinality);
@@ -83,7 +83,7 @@ unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair
     // create the arrays which will contain arrays ^
 
     *(lookup_table.permutation[0] = UL_array_of_SIZE(MULTIPLICATIVE_IDENTITY)) = 0;
-    unsigned long index; for (index = 0; index < group_cardinality; index++) lookup_table.ASCII[index] = width_str_from_ul(lookup_table.base_permutation[index]);
+    unsigned long index; for (index = 0; index < group_cardinality; index++) lookup_table.ASCII[index] = _str_from_ul(lookup_table.base_permutation[index], width);
 
     if (*id_) {
 	if (*mod_ == 2) return 1;
