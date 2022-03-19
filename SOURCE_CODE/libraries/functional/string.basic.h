@@ -6,6 +6,12 @@
 #define ASCII_BASE 48
 // inclusions and definitions ^^
 
+typedef unsigned long ul;
+typedef ul *ul_ptr;
+
+typedef unsigned int ui;
+typedef ui *ui_ptr;
+
 typedef void (*_error_function) ();
 // type declarations ^
 
@@ -23,10 +29,10 @@ int error_specification(_error_function error_explainer, int exit_status);
 int error_message(_error_function error_explainer, int exit_status);
 
 /* ===================== corresponds to 'maths.extended.h' (!) =================== */
-int _ul_parse_str(unsigned long *ul_ptr, char *str, int exit_status);
+int _ul_parse_str(ul_ptr ul_ptr, char *str, int exit_status);
 /* ===================== corresponds to 'maths.extended.h' (!) =================== */
 
-int _ui_parse_str(unsigned int *ui_ptr, char *str, int exit_status);
+int _ui_parse_str(ui_ptr ui_ptr, char *str, int exit_status);
 
 void str_not_parsable_as_number();
 // functions for parsing terminal arguments ^
@@ -40,14 +46,14 @@ int case_insensitive_strcmp(const char *STR, char *STS);
 /* Returns an int containing the number of characters in the string pointed at by the char pointer 'string_pointer' */
 int str_len_int(char *string_pointer); // Almost the same functionality as the above function
 
-int match_case_insensitive(char *INPUT, const char *char_PTR_array[], unsigned long length);
+int match_case_insensitive(char *INPUT, const char *char_PTR_array[], ul length);
 int match(char *INPUT, const char *char_PTR_array[]); // <<< Inst the makes
 int _match(char *str, int array_SIZE, const char *char_PTR_array[]);
 int match_variadic(char *INPUT, int number_of_comparisons, ...); // Variadic function that can compare one string against a variable number of strings to compare it to
 
-unsigned long char_in_val(unsigned long a); // Calculates the number of characters needed to display a in base BASE notation (BASE = 10)
-char *_str_from_ul(unsigned long a, unsigned int width_); // Converts from ul to string with a minimum of min_out_length characters, heading zeros are fixed if needed, call as _str_from_ul(unsigned long a, characters_in_val(a))
+unsigned long char_in_val(ul a); // Calculates the number of characters needed to display a in base BASE notation (BASE = 10)
+char *_str_from_ul(ul a, ui width_); // Converts from ul to string with a minimum of min_out_length characters, heading zeros are fixed if needed, call as _str_from_ul(ul a, characters_in_val(a))
 
 void ignored_arguments(int argc, char **argv, int used_arguments);
 
-char *BUFFER_OF_SIZE(unsigned int SIZE);
+char *BUFFER_OF_SIZE(ui SIZE);

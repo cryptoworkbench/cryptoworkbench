@@ -7,12 +7,6 @@
 #define PRIME_TABLE_UNAVAILABLE_ERROR "Failed to open the prime table '%s'.\n\n"
 // definitions ^^^
 
-typedef unsigned long ul;
-typedef ul *ul_ptr;
-
-typedef unsigned int ui;
-typedef ui *ui_ptr;
-
 struct ordered_pair { ul a; ul b; };
 typedef unsigned long (*group_operation) (ul, ul);
 // type declarations ^^^

@@ -22,7 +22,7 @@ int _parse_str_failure(int exit_status) { return n(error_message(str_not_parsabl
 
 int _parse_str_NULL_check(char *str, int exit_status) { unparsed_str = str; if (!str) return _parse_str_failure(exit_status); return 0; }
 
-int _ul_parse_str(unsigned long *ul_ptr, char *str, int exit_status)
+int _ul_parse_str(ul_ptr ul_ptr, char *str, int exit_status)
 {
     int i = 0; if (i = _parse_str_NULL_check(str, exit_status)) return i;
     do {if (str[i] < ASCII_BASE || str[i] > ASCII_BASE + 10) return _parse_str_failure(exit_status);
@@ -31,7 +31,7 @@ int _ul_parse_str(unsigned long *ul_ptr, char *str, int exit_status)
     return 0;
 }
 
-int _ui_parse_str(unsigned int *ui_ptr, char *str, int exit_status)
+int _ui_parse_str(ui_ptr ui_ptr, char *str, int exit_status)
 {
     int i = 0; if (i = _parse_str_NULL_check(str, exit_status)) return i;
     do {if (str[i] < ASCII_BASE || str[i] > ASCII_BASE + 10) return _parse_str_failure(exit_status);
@@ -49,14 +49,14 @@ int h(int exit_status) { if (exit_status) fprintf(stderr, "\n#"); return exit_st
 void conditional_goodbye(int exit_status)
 { if (!exit_status) return; fprintf(stderr, "\n# ^ ^ ^  THE ABOVE WAS A FATAL ERROR!  ^ ^ ^  #\n# Terminating with exit status '%i'. Goodbye. #\n", exit_status); exit(exit_status); }
 
-char *BUFFER_OF_SIZE(unsigned int SIZE) {
+char *BUFFER_OF_SIZE(ui SIZE) {
     char *return_value = (char *) malloc(sizeof(char) * SIZE);
     return return_value;
 }
 
 /* Returns an unsigned long containing the number of characters in the string pointed at by the constant char pointer 'string_pointer' */
 unsigned long str_len(const char *string_pointer) {
-    unsigned long index = 0;
+    ul index = 0;
     for (; string_pointer[index] != STRING_TERMINATING_CHARACTER; index++) {}
     return index;
 }
@@ -85,8 +85,8 @@ int case_insensitive_strcmp(const char *STR, char *STS) {
     // ^^ redundant
 }
 
-int match_case_insensitive(char *INPUT, const char *char_PTR_array[], unsigned long length) {
-    unsigned long i = 0; do {
+int match_case_insensitive(char *INPUT, const char *char_PTR_array[], ul length) {
+    ul i = 0; do {
 	if (case_insensitive_strcmp(char_PTR_array[length], INPUT) == 0) return 1;
 	else length++;
     } while (i < length);
@@ -125,7 +125,7 @@ int str_len_int(char *string_pointer) {
     return index;
 }
 
-unsigned long char_in_val(unsigned long a) {
+unsigned long char_in_val(ul a) {
     if (a == 0)
 	return 1;
 
@@ -141,7 +141,7 @@ unsigned long char_in_val(unsigned long a) {
     return char_index;
 }
 
-char *_str_from_ul(unsigned long ul, unsigned int width_) { // Works!
+char *_str_from_ul(ul ul, ui width_) { // Works!
     unsigned int base_ten_width = char_in_val(ul);
     unsigned int number_of_heading_zeros = 0; // Start off assuming there is no need for heading zeros
     if (width_ > base_ten_width) // Check to see if there is any need for heading zeros
@@ -150,7 +150,7 @@ char *_str_from_ul(unsigned long ul, unsigned int width_) { // Works!
     char *transformed_str; *(number_of_heading_zeros + base_ten_width + (transformed_str = (char *) malloc(sizeof(char) * (base_ten_width + number_of_heading_zeros + 1)))) = 0;
     // allocate the needed char pointer array ^
 
-    for (unsigned int i = 0; i < number_of_heading_zeros; i++) transformed_str[i] = ASCII_BASE;
+    for (ui i = 0; i < number_of_heading_zeros; i++) transformed_str[i] = ASCII_BASE;
     // prepare the array ^
 
     for (unsigned long remainder = ul; base_ten_width != 0; base_ten_width--) {
