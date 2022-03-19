@@ -19,7 +19,7 @@ int main(int argc, char **argv) { i_ = &i; array_size_ = &lcm_function_argument_
     // check amount of inputs ^
 
     arguments_array = UL_array_of_SIZE(lcm_function_argument_count);
-    LOOP_ul_parse_str(argument_failed_to_parse, arguments_array, lcm_function_argument_count, &i, STARTING_INDEX_OF_ARGS_LIST);
+    LOOP_ul_parse_str(argument_failed_to_parse, arguments_array, lcm_function_argument_count, STARTING_INDEX_OF_ARGS_LIST);
 
     i = 0; fprintf(stdout, "LCM("); LOOP_ul_parsed_strs(); fprintf(stdout, ") = %lu\n", UNRESTRICTED_LCM(arguments_array, lcm_function_argument_count)); return 0;
 }

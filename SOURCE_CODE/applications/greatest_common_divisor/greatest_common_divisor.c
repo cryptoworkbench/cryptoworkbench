@@ -19,7 +19,7 @@ int main(int argc, char **argv) { i_ = &i; array_size_ = &gcd_function_argument_
     // check amount of arguments ^
 
     arguments_array = UL_array_of_SIZE(gcd_function_argument_count);
-    LOOP_ul_parse_str(argument_failed_to_parse, arguments_array, gcd_function_argument_count, &i, STARTING_INDEX_OF_ARGS_LIST);
+    LOOP_ul_parse_str(argument_failed_to_parse, arguments_array, gcd_function_argument_count, STARTING_INDEX_OF_ARGS_LIST);
 
     i = 0; fprintf(stdout, "GCD("); LOOP_ul_parsed_strs(arguments_array, gcd_function_argument_count); fprintf(stdout, ") = %lu\n", UNRESTRICTED_GCD(arguments_array, gcd_function_argument_count));
     free(arguments_array);

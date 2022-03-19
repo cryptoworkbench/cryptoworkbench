@@ -1,7 +1,7 @@
 // DEVELOPERs note:
 // I need to make this program cooperative again with some generic function which uses 'mod_' and 'id_'
 #include <stdio.h>
-#include "../../libraries/functional/string.basic.h"
+#include "../../libraries/functional/string.extended.h"
 #include "../../libraries/mathematics/maths.extended.h"
 #define STARTING_INDEX_OF_ARGS_LIST 3
 
@@ -16,21 +16,16 @@ void sp_array_failed_to_parse() {
 void ______id_failed_to_parse() { fprintf(stderr, "Please specify as second argument the identity element of the group whose subgroups to examplify."); list_plausable_group_identity_descriptions(2); }
 void _____mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument the modulus of the group operation (0 to act upon the infinite group of integers)."); }
 
-int main(int argc, char **argv) { mod = id = ADDITIVE_IDENTITY; mod_ = &mod; id_ = &id; argv_ptr = &argv;
-    conditional_goodbye(n(n(error_specification(_____mod_failed_to_parse, n(                                                   mod_ul_parse_str(argv[1], -1))))));
-    // take in ul_ptr 'mod_' ^
-
-    conditional_goodbye(n(n(error_specification(______id_failed_to_parse, n(                                              id_identity_parse_str(argv[2], -2))))));
-    // take in ui_ptr 'id_'  ^
+int main(int argc, char **argv) { i_ = &i; mod = id = ADDITIVE_IDENTITY; mod_ = &mod; id_ = &id; argv_ptr = &argv;
+    conditional_goodbye(n(n(error_specification(_____mod_failed_to_parse, n(     mod_ul_parse_str(argv[1], -1))))));
+    conditional_goodbye(n(n(error_specification(______id_failed_to_parse, n(id_identity_parse_str(argv[2], -2))))));
+    // process first two arguments ^^
 
     conditional_goodbye(n(n(error_specification(sp_array_failed_to_parse, n(n(error_message(___array_failed_to_parse, (2 > (function_arg_count = argc - STARTING_INDEX_OF_ARGS_LIST)) * - STARTING_INDEX_OF_ARGS_LIST)))))));
-    // check amount of terminal inputs ^
+    // check amount of successive arguments ^
 
     arguments_array = UL_array_of_SIZE(function_arg_count);
-    LOOP_ul_parse_str(argument_failed_to_parse, arguments_array, function_arg_count, &i, STARTING_INDEX_OF_ARGS_LIST);
-
-    // for (i = 0; i < function_arg_count; i++) conditional_goodbye(n(n(error_specification(argument_failed_to_parse, n(_ul_parse_str(i + arguments_array, argv[3 + i], -(4 + i)))))));
-    // take in arguments ^^^^
+    LOOP_ul_parse_str(argument_failed_to_parse, arguments_array, function_arg_count, STARTING_INDEX_OF_ARGS_LIST);
 
     mod_ = &mod; group_operation group_operation = id_group_operation();
     const char *symb = id_as_operation_symbol(); ans = id; i = 0;
