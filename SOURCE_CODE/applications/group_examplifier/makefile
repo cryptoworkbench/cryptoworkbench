@@ -1,9 +1,6 @@
 ../../libraries/functional/.string.basic.o: ../../libraries/functional/string.basic.h ../../libraries/functional/string.basic.c
 	gcc -c ../../libraries/functional/string.basic.c -o ../../libraries/functional/.string.basic.o
 
-../../libraries/functional/.string.extended.o: ../../libraries/functional/string.extended.h ../../libraries/functional/string.extended.c
-	gcc -c ../../libraries/functional/string.extended.c -o ../../libraries/functional/.string.extended.o
-
 ../../libraries/mathematics/.maths.basic.o: ../../libraries/mathematics/maths.basic.h ../../libraries/mathematics/maths.basic.c
 	gcc -c ../../libraries/mathematics/maths.basic.c -o ../../libraries/mathematics/.maths.basic.o
 
@@ -19,5 +16,5 @@
 .group_examplifier.o: group_examplifier.c
 	gcc -c group_examplifier.c -o .group_examplifier.o
 
-group_examplifier: ../../libraries/functional/.string.basic.o ../../libraries/functional/.string.extended.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_library.o .group_examplifier.o
-	gcc ../../libraries/functional/.string.basic.o ../../libraries/functional/.string.extended.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_library.o .group_examplifier.o -o ../../../applications/group_examplifier
+group_examplifier: ../../libraries/functional/.string.basic.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_library.o .group_examplifier.o
+	gcc ../../libraries/functional/.string.basic.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_library.o .group_examplifier.o -o ../../../applications/group_examplifier
