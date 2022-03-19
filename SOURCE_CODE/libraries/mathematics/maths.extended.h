@@ -15,16 +15,20 @@
  */
 
 ul_ptr mod_;
-int *id_;
+ui_ptr id_;
 // new variables (!) ^^
 
-int mod_ul_parse_str(char *str, int exit_status);
-int id_identity_parse_str(char *str, int exit_status);
 
-group_operation _group_operation(ui id_);
-group_operation id_group_operation();
+
+
+
+
+
+int mod_ul_parse_str(char *str, int exit_status);
 
 /* =============================================================================== */
+int id_identity_parse_str(char *str, int exit_status);
+
 unsigned long mod_exponentiate(ul base, ul exponent);
 unsigned long mod_conditional_cap(ul result);
 unsigned long mod_inverse(ul element_of_additive_group);
@@ -45,3 +49,6 @@ const char *id_as_verb();
 
 int mod_eulers_criterion(ul odd_prime_p);
 /* =============================================================================== */
+
+group_operation _group_operation(ui id_);
+group_operation id_group_operation();

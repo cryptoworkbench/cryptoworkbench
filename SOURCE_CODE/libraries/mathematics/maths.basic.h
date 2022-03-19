@@ -11,6 +11,7 @@ typedef unsigned long ul;
 typedef ul *ul_ptr;
 
 typedef unsigned int ui;
+typedef ui *ui_ptr;
 
 struct ordered_pair { ul a; ul b; };
 typedef unsigned long (*group_operation) (ul, ul);
@@ -26,6 +27,8 @@ unsigned long exponentiate(ul base, ul exponent);
 // basic infinite field exponentiation ^
 
 /* =============================================================================== */
+int _identity_parse_str(ui_ptr id_, char *str, int exit_status);
+
 unsigned long _exponentiate(ul base, ul exponent, ul mod_);
 unsigned long _conditional_cap(ul result, ul mod_);
 unsigned long _inverse(ul element_of_additive_group, ul mod_);
@@ -47,7 +50,6 @@ const char *_as_verb(ui id_);
 int _eulers_criterion(ul odd_prime_p, ul odd_prime_q);
 /* =============================================================================== */
 
-int _identity_parse_str(int *id_, char *str, int exit_status); void identity_error();
 void list_plausable_group_identity_descriptions(int argv_index);
 // more functions regarding the identity element
 

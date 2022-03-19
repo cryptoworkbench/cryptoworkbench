@@ -46,14 +46,11 @@ const char *_as_adjective(unsigned int id_) { return (id_) ? multiplicative_sign
 const char *_as_verb(unsigned int id_) { return (id_) ? multiplicative_signs[5] : additive_signs[5]; }
 // get the identity represented by corresponding number, operation symbol, singular noun, plural noun, adjective, or verb
 
-// to get the appriopiate group operation ^
+void identity_error() { fprintf(stderr, "parsing of '%s' failed: could not match '%s' with any imaginable group operation description.", unparsed_str, unparsed_str); }
 
-int _identity_parse_str(int *id_, char *str, int exit_status)
+int _identity_parse_str(ui_ptr id_, char *str, int exit_status)
 { if (!str || (str && !((*id_ = _match(str, 6, multiplicative_signs)) || _match(str, 6, additive_signs)))) return n(error_message(not_parsable(identity_error, str), exit_status)); return 0; }
-// functions for setting the global unsigned int variable 'id_'
-
-void identity_error()
-{ fprintf(stderr, "parsing of '%s' failed: could not match '%s' with any imaginable group operation description.", unparsed_str, unparsed_str); }
+// to get the appriopiate group operation ^
 
 void list_plausable_group_identity_descriptions(int argv_index)
 {
