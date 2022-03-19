@@ -18,8 +18,8 @@ void coefficients_allocate() { coefficient = (unsigned long *) malloc(sizeof(uns
 void coefficients__display() { fprintf(stdout, "%c = %lu", 'a' + i, coefficient[i]); if (i + 1 == number_of_coefficients) return; i++; fprintf(stdout, ", "); coefficients__display(); }
 // functions for coefficient handling ^
 
-int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY;
-    conditional_goodbye(n(n(error_specification(________mod_failed_to_parse, n(_ul_parse_str(&mod, argv[1], -1)))))); mod_ = &mod;
+int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY; mod_ = &mod;
+    conditional_goodbye(n(n(error_specification(________mod_failed_to_parse, n(mod_ul_parse_str(argv[1], -1))))));
     conditional_goodbye(n(n(error_message      (_______wrong_argument_count, -4 * !(number_of_coefficients = argc - 2))))); coefficients_allocate(); for (i = 0; i < number_of_coefficients; i++)
     conditional_goodbye(n(n(error_specification(coefficient_failed_to_parse, n(_ul_parse_str(coefficient + i, argv[i + 2], -3)))))); i = 0;
     fprintf(stdout, "Plotting polynomial with coefficients:\n"); coefficients__display(); fprintf(stdout, "\n\n");

@@ -10,5 +10,5 @@
 .equivalence_class_members.o: equivalence_class_members.c
 	gcc -c equivalence_class_members.c -o .equivalence_class_members.o
 
-equivalence_class_members: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .equivalence_class_members.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.o .equivalence_class_members.o -o ../../../applications/equivalence_class_members
+equivalence_class_members: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.extended.o .equivalence_class_members.o
+	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.extended.o .equivalence_class_members.o -o ../../../applications/equivalence_class_members

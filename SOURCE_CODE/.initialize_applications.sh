@@ -56,10 +56,10 @@ if [ $? -eq 0 ];
 then echo "successfully build application    'group_element_exporter'"; successfull_builds=$(( $successfull_builds + 1 ));
 else echo "                   application    'group_element_exporter'         FAILED TO BUILD!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ..
 
-cd field_combine && make field_combine > /dev/null 2>> ../../../.initialization_errors
+cd group_combine && make group_combine > /dev/null 2>> ../../../.initialization_errors
 if [ $? -eq 0 ];
-then echo "successfully build application    'field_combine'"; successfull_builds=$(( $successfull_builds + 1 ));
-else echo "                   application    'field_combine'         FAILED TO BUILD!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ..
+then echo "successfully build application    'group_combine'"; successfull_builds=$(( $successfull_builds + 1 ));
+else echo "                   application    'group_combine'         FAILED TO BUILD!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ..
 
 cd jacobi_symbol && make jacobi_symbol > /dev/null 2>> ../../../.initialization_errors
 if [ $? -eq 0 ];

@@ -12,7 +12,8 @@
 #include "../../libraries/functional/triple_ref_pointers.h"
 
 struct LL_ { struct LL_ *next; unsigned long e; unsigned long first_root; }; // << THIS I CAN ABSTRACT OUT. It is already in "factorization.h".
-struct LL_ *quadratic_residue_LL = NULL; char *unparsed_str;
+struct LL_ *quadratic_residue_LL = NULL;
+unsigned long mod;
 // global variable definitions ^^
 
 void least_to_most_INSERT(struct LL_ **tracer, unsigned long first_root, unsigned long quadratic_residue) {
@@ -21,8 +22,10 @@ void least_to_most_INSERT(struct LL_ **tracer, unsigned long first_root, unsigne
     new_quadratic_residue->next = *tracer; *tracer = new_quadratic_residue;
 }
 
-int main(int argc, char **argv) { unsigned long mod; mod_ = &mod; unparsed_str = argv[1];
-    if (!_ul_parse_str(unparsed_str, mod_)) { fprintf(stderr, "Mod incorrect!\n"); exit(-1); } // <-- Make an error function specifically for this case!
+void mod_failed_to_parse() { fprintf(stderr, "Please provide as first argument the modulus of the multiplicative group!"); }
+
+int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY; mod_ = &mod;
+    conditional_goodbye(n(n(error_specification(mod_failed_to_parse, mod_ul_parse_str(argv[1], -1)))));
     for (unsigned long i = 1; i <= mod / 2; i++) if (GCD(i, mod) == 1) least_to_most_INSERT(&quadratic_residue_LL, i, mod_multiply(i, i)); // # (1.
     printf("Quadratic residue with roots for \u2115/%lu\u2115:\n", mod);
     for (; quadratic_residue_LL; quadratic_residue_LL = quadratic_residue_LL->next)
