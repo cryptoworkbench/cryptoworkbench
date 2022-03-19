@@ -16,21 +16,34 @@ char *_open_prime_table = NULL; char *_REPORT_open_prime_table() { return (char 
 struct ordered_pair _isomorphism() { struct ordered_pair ret_val = { ADDITIVE_IDENTITY, MULTIPLICATIVE_IDENTITY }; return ret_val; }
 // a general function which a lot of functions in this library make use of ^^
 
-// FUNCTIONS THAT HAVE TO DO WITH mod_ FOLLOW:
-unsigned long _conditional_cap(ul result, ul mod_) { return (mod_) ? result % mod_ : result; }
-unsigned long _add(ul a, ul b, ul mod_) { return _conditional_cap(a + b, mod_); }
-unsigned long _inverse(ul element_of_additive_group, ul mod_) { return _conditional_cap(mod_ - _conditional_cap(element_of_additive_group, mod_), mod_); }
-unsigned long _subtract(ul a, ul b, ul mod_) { return _conditional_cap(a + _inverse(b, mod_), mod_); }
-unsigned long _multiply(ul a, ul b, ul mod_) { return _conditional_cap(a * b, mod_); }
-unsigned long _divide(ul numerator, ul denominator, ul mod_)
-{ if (mod_) while (numerator % denominator != 0) numerator += mod_; return _conditional_cap(numerator / denominator, mod_); }
-
 unsigned long exponentiate(ul base, ul exponent)
 { unsigned long exponentiation_RESULT = (0 < base); for (ul iter = 0; iter < exponent; iter++) exponentiation_RESULT *= base; return exponentiation_RESULT; } 
+
+/* ===================== corresponds to 'maths.extended.c' (!) ================== */
+unsigned long _conditional_cap(ul result, ul mod_)
+{ return (mod_) ? result % mod_ : result; }
+
+unsigned long _add(ul a, ul b, ul mod_)
+{ return _conditional_cap(a + b, mod_); }
+
+unsigned long _inverse(ul element_of_additive_group, ul mod_)
+{ return _conditional_cap(mod_ - _conditional_cap(element_of_additive_group, mod_), mod_); }
+
+unsigned long _subtract(ul a, ul b, ul mod_)
+{ return _conditional_cap(a + _inverse(b, mod_), mod_); }
+
+unsigned long _multiply(ul a, ul b, ul mod_)
+{ return _conditional_cap(a * b, mod_); }
+
+unsigned long _divide(ul numerator, ul denominator, ul mod_)
+{ if (mod_) while (numerator % denominator != 0) numerator += mod_; return _conditional_cap(numerator / denominator, mod_); }
+/* ===================== corresponds to 'maths.extended.c' (!) ================== */
+
 unsigned long least_base_TWO_log(ul power_of_TWO) {
     if (power_of_TWO == 0) return 0; unsigned long return_value = ADDITIVE_IDENTITY; unsigned long multiplicative_accumulator = MULTIPLICATIVE_IDENTITY;
     while (multiplicative_accumulator < power_of_TWO) { multiplicative_accumulator *= 2; return_value++; } if (multiplicative_accumulator > power_of_TWO) return_value--; return return_value;
-} unsigned long _exponentiate(ul base, ul exponent, ul mod_) {
+}
+unsigned long _exponentiate(ul base, ul exponent, ul mod_) {
     if (base == 0 || exponent == 0) return 1; unsigned long minimum_log = least_base_TWO_log(exponent); unsigned long *backbone = (unsigned long *) malloc(sizeof(unsigned long) * (minimum_log + 1));
     unsigned long i = ADDITIVE_IDENTITY; backbone[i] = _conditional_cap(base, mod_); while (i < minimum_log) { backbone[i + 1] = _multiply(backbone[i], backbone[i], mod_); i++; }
     unsigned long ret_val = MULTIPLICATIVE_IDENTITY;
@@ -49,7 +62,16 @@ const char *_as_verb(unsigned int id_) { return (id_) ? multiplicative_signs[5] 
 void identity_error() { fprintf(stderr, "parsing of '%s' failed: could not match '%s' with any imaginable group operation description.", unparsed_str, unparsed_str); }
 
 int _identity_parse_str(ui_ptr id_, char *str, int exit_status)
-{ if (!str || (str && !((*id_ = _match(str, 6, multiplicative_signs)) || _match(str, 6, additive_signs)))) return n(error_message(not_parsable(identity_error, str), exit_status)); return 0; }
+{
+    /* NEW CODE: ->
+    if (str && _match(str, 6, additive_signs)) {
+    } else if (str && _match(str, 6, multiplicative_signs)) {
+	(*id_)++;
+    } else return n(error_message(not_parsable(identity_error, str), exit_status));
+    */
+    if (!str || (str && !((*id_ = _match(str, 6, multiplicative_signs)) || _match(str, 6, additive_signs)))) return n(error_message(not_parsable(identity_error, str), exit_status));
+    return 0;
+}
 // to get the appriopiate group operation ^
 
 void list_plausable_group_identity_descriptions(int argv_index)
