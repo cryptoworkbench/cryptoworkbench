@@ -3,11 +3,12 @@
 #include <stdio.h>
 #include "../../libraries/functional/string.basic.h"
 #include "../../libraries/mathematics/maths.extended.h"
+#define STARTING_INDEX_OF_ARGS_LIST 3
 
 unsigned long *arguments_array; unsigned long ans, mod; unsigned int function_arg_count, i, id;
 // global variable declarations ^
 
-void argument_failed_to_parse() { fprintf(stderr, "%ith argument failed to parse!", 3 + i); };
+void argument_failed_to_parse() { fprintf(stderr, "%ith argument failed to parse!", STARTING_INDEX_OF_ARGS_LIST + i); };
 void ___array_failed_to_parse() { fprintf(stderr, "This function requires at least two inputs!"); };
 void sp_array_failed_to_parse() {
     fprintf(stderr, "Please specify from the second argument onward numbers to %s within the finite field F%s.", id_as_verb(), (*argv_ptr)[1]);
@@ -22,11 +23,11 @@ int main(int argc, char **argv) { mod = id = ADDITIVE_IDENTITY; mod_ = &mod; id_
     conditional_goodbye(n(n(error_specification(______id_failed_to_parse, n(                                              id_identity_parse_str(argv[2], -2))))));
     // take in ui_ptr 'id_'  ^
 
-    conditional_goodbye(n(n(error_specification(sp_array_failed_to_parse, n(n(error_message(___array_failed_to_parse, (2 > (function_arg_count = argc -3))  * -3)))))));
+    conditional_goodbye(n(n(error_specification(sp_array_failed_to_parse, n(n(error_message(___array_failed_to_parse, (2 > (function_arg_count = argc - STARTING_INDEX_OF_ARGS_LIST)) * - STARTING_INDEX_OF_ARGS_LIST)))))));
     // check amount of terminal inputs ^
 
     arguments_array = UL_array_of_SIZE(function_arg_count);
-    LOOP_ul_parse_str(argument_failed_to_parse, arguments_array, function_arg_count, &i, 3);
+    LOOP_ul_parse_str(argument_failed_to_parse, arguments_array, function_arg_count, &i, STARTING_INDEX_OF_ARGS_LIST);
 
     // for (i = 0; i < function_arg_count; i++) conditional_goodbye(n(n(error_specification(argument_failed_to_parse, n(_ul_parse_str(i + arguments_array, argv[3 + i], -(4 + i)))))));
     // take in arguments ^^^^

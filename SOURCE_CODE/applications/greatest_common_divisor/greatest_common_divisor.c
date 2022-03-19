@@ -1,27 +1,27 @@
 // Takes the GCD of an arbitrary number of numbers
 #include <stdio.h>
-#include "../../libraries/functional/string.basic.h"
+#include "../../libraries/functional/string.extended.h"
 #include "../../libraries/mathematics/maths.basic.h"
+#define STARTING_INDEX_OF_ARGS_LIST 1
 // library inclusions ^
 
-unsigned int gcd_function_argument_count, i; unsigned long *arguments_array;
+unsigned int gcd_function_argument_count, i;
 // global variable declarations ^
 
-void argument_failed_to_parse() { fprintf(stderr, "%ith argument failed to parse!", 1 + i); };
+void argument_failed_to_parse() { fprintf(stderr, "%ith argument failed to parse!", STARTING_INDEX_OF_ARGS_LIST + i); };
 void argument_count_failure() { fprintf(stderr, "The GCD (Greatest Common Divisor) function requires at least 2 arguments!"); }
 // error functions ^
 
-void args_list() { fprintf(stdout, "%lu", arguments_array[i]); if (i + 1 == gcd_function_argument_count) return; i++; fprintf(stdout, ", "); args_list(); }
-// recursive function which prints the arguments
-
-int main(int argc, char **argv) { argv_ptr = &argv;
+int main(int argc, char **argv) { i_ = &i; array_size_ = &gcd_function_argument_count; argv_ptr = &argv;
     // initialize everything      ^
 
-    conditional_goodbye(n(n(error_specification(argument_count_failure, -(2 > (gcd_function_argument_count = argc - 1))))));
+    conditional_goodbye(n(n(error_specification(argument_count_failure, -(2 > (gcd_function_argument_count = argc - STARTING_INDEX_OF_ARGS_LIST))))));
     // check amount of arguments ^
 
     arguments_array = UL_array_of_SIZE(gcd_function_argument_count);
-    LOOP_ul_parse_str(argument_failed_to_parse, arguments_array, gcd_function_argument_count, &i, 1);
+    LOOP_ul_parse_str(argument_failed_to_parse, arguments_array, gcd_function_argument_count, &i, STARTING_INDEX_OF_ARGS_LIST);
 
-    i = 0; fprintf(stdout, "GCD("); args_list(); fprintf(stdout, ") = %lu\n", UNRESTRICTED_GCD(arguments_array, gcd_function_argument_count)); return 0;
+    i = 0; fprintf(stdout, "GCD("); LOOP_ul_parsed_strs(arguments_array, gcd_function_argument_count); fprintf(stdout, ") = %lu\n", UNRESTRICTED_GCD(arguments_array, gcd_function_argument_count));
+    free(arguments_array);
+    return 0;
 }

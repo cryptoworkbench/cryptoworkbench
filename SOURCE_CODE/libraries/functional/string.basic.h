@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdarg.h>
@@ -31,8 +32,6 @@ int error_message(_error_function error_explainer, int exit_status);
 /* ===================== corresponds to 'maths.extended.h' (!) =================== */
 int _ul_parse_str(ul_ptr ul_ptr, char *str, int exit_status);
 /* ===================== corresponds to 'maths.extended.h' (!) =================== */
-
-void LOOP_ul_parse_str(_error_function error_function, ul_ptr array, ui array_size, ui_ptr _i, ui start);
 
 int _ui_parse_str(ui_ptr ui_ptr, char *str, int exit_status);
 
