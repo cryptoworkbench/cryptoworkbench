@@ -1,9 +1,7 @@
-/* Program description:
- * Examplifies subgroups. Feed it a modulus and a group identity as command-line arguments and it will examplify all subgroups within specified group. It also lists the generators that are within the group.
+/* DEVELEPERS NOTE:
+ * This is a copy of 'group_examplifier.c'.
  *
- * DEVELOPERS NOTES:
- * NOW MAKE IT USE 'operation'
- * When you put it with 2 1 it says there are no generators there.
+ * I want to make this a version which only prints a specified subgroup.
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -74,7 +72,7 @@ unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair
     permutation_of_FIRST_GEN = lookup_table.base_permutation = array_from_LL((struct LL_ **) element_CHANNEL_PTR_pair.head, &group_cardinality);
     // register a base permutation which we can reference and which we can change ^
 
-    lookup_table.perm_length = (unsigned long *) malloc(sizeof(unsigned long) * group_cardinality);
+    lookup_table.perm_length = UL_array_of_SIZE((unsigned int) group_cardinality);
     // point the singular unsigned long pointer 'perm_length' to a newly accolated unsigned long array (will use this array to store the lengths of the subgroups) ^
 
     lookup_table.perm_length[0] = 1;
@@ -84,7 +82,7 @@ unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair
     lookup_table.permutation = (unsigned long **) malloc(sizeof(unsigned long *) * group_cardinality);
     // create the arrays which will contain arrays ^
 
-    *(lookup_table.permutation[0] = (unsigned long *) malloc(sizeof(unsigned long) * MULTIPLICATIVE_IDENTITY)) = 0;
+    *(lookup_table.permutation[0] = UL_array_of_SIZE(MULTIPLICATIVE_IDENTITY)) = 0;
     unsigned long index; for (index = 0; index < group_cardinality; index++) lookup_table.ASCII[index] = width_str_from_ul(lookup_table.base_permutation[index]);
 
     if (*id_) { if (*mod_ == 2) return 1; for (index = 1; index < group_cardinality; index++) if ((lookup_table.perm_length[index] = count_of_GENERATED_subgroup_elements(index)) == group_cardinality) break;
@@ -110,13 +108,8 @@ void mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument t
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { group_cardinality, mod, id, horizontal_offset, vertical_offset = ADDITIVE_IDENTITY; mod_ = &mod; id_ = &id; operation = &group_oper; argv_ptr = &argv;
-    /*
-    conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(     mod_ul_parse_str (argv[1], -1))))));
-    conditional_goodbye(n(n(error_specification(_id_failed_to_parse, n(id_identity_parse_str_(argv[2], -2))))));
-    */
     group_parse(mod_failed_to_parse, _id_failed_to_parse, 1);
-	if (!mod || !(mod - 1) && id)
-	conditional_goodbye(n(n(error_message(invalid_group_parameters, -3))));
+    if (!mod || !(mod - 1) && id) conditional_goodbye(n(n(error_message(invalid_group_parameters, -3))));
     // process mandatory terminal arguments (mod and group identity) ^ 
 
                   horizontal_offset = 0; n(n(error_specification(horizontal_offset_failed_to_parse, 3 < argc && _ul_parse_str(&horizontal_offset, argv[3], 1))));
