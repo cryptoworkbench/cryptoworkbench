@@ -19,6 +19,8 @@ typedef void (*_error_function) ();
 char ***argv_ptr; char *unparsed_str;
 // variable declarations ^^^
 
+unsigned long *UL_array_of_SIZE(int SIZE);
+
 _error_function not_parsable(_error_function error_function, char *unparsable_str);
 
 void conditional_goodbye(int exit_status);

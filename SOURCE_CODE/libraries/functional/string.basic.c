@@ -8,6 +8,9 @@
 #include "string.basic.h"
 #include "../mathematics/maths.basic.h" // 'exponentiation()'
 
+unsigned long *UL_array_of_SIZE(int SIZE)
+{ ul_ptr ret_val = (ul_ptr) malloc(sizeof(ul) * SIZE); return ret_val; }
+
 _error_function not_parsable(_error_function error_function, char *unparsable_str)
 {
     unparsed_str = unparsable_str; return error_function;

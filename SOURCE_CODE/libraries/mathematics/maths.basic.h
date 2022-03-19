@@ -63,7 +63,6 @@ int coprime(ul a, ul b);
 unsigned long totient(ul a);
 
 unsigned long least_base_TWO_log(ul power_of_TWO); // required by '_exponentiate'
-unsigned long *UL_array_of_SIZE(int SIZE);
 unsigned long INDEX_within_UL_array(ul_ptr UL_array, ul UL_array_SIZE, ul number);
 struct ordered_pair least_perfect_square_equal_to_or_greater_than(struct ordered_pair *to_be_updated, ul minimum);
 unsigned long DOWN_ROUNDED_second_root(ul number);

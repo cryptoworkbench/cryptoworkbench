@@ -99,7 +99,6 @@ void list_plausable_group_identity_descriptions(int argv_index)
 unsigned long DH_public_key(STRUCT_DH_parameters *DH_parameters, ul DH_private_key) { return _exponentiate(DH_parameters->b, DH_private_key, DH_parameters->a); }
 void print_DH_parameters(STRUCT_DH_parameters *DH_parameters, FILE *fs) { fprintf(fs, "(\u2115/%lu\u2115*, %lu)", DH_parameters->a, DH_parameters->b); }
 
-unsigned long *UL_array_of_SIZE(int SIZE) { unsigned long *ret_val = (unsigned long *) malloc(sizeof(unsigned long) * SIZE); return ret_val; }
 unsigned long INDEX_within_UL_array(ul_ptr UL_array, ul array_size, ul number) { for (unsigned long INDEX = 0; INDEX < array_size; INDEX++) if (UL_array[INDEX] == number) return INDEX;}
 
 unsigned long GCD(ul a, ul b) {
