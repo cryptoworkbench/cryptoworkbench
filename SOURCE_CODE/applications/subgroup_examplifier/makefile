@@ -1,6 +1,9 @@
 ../../libraries/functional/.string.o: ../../libraries/functional/string.h ../../libraries/functional/string.c
 	gcc -c ../../libraries/functional/string.c -o ../../libraries/functional/.string.o
 
+../../libraries/functional/.string.extended.o: ../../libraries/functional/string.extended.h ../../libraries/functional/string.extended.c
+	gcc -c ../../libraries/functional/string.extended.c -o ../../libraries/functional/.string.extended.o
+
 ../../libraries/mathematics/.maths.basic.o: ../../libraries/mathematics/maths.basic.h ../../libraries/mathematics/maths.basic.c
 	gcc -c ../../libraries/mathematics/maths.basic.c -o ../../libraries/mathematics/.maths.basic.o
 
@@ -16,5 +19,5 @@
 .subgroup_examplifier.o: subgroup_examplifier.c
 	gcc -c subgroup_examplifier.c -o .subgroup_examplifier.o
 
-subgroup_examplifier: ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_library.o .subgroup_examplifier.o
-	gcc ../../libraries/functional/.string.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_library.o .subgroup_examplifier.o -o ../../../applications/subgroup_examplifier
+subgroup_examplifier: ../../libraries/functional/.string.o ../../libraries/functional/.string.extended.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_library.o .subgroup_examplifier.o
+	gcc ../../libraries/functional/.string.o ../../libraries/functional/.string.extended.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o ../../libraries/functional/.triple_ref_pointers.o ../../libraries/mathematics/.group_library.o .subgroup_examplifier.o -o ../../../applications/subgroup_examplifier

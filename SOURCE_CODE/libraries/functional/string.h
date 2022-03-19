@@ -9,7 +9,7 @@
 typedef void (*_error_function) ();
 // type declarations ^
 
-char ***argv_ptr; char *unparsed_str; unsigned int *width_;
+char ***argv_ptr; char *unparsed_str;
 // variable declarations ^^^
 
 _error_function not_parsable(_error_function error_function, char *unparsable_str);
@@ -47,7 +47,6 @@ int match_variadic(char *INPUT, int number_of_comparisons, ...); // Variadic fun
 
 unsigned long char_in_val(unsigned long a); // Calculates the number of characters needed to display a in base BASE notation (BASE = 10)
 char *_str_from_ul(unsigned long a, unsigned int width_); // Converts from ul to string with a minimum of min_out_length characters, heading zeros are fixed if needed, call as _str_from_ul(unsigned long a, characters_in_val(a))
-char *width_str_from_ul(unsigned long a);
 
 void ignored_arguments(int argc, char **argv, int used_arguments);
 

@@ -6,7 +6,7 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../libraries/functional/string.h"
+#include "../../libraries/functional/string.extended.h"
 #include "../../libraries/mathematics/maths.extended.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
 #include "../../libraries/mathematics/group_library.h"
@@ -108,9 +108,9 @@ void mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument t
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { group_cardinality, mod, id, horizontal_offset, vertical_offset = ADDITIVE_IDENTITY; mod_ = &mod; id_ = &id; argv_ptr = &argv;
-                                  conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(     mod_ul_parse_str(argv[1], -1))))));
-                                  conditional_goodbye(n(n(error_specification(_id_failed_to_parse, n(id_identity_parse_str(argv[2], -2))))));
-    if (!mod || !(mod - 1) && id) conditional_goodbye(n(n(error_message(invalid_group_parameters, -3))));
+        conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(     mod_ul_parse_str(argv[1], -1))))));
+        conditional_goodbye(n(n(error_specification(_id_failed_to_parse, n(id_identity_parse_str(argv[2], -2)))))); if (!mod || !(mod - 1) && id)
+	conditional_goodbye(n(n(error_message(invalid_group_parameters, -3))));
     // process mandatory terminal arguments (mod and group identity) ^ 
 
                   horizontal_offset = 0; n(n(error_specification(horizontal_offset_failed_to_parse, 3 < argc && _ul_parse_str(&horizontal_offset, argv[3], 1))));
