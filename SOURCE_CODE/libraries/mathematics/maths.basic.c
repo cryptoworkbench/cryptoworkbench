@@ -8,10 +8,11 @@ const char *_standard_prime_table_filename = "shared_prime_table";
 
 const char *_additive_signs[] = {"0", "+", "addition", "additions", "additive", "add", 0};
 const char *_multiplicative_signs[] = {"1", "*", "multiplication", "multiplications", "multiplicative", "multiply", 0};
+// STILL NEED THESE BECAUSE OF '_IDENTITY_PARSE_STR' (!!!) ^^
 
 char *_REPORT_standard_prime_table_filename() { return (char *) _standard_prime_table_filename; }
 char *_open_prime_table = NULL; char *_REPORT_open_prime_table() { return (char *) _open_prime_table; }
-// Two global variables and two functions for access to these global variables in other files/libraries
+// two global variables and two functions for access to these global variables in other files/libraries
 
 struct ordered_pair _isomorphism() { struct ordered_pair ret_val = { ADDITIVE_IDENTITY, MULTIPLICATIVE_IDENTITY }; return ret_val; }
 // a general function which a lot of functions in this library make use of ^^
@@ -61,14 +62,6 @@ unsigned long _polynomial(ul x, ul_ptr coefficient, int number_of_coefficients, 
     int i = number_of_coefficients;
     do { i--; iso.a = _add(iso.a, _multiply(iso.b, coefficient[i], mod_), mod_); iso.b = _multiply(iso.b, x, mod_); } while (i != 0);
     return iso.a;
-}
-
-const char *_sign_array(group_operation_ *oper, int SELECTOR)
-{
-    if (!oper) return NULL;
-    const char **array = _additive_signs;
-    if (*oper == _multiply) array = _multiplicative_signs;
-    return array[SELECTOR];
 }
 
 int _eulers_criterion(ul odd_prime_p, ul odd_prime_q)
