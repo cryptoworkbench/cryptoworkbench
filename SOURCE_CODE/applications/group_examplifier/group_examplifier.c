@@ -13,7 +13,7 @@ struct LL_ { struct LL_ *next; unsigned long e; };
 struct crux { unsigned long *base_permutation; char **ASCII; unsigned long **permutation; unsigned long *perm_length; };
 // ^^ type definitions
 
-struct crux lookup_table; unsigned long *permutation_of_FIRST_GEN; unsigned int id; unsigned long group_cardinality, mod, horizontal_offset, vertical_offset;
+struct crux lookup_table; unsigned long *permutation_of_FIRST_GEN; unsigned long group_cardinality, mod, horizontal_offset, vertical_offset;
 group_operation oper;
 //          ^ global variables          ^                                      ^                                         ^                      ^
 
@@ -108,8 +108,8 @@ void mod_failed_to_parse()
 { fprintf(stderr, "Please specify as first argument the modulus of the group whose subgroups to examplify. Neither '\u2115%s*' nor '\u2115%s+' makes any sense to me!", (*argv_ptr)[1], (*argv_ptr)[1]); }
 // error functions ^ (function header format fits typedef '_error_message')
 
-int main(int argc, char **argv) { group_cardinality, mod, id, horizontal_offset, vertical_offset = ADDITIVE_IDENTITY; mod_ = &mod; id_ = &id; _group_operation = &oper; argv_ptr = &argv;
-    group_parse_(mod_failed_to_parse, _id_failed_to_parse, 1); conditional_goodbye(n(n(error_message(invalid_group_parameters,  - 3 * ( !mod || (oper == _multiply) && !(mod - 1)) ))));
+int main(int argc, char **argv) { group_cardinality, mod, horizontal_offset, vertical_offset = ADDITIVE_IDENTITY; mod_ = &mod; _group_operation = &oper; argv_ptr = &argv;
+    group_parse_(&mod, mod_failed_to_parse, _id_failed_to_parse, 1); conditional_goodbye(n(n(error_message(invalid_group_parameters,  - 3 * ( !mod || (oper == _multiply) && !(mod - 1)) ))));
     // process mandatory arguments ^ 
 
     n(n(error_specification(horizontal_offset_failed_to_parse, 3 < argc && _ul_parse_str(&horizontal_offset, argv[3], 1))));
@@ -128,5 +128,5 @@ int main(int argc, char **argv) { group_cardinality, mod, id, horizontal_offset,
     //   list generators afterwards ^
 
     for (unsigned long i = 0; i < group_cardinality; i++) { free(lookup_table.permutation[i]); free(lookup_table.ASCII[i]); } free(lookup_table.perm_length);
-    if (id) free(lookup_table.base_permutation); return 0;
+    if (associated_identity()) free(lookup_table.base_permutation); return 0;
 } // * = 'member a will hold y offset, member b will hold x offset'

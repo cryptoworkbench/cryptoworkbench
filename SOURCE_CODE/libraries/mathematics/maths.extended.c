@@ -18,10 +18,10 @@ int _group_operation_parse_str(char *str, int exit_status)
 }
 
 // NEW:
-void group_parse_(_error_function mod_instruction, _error_function _id_instruction, unsigned int argv_index)
+void group_parse_(ul_ptr mod_, _error_function mod_instruction, _error_function _id_instruction, unsigned int argv_index)
 {
-    conditional_goodbye(n(n(error_specification(mod_instruction, n(          mod_ul_parse_str((*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));
-    conditional_goodbye(n(n(error_specification(_id_instruction, n(_group_operation_parse_str((*argv_ptr)[argv_index + 1], - (argv_index + 1) ))))));
+    conditional_goodbye(n(n(error_specification(mod_instruction, n(             _ul_parse_str(mod_, (*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));
+    conditional_goodbye(n(n(error_specification(_id_instruction, n(_group_operation_parse_str(      (*argv_ptr)[argv_index + 1], - (argv_index + 1) ))))));
 }
 
 unsigned long mod_group_operation(ul a, ul b)

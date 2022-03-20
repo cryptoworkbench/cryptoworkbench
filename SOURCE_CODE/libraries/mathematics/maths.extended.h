@@ -58,4 +58,4 @@ void group_parse(_error_function mod_instruction, _error_function _id_instructio
 
 // NEW (2):
 int _group_operation_parse_str(char *str, int exit_status);
-void group_parse_(_error_function mod_instruction, _error_function _id_instruction, unsigned int argv_index);
+void group_parse_(ul_ptr mod_, _error_function mod_instruction, _error_function _id_instruction, unsigned int argv_index);

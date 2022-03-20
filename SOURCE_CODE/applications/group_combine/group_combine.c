@@ -5,7 +5,7 @@
 #include "../../libraries/mathematics/maths.extended.h"
 #define STARTING_INDEX_OF_ARGS_LIST 3
 
-group_operation oper; unsigned long ans, mod; unsigned int function_arg_count, i, id;
+group_operation oper; unsigned long ans, mod; unsigned int function_arg_count, i;
 // global variable declarations ^
 
 void argument_failed_to_parse() { fprintf(stderr, "%ith argument failed to parse!", STARTING_INDEX_OF_ARGS_LIST + i); };
@@ -13,11 +13,12 @@ void ___array_failed_to_parse() { fprintf(stderr, "This function requires at lea
 void sp_array_failed_to_parse() {
     fprintf(stderr, "Please specify from the second argument onward numbers to %s within the finite field F%s.", id_as_verb(), (*argv_ptr)[1]);
 }
-void _id_failed_to_parse() { fprintf(stderr, "Please specify as second argument the identity element of the group whose subgroups to examplify."); list_plausable_group_identity_descriptions(2); }
-void mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument the modulus of the group operation (0 to act upon the infinite group of integers)."); }
+void operation_failed_to_parse() { fprintf(stderr, "Please specify as second argument the identity element of the group whose subgroups to examplify."); list_plausable_group_identity_descriptions(2); }
+void ______mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument the modulus of the group operation (0 to act upon the infinite group of integers)."); }
+// '_failed_to_parse' functions ^^
 
-int main(int argc, char **argv) { i_ = &i; array_size_ = &function_arg_count; mod = id = ADDITIVE_IDENTITY; mod_ = &mod; id_ = &id; _group_operation = &oper; argv_ptr = &argv;
-    group_parse_(mod_failed_to_parse, _id_failed_to_parse, 1);
+int main(int argc, char **argv) { i_ = &i; array_size_ = &function_arg_count; mod = ADDITIVE_IDENTITY; _group_operation = &oper; argv_ptr = &argv;
+    group_parse_(&mod, ______mod_failed_to_parse, operation_failed_to_parse, 1);
     // process first two arguments ^^
 
     conditional_goodbye(n(n(error_specification(sp_array_failed_to_parse, n(n(error_message(___array_failed_to_parse, (2 > (function_arg_count = argc - STARTING_INDEX_OF_ARGS_LIST)) * - STARTING_INDEX_OF_ARGS_LIST)))))));
