@@ -23,7 +23,9 @@ FILE *open_group(char **argv) { argv_ZERO = argv[0];
     if ( !(logbook_fs = fopen(LOGBOOK_PATH, "a"))) { fprintf(stderr, "Failed to open logbook!\n"); exit(-10); }
     // ^^ Exit when the logbook won't open
 
-    const char *operation_symbol = id_as_operation_symbol(); const char *adjective = id_as_adjective(); const char *group_ID = id_as_number();
+    const char *operation_symbol = sign_array(1);
+    const char *adjective = sign_array(4);
+    const char *group_ID = sign_array(0);
     // ^^ Prepare the char pointers that 'open_group_as_INNER' feeds on
 
     return open_group_INNER(argv[1], argv[2], adjective, operation_symbol, BUFFER_OF_SIZE(200));
@@ -74,17 +76,15 @@ FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, cons
 
 	int ELEMENT_EXPORTER_exit_status = WEXITSTATUS(ELEMENT_EXPORTER_exit_status_RAW);
 	if (!ELEMENT_EXPORTER_exit_status && (group_fs = fopen(path_to_group, "r"))) {
-	    sprintf(LINE, ELEMENT_EXPORTER " returned an exit status of '%i' \u21D2 \u2115%s%s should be registered now", ELEMENT_EXPORTER_exit_status, group_MOD, symbol);
-	    append_to_LOGBOOK(LINE);
+	    sprintf(LINE, ELEMENT_EXPORTER " returned an exit status of '%i' \u21D2 \u2115%s%s should be registered now", ELEMENT_EXPORTER_exit_status, group_MOD, symbol); append_to_LOGBOOK(LINE);
 	} else {
-	    sprintf(LINE, "FATAL ERROR: failed to create the required registry file using '"ELEMENT_EXPORTER"'");
-	    append_to_LOGBOOK(LINE); exit(0);
+	    sprintf(LINE, "FATAL ERROR: failed to create the required registry file using '"ELEMENT_EXPORTER"'"); append_to_LOGBOOK(LINE); exit(0);
 	} } return group_fs;
     // ^ force open
 }
 
 void close_group(char *mod, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", mod, id_as_operation_symbol(), path_to_group); append_to_LOGBOOK(BUFFER); fclose(opened_group);
+    sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", mod, sign_array(1), path_to_group); append_to_LOGBOOK(BUFFER); fclose(opened_group);
     sprintf(BUFFER, "Closed '%s'", path_to_group); free(path_to_group); append_to_LOGBOOK(BUFFER); free(BUFFER); close_logbook();
 } void close_logbook() { fclose(logbook_fs); }
 // ^ ^ close group and logbook
