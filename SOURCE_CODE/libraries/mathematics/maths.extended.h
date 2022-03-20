@@ -52,9 +52,9 @@ const char *sign_array(int SELECTOR);
 int mod_eulers_criterion(ul odd_prime_p);
 /* ===================== corresponds to 'maths.basic.h' (!) ====================== */
 
-void group_parse(ul_ptr mod_ptr, group_operation *oper, _error_function mod_instruction, _error_function _id_instruction, unsigned int argv_index);
+void group_parse(ul_ptr mod_ptr, group_operation *oper, error_function_ mod_instruction, error_function_ _id_instruction, unsigned int argv_index);
 
 int _group_operation_parse_str(char *str, int exit_status);
 
 // NEW:
-void group_parse_(ul_ptr mod_, _error_function mod_instruction, _error_function _id_instruction, unsigned int argv_index);
+void group_parse_(ul_ptr mod_, error_function_ mod_instruction, error_function_ _id_instruction, unsigned int argv_index);

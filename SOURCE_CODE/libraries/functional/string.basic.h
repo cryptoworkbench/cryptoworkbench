@@ -13,7 +13,7 @@ typedef ul *ul_ptr;
 typedef unsigned int ui;
 typedef ui *ui_ptr;
 
-typedef void (*_error_function) ();
+typedef void (*error_function_) ();
 // type declarations ^
 
 char ***argv_ptr; char *unparsed_str;
@@ -21,15 +21,15 @@ char ***argv_ptr; char *unparsed_str;
 
 unsigned long *UL_array_of_SIZE(int SIZE);
 
-_error_function not_parsable(_error_function error_function, char *unparsable_str);
+error_function_ not_parsable(error_function_ error_function, char *unparsable_str);
 
 void conditional_goodbye(int exit_status);
 
 int n(int pass_through);
 int h(int pass_through);
 
-int error_specification(_error_function error_explainer, int exit_status);
-int error_message(_error_function error_explainer, int exit_status);
+int error_specification(error_function_ error_explainer, int exit_status);
+int error_message(error_function_ error_explainer, int exit_status);
 
 /* ===================== corresponds to 'maths.extended.h' (!) =================== */
 int _ul_parse_str(ul_ptr ul_ptr, char *str, int exit_status);

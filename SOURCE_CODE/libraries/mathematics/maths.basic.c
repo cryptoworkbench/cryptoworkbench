@@ -200,7 +200,7 @@ unsigned long chinese_remainder_theorem(ul remainder, ul_ptr moduli, ul modulis)
     } return isomorphism.a;
 }
 
-int pair_of_strs_represents_pair_of_coprime_ULs(_error_function _first_instruction, _error_function second_instruction, ul_ptr ptr_one, ul_ptr ptr_two, int _first_index, int second_index, int exit_status) {
+int pair_of_strs_represents_pair_of_coprime_ULs(error_function_ _first_instruction, error_function_ second_instruction, ul_ptr ptr_one, ul_ptr ptr_two, int _first_index, int second_index, int exit_status) {
     // requires 'argv_ptr' to be set ^
 
     if (error_specification(_first_instruction, n(_ul_parse_str(ptr_one, (*argv_ptr)[_first_index], 1)))) return - _first_index;

@@ -11,14 +11,14 @@
 unsigned long *UL_array_of_SIZE(int SIZE)
 { ul_ptr ret_val = (ul_ptr) malloc(sizeof(ul) * SIZE); return ret_val; }
 
-_error_function not_parsable(_error_function error_function, char *unparsable_str)
+error_function_ not_parsable(error_function_ error_function, char *unparsable_str)
 {
     unparsed_str = unparsable_str; return error_function;
 }
 
 void str_not_parsable_as_number() { fprintf(stderr, "parsing of '%s' failed: '%s' is not a number.", unparsed_str, unparsed_str); }
 
-int error_message(_error_function error_explainer, int exit_status)
+int error_message(error_function_ error_explainer, int exit_status)
 { if (exit_status) { fflush(stdout); fprintf(stderr, "### THE FOLLOWING ERROR OCCURRED --> "); error_explainer(); } return exit_status; }
 
 int _parse_str_failure(int exit_status) { return n(error_message(str_not_parsable_as_number, exit_status)); }
@@ -43,7 +43,7 @@ int _ui_parse_str(ui_ptr ui_ptr, char *str, int exit_status)
     return 0;
 }
 
-int error_specification(_error_function error_explainer, int exit_status)
+int error_specification(error_function_ error_explainer, int exit_status)
 { if (exit_status) { fflush(stdout); error_explainer(); } return exit_status; }
 
 int n(int exit_status) { if (exit_status) fprintf(stderr, "\n"); return exit_status; }
