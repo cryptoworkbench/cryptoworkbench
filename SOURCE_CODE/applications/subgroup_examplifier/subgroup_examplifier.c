@@ -1,11 +1,9 @@
-/* DEVELEPERS NOTE:
- * This is a copy of 'group_examplifier.c'.
- *
- * I want to make this a version which only prints a specified subgroup.
+/* Program description:
+ * Examplifies subgroups. Feed it a modulus and a group identity as command-line arguments and it will examplify all subgroups within specified group. It also lists the generators that are within the group.
  */
 #include <stdio.h>
 #include <stdlib.h>
-#include "../../libraries/functional/string.basic.h"
+#include "../../libraries/functional/string.extended.h"
 #include "../../libraries/mathematics/maths.extended.h"
 #include "../../libraries/functional/triple_ref_pointers.h"
 #include "../../libraries/mathematics/group_library.h"
@@ -111,7 +109,7 @@ void mod_failed_to_parse()
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { group_cardinality, mod, id, horizontal_offset, vertical_offset = ADDITIVE_IDENTITY; mod_ = &mod; id_ = &id; _group_operation = &group_oper; argv_ptr = &argv;
-    group_parse(mod_failed_to_parse, _id_failed_to_parse, 1); if (!mod || !(mod - 1) && id) conditional_goodbye(n(n(error_message(invalid_group_parameters, -3))));
+    group_parse(mod_failed_to_parse, _id_failed_to_parse, 1); conditional_goodbye(n(n(error_message(invalid_group_parameters,  - 3 * ( !mod || id && !(mod - 1)) ))));
     // process mandatory arguments ^ 
 
     n(n(error_specification(horizontal_offset_failed_to_parse, 3 < argc && _ul_parse_str(&horizontal_offset, argv[3], 1))));
