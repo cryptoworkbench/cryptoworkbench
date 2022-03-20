@@ -63,11 +63,6 @@ unsigned long _polynomial(ul x, ul_ptr coefficient, int number_of_coefficients, 
     return iso.a;
 }
 
-unsigned int _associated_identity(group_operation_ oper)
-{
-    return (oper == _multiply);
-}
-
 const char *_sign_array(group_operation_ *oper, int SELECTOR)
 {
     if (!oper) return NULL;
