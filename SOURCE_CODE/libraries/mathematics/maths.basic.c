@@ -199,7 +199,7 @@ int pair_of_strs_represents_pair_of_coprime_ULs(error_function_ _first_instructi
 
 group_operation_ operation_convert(char *str) { if (_match(str, 6, _multiplicative_signs)) return _multiply; else if (_match(str, 6, _additive_signs)) return _add; return NULL; }
 
-int group_operation_parse_str(group_operation_ *_group_operation, char *str, int exit_status)
+int group_operation_parse_str(group_operation_ *_group_operation_ptr, char *str, int exit_status)
 {
-    if (!str || (str && !(*_group_operation = operation_convert(str)))) return n(error_message(not_parsable(identity_error, str), exit_status)); return 0;
+    if (!str || !(*_group_operation_ptr = operation_convert(str))) return n(error_message(not_parsable(identity_error, str), exit_status)); return 0;
 }

@@ -5,14 +5,14 @@ unsigned int _id = 0;
 
 int mod_ul_parse_str(char *str, int exit_status) { return _ul_parse_str(mod_, str, exit_status); }
 
-void group_parse(ul_ptr mod_ptr, group_operation_ *oper, error_function_ mod_instruction, error_function_ _id_instruction, unsigned int argv_index)
+void group_parse(ul_ptr mod_ptr, group_operation_ *_group_operation_ptr, error_function_ mod_instruction, error_function_ _id_instruction, unsigned int argv_index)
 {
-    mod_ = mod_ptr; _group_operation = oper;
+    mod_ = mod_ptr; _group_operation = _group_operation_ptr;
     conditional_goodbye(n(n(error_specification(mod_instruction, n(          mod_ul_parse_str((*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));
     conditional_goodbye(n(n(error_specification(_id_instruction, n(_group_operation_parse_str((*argv_ptr)[argv_index + 1], - (argv_index + 1) ))))));
 
-    *((sign = (const char **) malloc(sizeof(const char *) * (6 + 1))) + 6) = 0;
-    if (*oper == _add) { sign[0] = "0"; sign[1] = "+"; sign[2] = "addition"; sign[3] = "additions"; sign[4] = "additive"; sign[5] = "add"; }
+    *((sign = (const char **) malloc(sizeof(const char *) * (1 + 6))) + 6) = 0;
+    if (*_group_operation_ptr == _add) { sign[0] = "0"; sign[1] = "+"; sign[2] = "addition"; sign[3] = "additions"; sign[4] = "additive"; sign[5] = "add"; }
     else { sign[0] = "1"; sign[1] = "x"; sign[2] = "multiplication"; sign[3] = "multiplications"; sign[4] = "multiplicative"; sign[5] = "multiply"; }
 }
 
@@ -74,8 +74,6 @@ unsigned long mod_polynomial(ul x, ul *coefficient, int number_of_coefficients)
 
     return _polynomial(x, coefficient, number_of_coefficients, *mod_);
 }
-
-const char *sign_array(int SELECTOR) { return _sign_array(_group_operation, SELECTOR); }
 
 int mod_eulers_criterion(ul odd_prime_p)
 { return _eulers_criterion(odd_prime_p, *mod_); }

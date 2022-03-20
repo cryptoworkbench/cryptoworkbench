@@ -11,6 +11,8 @@ struct ordered_pair { ul a; ul b; };
 typedef unsigned long (*group_operation_) (ul, ul, ul);
 // type declarations ^^
 
+const char **additive_signs;
+const char **multiplicative_signs;
 const char **sign;
 
 group_operation_ *_group_operation;
@@ -39,7 +41,6 @@ unsigned long _polynomial(ul x, ul *coefficient, int coefficients, ul mod_);
 // basic (in)finite field operations ^
 
 unsigned int _associated_identity(group_operation_ oper);
-const char *_sign_array(group_operation_ *oper, int SELECTOR);
 
 int _eulers_criterion(ul odd_prime_p, ul odd_prime_q);
 /* ===================== corresponds to 'maths.extended.h' (!) ================== */ // 'mod_' needs to be initialized

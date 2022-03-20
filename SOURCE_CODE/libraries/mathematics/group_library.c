@@ -84,7 +84,7 @@ FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, cons
 }
 
 void close_group(char *mod, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", mod, sign_array(1), path_to_group); append_to_LOGBOOK(BUFFER); fclose(opened_group);
+    sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", mod, sign[1], path_to_group); append_to_LOGBOOK(BUFFER); fclose(opened_group);
     sprintf(BUFFER, "Closed '%s'", path_to_group); free(path_to_group); append_to_LOGBOOK(BUFFER); free(BUFFER); close_logbook();
 } void close_logbook() { fclose(logbook_fs); }
 // ^ ^ close group and logbook

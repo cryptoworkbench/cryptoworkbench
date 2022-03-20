@@ -37,8 +37,6 @@ unsigned long mod_divide(ul numerator, ul denominator);
 unsigned long mod_polynomial(ul x, ul *coefficient, int coefficients);
 // basic (in)finite field operations ^
 
-const char *sign_array(int SELECTOR);
-
 int mod_eulers_criterion(ul odd_prime_p);
 /* ===================== corresponds to 'maths.basic.h' (!) ====================== */
 
