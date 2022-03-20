@@ -13,7 +13,7 @@ struct LL_ { struct LL_ *next; unsigned long e; };
 struct crux { unsigned long *base_permutation; char **ASCII; unsigned long **permutation; unsigned long *perm_length; };
 // ^^ type definitions
 
-struct crux lookup_table; unsigned long *permutation_of_FIRST_GEN; unsigned long group_cardinality, mod, horizontal_offset, vertical_offset; group_operation_ oper;
+struct crux lookup_table; unsigned long *permutation_of_FIRST_GEN; unsigned long group_cardinality, mod, horizontal_offset, vertical_offset; group_operation_ group_operation;
 //          ^ global variables           ^                                       ^                  ^    ^
 
 void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
@@ -111,7 +111,7 @@ void mod_failed_to_parse()
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { group_cardinality = mod = horizontal_offset = vertical_offset = ADDITIVE_IDENTITY; argv_ptr = &argv;
-    group_parse(&mod, &oper, mod_failed_to_parse, _id_failed_to_parse, 1); conditional_goodbye(n(n(error_message(invalid_group_parameters,  - 3 * ( !mod || id() && !(mod - 1)) ))));
+    group_parse(&mod, &group_operation, mod_failed_to_parse, _id_failed_to_parse, 1); conditional_goodbye(n(n(error_message(invalid_group_parameters,  - 3 * ( !mod || id() && !(mod - 1)) ))));
     // process mandatory arguments ^ 
 
     n(n(error_specification(horizontal_offset_failed_to_parse, 3 < argc && _ul_parse_str(&horizontal_offset, argv[3], 1))));

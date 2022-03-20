@@ -5,7 +5,7 @@
 #include "../../libraries/mathematics/maths.extended.h"
 #define STARTING_INDEX_OF_ARGS_LIST 3
 
-group_operation_ oper; unsigned long ans, mod; unsigned int function_arg_count, i;
+group_operation_ group_operation; unsigned long ans, mod; unsigned int function_arg_count, i;
 // global variable declarations ^
 
 void argument_failed_to_parse() { fprintf(stderr, "%ith argument failed to parse!", STARTING_INDEX_OF_ARGS_LIST + i); };
@@ -17,7 +17,7 @@ void operation_failed_to_parse() { fprintf(stderr, "Please specify as second arg
 void ______mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument the modulus of the group operation (0 to act upon the infinite group of integers)."); }
 // '_failed_to_parse' functions ^^
 
-int main(int argc, char **argv) { i_ = &i; array_size_ = &function_arg_count; mod = ADDITIVE_IDENTITY; _group_operation = &oper; argv_ptr = &argv;
+int main(int argc, char **argv) { i_ = &i; array_size_ = &function_arg_count; mod = ADDITIVE_IDENTITY; _group_operation = &group_operation; argv_ptr = &argv;
     group_parse_(&mod, ______mod_failed_to_parse, operation_failed_to_parse, 1);
     // process first two arguments ^^
 
