@@ -13,7 +13,7 @@ struct LL_ { struct LL_ *next; unsigned long e; };
 struct crux { unsigned long *base_permutation; char **ASCII; unsigned long **permutation; unsigned long *perm_length; };
 // ^^ type definitions
 
-struct crux lookup_table; unsigned long *permutation_of_FIRST_GEN; unsigned long group_cardinality, mod, horizontal_offset, vertical_offset; group_operation oper;
+struct crux lookup_table; unsigned long *permutation_of_FIRST_GEN; unsigned long group_cardinality, mod, horizontal_offset, vertical_offset; group_operation_ oper;
 //          ^ global variables           ^                                       ^                  ^    ^
 
 void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {

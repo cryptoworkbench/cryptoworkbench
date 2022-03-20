@@ -8,10 +8,10 @@
 // definitions ^^^
 
 struct ordered_pair { ul a; ul b; };
-typedef unsigned long (*group_operation) (ul, ul, ul);
+typedef unsigned long (*group_operation_) (ul, ul, ul);
 // type declarations ^^
 
-group_operation *_group_operation;
+group_operation_ *_group_operation;
 
 struct ordered_pair _isomorphism();
 // general function ^
@@ -44,8 +44,8 @@ const char *_as_adjective(ui id_);
 const char *_as_verb(ui id_);
 // functions that have to do with the identity element ^
 
-unsigned int _associated_identity(group_operation oper);
-const char *_sign_array(group_operation *oper, int SELECTOR);
+unsigned int _associated_identity(group_operation_ oper);
+const char *_sign_array(group_operation_ *oper, int SELECTOR);
 
 int _eulers_criterion(ul odd_prime_p, ul odd_prime_q);
 /* ===================== corresponds to 'maths.extended.h' (!) ================== */
@@ -88,4 +88,4 @@ unsigned long chinese_remainder_theorem(ul remainder, ul_ptr moduli, ul modulis)
 int pair_of_strs_represents_pair_of_coprime_ULs(error_function_ _first_instruction, error_function_ second_instruction, ul_ptr ptr_one, ul_ptr ptr_two, int _first_index, int second_index, int exit_status);
 
 // NEW:
-int group_operation_parse_str(group_operation *_group_operation, char *str, int exit_status);
+int group_operation_parse_str(group_operation_ *_group_operation, char *str, int exit_status);

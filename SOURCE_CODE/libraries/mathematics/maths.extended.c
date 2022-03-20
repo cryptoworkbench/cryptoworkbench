@@ -10,7 +10,7 @@ int mod_ul_parse_str(char *str, int exit_status) { return _ul_parse_str(mod_, st
 int id_identity_parse_str(char *str, int exit_status) { return _identity_parse_str(id_, str, exit_status); }
 int id_identity_parse_str_(char *str, int exit_status) { return _identity_parse_str_(id_, str, exit_status); }
 
-void group_parse(ul_ptr mod_ptr, group_operation *oper, error_function_ mod_instruction, error_function_ _id_instruction, unsigned int argv_index)
+void group_parse(ul_ptr mod_ptr, group_operation_ *oper, error_function_ mod_instruction, error_function_ _id_instruction, unsigned int argv_index)
 {
     mod_ = mod_ptr; _group_operation = oper;
     conditional_goodbye(n(n(error_specification(mod_instruction, n(          mod_ul_parse_str((*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));

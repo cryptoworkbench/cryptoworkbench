@@ -70,12 +70,12 @@ const char *_as_nouns(unsigned int id_) { return (id_) ? multiplicative_signs[3]
 const char *_as_adjective(unsigned int id_) { return (id_) ? multiplicative_signs[4] : additive_signs[4]; }
 const char *_as_verb(unsigned int id_) { return (id_) ? multiplicative_signs[5] : additive_signs[5]; }
 
-unsigned int _associated_identity(group_operation oper)
+unsigned int _associated_identity(group_operation_ oper)
 {
     return (oper == _multiply);
 }
 
-const char *_sign_array(group_operation *oper, int SELECTOR)
+const char *_sign_array(group_operation_ *oper, int SELECTOR)
 {
     if (!oper) return NULL;
     const char **array = additive_signs;
@@ -216,9 +216,9 @@ int pair_of_strs_represents_pair_of_coprime_ULs(error_function_ _first_instructi
     return exit_status;
 }
 
-group_operation operation_convert(char *str) { if (_match(str, 6, multiplicative_signs)) return _multiply; else if (_match(str, 6, additive_signs)) return _add; return NULL; }
+group_operation_ operation_convert(char *str) { if (_match(str, 6, multiplicative_signs)) return _multiply; else if (_match(str, 6, additive_signs)) return _add; return NULL; }
 
-int group_operation_parse_str(group_operation *_group_operation, char *str, int exit_status)
+int group_operation_parse_str(group_operation_ *_group_operation, char *str, int exit_status)
 {
     if (!str || (str && !(*_group_operation = operation_convert(str)))) return n(error_message(not_parsable(identity_error, str), exit_status)); return 0;
 }

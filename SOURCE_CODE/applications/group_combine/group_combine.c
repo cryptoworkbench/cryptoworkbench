@@ -5,7 +5,7 @@
 #include "../../libraries/mathematics/maths.extended.h"
 #define STARTING_INDEX_OF_ARGS_LIST 3
 
-group_operation oper; unsigned long ans, mod; unsigned int function_arg_count, i;
+group_operation_ oper; unsigned long ans, mod; unsigned int function_arg_count, i;
 // global variable declarations ^
 
 void argument_failed_to_parse() { fprintf(stderr, "%ith argument failed to parse!", STARTING_INDEX_OF_ARGS_LIST + i); };
