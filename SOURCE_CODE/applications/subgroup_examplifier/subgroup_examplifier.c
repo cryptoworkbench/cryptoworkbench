@@ -111,13 +111,12 @@ void mod_failed_to_parse()
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { group_cardinality, mod, id, horizontal_offset, vertical_offset = ADDITIVE_IDENTITY; mod_ = &mod; id_ = &id; _group_operation = &group_oper; argv_ptr = &argv;
-    group_parse(mod_failed_to_parse, _id_failed_to_parse, 1);
-    if (!mod || !(mod - 1) && id) conditional_goodbye(n(n(error_message(invalid_group_parameters, -3))));
-    // process mandatory terminal arguments (mod and group identity) ^ 
+    group_parse(mod_failed_to_parse, _id_failed_to_parse, 1); if (!mod || !(mod - 1) && id) conditional_goodbye(n(n(error_message(invalid_group_parameters, -3))));
+    // process mandatory arguments ^ 
 
     n(n(error_specification(horizontal_offset_failed_to_parse, 3 < argc && _ul_parse_str(&horizontal_offset, argv[3], 1))));
     n(n(error_specification(__vertical_offset_failed_to_parse, 4 < argc && _ul_parse_str(&  vertical_offset, argv[4], 1))));
-    // process optional terminal arguments ^
+    // process optional arguments  ^
 
     unsigned long generator_count = found_generators(group_elements_LL(argv));
     unsigned long index = vertical_offset; do { print_permutation(index); index = _add(index, 1, group_cardinality); } while (index != vertical_offset); fprintf(stdout, "\n");
