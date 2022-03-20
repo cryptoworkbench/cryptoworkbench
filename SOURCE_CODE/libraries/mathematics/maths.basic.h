@@ -11,6 +11,7 @@ struct ordered_pair { ul a; ul b; };
 typedef unsigned long (*group_operation_) (ul, ul, ul);
 // type declarations ^^
 
+const char **group_operation_signs;
 group_operation_ *_group_operation;
 
 struct ordered_pair _isomorphism();
@@ -35,14 +36,6 @@ unsigned long _multiply(ul a, ul b, ul mod_);
 unsigned long _divide(ul numerator, ul denominator, ul mod_);
 unsigned long _polynomial(ul x, ul *coefficient, int coefficients, ul mod_);
 // basic (in)finite field operations ^
-
-// const char *_as_number(ui id_);
-// const char *_as_operation_symbol(ui id_);
-// const char *_as_noun(ui id_);
-// const char *_as_nouns(ui id_);
-// const char *_as_adjective(ui id_);
-// const char *_as_verb(ui id_);
-// functions that have to do with the identity element ^
 
 unsigned int _associated_identity(group_operation_ oper);
 const char *_sign_array(group_operation_ *oper, int SELECTOR);

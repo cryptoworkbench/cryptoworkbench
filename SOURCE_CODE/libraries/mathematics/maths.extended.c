@@ -3,9 +3,6 @@
 
 unsigned int _id = 0;
 
-unsigned int id()
-{ return _id; }
-
 int mod_ul_parse_str(char *str, int exit_status) { return _ul_parse_str(mod_, str, exit_status); }
 int id_identity_parse_str(char *str, int exit_status) { return _identity_parse_str(id_, str, exit_status); }
 int id_identity_parse_str_(char *str, int exit_status) { return _identity_parse_str_(id_, str, exit_status); }
@@ -85,7 +82,6 @@ unsigned long mod_polynomial(ul x, ul *coefficient, int number_of_coefficients)
     return _polynomial(x, coefficient, number_of_coefficients, *mod_);
 }
 
-unsigned int associated_identity() { return _associated_identity(*_group_operation); }
 const char *sign_array(int SELECTOR) { return _sign_array(_group_operation, SELECTOR); }
 
 int mod_eulers_criterion(ul odd_prime_p)

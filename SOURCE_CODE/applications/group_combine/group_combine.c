@@ -26,7 +26,7 @@ int main(int argc, char **argv) { i_ = &i; array_size_ = &function_arg_count; mo
 
     LOOP_ul_parse_str(argument_failed_to_parse, STARTING_INDEX_OF_ARGS_LIST);
 
-    const char *symb = sign_array(1); ans = associated_identity(); i = 0;
+    const char *symb = sign_array(1); ans = (group_operation == _multiply); i = 0;
     do {ans = mod_group_operation(ans, LOOP_array[i]);
 	fprintf(stdout, "%lu", LOOP_array[i]);
 	if (i + 1 == function_arg_count) break; i++; fprintf(stdout, " %s ", symb);

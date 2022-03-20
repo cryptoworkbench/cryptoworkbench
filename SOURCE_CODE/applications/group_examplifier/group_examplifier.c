@@ -46,10 +46,10 @@ unsigned long *array_from_LL(struct LL_ **head_TRACER, ul required_array_size) {
 
 unsigned long count_of_GENERATED_subgroup_elements(unsigned long index) { unsigned long ret_val = 0;
     struct VOID_ptr_ptr_PAIR permutation_LL_pair = initialize_CHANNEL_ptr_pair();
-    unsigned long generated_element = id(); do {
+    unsigned long generated_element = (group_operation == _multiply); do {
 	INSERT((struct LL_ ***) &permutation_LL_pair.iterator, INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality, generated_element)); ret_val++;
 	generated_element = mod_group_operation(generated_element, lookup_table.base_permutation[index]);
-    } while (generated_element != id());
+    } while (generated_element != (group_operation == _multiply));
     lookup_table.permutation[index] = array_from_LL((struct LL_ **) permutation_LL_pair.head, ret_val);
     return ret_val;
 }
@@ -85,7 +85,7 @@ unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair
     *(lookup_table.permutation[0] = UL_array_of_SIZE(MULTIPLICATIVE_IDENTITY)) = 0;
     unsigned long index; for (index = 0; index < group_cardinality; index++) lookup_table.ASCII[index] = _str_from_ul(lookup_table.base_permutation[index], width);
 
-    if (id()) {
+    if (group_operation == _multiply) {
 	if (*mod_ == 2) return 1;
 	for (index = 1; index < group_cardinality; index++) if ((lookup_table.perm_length[index] = count_of_GENERATED_subgroup_elements(index)) == group_cardinality) break;
 	if (index == group_cardinality) return 0; permutation_of_FIRST_GEN = lookup_table.permutation[index]; return CONSULT_permutation_of_FIRST_GEN(index + 1);
@@ -111,7 +111,7 @@ void mod_failed_to_parse()
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { group_cardinality = mod = horizontal_offset = vertical_offset = ADDITIVE_IDENTITY; argv_ptr = &argv;
-    group_parse(&mod, &group_operation, mod_failed_to_parse, _id_failed_to_parse, 1); conditional_goodbye(n(n(error_message(invalid_group_parameters,  - 3 * ( !mod || id() && !(mod - 1)) ))));
+    group_parse(&mod, &group_operation, mod_failed_to_parse, _id_failed_to_parse, 1); conditional_goodbye(n(n(error_message(invalid_group_parameters,  - 3 * ( !mod || group_operation == _multiply && !(mod - 1)) ))));
     // process mandatory arguments ^ 
 
     n(n(error_specification(horizontal_offset_failed_to_parse, 3 < argc && _ul_parse_str(&horizontal_offset, argv[3], 1))));
@@ -130,5 +130,5 @@ int main(int argc, char **argv) { group_cardinality = mod = horizontal_offset = 
     //   list generators afterwards ^
 
     for (unsigned long i = 0; i < group_cardinality; i++) { free(lookup_table.permutation[i]); free(lookup_table.ASCII[i]); } free(lookup_table.perm_length);
-    if (id()) free(lookup_table.base_permutation); return 0;
+    if (group_operation == _multiply) free(lookup_table.base_permutation); return 0;
 } // * = 'member a will hold y offset, member b will hold x offset'
