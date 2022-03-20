@@ -115,17 +115,17 @@ int main(int argc, char **argv) { group_cardinality, mod, id, horizontal_offset,
     if (!mod || !(mod - 1) && id) conditional_goodbye(n(n(error_message(invalid_group_parameters, -3))));
     // process mandatory terminal arguments (mod and group identity) ^ 
 
-                  horizontal_offset = 0; n(n(error_specification(horizontal_offset_failed_to_parse, 3 < argc && _ul_parse_str(&horizontal_offset, argv[3], 1))));
-    unsigned long __vertical_offset = 0; n(n(error_specification(__vertical_offset_failed_to_parse, 4 < argc && _ul_parse_str(&__vertical_offset, argv[4], 1))));
+    n(n(error_specification(horizontal_offset_failed_to_parse, 3 < argc && _ul_parse_str(&horizontal_offset, argv[3], 1))));
+    n(n(error_specification(__vertical_offset_failed_to_parse, 4 < argc && _ul_parse_str(&  vertical_offset, argv[4], 1))));
     // process optional terminal arguments ^
 
     unsigned long generator_count = found_generators(group_elements_LL(argv));
-    unsigned long index = __vertical_offset; do { print_permutation(index); index = _add(index, 1, group_cardinality); } while (index != __vertical_offset); fprintf(stdout, "\n");
+    unsigned long index = vertical_offset; do { print_permutation(index); index = _add(index, 1, group_cardinality); } while (index != vertical_offset); fprintf(stdout, "\n");
     // examplify subgroups ^
 
     if (generator_count) {
 	fprintf(stdout, "%lu generators are present within \u2115%s%s:\n", generator_count, argv[1], sign_array(1));
-	for (unsigned long printed_gens = 0, index = __vertical_offset; printed_gens < generator_count; index = _add(index, 1, group_cardinality))
+	for (unsigned long printed_gens = 0, index = vertical_offset; printed_gens < generator_count; index = _add(index, 1, group_cardinality))
 	{ while (lookup_table.perm_length[index] != group_cardinality) index = _add(index, 1, group_cardinality); print_permutation(index); printed_gens++; }
     } else fprintf(stdout, "There are no generators in this group.\n");
     //   list generators afterwards ^
