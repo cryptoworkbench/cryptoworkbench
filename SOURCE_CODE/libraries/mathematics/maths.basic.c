@@ -70,19 +70,6 @@ int _eulers_criterion(ul odd_prime_p, ul odd_prime_q)
 
 void identity_error() { fprintf(stderr, "parsing of '%s' failed: could not match '%s' with any imaginable group operation description.", unparsed_str, unparsed_str); }
 
-int _identity_parse_str(ui_ptr id_, char *str, int exit_status)
-{
-    if (!str || (str && !((*id_ = _match(str, 6, _multiplicative_signs)) || _match(str, 6, _additive_signs)))) return n(error_message(not_parsable(identity_error, str), exit_status));
-    return 0;
-}
-
-int _identity_parse_str_(ui_ptr id_, char *str, int exit_status)
-{
-    if (!str || (str && !((*id_ = _match(str, 6, _multiplicative_signs)) || _match(str, 6, _additive_signs)))) return n(error_message(not_parsable(identity_error, str), exit_status));
-    if (*id_) *_group_operation = _multiply; else *_group_operation = _add;
-    return 0;
-} // to get the appriopiate group operation ^
-
 void list_plausable_group_identity_descriptions(int argv_index)
 {
     fflush(stderr);

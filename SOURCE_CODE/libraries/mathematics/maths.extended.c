@@ -1,8 +1,6 @@
 /* This library is full of (wrapper) functions that support functions from 'maths.c' */
 #include "maths.extended.h"
 
-unsigned int _id = 0;
-
 int mod_ul_parse_str(char *str, int exit_status) { return _ul_parse_str(mod_, str, exit_status); }
 
 void group_parse(ul_ptr mod_ptr, group_operation_ *_group_operation_ptr, error_function_ mod_instruction, error_function_ _id_instruction, unsigned int argv_index)
