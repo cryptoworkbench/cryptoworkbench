@@ -6,10 +6,10 @@ successfull_builds=0
 echo "ERRORS FROM THE SHELL SCRIPT '/SOURCE.initialize_scripts.sh':" >> ../.initialization_errors
 cd scripts
     echo "Initializing scripts:   -->"
-cd subgroup_examplifier_SCRIPT && make subgroup_examplifier_SCRIPT > /dev/null 2>> ../../../.initialization_errors
+cd group_examplifier_SCRIPT && make group_examplifier_SCRIPT > /dev/null 2>> ../../../.initialization_errors
 if [ $? -eq 0 ];
-then echo "successfully initialized          'subgroup_examplifier.sh'"; successfull_builds=$(( $successfull_builds + 1 ));
-else echo "                                  'subgroup_examplifier.sh'         failed to initialize!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ../
+then echo "successfully initialized          'group_examplifier.sh'"; successfull_builds=$(( $successfull_builds + 1 ));
+else echo "                                  'group_examplifier.sh'         failed to initialize!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ../
 
 cd dh_key_agreement_SCRIPT && make dh_key_agreement_SCRIPT > /dev/null 2>> ../../../.initialization_errors
 if [ $? -eq 0 ];

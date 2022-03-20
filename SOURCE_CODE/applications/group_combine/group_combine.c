@@ -1,5 +1,3 @@
-// DEVELOPERs note:
-// I need to make this program cooperative again with some generic function which uses 'mod_' and 'id_'
 #include <stdio.h>
 #include "../../libraries/functional/string.extended.h"
 #include "../../libraries/mathematics/maths.extended.h"
