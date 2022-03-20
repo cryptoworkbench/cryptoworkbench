@@ -123,7 +123,7 @@ int main(int argc, char **argv) { group_cardinality = mod = horizontal_offset = 
     // examplify subgroups ^
 
     if (generator_count) {
-	fprintf(stdout, "%lu generators are present within \u2115%s%s:\n", generator_count, argv[1], sign_array(1));
+	fprintf(stdout, "%lu generators are present within \u2115%s%s:\n", generator_count, argv[1], sign[1]);
 	for (unsigned long printed_gens = 0, index = vertical_offset; printed_gens < generator_count; index = _add(index, 1, group_cardinality))
 	{ while (lookup_table.perm_length[index] != group_cardinality) index = _add(index, 1, group_cardinality); print_permutation(index); printed_gens++; }
     } else fprintf(stdout, "There are no generators in this group.\n");

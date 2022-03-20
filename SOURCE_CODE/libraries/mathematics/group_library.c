@@ -23,9 +23,9 @@ FILE *open_group(char **argv) { argv_ZERO = argv[0];
     if ( !(logbook_fs = fopen(LOGBOOK_PATH, "a"))) { fprintf(stderr, "Failed to open logbook!\n"); exit(-10); }
     // ^^ Exit when the logbook won't open
 
-    const char *operation_symbol = sign_array(1);
-    const char *adjective = sign_array(4);
-    const char *group_ID = sign_array(0);
+    const char *operation_symbol = sign[1];
+    const char *adjective = sign[4];
+    const char *group_ID = sign[0];
     // ^^ Prepare the char pointers that 'open_group_as_INNER' feeds on
 
     return open_group_INNER(argv[1], argv[2], adjective, operation_symbol, BUFFER_OF_SIZE(200));

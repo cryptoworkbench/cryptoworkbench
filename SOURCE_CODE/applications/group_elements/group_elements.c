@@ -15,5 +15,5 @@ int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY; argv_ptr = &argv;
     unsigned long count = 0;
     for (unsigned long element = (group_operation == _multiply); element < mod; element++)
 	if (group_operation == _add || GCD(mod, element) == MULTIPLICATIVE_IDENTITY) { fprintf(stdout, "%lu\n", element); count++; }
-    fprintf(stdout, "\n\u2115%s%s contains %lu elements.\n", argv[1], signs[1], count); // absolutely needed here because otherwise 'group_library.c' won't stop trying to read from this program's STDOUT
+    fprintf(stdout, "\n\u2115%s%s contains %lu elements.\n", argv[1], sign[1], count); // absolutely needed here because otherwise 'group_library.c' won't stop trying to read from this program's STDOUT
     return 0; }

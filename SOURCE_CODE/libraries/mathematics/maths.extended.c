@@ -13,9 +13,9 @@ void group_parse(ul_ptr mod_ptr, group_operation_ *oper, error_function_ mod_ins
     conditional_goodbye(n(n(error_specification(mod_instruction, n(          mod_ul_parse_str((*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));
     conditional_goodbye(n(n(error_specification(_id_instruction, n(_group_operation_parse_str((*argv_ptr)[argv_index + 1], - (argv_index + 1) ))))));
 
-    signs = (const char **) malloc(sizeof(const char *) * (6 + 1));
-    if (*oper == _add) { signs[0] = "0"; signs[1] = "+"; signs[2] = "addition"; signs[3] = "additions"; signs[4] = "additive"; signs[5] = "add"; signs[5] = 0; }
-    else { signs[0] = "1"; signs[1] = "x"; signs[2] = "multiplication"; signs[3] = "multiplications"; signs[4] = "multiplicative"; signs[5] = "multiply"; signs[6] = 0; }
+    sign = (const char **) malloc(sizeof(const char *) * (6 + 1));
+    if (*oper == _add) { sign[0] = "0"; sign[1] = "+"; sign[2] = "addition"; sign[3] = "additions"; sign[4] = "additive"; sign[5] = "add"; sign[5] = 0; }
+    else { sign[0] = "1"; sign[1] = "x"; sign[2] = "multiplication"; sign[3] = "multiplications"; sign[4] = "multiplicative"; sign[5] = "multiply"; sign[6] = 0; }
 
     // group_operation_signs = _additive_signs; if (*_group_operation == _multiply) group_operation_signs = _multiplicative_signs;
 }
