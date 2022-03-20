@@ -3,13 +3,25 @@
 
 int mod_ul_parse_str(char *str, int exit_status) { return _ul_parse_str(mod_, str, exit_status); }
 int id_identity_parse_str(char *str, int exit_status) { return _identity_parse_str(id_, str, exit_status); }
-int id_identity_parse_str_(char *str, int exit_status)
-{ return _identity_parse_str_(id_, str, exit_status); }
+int id_identity_parse_str_(char *str, int exit_status) { return _identity_parse_str_(id_, str, exit_status); }
 
 void group_parse(_error_function mod_instruction, _error_function _id_instruction, unsigned int argv_index)
 {
     conditional_goodbye(n(n(error_specification(mod_instruction, n(     mod_ul_parse_str ((*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));
     conditional_goodbye(n(n(error_specification(_id_instruction, n(id_identity_parse_str_((*argv_ptr)[argv_index + 1], - (argv_index + 1) ))))));
+}
+
+// NEW:
+int _group_operation_parse_str(char *str, int exit_status)
+{
+    return group_operation_parse_str(_group_operation, str, exit_status);
+}
+
+// NEW:
+void group_parse_(_error_function mod_instruction, _error_function _id_instruction, unsigned int argv_index)
+{
+    conditional_goodbye(n(n(error_specification(mod_instruction, n(          mod_ul_parse_str((*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));
+    conditional_goodbye(n(n(error_specification(_id_instruction, n(_group_operation_parse_str((*argv_ptr)[argv_index + 1], - (argv_index + 1) ))))));
 }
 
 unsigned long mod_group_operation(ul a, ul b)

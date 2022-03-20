@@ -44,10 +44,10 @@ unsigned long *array_from_LL(struct LL_ **head_TRACER, ul required_array_size) {
 
 unsigned long count_of_GENERATED_subgroup_elements(unsigned long index) { unsigned long ret_val = 0;
     struct VOID_ptr_ptr_PAIR permutation_LL_pair = initialize_CHANNEL_ptr_pair();
-    unsigned long generated_element = *id_; do {
+    unsigned long generated_element = associated_identity(); do {
 	INSERT((struct LL_ ***) &permutation_LL_pair.iterator, INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality, generated_element)); ret_val++;
 	generated_element = mod_group_operation(generated_element, lookup_table.base_permutation[index]);
-    } while (generated_element != *id_);
+    } while (generated_element != associated_identity());
     lookup_table.permutation[index] = array_from_LL((struct LL_ **) permutation_LL_pair.head, ret_val);
     return ret_val;
 }
@@ -109,7 +109,7 @@ void mod_failed_to_parse()
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { group_cardinality, mod, id, horizontal_offset, vertical_offset = ADDITIVE_IDENTITY; mod_ = &mod; id_ = &id; _group_operation = &oper; argv_ptr = &argv;
-    group_parse(mod_failed_to_parse, _id_failed_to_parse, 1); conditional_goodbye(n(n(error_message(invalid_group_parameters,  - 3 * ( !mod || (oper == _multiply) && !(mod - 1)) ))));
+    group_parse_(mod_failed_to_parse, _id_failed_to_parse, 1); conditional_goodbye(n(n(error_message(invalid_group_parameters,  - 3 * ( !mod || (oper == _multiply) && !(mod - 1)) ))));
     // process mandatory arguments ^ 
 
     n(n(error_specification(horizontal_offset_failed_to_parse, 3 < argc && _ul_parse_str(&horizontal_offset, argv[3], 1))));

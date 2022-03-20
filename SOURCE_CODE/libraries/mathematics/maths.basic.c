@@ -91,12 +91,6 @@ void identity_error() { fprintf(stderr, "parsing of '%s' failed: could not match
 
 int _identity_parse_str(ui_ptr id_, char *str, int exit_status)
 {
-    /* NEW CODE: ->
-    if (str && _match(str, 6, additive_signs)) {
-    } else if (str && _match(str, 6, multiplicative_signs)) {
-	(*id_)++;
-    } else return n(error_message(not_parsable(identity_error, str), exit_status));
-    */
     if (!str || (str && !((*id_ = _match(str, 6, multiplicative_signs)) || _match(str, 6, additive_signs)))) return n(error_message(not_parsable(identity_error, str), exit_status));
     return 0;
 }
@@ -220,4 +214,11 @@ int pair_of_strs_represents_pair_of_coprime_ULs(_error_function _first_instructi
     fprintf(stderr, "%s is not coprime to %s -->  ", (*argv_ptr)[second_index], (*argv_ptr)[_first_index]);
     fprintf(stderr, "%s is neither from \u2115%s* nor from \u2115/%s\u2115* !", (*argv_ptr)[_first_index], (*argv_ptr)[second_index], (*argv_ptr)[second_index]);
     return exit_status;
+}
+
+group_operation operation_convert(char *str) { if (_match(str, 6, multiplicative_signs)) return _multiply; else if (_match(str, 6, additive_signs)) return _add; return NULL; }
+
+int group_operation_parse_str(group_operation *_group_operation, char *str, int exit_status)
+{
+    if (!str || (str && !(*_group_operation = operation_convert(str)))) return n(error_message(not_parsable(identity_error, str), exit_status)); return 0;
 }
