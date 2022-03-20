@@ -12,5 +12,5 @@ int main(int argc, char **argv) { mod = identity = ADDITIVE_IDENTITY; mod_ = &mo
     conditional_goodbye(n(n(error_specification(mod_failed_to_parse, n(     mod_ul_parse_str(           argv[1], -1))))));
     conditional_goodbye(n(n(error_specification(_id_failed_to_parse, n(        _ul_parse_str(&identity, argv[2], -2))))));
     unsigned long count = 0; for (unsigned long element = identity; element < mod; element++) if (identity == ADDITIVE_IDENTITY || GCD(mod, element) == MULTIPLICATIVE_IDENTITY) { fprintf(stdout, "%lu\n", element); count++; }
-    fprintf(stdout, "\nExported %lu elements.\n", count); // absolutely needed here because otherwise 'group_library.c' won't stop trying to read from this program's STDOUT
+    fprintf(stdout, "\nDisplayed %lu elements.\n", count); // absolutely needed here because otherwise 'group_library.c' won't stop trying to read from this program's STDOUT
     return 0; }
