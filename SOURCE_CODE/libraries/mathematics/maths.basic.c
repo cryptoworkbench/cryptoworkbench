@@ -6,8 +6,8 @@
 FILE *urandom = NULL;
 const char *_standard_prime_table_filename = "shared_prime_table";
 
-const char *additive_signs[] = {"0", "+", "addition", "additions", "additive", "add", 0};
-const char *multiplicative_signs[] = {"1", "*", "multiplication", "multiplications", "multiplicative", "multiply", 0};
+const char *_additive_signs[] = {"0", "+", "addition", "additions", "additive", "add", 0};
+const char *_multiplicative_signs[] = {"1", "*", "multiplication", "multiplications", "multiplicative", "multiply", 0};
 
 char *_REPORT_standard_prime_table_filename() { return (char *) _standard_prime_table_filename; }
 char *_open_prime_table = NULL; char *_REPORT_open_prime_table() { return (char *) _open_prime_table; }
@@ -71,8 +71,8 @@ unsigned int _associated_identity(group_operation_ oper)
 const char *_sign_array(group_operation_ *oper, int SELECTOR)
 {
     if (!oper) return NULL;
-    const char **array = additive_signs;
-    if (*oper == _multiply) array = multiplicative_signs;
+    const char **array = _additive_signs;
+    if (*oper == _multiply) array = _multiplicative_signs;
     return array[SELECTOR];
 }
 
@@ -84,13 +84,13 @@ void identity_error() { fprintf(stderr, "parsing of '%s' failed: could not match
 
 int _identity_parse_str(ui_ptr id_, char *str, int exit_status)
 {
-    if (!str || (str && !((*id_ = _match(str, 6, multiplicative_signs)) || _match(str, 6, additive_signs)))) return n(error_message(not_parsable(identity_error, str), exit_status));
+    if (!str || (str && !((*id_ = _match(str, 6, _multiplicative_signs)) || _match(str, 6, _additive_signs)))) return n(error_message(not_parsable(identity_error, str), exit_status));
     return 0;
 }
 
 int _identity_parse_str_(ui_ptr id_, char *str, int exit_status)
 {
-    if (!str || (str && !((*id_ = _match(str, 6, multiplicative_signs)) || _match(str, 6, additive_signs)))) return n(error_message(not_parsable(identity_error, str), exit_status));
+    if (!str || (str && !((*id_ = _match(str, 6, _multiplicative_signs)) || _match(str, 6, _additive_signs)))) return n(error_message(not_parsable(identity_error, str), exit_status));
     if (*id_) *_group_operation = _multiply; else *_group_operation = _add;
     return 0;
 } // to get the appriopiate group operation ^
@@ -98,8 +98,8 @@ int _identity_parse_str_(ui_ptr id_, char *str, int exit_status)
 void list_plausable_group_identity_descriptions(int argv_index)
 {
     fflush(stderr);
-    fprintf(stderr, "\n- \u2115%s+ could have been specified using '%s', '%s', '%s', '%s', '%s' or '%s'                        		instead of '%s'", (*argv_ptr)[1], additive_signs[5], additive_signs[4], additive_signs[2], additive_signs[3], additive_signs[0], additive_signs[1], (*argv_ptr)[argv_index]);
-    fprintf(stderr, "\n- \u2115%s* could have been specified using '%s', '%s', '%s', '%s', '%s' or '%s'		instead of '%s'", (*argv_ptr)[1], multiplicative_signs[5], multiplicative_signs[4], multiplicative_signs[2], multiplicative_signs[3], multiplicative_signs[0], multiplicative_signs[1], (*argv_ptr)[argv_index]);
+    fprintf(stderr, "\n- \u2115%s+ could have been specified using '%s', '%s', '%s', '%s', '%s' or '%s'                        		instead of '%s'", (*argv_ptr)[1], _additive_signs[5], _additive_signs[4], _additive_signs[2], _additive_signs[3], _additive_signs[0], _additive_signs[1], (*argv_ptr)[argv_index]);
+    fprintf(stderr, "\n- \u2115%s* could have been specified using '%s', '%s', '%s', '%s', '%s' or '%s'		instead of '%s'", (*argv_ptr)[1], _multiplicative_signs[5], _multiplicative_signs[4], _multiplicative_signs[2], _multiplicative_signs[3], _multiplicative_signs[0], _multiplicative_signs[1], (*argv_ptr)[argv_index]);
 }
 
 unsigned long DH_public_key(STRUCT_DH_parameters *DH_parameters, ul DH_private_key) { return _exponentiate(DH_parameters->b, DH_private_key, DH_parameters->a); }
@@ -209,7 +209,7 @@ int pair_of_strs_represents_pair_of_coprime_ULs(error_function_ _first_instructi
     return exit_status;
 }
 
-group_operation_ operation_convert(char *str) { if (_match(str, 6, multiplicative_signs)) return _multiply; else if (_match(str, 6, additive_signs)) return _add; return NULL; }
+group_operation_ operation_convert(char *str) { if (_match(str, 6, _multiplicative_signs)) return _multiply; else if (_match(str, 6, _additive_signs)) return _add; return NULL; }
 
 int group_operation_parse_str(group_operation_ *_group_operation, char *str, int exit_status)
 {

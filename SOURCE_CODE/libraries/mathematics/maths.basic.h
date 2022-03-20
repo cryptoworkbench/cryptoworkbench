@@ -11,7 +11,8 @@ struct ordered_pair { ul a; ul b; };
 typedef unsigned long (*group_operation_) (ul, ul, ul);
 // type declarations ^^
 
-const char **group_operation_signs;
+const char **signs;
+
 group_operation_ *_group_operation;
 
 struct ordered_pair _isomorphism();
