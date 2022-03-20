@@ -13,8 +13,8 @@
 ../../libraries/mathematics/.group_library.o: ../../libraries/mathematics/group_library.h ../../libraries/mathematics/group_library.c
 	gcc -c ../../libraries/mathematics/group_library.c -o ../../libraries/mathematics/.group_library.o
 
-.group_element_exporter.o: group_element_exporter.c
-	gcc -c group_element_exporter.c -o .group_element_exporter.o
+.group_elements.o: group_elements.c
+	gcc -c group_elements.c -o .group_elements.o
 
-group_element_exporter: ../../libraries/functional/.string.basic.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o .group_element_exporter.o
-	gcc ../../libraries/functional/.string.basic.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o .group_element_exporter.o -o ../../../applications/group_element_exporter
+group_elements: ../../libraries/functional/.string.basic.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o .group_elements.o
+	gcc ../../libraries/functional/.string.basic.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o .group_elements.o -o ../../../applications/group_elements

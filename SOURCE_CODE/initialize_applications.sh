@@ -51,10 +51,10 @@ if [ $? -eq 0 ];
 then echo "successfully build application    'greatest_common_divisor'"; successfull_builds=$(( $successfull_builds + 1 ));
 else echo "                   application    'greatest_common_divisor'         FAILED TO BUILD!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ..
 
-cd group_element_exporter && make group_element_exporter > /dev/null 2>> ../../../.initialization_errors
+cd group_elements && make group_elements > /dev/null 2>> ../../../.initialization_errors
 if [ $? -eq 0 ];
-then echo "successfully build application    'group_element_exporter'"; successfull_builds=$(( $successfull_builds + 1 ));
-else echo "                   application    'group_element_exporter'         FAILED TO BUILD!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ..
+then echo "successfully build application    'group_elements'"; successfull_builds=$(( $successfull_builds + 1 ));
+else echo "                   application    'group_elements'         FAILED TO BUILD!"; ___failed_builds=$((   $___failed_builds + 1 )); fi; cd ..
 
 cd group_combine && make group_combine > /dev/null 2>> ../../../.initialization_errors
 if [ $? -eq 0 ];
