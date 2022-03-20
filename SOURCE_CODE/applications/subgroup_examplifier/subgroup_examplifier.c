@@ -85,7 +85,7 @@ unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair
     *(lookup_table.permutation[0] = UL_array_of_SIZE(MULTIPLICATIVE_IDENTITY)) = 0;
     unsigned long index; for (index = 0; index < group_cardinality; index++) lookup_table.ASCII[index] = _str_from_ul(lookup_table.base_permutation[index], width);
 
-    if (*id_) {
+    if (associated_identity()) {
 	if (*mod_ == 2) return 1;
 	for (index = 1; index < group_cardinality; index++) if ((lookup_table.perm_length[index] = count_of_GENERATED_subgroup_elements(index)) == group_cardinality) break;
 	if (index == group_cardinality) return 0; permutation_of_FIRST_GEN = lookup_table.permutation[index]; return CONSULT_permutation_of_FIRST_GEN(index + 1);
@@ -106,7 +106,8 @@ void _id_failed_to_parse() {
     list_plausable_group_identity_descriptions(2);
 }
 
-void mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument the modulus of the group whose subgroups to examplify. '\u2115%s*' makes no sense to me.", (*argv_ptr)[1]); }
+void mod_failed_to_parse()
+{ fprintf(stderr, "Please specify as first argument the modulus of the group whose subgroups to examplify. Neither '\u2115%s*' nor '\u2115%s+' makes any sense to me!", (*argv_ptr)[1], (*argv_ptr)[1]); }
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { group_cardinality, mod, id, horizontal_offset, vertical_offset = ADDITIVE_IDENTITY; mod_ = &mod; id_ = &id; _group_operation = &group_oper; argv_ptr = &argv;
@@ -123,7 +124,7 @@ int main(int argc, char **argv) { group_cardinality, mod, id, horizontal_offset,
     // examplify subgroups ^
 
     if (generator_count) {
-	fprintf(stdout, "%lu generators are present within \u2115%s%s:\n", generator_count, argv[1], id_as_operation_symbol());
+	fprintf(stdout, "%lu generators are present within \u2115%s%s:\n", generator_count, argv[1], sign_array(1));
 	for (unsigned long printed_gens = 0, index = __vertical_offset; printed_gens < generator_count; index = _add(index, 1, group_cardinality))
 	{ while (lookup_table.perm_length[index] != group_cardinality) index = _add(index, 1, group_cardinality); print_permutation(index); printed_gens++; }
     } else fprintf(stdout, "There are no generators in this group.\n");

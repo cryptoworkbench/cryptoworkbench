@@ -73,6 +73,9 @@ const char *id_as_nouns() { return _as_nouns(*id_); }
 const char *id_as_adjective() { return _as_adjective(*id_); }
 const char *id_as_verb() { return _as_verb(*id_); }
 
+unsigned int associated_identity() { return _associated_identity(*_group_operation); }
+const char *sign_array(int SELECTOR) { return _sign_array(_group_operation, SELECTOR); }
+
 int mod_eulers_criterion(ul odd_prime_p)
 { return _eulers_criterion(odd_prime_p, *mod_); }
 /* ===================== corresponds to 'maths.basic.c' (!) ================== */

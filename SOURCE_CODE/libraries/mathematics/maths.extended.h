@@ -48,6 +48,9 @@ const char *id_as_adjective();
 const char *id_as_verb();
 // functions that have to do with the identity element ^
 
+unsigned int associated_identity();
+const char *sign_array(int SELECTOR);
+
 int mod_eulers_criterion(ul odd_prime_p);
 /* ===================== corresponds to 'maths.basic.h' (!) ====================== */
 

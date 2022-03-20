@@ -70,6 +70,19 @@ const char *_as_nouns(unsigned int id_) { return (id_) ? multiplicative_signs[3]
 const char *_as_adjective(unsigned int id_) { return (id_) ? multiplicative_signs[4] : additive_signs[4]; }
 const char *_as_verb(unsigned int id_) { return (id_) ? multiplicative_signs[5] : additive_signs[5]; }
 
+unsigned int _associated_identity(group_operation oper)
+{
+    return (oper == _multiply);
+}
+
+const char *_sign_array(group_operation *oper, int SELECTOR)
+{
+    if (!oper) return NULL;
+    const char **array = additive_signs;
+    if (*oper == _multiply) array = multiplicative_signs;
+    return array[SELECTOR];
+}
+
 int _eulers_criterion(ul odd_prime_p, ul odd_prime_q)
 { return (odd_prime_q - 1 - _exponentiate(odd_prime_p, (odd_prime_q - 1) / 2, odd_prime_q)) ? 1 : -1; }
 /* ===================== corresponds to 'maths.extended.c' (!) ================== */

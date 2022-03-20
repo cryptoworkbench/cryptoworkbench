@@ -44,6 +44,9 @@ const char *_as_adjective(ui id_);
 const char *_as_verb(ui id_);
 // functions that have to do with the identity element ^
 
+unsigned int _associated_identity(group_operation oper);
+const char *_sign_array(group_operation *oper, int SELECTOR);
+
 int _eulers_criterion(ul odd_prime_p, ul odd_prime_q);
 /* ===================== corresponds to 'maths.extended.h' (!) ================== */
 
