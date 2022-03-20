@@ -85,13 +85,6 @@ unsigned long mod_polynomial(ul x, ul *coefficient, int number_of_coefficients)
     return _polynomial(x, coefficient, number_of_coefficients, *mod_);
 }
 
-const char *id_as_number() { return _as_number(*id_); }
-const char *id_as_operation_symbol() { return _as_operation_symbol(*id_); }
-const char *id_as_noun() { return _as_noun(*id_); }
-const char *id_as_nouns() { return _as_nouns(*id_); }
-const char *id_as_adjective() { return _as_adjective(*id_); }
-const char *id_as_verb() { return _as_verb(*id_); }
-
 unsigned int associated_identity() { return _associated_identity(*_group_operation); }
 const char *sign_array(int SELECTOR) { return _sign_array(_group_operation, SELECTOR); }
 

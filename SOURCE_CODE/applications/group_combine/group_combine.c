@@ -11,7 +11,7 @@ group_operation_ group_operation; unsigned long ans, mod; unsigned int function_
 void argument_failed_to_parse() { fprintf(stderr, "%ith argument failed to parse!", STARTING_INDEX_OF_ARGS_LIST + i); };
 void ___array_failed_to_parse() { fprintf(stderr, "This function requires at least two inputs!"); };
 void sp_array_failed_to_parse() {
-    fprintf(stderr, "Please specify from the second argument onward numbers to %s within the finite field F%s.", id_as_verb(), (*argv_ptr)[1]);
+    fprintf(stderr, "Please specify from the second argument onward numbers to %s within the finite field F%s.", sign_array(5), (*argv_ptr)[1]);
 }
 void operation_failed_to_parse() { fprintf(stderr, "Please specify as second argument the identity element of the group whose subgroups to examplify."); list_plausable_group_identity_descriptions(2); }
 void ______mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument the modulus of the group operation (0 to act upon the infinite group of integers)."); }

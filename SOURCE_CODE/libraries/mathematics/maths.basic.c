@@ -63,13 +63,6 @@ unsigned long _polynomial(ul x, ul_ptr coefficient, int number_of_coefficients, 
     return iso.a;
 }
 
-const char *_as_number(unsigned int id_) { return (id_) ? multiplicative_signs[0] : additive_signs[0]; }
-const char *_as_operation_symbol(unsigned int id_) { return (id_) ? multiplicative_signs[1] : additive_signs[1]; }
-const char *_as_noun(unsigned int id_) { return (id_) ? multiplicative_signs[2] : additive_signs[2]; }
-const char *_as_nouns(unsigned int id_) { return (id_) ? multiplicative_signs[3] : additive_signs[3]; }
-const char *_as_adjective(unsigned int id_) { return (id_) ? multiplicative_signs[4] : additive_signs[4]; }
-const char *_as_verb(unsigned int id_) { return (id_) ? multiplicative_signs[5] : additive_signs[5]; }
-
 unsigned int _associated_identity(group_operation_ oper)
 {
     return (oper == _multiply);

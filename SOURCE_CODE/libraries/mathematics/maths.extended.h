@@ -38,12 +38,12 @@ unsigned long mod_divide(ul numerator, ul denominator);
 unsigned long mod_polynomial(ul x, ul *coefficient, int coefficients);
 // basic (in)finite field operations ^
 
-const char *id_as_number();
-const char *id_as_operation_symbol();
-const char *id_as_noun();
-const char *id_as_nouns();
-const char *id_as_adjective();
-const char *id_as_verb();
+// const char *id_as_number();
+// const char *id_as_operation_symbol();
+// const char *id_as_noun();
+// const char *id_as_nouns();
+// const char *id_as_adjective();
+// const char *id_as_verb();
 // functions that have to do with the identity element ^
 
 unsigned int associated_identity();

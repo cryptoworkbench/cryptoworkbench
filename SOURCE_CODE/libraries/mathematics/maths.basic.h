@@ -36,19 +36,19 @@ unsigned long _divide(ul numerator, ul denominator, ul mod_);
 unsigned long _polynomial(ul x, ul *coefficient, int coefficients, ul mod_);
 // basic (in)finite field operations ^
 
-const char *_as_number(ui id_);
-const char *_as_operation_symbol(ui id_);
-const char *_as_noun(ui id_);
-const char *_as_nouns(ui id_);
-const char *_as_adjective(ui id_);
-const char *_as_verb(ui id_);
+// const char *_as_number(ui id_);
+// const char *_as_operation_symbol(ui id_);
+// const char *_as_noun(ui id_);
+// const char *_as_nouns(ui id_);
+// const char *_as_adjective(ui id_);
+// const char *_as_verb(ui id_);
 // functions that have to do with the identity element ^
 
 unsigned int _associated_identity(group_operation_ oper);
 const char *_sign_array(group_operation_ *oper, int SELECTOR);
 
 int _eulers_criterion(ul odd_prime_p, ul odd_prime_q);
-/* ===================== corresponds to 'maths.extended.h' (!) ================== */
+/* ===================== corresponds to 'maths.extended.h' (!) ================== */ // 'mod_' needs to be initialized
 
 void list_plausable_group_identity_descriptions(int argv_index);
 // more functions regarding the identity element
