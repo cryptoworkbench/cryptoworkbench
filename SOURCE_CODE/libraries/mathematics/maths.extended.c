@@ -8,10 +8,6 @@ void group_parse(ul_ptr mod_ptr, group_operation_ *_group_operation_ptr, error_f
     mod_ = mod_ptr; _group_operation = _group_operation_ptr;
     conditional_goodbye(n(n(error_specification(mod_instruction, n(          mod_ul_parse_str((*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));
     conditional_goodbye(n(n(error_specification(_id_instruction, n(_group_operation_parse_str((*argv_ptr)[argv_index + 1], - (argv_index + 1) ))))));
-
-    *((sign = (const char **) malloc(sizeof(const char *) * (1 + 6))) + 6) = 0;
-    if (*_group_operation_ptr == _add) { sign[0] = "0"; sign[1] = "+"; sign[2] = "addition"; sign[3] = "additions"; sign[4] = "additive"; sign[5] = "add"; }
-    else { sign[0] = "1"; sign[1] = "x"; sign[2] = "multiplication"; sign[3] = "multiplications"; sign[4] = "multiplicative"; sign[5] = "multiply"; }
 }
 
 int _group_operation_parse_str(char *str, int exit_status)

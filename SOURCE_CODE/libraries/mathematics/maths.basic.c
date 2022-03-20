@@ -188,5 +188,6 @@ group_operation_ operation_convert(char *str) { if (_match(str, 6, _multiplicati
 
 int group_operation_parse_str(group_operation_ *_group_operation_ptr, char *str, int exit_status)
 {
-    if (!str || !(*_group_operation_ptr = operation_convert(str))) return n(error_message(not_parsable(identity_error, str), exit_status)); return 0;
+    if (!str || (*_group_operation_ptr = operation_convert(str)) == NULL) return n(error_message(not_parsable(identity_error, str), exit_status));
+    if (*_group_operation_ptr == _multiply) sign = _multiplicative_signs; else sign = _additive_signs; return 0;
 }
