@@ -89,7 +89,7 @@ unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair
     unsigned long index; for (index = 0; index < group_cardinality; index++) lookup_table.ASCII[index] = _str_from_ul(lookup_table.base_permutation[index], width);
 
     if (group.oper == _multiply) {
-	if (*mod_ == 2) return 1;
+	if (*_mod == 2) return 1;
 	for (index = 1; index < group_cardinality; index++) if ((lookup_table.perm_length[index] = count_of_GENERATED_subgroup_elements(index)) == group_cardinality) break;
 	if (index == group_cardinality) return 0; permutation_of_FIRST_GEN = lookup_table.permutation[index]; return CONSULT_permutation_of_FIRST_GEN(index + 1);
     } lookup_table.perm_length[1] = group_cardinality; lookup_table.permutation[1] = lookup_table.base_permutation; return CONSULT_permutation_of_FIRST_GEN(2);
@@ -100,7 +100,7 @@ void __vertical_offset_failed_to_parse() { fprintf(stderr, "Failed to interpret 
 void invalid_group_parameters()
 {
     fprintf(stderr, "\nInvalid group parameters: ");
-    if (!(*mod_)) fprintf(stderr, "the modulus cannot be 0!");
+    if (!(*_mod)) fprintf(stderr, "the modulus cannot be 0!");
     else fprintf(stderr, "for multiplicative groups the modulus needs to be at least 2! (since multiplicative groups do not include the element '0')");
 }
 
@@ -114,7 +114,7 @@ void mod_failed_to_parse()
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { group_cardinality = group.mod = horizontal_offset = vertical_offset = ADDITIVE_IDENTITY; argv_ptr = &argv;
-    _group_parse(&group, mod_failed_to_parse, _id_failed_to_parse, 1); mod_ = &group.mod; _group_operation = &group.oper;
+    _group_parse(&group, mod_failed_to_parse, _id_failed_to_parse, 1); _mod = &group.mod; _group_operation = &group.oper;
     conditional_goodbye(n(n(error_message(invalid_group_parameters,  - 3 * ( !group.mod || group.oper == _multiply && !(group.mod - 1)) ))));
     // process mandatory arguments ^ 
 

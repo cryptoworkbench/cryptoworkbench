@@ -15,7 +15,7 @@ void operation_instruction() { fprintf(stderr, "Please specify as second argumen
 void       mod_instruction() { fprintf(stderr, "Please specify as first argument the modulus of the group operation (0 to act upon the infinite group of integers)."); }
 // '_failed_to_parse' functions ^^
 
-int main(int argc, char **argv) { i_ = &i; array_size_ = &function_arg_count; mod = ADDITIVE_IDENTITY; mod_ = &mod; argv_ptr = &argv;
+int main(int argc, char **argv) { i_ = &i; array_size_ = &function_arg_count; mod = ADDITIVE_IDENTITY; _mod = &mod; argv_ptr = &argv;
     _group_operation = mod_group_parse(&group_operation, mod_instruction, operation_instruction, 1);
     // process first two arguments ^^
 

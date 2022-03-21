@@ -9,7 +9,7 @@ void _id_instruction() { fprintf(stderr, "Please provide as second argument the 
 void mod_instruction() { fprintf(stderr, "Please provide as first argument the additive group's or the multiplicative group's modulus."); }
 //   ^ error functions 
 
-int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY; mod_ = &mod; argv_ptr = &argv;
+int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY; _mod = &mod; argv_ptr = &argv;
     _group_operation = mod_group_parse(&group_operation, mod_instruction, _id_instruction, 1);
 
     unsigned long count = 0;

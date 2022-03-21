@@ -64,7 +64,7 @@ int main(int argc, char **argv) { D = N = ADDITIVE_IDENTITY; argv_ptr = &argv;
     conditional_goodbye(n(n(pair_of_strs_represents_pair_of_coprime_ULs(denominator_fail, numerator_fail, &D, &N, 1, 2, -3)))); factorization_method_set(argv[3]);
     // take in denominator, numerator, check if they are coprime, and overrule external file '/applications/.global_preference.factorization_engine' if requested ^^^
 
-    mod_ = &D;
+    _mod = &D;
     unsigned long ans;
     if (!primality_test_based_on_preferred_factorization_engine(D)) ans = jacobi_symbol(N, D);
     else ans = legendre_symbol(N, D);

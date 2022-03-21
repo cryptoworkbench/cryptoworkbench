@@ -26,20 +26,20 @@ unsigned long exponentiate(ul base, ul exponent);
 // basic infinite field exponentiation ^
 
 /* ===================== corresponds to 'maths.extended.h' (!) ================== */
-unsigned long _exponentiate(ul base, ul exponent, ul mod_);
-unsigned long _conditional_cap(ul result, ul mod_);
-unsigned long _inverse(ul element_of_additive_group, ul mod_);
-unsigned long _add(ul a, ul b, ul mod_);
-unsigned long _subtract(ul a, ul b, ul mod_);
-unsigned long _multiply(ul a, ul b, ul mod_);
-unsigned long _divide(ul numerator, ul denominator, ul mod_);
-unsigned long _polynomial(ul x, ul *coefficient, int coefficients, ul mod_);
+unsigned long _exponentiate(ul base, ul exponent, ul _mod);
+unsigned long _conditional_cap(ul result, ul _mod);
+unsigned long _inverse(ul element_of_additive_group, ul _mod);
+unsigned long _add(ul a, ul b, ul _mod);
+unsigned long _subtract(ul a, ul b, ul _mod);
+unsigned long _multiply(ul a, ul b, ul _mod);
+unsigned long _divide(ul numerator, ul denominator, ul _mod);
+unsigned long _polynomial(ul x, ul *coefficient, int coefficients, ul _mod);
 // basic (in)finite field operations ^
 
 unsigned int _associated_identity(group_operation_ oper);
 
 int _eulers_criterion(ul odd_prime_p, ul odd_prime_q);
-/* ===================== corresponds to 'maths.extended.h' (!) ================== */ // 'mod_' needs to be initialized
+/* ===================== corresponds to 'maths.extended.h' (!) ================== */ // '_mod' needs to be initialized
 
 void list_plausable_group_identity_descriptions(int argv_index);
 // more functions regarding the identity element

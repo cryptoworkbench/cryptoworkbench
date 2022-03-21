@@ -24,7 +24,7 @@ void least_to_most_INSERT(struct LL_ **tracer, unsigned long first_root, unsigne
 
 void mod_failed_to_parse() { fprintf(stderr, "Please provide as first argument the modulus of the multiplicative group!"); }
 
-int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY; mod_ = &mod;
+int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY; _mod = &mod;
     conditional_goodbye(n(n(error_specification(mod_failed_to_parse, mod_ul_parse_str(argv[1], -1)))));
     for (unsigned long i = 1; i <= mod / 2; i++) if (GCD(i, mod) == 1) least_to_most_INSERT(&quadratic_residue_LL, i, mod_multiply(i, i)); // # (1.
     printf("Quadratic residue with roots for \u2115/%lu\u2115:\n", mod);

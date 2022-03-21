@@ -52,7 +52,7 @@ void ______________mod_error() { fprintf(stderr, "Please provide as first argume
 // index[1]: x coordinate
 // index[2]: c variable
 
-int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY; mod_ = &mod; argv_ptr = &argv; SET_k(K);
+int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY; _mod = &mod; argv_ptr = &argv; SET_k(K);
     conditional_goodbye(n(n(error_specification(______________mod_error, n(mod_ul_parse_str(argv[1], -1)))))); equation = equations_ALLOCATE(K);
     conditional_goodbye(n(n(error_specification(first_x_failed_to_parse, n(_ul_parse_str(1 + equation[0], argv[2], -2))))));
     conditional_goodbye(n(n(error_specification(first_y_failed_to_parse, n(_ul_parse_str(0 + equation[0], argv[3], -3))))));

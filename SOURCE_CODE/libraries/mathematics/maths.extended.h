@@ -14,7 +14,7 @@
  *
  */
 
-unsigned long *mod_;
+unsigned long *_mod;
 unsigned int *id_;
 
 unsigned long mod_group_operation(ul a, ul b);

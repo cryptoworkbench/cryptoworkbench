@@ -49,7 +49,7 @@ void _first_y_failed_to_parse() { fprintf(stderr, "Please provide as third argum
 void _first_x_failed_to_parse() { fprintf(stderr, "Please provide as second argument the x coordinate of first point!"); }
 void _____mod_failed_to_parse() { fprintf(stderr, "Please provide as first argument a finite field specification!"); }
 
-int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY; mod_ = &mod; SET_k(K);
+int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY; _mod = &mod; SET_k(K);
     conditional_goodbye(n(n(error_specification(_____mod_failed_to_parse, n(mod_ul_parse_str(argv[1], -1)))))); unsigned long **equation = equations_ALLOCATE(K);
     conditional_goodbye(n(n(error_specification(_first_x_failed_to_parse, n(_ul_parse_str(1 + equation[0], argv[2], -2))))));
     conditional_goodbye(n(n(error_specification(_first_y_failed_to_parse, n(_ul_parse_str(0 + equation[0], argv[3], -3))))));

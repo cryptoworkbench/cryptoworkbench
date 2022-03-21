@@ -12,13 +12,13 @@ void ____base_failed_to_parse() { fprintf(stderr, "\nFailed to understand '%s' a
 void _____mod_failed_to_parse() { fprintf(stderr, "\nFailed to understand '%s' as the value to use as the modulus.", (*argv_ptr)[1]); }
 // error functions ^^^
 
-int main(int argc, char **argv) { mod = base = exponent = ADDITIVE_IDENTITY; mod_ = &mod; argv_ptr = &argv;
+int main(int argc, char **argv) { mod = base = exponent = ADDITIVE_IDENTITY; _mod = &mod; argv_ptr = &argv;
     conditional_goodbye(n(n(error_specification(_____mod_failed_to_parse, mod_ul_parse_str(           argv[1], -1)))));
     conditional_goodbye(n(n(error_specification(____base_failed_to_parse,    _ul_parse_str(&    base, argv[2], -2)))));
     conditional_goodbye(n(n(error_specification(exponent_failed_to_parse,    _ul_parse_str(&exponent, argv[3], -3)))));
     // take in finite field, base, and exponent for function ^
 
-    mod_ = &mod; fprintf(stdout, "%lu^%lu modulus %lu = %lu\n", base, exponent, mod, mod_exponentiate(base, exponent));
+    _mod = &mod; fprintf(stdout, "%lu^%lu modulus %lu = %lu\n", base, exponent, mod, mod_exponentiate(base, exponent));
     // give result ^
     
     return 0;

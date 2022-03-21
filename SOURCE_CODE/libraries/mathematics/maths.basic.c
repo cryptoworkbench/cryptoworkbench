@@ -26,41 +26,41 @@ unsigned long exponentiate(ul base, ul exponent)
 { ul exponentiation_RESULT = (0 < base); for (ul iter = 0; iter < exponent; iter++) exponentiation_RESULT *= base; return exponentiation_RESULT; } 
 
 /* ===================== corresponds to 'maths.extended.c' (!) ================== */
-unsigned long _conditional_cap(ul result, ul mod_)
-{ return (mod_) ? result % mod_ : result; }
+unsigned long _conditional_cap(ul result, ul _mod)
+{ return (_mod) ? result % _mod : result; }
 
-unsigned long _add(ul a, ul b, ul mod_)
-{ return _conditional_cap(a + b, mod_); }
+unsigned long _add(ul a, ul b, ul _mod)
+{ return _conditional_cap(a + b, _mod); }
 
-unsigned long _inverse(ul element_of_additive_group, ul mod_)
-{ return _conditional_cap(mod_ - _conditional_cap(element_of_additive_group, mod_), mod_); }
+unsigned long _inverse(ul element_of_additive_group, ul _mod)
+{ return _conditional_cap(_mod - _conditional_cap(element_of_additive_group, _mod), _mod); }
 
-unsigned long _subtract(ul a, ul b, ul mod_)
-{ return _conditional_cap(a + _inverse(b, mod_), mod_); }
+unsigned long _subtract(ul a, ul b, ul _mod)
+{ return _conditional_cap(a + _inverse(b, _mod), _mod); }
 
-unsigned long _multiply(ul a, ul b, ul mod_)
-{ return _conditional_cap(a * b, mod_); }
+unsigned long _multiply(ul a, ul b, ul _mod)
+{ return _conditional_cap(a * b, _mod); }
 
-unsigned long _divide(ul numerator, ul denominator, ul mod_)
-{ if (mod_) while (numerator % denominator != 0) numerator += mod_; return _conditional_cap(numerator / denominator, mod_); }
+unsigned long _divide(ul numerator, ul denominator, ul _mod)
+{ if (_mod) while (numerator % denominator != 0) numerator += _mod; return _conditional_cap(numerator / denominator, _mod); }
 
-unsigned long _exponentiate(ul base, ul exponent, ul mod_)
+unsigned long _exponentiate(ul base, ul exponent, ul _mod)
 {
     if (base == 0 || exponent == 0) return 1;
     ul minimum_log = least_base_TWO_log(exponent); ul_ptr backbone = (ul_ptr ) malloc(sizeof(ul) * (minimum_log + 1));
-    ul i = ADDITIVE_IDENTITY; backbone[i] = _conditional_cap(base, mod_);
-    while (i < minimum_log) { backbone[i + 1] = _multiply(backbone[i], backbone[i], mod_); i++; }
+    ul i = ADDITIVE_IDENTITY; backbone[i] = _conditional_cap(base, _mod);
+    while (i < minimum_log) { backbone[i + 1] = _multiply(backbone[i], backbone[i], _mod); i++; }
     ul ret_val = MULTIPLICATIVE_IDENTITY; while (exponent != 0)
-    { ret_val = _multiply(ret_val, backbone[minimum_log], mod_); exponent -= exponentiate(2, minimum_log); minimum_log = least_base_TWO_log(exponent); }
+    { ret_val = _multiply(ret_val, backbone[minimum_log], _mod); exponent -= exponentiate(2, minimum_log); minimum_log = least_base_TWO_log(exponent); }
     free(backbone);
     return ret_val;
 }
 
-unsigned long _polynomial(ul x, ul_ptr coefficient, int number_of_coefficients, ul mod_)
+unsigned long _polynomial(ul x, ul_ptr coefficient, int number_of_coefficients, ul _mod)
 {
     struct ordered_pair iso = _isomorphism();
     int i = number_of_coefficients;
-    do { i--; iso.a = _add(iso.a, _multiply(iso.b, coefficient[i], mod_), mod_); iso.b = _multiply(iso.b, x, mod_); } while (i != 0);
+    do { i--; iso.a = _add(iso.a, _multiply(iso.b, coefficient[i], _mod), _mod); iso.b = _multiply(iso.b, x, _mod); } while (i != 0);
     return iso.a;
 }
 
