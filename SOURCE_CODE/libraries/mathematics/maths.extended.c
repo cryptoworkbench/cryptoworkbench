@@ -5,7 +5,7 @@ int mod_ul_parse_str(char *str, int exit_status) { return _ul_parse_str(_mod, st
 
 /* 
 group_operation_ *mod_group_parse(struct group *group_ptr, error_function_ mod_instruction, error_function_ _id_instruction, unsigned int argv_index)
-{ return _group_parse(group_ptr, mod_instruction, _id_instruction, argv_index); }
+{ return group_parse(group_ptr, mod_instruction, _id_instruction, argv_index); }
 */
 
 int _group_operation_parse_str(char *str, int exit_status)
@@ -65,4 +65,9 @@ unsigned long mod_polynomial(ul x, ul *coefficient, int number_of_coefficients)
 
 int mod_eulers_criterion(ul odd_prime_p)
 { return _eulers_criterion(odd_prime_p, *_mod); }
+
+void __group_parse(struct group *group_ptr, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index) {
+    _mod = &group_ptr->mod; _group_operation = &group_ptr->oper;
+    group_parse(group_ptr, mod_instruction, _id_instruction, argv_index);
+}
 /* ===================== corresponds to 'maths.basic.c' (!) ================== */
