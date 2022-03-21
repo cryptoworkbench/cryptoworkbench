@@ -3,11 +3,12 @@
 
 int mod_ul_parse_str(char *str, int exit_status) { return _ul_parse_str(mod_, str, exit_status); }
 
-void group_parse(ul_ptr mod_ptr, group_operation_ *_group_operation_ptr, error_function_ mod_instruction, error_function_ _id_instruction, unsigned int argv_index)
+group_operation_ group_parse(ul_ptr mod_ptr, error_function_ mod_instruction, error_function_ _id_instruction, unsigned int argv_index)
 {
-    mod_ = mod_ptr; _group_operation = _group_operation_ptr;
-    conditional_goodbye(n(n(error_specification(mod_instruction, n(          mod_ul_parse_str((*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));
-    conditional_goodbye(n(n(error_specification(_id_instruction, n(_group_operation_parse_str((*argv_ptr)[argv_index + 1], - (argv_index + 1) ))))));
+    group_operation_ ret_val; mod_ = mod_ptr;
+    conditional_goodbye(n(n(error_specification(mod_instruction, n(         mod_ul_parse_str(          (*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));
+    conditional_goodbye(n(n(error_specification(_id_instruction, n(group_operation_parse_str(&ret_val, (*argv_ptr)[argv_index + 1], - (argv_index + 1) ))))));
+    return ret_val;
 }
 
 int _group_operation_parse_str(char *str, int exit_status)

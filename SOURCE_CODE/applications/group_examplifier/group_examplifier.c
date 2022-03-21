@@ -13,7 +13,7 @@ struct LL_ { struct LL_ *next; unsigned long e; };
 struct crux { unsigned long *base_permutation; char **ASCII; unsigned long **permutation; unsigned long *perm_length; };
 // ^^ type definitions
 
-struct crux lookup_table; unsigned long *permutation_of_FIRST_GEN; unsigned long group_cardinality, mod, horizontal_offset, vertical_offset; group_operation_ group_operation;
+struct crux lookup_table; unsigned long *permutation_of_FIRST_GEN; unsigned long group_cardinality, mod, horizontal_offset, vertical_offset; // group_operation_ group_operation;
 //          ^ global variables           ^                                       ^                  ^    ^
 
 void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
@@ -46,10 +46,10 @@ unsigned long *array_from_LL(struct LL_ **head_TRACER, ul required_array_size) {
 
 unsigned long count_of_GENERATED_subgroup_elements(unsigned long index) { unsigned long ret_val = 0;
     struct VOID_ptr_ptr_PAIR permutation_LL_pair = initialize_CHANNEL_ptr_pair();
-    unsigned long generated_element = (group_operation == _multiply); do {
+    unsigned long generated_element = (*_group_operation == _multiply); do {
 	INSERT((struct LL_ ***) &permutation_LL_pair.iterator, INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality, generated_element)); ret_val++;
 	generated_element = mod_group_operation(generated_element, lookup_table.base_permutation[index]);
-    } while (generated_element != (group_operation == _multiply));
+    } while (generated_element != (*_group_operation == _multiply));
     lookup_table.permutation[index] = array_from_LL((struct LL_ **) permutation_LL_pair.head, ret_val);
     return ret_val;
 }
@@ -85,7 +85,7 @@ unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair
     *(lookup_table.permutation[0] = UL_array_of_SIZE(MULTIPLICATIVE_IDENTITY)) = 0;
     unsigned long index; for (index = 0; index < group_cardinality; index++) lookup_table.ASCII[index] = _str_from_ul(lookup_table.base_permutation[index], width);
 
-    if (group_operation == _multiply) {
+    if (*_group_operation == _multiply) {
 	if (*mod_ == 2) return 1;
 	for (index = 1; index < group_cardinality; index++) if ((lookup_table.perm_length[index] = count_of_GENERATED_subgroup_elements(index)) == group_cardinality) break;
 	if (index == group_cardinality) return 0; permutation_of_FIRST_GEN = lookup_table.permutation[index]; return CONSULT_permutation_of_FIRST_GEN(index + 1);
@@ -111,7 +111,8 @@ void mod_failed_to_parse()
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { group_cardinality = mod = horizontal_offset = vertical_offset = ADDITIVE_IDENTITY; argv_ptr = &argv;
-    group_parse(&mod, &group_operation, mod_failed_to_parse, _id_failed_to_parse, 1); conditional_goodbye(n(n(error_message(invalid_group_parameters,  - 3 * ( !mod || group_operation == _multiply && !(mod - 1)) ))));
+    group_operation_ group_operation = group_parse(&mod, mod_failed_to_parse, _id_failed_to_parse, 1); _group_operation = &group_operation; 
+    conditional_goodbye(n(n(error_message(invalid_group_parameters,  - 3 * ( !mod || group_operation == _multiply && !(mod - 1)) ))));
     // process mandatory arguments ^ 
 
     n(n(error_specification(horizontal_offset_failed_to_parse, 3 < argc && _ul_parse_str(&horizontal_offset, argv[3], 1))));
