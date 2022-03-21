@@ -8,11 +8,10 @@
 // definitions ^^^
 
 struct ordered_pair { ul a; ul b; };
-typedef unsigned long (*group_operation_) (ul, ul, ul);
+typedef unsigned long (*group_operation_) (ul, ul, ul); // typedef group_operation_ *group_operation_ptr;
+struct group { group_operation_ oper; ul mod; };
 // type declarations ^^
 
-const char **additive_signs;
-const char **multiplicative_signs;
 const char **sign;
 
 group_operation_ *_group_operation;
@@ -81,4 +80,4 @@ int pair_of_strs_represents_pair_of_coprime_ULs(error_function_ _first_instructi
 
 // NEW:
 int group_operation_parse_str(group_operation_ *_group_operation, char *str, int exit_status);
-group_operation_ *_group_parse(group_operation_ *group_operation_ptr, ul_ptr ul_ptr, error_function_ mod_instruction, error_function_ _id_instruction, unsigned int argv_index);
+group_operation_ *_group_parse(struct group *group_ptr, error_function_ mod_instruction, error_function_ _id_instruction, unsigned int argv_index);
