@@ -3,8 +3,10 @@
 
 int mod_ul_parse_str(char *str, int exit_status) { return _ul_parse_str(mod_, str, exit_status); }
 
+/* 
 group_operation_ *mod_group_parse(struct group *group_ptr, error_function_ mod_instruction, error_function_ _id_instruction, unsigned int argv_index)
 { return _group_parse(group_ptr, mod_instruction, _id_instruction, argv_index); }
+*/
 
 int _group_operation_parse_str(char *str, int exit_status)
 { return group_operation_parse_str(_group_operation, str, exit_status); }
