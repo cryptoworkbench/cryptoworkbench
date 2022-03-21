@@ -41,6 +41,6 @@ int mod_eulers_criterion(ul odd_prime_p);
 /* ===================== corresponds to 'maths.basic.h' (!) ====================== */
 
 // group_operation_ *mod_group_parse(struct group *group_ptr, error_function_ mod_instruction, error_function_ _id_instruction, unsigned int argv_index);
-void __group_parse(struct group *group_ptr, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index);
+void _group_parse(struct group *group_ptr, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index);
 
 int _group_operation_parse_str(char *str, int exit_status);
