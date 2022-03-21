@@ -111,7 +111,7 @@ void mod_failed_to_parse()
 // error functions ^ (function header format fits typedef '_error_message')
 
 int main(int argc, char **argv) { group_cardinality = mod = horizontal_offset = vertical_offset = ADDITIVE_IDENTITY; argv_ptr = &argv;
-    group_operation = group_parse(&mod, mod_failed_to_parse, _id_failed_to_parse, 1); _group_operation = &group_operation; 
+    _group_operation = group_parse(&mod, &group_operation, mod_failed_to_parse, _id_failed_to_parse, 1);
     conditional_goodbye(n(n(error_message(invalid_group_parameters,  - 3 * ( !mod || group_operation == _multiply && !(mod - 1)) ))));
     // process mandatory arguments ^ 
 

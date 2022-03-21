@@ -2,7 +2,7 @@
 #include "../../libraries/functional/string.basic.h"
 #include "../../libraries/mathematics/maths.extended.h"
 
-unsigned long mod;
+group_operation_ group_operation; unsigned long mod;
 //            ^  variable declarations
 
 void _id_instruction() { fprintf(stderr, "Please provide as second argument the group's operation (identity element)."); list_plausable_group_identity_descriptions(2); }
@@ -10,7 +10,7 @@ void mod_instruction() { fprintf(stderr, "Please provide as first argument the a
 //   ^ error functions 
 
 int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY; argv_ptr = &argv;
-    group_operation_ group_operation = group_parse(&mod, mod_instruction, _id_instruction, 1); _group_operation = &group_operation;
+    _group_operation = group_parse(&mod, &group_operation, mod_instruction, _id_instruction, 1);
 
     unsigned long count = 0;
     for (unsigned long element = (group_operation == _multiply); element < mod; element++)
