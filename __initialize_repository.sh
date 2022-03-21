@@ -7,5 +7,5 @@ mkdir applications/ARCHIVE > /dev/null 2>> .initialization_errors; if [ $? -eq 0
 echo "" >> .initialization_errors; echo "" >> .initialization_errors;
 
 cd SOURCE_CODE/
-echo ""; ./initialize_applications.sh;
-echo ""; ./initialize_scripts.sh
+echo ""; ./initialize.applications.sh;
+echo ""; ./initialize.scripts.sh

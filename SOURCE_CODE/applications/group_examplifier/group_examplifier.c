@@ -110,8 +110,8 @@ void mod_failed_to_parse()
 { fprintf(stderr, "Please specify as first argument the modulus of the group whose subgroups to examplify. Neither '\u2115%s*' nor '\u2115%s+' makes any sense to me!", (*argv_ptr)[1], (*argv_ptr)[1]); }
 // error functions ^ (function header format fits typedef '_error_message')
 
-int main(int argc, char **argv) { group_cardinality = mod = horizontal_offset = vertical_offset = ADDITIVE_IDENTITY; argv_ptr = &argv;
-    _group_operation = group_parse(&mod, &group_operation, mod_failed_to_parse, _id_failed_to_parse, 1);
+int main(int argc, char **argv) { group_cardinality = mod = horizontal_offset = vertical_offset = ADDITIVE_IDENTITY; mod_ = &mod; argv_ptr = &argv;
+    _group_operation = mod_group_parse(&group_operation, mod_failed_to_parse, _id_failed_to_parse, 1);
     conditional_goodbye(n(n(error_message(invalid_group_parameters,  - 3 * ( !mod || group_operation == _multiply && !(mod - 1)) ))));
     // process mandatory arguments ^ 
 

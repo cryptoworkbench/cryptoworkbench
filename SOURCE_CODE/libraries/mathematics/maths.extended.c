@@ -3,23 +3,14 @@
 
 int mod_ul_parse_str(char *str, int exit_status) { return _ul_parse_str(mod_, str, exit_status); }
 
-group_operation_ *group_parse(ul_ptr mod_ptr, group_operation_ *group_operation, error_function_ mod_instruction, error_function_ _id_instruction, unsigned int argv_index)
-{
-    mod_ = mod_ptr;
-    conditional_goodbye(n(n(error_specification(mod_instruction, n(         mod_ul_parse_str(                 (*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));
-    conditional_goodbye(n(n(error_specification(_id_instruction, n(group_operation_parse_str(group_operation, (*argv_ptr)[argv_index + 1], - (argv_index + 1) ))))));
-    return group_operation;
-}
+group_operation_ *mod_group_parse(group_operation_ *group_operation_ptr, error_function_ mod_instruction, error_function_ _id_instruction, unsigned int argv_index)
+{ return _group_parse(group_operation_ptr, mod_, mod_instruction, _id_instruction, argv_index); }
 
 int _group_operation_parse_str(char *str, int exit_status)
-{
-    return group_operation_parse_str(_group_operation, str, exit_status);
-}
+{ return group_operation_parse_str(_group_operation, str, exit_status); }
 
 unsigned long mod_group_operation(ul a, ul b)
-{
-    return (*_group_operation)(a, b, *mod_);
-}
+{ return (*_group_operation)(a, b, *mod_); }
 
 
 

@@ -191,3 +191,10 @@ int group_operation_parse_str(group_operation_ *_group_operation_ptr, char *str,
     if (!str || (*_group_operation_ptr = operation_convert(str)) == NULL) return n(error_message(not_parsable(identity_error, str), exit_status));
     if (*_group_operation_ptr == _multiply) sign = _multiplicative_signs; else sign = _additive_signs; return 0;
 }
+
+group_operation_ *_group_parse(group_operation_ *group_operation_ptr, ul_ptr ul_ptr, error_function_ mod_instruction, error_function_ _id_instruction, unsigned int argv_index)
+{
+    conditional_goodbye(n(n(error_specification(mod_instruction, n(            _ul_parse_str(             ul_ptr, (*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));
+    conditional_goodbye(n(n(error_specification(_id_instruction, n(group_operation_parse_str(group_operation_ptr, (*argv_ptr)[argv_index + 1], - (argv_index + 1) ))))));
+    return group_operation_ptr;
+}
