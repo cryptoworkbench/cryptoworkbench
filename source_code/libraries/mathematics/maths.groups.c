@@ -10,18 +10,15 @@
 char *path_to_group;
 
 /* ================ these wrapper functions insert the modulus value which is store in the sloth 'mod' from struct group. ================ */
-unsigned long group_conditional_cap(ul result) { return (group->mod) ? _conditional_cap(result, group->mod) : result; }
-unsigned long group_add(ul a, ul b) { return _add(a, b, group->mod); }
-unsigned long group_inverse(ul element_of_additive_group) { return _inverse(element_of_additive_group, group->mod); }
-unsigned long group_subtract(ul a, ul b) { return _subtract(a, b, group->mod); }
-unsigned long group_multiply(ul a, ul b) { return _conditional_cap(a * b, group->mod); } 
-unsigned long group_divide(ul numerator, ul denominator) { return _divide(numerator, denominator, group->mod); }
-unsigned long group_exponentiate(ul base, ul exponent) { return _exponentiate(base, exponent, group->mod); }
-unsigned long group_polynomial(ul x, ul *coefficient, int number_of_coefficients) { return _polynomial(x, coefficient, number_of_coefficients, group->mod); }
+unsigned long group_conditional_cap(ul result) { return (_group->mod) ? _conditional_cap(result, _group->mod) : result; }
+unsigned long group_add(ul a, ul b) { return _add(a, b, _group->mod); }
+unsigned long group_inverse(ul element_of_additive_group) { return _inverse(element_of_additive_group, _group->mod); }
+unsigned long group_subtract(ul a, ul b) { return _subtract(a, b, _group->mod); }
+unsigned long group_multiply(ul a, ul b) { return _conditional_cap(a * b, _group->mod); } 
+unsigned long group_divide(ul numerator, ul denominator) { return _divide(numerator, denominator, _group->mod); }
+unsigned long group_exponentiate(ul base, ul exponent) { return _exponentiate(base, exponent, _group->mod); }
+unsigned long group_polynomial(ul x, ul *coefficient, int number_of_coefficients) { return _polynomial(x, coefficient, number_of_coefficients, _group->mod); }
 /* ======= ^ = ^ == these wrapper functions insert the modulus value which is store in the sloth 'mod' from struct group. == ^ = ^ ======= */
-
-void argv_group_parse(struct group *pass_through, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index)
-{ group = _argv_group_parse(pass_through, mod_instruction, _id_instruction, argv_index); }
 
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line) {
     fprintf(logbook_fs, LOGBOOK_FORMULA "%s\n", argv_ZERO, TO_BE_APPENDED_logbook_line);
@@ -37,9 +34,9 @@ FILE *open_group(char **argv) { argv_ZERO = argv[0];
     if ( !(logbook_fs = fopen(LOGBOOK_PATH, "a"))) { fprintf(stderr, "Failed to open logbook!\n"); exit(-10); }
     // ^^ Exit when the logbook won't open
 
-    const char *operation_symbol = group->sign[1];
-    const char *adjective = group->sign[4];
-    const char *group_ID = group->sign[0];
+    const char *operation_symbol = _group->sign[1];
+    const char *adjective = _group->sign[4];
+    const char *group_ID = _group->sign[0];
     // ^^ Prepare the char pointers that 'open_group_as_INNER' feeds on
 
     return open_group_INNER(argv[1], argv[2], adjective, operation_symbol, BUFFER_OF_SIZE(200));
@@ -98,7 +95,7 @@ FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, cons
 }
 
 void close_group(char *mod, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
-    sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", mod, group->sign[1], path_to_group); append_to_LOGBOOK(BUFFER); fclose(opened_group);
+    sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", mod, _group->sign[1], path_to_group); append_to_LOGBOOK(BUFFER); fclose(opened_group);
     sprintf(BUFFER, "Closed '%s'", path_to_group); free(path_to_group); append_to_LOGBOOK(BUFFER); free(BUFFER); close_logbook();
 } void close_logbook() { fclose(logbook_fs); }
 // ^ ^ close group and logbook

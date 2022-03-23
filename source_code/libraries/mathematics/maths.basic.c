@@ -189,7 +189,7 @@ group_operation_ operation_convert(char *str) { if (_match(str, 6, multiplicativ
 int group_operation_parse_str(group_operation_ *_group_operation_ptr, char *str, int exit_status)
 { if (!str || (*_group_operation_ptr = operation_convert(str)) == NULL) return n(error_message(not_parsable(identity_error, str), exit_status)); return 0; }
 
-struct group *_argv_group_parse(struct group *pass_through, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index)
+struct group *group_parse_str(struct group *pass_through, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index)
 {
     conditional_goodbye(n(n(error_specification(_id_instruction, n(group_operation_parse_str(&pass_through->oper, (*argv_ptr)[argv_index + 1], - (argv_index + 1) ))))));
     conditional_goodbye(n(n(error_specification(mod_instruction, n(            _ul_parse_str(&pass_through-> mod, (*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));

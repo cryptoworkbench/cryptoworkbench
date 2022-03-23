@@ -18,8 +18,6 @@ unsigned long group_multiply(ul a, ul b);
 unsigned long group_divide(ul numerator, ul denominator);
 unsigned long group_polynomial(ul x, ul *coefficient, int coefficients);
 
-void argv_group_parse(struct group *pass_through, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index);
-
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line);
 void open_and_append_to_LOGBOOK(char *prog_NAME, char *TO_BE_APPENDED_logbook_line);
 FILE *open_group(char **argv);
