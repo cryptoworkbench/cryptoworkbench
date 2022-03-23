@@ -10,7 +10,7 @@ void mod_instruction() { fprintf(stderr, "Please provide as first argument the a
 //   ^ error functions 
 
 int main(int argc, char **argv) { argv_ptr = &argv;
-    _group = group_parse(&group, mod_instruction, _id_instruction, 1);
+    _group = argv_group_parse(&group, mod_instruction, _id_instruction, 1);
 
     unsigned long count = 0;
     for (unsigned long element = (group.oper == _multiply); element < group._mod; element++)

@@ -42,22 +42,18 @@
 
 unsigned long **equation; unsigned long mod;
 
-void _last_y_failed_to_parse() { fprintf(stderr, "Please provide as fifth argument the y coordinate of second point!"); equations_DELETE(equation); }
-void _last_x_failed_to_parse() { fprintf(stderr, "Please provide as fourth argument the x coordinate of second point!"); equations_DELETE(equation); }
+void  last_y_failed_to_parse() { fprintf(stderr, "Please provide as fifth argument the y coordinate of second point!"); equations_DELETE(equation); }
+void  last_x_failed_to_parse() { fprintf(stderr, "Please provide as fourth argument the x coordinate of second point!"); equations_DELETE(equation); }
 void first_y_failed_to_parse() { fprintf(stderr, "Please provide as third argument the y coordinate of first point!"); equations_DELETE(equation); }
 void first_x_failed_to_parse() { fprintf(stderr, "Please provide as second argument the x coordinate of first point!"); equations_DELETE(equation); }
-void ______________mod_error() { fprintf(stderr, "Please provide as first argument a finite field specification!", (*argv_ptr)[1]); }
+void     mod_failed_to_parse() { fprintf(stderr, "Please provide as first argument a finite field specification!", (*argv_ptr)[1]); }
 
-// index[0]: y coordinate
-// index[1]: x coordinate
-// index[2]: c variable
-
-int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY; _mod = &mod; argv_ptr = &argv; SET_k(K);
-    conditional_goodbye(n(n(error_specification(______________mod_error, n(mod_ul_parse_str(argv[1], -1)))))); equation = equations_ALLOCATE(K);
+int main(int argc, char **argv) { mod = ADDITIVE_IDENTITY; mod_ = &mod; argv_ptr = &argv; SET_k(K);
+    conditional_goodbye(n(n(error_specification(    mod_failed_to_parse, n(mod_ul_parse_str(argv[1], -1)))))); equation = equations_ALLOCATE(K);
     conditional_goodbye(n(n(error_specification(first_x_failed_to_parse, n(_ul_parse_str(1 + equation[0], argv[2], -2))))));
     conditional_goodbye(n(n(error_specification(first_y_failed_to_parse, n(_ul_parse_str(0 + equation[0], argv[3], -3))))));
-    conditional_goodbye(n(n(error_specification(_last_x_failed_to_parse, n(_ul_parse_str(1 + equation[1], argv[4], -4))))));
-    conditional_goodbye(n(n(error_specification(_last_y_failed_to_parse, n(_ul_parse_str(0 + equation[1], argv[5], -5))))));
+    conditional_goodbye(n(n(error_specification( last_x_failed_to_parse, n(_ul_parse_str(1 + equation[1], argv[4], -4))))));
+    conditional_goodbye(n(n(error_specification( last_y_failed_to_parse, n(_ul_parse_str(0 + equation[1], argv[5], -5))))));
     if (6 < argc) ignored_arguments(argc, argv, 5); fprintf(stdout, "Supplied sample mappings:\n%lu -> %lu\n%lu -> %lu\n\n", equation[0][1], equation[0][0], equation[1][1], equation[1][0]);
     // handle terminal inputs ^ 
 

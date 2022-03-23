@@ -76,4 +76,4 @@ int pair_of_strs_represents_pair_of_coprime_ULs(error_function_ _first_instructi
 
 // NEW:
 int group_operation_parse_str(group_operation_ *_group_operation, char *str, int exit_status);
-struct group *group_parse(struct group *pass_through, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index);
+struct group *argv_group_parse(struct group *pass_through, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index);
