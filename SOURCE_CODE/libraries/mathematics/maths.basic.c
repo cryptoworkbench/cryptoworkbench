@@ -192,8 +192,9 @@ int group_operation_parse_str(group_operation_ *_group_operation_ptr, char *str,
     if (*_group_operation_ptr == _multiply) sign = _multiplicative_signs; else sign = _additive_signs; return 0;
 }
 
-void group_parse(struct group *group_ptr, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index)
+struct group *group_parse(struct group *pass_through, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index)
 {
-    conditional_goodbye(n(n(error_specification(mod_instruction, n(            _ul_parse_str(&(*group_ptr). mod, (*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));
-    conditional_goodbye(n(n(error_specification(_id_instruction, n(group_operation_parse_str(&(*group_ptr).oper, (*argv_ptr)[argv_index + 1], - (argv_index + 1) ))))));
+    conditional_goodbye(n(n(error_specification(mod_instruction, n(            _ul_parse_str(&pass_through->_mod , (*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));
+    conditional_goodbye(n(n(error_specification(_id_instruction, n(group_operation_parse_str(&pass_through->oper, (*argv_ptr)[argv_index + 1], - (argv_index + 1) ))))));
+    return pass_through;
 }

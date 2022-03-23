@@ -9,12 +9,11 @@
 
 struct ordered_pair { ul a; ul b; };
 typedef unsigned long (*group_operation_) (ul, ul, ul); // typedef group_operation_ *group_operation_ptr;
-struct group { group_operation_ oper; ul mod; };
+struct group { group_operation_ oper; ul _mod; };
 // type declarations ^^
 
+struct group *_group;
 const char **sign;
-
-group_operation_ *_group_operation;
 
 struct ordered_pair _isomorphism();
 // general function ^
@@ -35,8 +34,6 @@ unsigned long _multiply(ul a, ul b, ul _mod);
 unsigned long _divide(ul numerator, ul denominator, ul _mod);
 unsigned long _polynomial(ul x, ul *coefficient, int coefficients, ul _mod);
 // basic (in)finite field operations ^
-
-unsigned int _associated_identity(group_operation_ oper);
 
 int _eulers_criterion(ul odd_prime_p, ul odd_prime_q);
 /* ===================== corresponds to 'maths.extended.h' (!) ================== */ // '_mod' needs to be initialized
@@ -80,4 +77,4 @@ int pair_of_strs_represents_pair_of_coprime_ULs(error_function_ _first_instructi
 
 // NEW:
 int group_operation_parse_str(group_operation_ *_group_operation, char *str, int exit_status);
-void group_parse(struct group *group_ptr, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index);
+struct group *group_parse(struct group *pass_through, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index);
