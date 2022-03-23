@@ -8,8 +8,8 @@
 // definitions ^^^
 
 struct ordered_pair { ul a; ul b; };
-typedef unsigned long (*group_operation_) (ul, ul, ul); // typedef group_operation_ *group_operation_ptr;
-struct group { group_operation_ oper; ul _mod; };
+typedef unsigned long (*group_operation_) (ul, ul, ul);
+struct group { group_operation_ oper; ul _mod; const char **sign; };
 // type declarations ^^
 
 struct group *_group;

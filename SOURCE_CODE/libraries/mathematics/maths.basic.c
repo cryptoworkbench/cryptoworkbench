@@ -189,12 +189,13 @@ group_operation_ operation_convert(char *str) { if (_match(str, 6, _multiplicati
 int group_operation_parse_str(group_operation_ *_group_operation_ptr, char *str, int exit_status)
 {
     if (!str || (*_group_operation_ptr = operation_convert(str)) == NULL) return n(error_message(not_parsable(identity_error, str), exit_status));
-    if (*_group_operation_ptr == _multiply) sign = _multiplicative_signs; else sign = _additive_signs; return 0;
+    return 0;
 }
 
 struct group *group_parse(struct group *pass_through, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index)
 {
-    conditional_goodbye(n(n(error_specification(mod_instruction, n(            _ul_parse_str(&pass_through->_mod , (*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));
+    conditional_goodbye(n(n(error_specification(mod_instruction, n(            _ul_parse_str(&pass_through->_mod, (*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));
     conditional_goodbye(n(n(error_specification(_id_instruction, n(group_operation_parse_str(&pass_through->oper, (*argv_ptr)[argv_index + 1], - (argv_index + 1) ))))));
+    if (pass_through->oper == _multiply) pass_through->sign = _multiplicative_signs; else pass_through->sign = _additive_signs;
     return pass_through;
 }
