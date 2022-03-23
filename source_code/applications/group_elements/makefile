@@ -4,8 +4,8 @@
 ../../libraries/mathematics/.maths.basic.o: ../../libraries/mathematics/maths.basic.h ../../libraries/mathematics/maths.basic.c
 	gcc -c ../../libraries/mathematics/maths.basic.c -o ../../libraries/mathematics/.maths.basic.o
 
-../../libraries/mathematics/.maths.extended.o: ../../libraries/mathematics/maths.extended.h ../../libraries/mathematics/maths.extended.c
-	gcc -c ../../libraries/mathematics/maths.extended.c -o ../../libraries/mathematics/.maths.extended.o
+../../libraries/mathematics/.maths.groups.o: ../../libraries/mathematics/maths.groups.h ../../libraries/mathematics/maths.groups.c
+	gcc -c ../../libraries/mathematics/maths.groups.c -o ../../libraries/mathematics/.maths.groups.o
 
 ../../libraries/functional/.triple_ref_pointers.o: ../../libraries/functional/triple_ref_pointers.h ../../libraries/functional/triple_ref_pointers.c
 	gcc -c ../../libraries/functional/triple_ref_pointers.c -o ../../libraries/functional/.triple_ref_pointers.o
@@ -16,5 +16,5 @@
 .group_elements.o: group_elements.c
 	gcc -c group_elements.c -o .group_elements.o
 
-group_elements: ../../libraries/functional/.string.basic.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o .group_elements.o
-	gcc ../../libraries/functional/.string.basic.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.extended.o .group_elements.o -o ../../../applications/group_elements
+group_elements: ../../libraries/functional/.string.basic.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.groups.o .group_elements.o
+	gcc ../../libraries/functional/.string.basic.o ../../libraries/mathematics/.maths.basic.o ../../libraries/mathematics/.maths.groups.o .group_elements.o -o ../../../applications/group_elements

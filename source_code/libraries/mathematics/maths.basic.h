@@ -9,10 +9,10 @@
 
 struct ordered_pair { ul a; ul b; };
 typedef unsigned long (*group_operation_) (ul, ul, ul);
-struct group { group_operation_ oper; ul _mod; const char **sign; };
+struct group { group_operation_ oper; ul mod; const char **sign; };
 // type declarations ^^
 
-struct group *_group;
+struct group *group;
 
 struct ordered_pair _isomorphism();
 // general function ^
@@ -76,4 +76,4 @@ int pair_of_strs_represents_pair_of_coprime_ULs(error_function_ _first_instructi
 
 // NEW:
 int group_operation_parse_str(group_operation_ *_group_operation, char *str, int exit_status);
-struct group *argv_group_parse(struct group *pass_through, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index);
+struct group *_argv_group_parse(struct group *pass_through, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index);

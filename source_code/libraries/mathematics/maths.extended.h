@@ -15,6 +15,9 @@
  */
 
 unsigned long *mod_;
+group_operation_ *_group_operation;
+// first declaration ^
+
 unsigned long mod_group_operation(ul a, ul b);
 
 
@@ -37,7 +40,5 @@ unsigned long mod_polynomial(ul x, ul *coefficient, int coefficients);
 
 int mod_eulers_criterion(ul odd_prime_p);
 /* ===================== corresponds to 'maths.basic.h' (!) ====================== */
-
-void _argv_group_parse(struct group *pass_through, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index);
 
 int _group_operation_parse_str(char *str, int exit_status);
