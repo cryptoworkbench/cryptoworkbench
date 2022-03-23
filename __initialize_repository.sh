@@ -6,6 +6,6 @@ mkdir applications/ > /dev/null 2>> .initialization_errors; if [ $? -eq 0 ]; the
 mkdir applications/ARCHIVE > /dev/null 2>> .initialization_errors; if [ $? -eq 0 ]; then echo "Created target directory 'applications/ARCHIVE'"; else echo "Target directory 'applications/ARCHIVE' already existed!"; fi
 echo "" >> .initialization_errors; echo "" >> .initialization_errors;
 
-cd SOURCE_CODE/
+cd source_code/
 echo ""; ./initialize.applications.sh;
 echo ""; ./initialize.scripts.sh
