@@ -58,6 +58,8 @@ unsigned long mod_polynomial(ul x, ul *coefficient, int number_of_coefficients)
     return _polynomial(x, coefficient, number_of_coefficients, _group->_mod);
 }
 
+void _group_parse(struct group *pass_through, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index) { _group = group_parse(pass_through, mod_instruction, _id_instruction, argv_index); }
+
 int mod_eulers_criterion(ul odd_prime_p)
 { return _eulers_criterion(odd_prime_p, _group->_mod); }
 /* ===================== corresponds to 'maths.basic.c' (!) ================== */

@@ -37,6 +37,6 @@ unsigned long mod_polynomial(ul x, ul *coefficient, int coefficients);
 int mod_eulers_criterion(ul odd_prime_p);
 /* ===================== corresponds to 'maths.basic.h' (!) ====================== */
 
-// struct group *_group_parse(struct group *pass_through, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index);
+void _group_parse(struct group *pass_through, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index);
 
 int _group_operation_parse_str(char *str, int exit_status);
