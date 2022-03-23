@@ -13,7 +13,6 @@ struct group { group_operation_ oper; ul _mod; const char **sign; };
 // type declarations ^^
 
 struct group *_group;
-const char **sign;
 
 struct ordered_pair _isomorphism();
 // general function ^

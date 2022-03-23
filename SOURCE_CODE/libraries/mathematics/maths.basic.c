@@ -6,8 +6,8 @@
 FILE *urandom = NULL;
 const char *_standard_prime_table_filename = "shared_prime_table";
 
-const char *_additive_signs[] = {"0", "+", "addition", "additions", "additive", "add", 0};
-const char *_multiplicative_signs[] = {"1", "*", "multiplication", "multiplications", "multiplicative", "multiply", 0};
+const char *additive_sign[] = {"0", "+", "addition", "additions", "additive", "add", 0};
+const char *multiplicative_sign[] = {"1", "*", "multiplication", "multiplications", "multiplicative", "multiply", 0};
 // STILL NEED THESE BECAUSE OF '_IDENTITY_PARSE_STR' (!!!) ^^
 
 char *_REPORT_standard_prime_table_filename() { return (char *) _standard_prime_table_filename; }
@@ -73,8 +73,8 @@ void identity_error() { fprintf(stderr, "parsing of '%s' failed: could not match
 void list_plausable_group_identity_descriptions(int argv_index)
 {
     fflush(stderr);
-    fprintf(stderr, "\n- \u2115%s+ could have been specified using '%s', '%s', '%s', '%s', '%s' or '%s'                        		instead of '%s'", (*argv_ptr)[1], _additive_signs[5], _additive_signs[4], _additive_signs[2], _additive_signs[3], _additive_signs[0], _additive_signs[1], (*argv_ptr)[argv_index]);
-    fprintf(stderr, "\n- \u2115%s* could have been specified using '%s', '%s', '%s', '%s', '%s' or '%s'		instead of '%s'", (*argv_ptr)[1], _multiplicative_signs[5], _multiplicative_signs[4], _multiplicative_signs[2], _multiplicative_signs[3], _multiplicative_signs[0], _multiplicative_signs[1], (*argv_ptr)[argv_index]);
+    fprintf(stderr, "\n- \u2115%s+ could have been specified using '%s', '%s', '%s', '%s', '%s' or '%s'                        		instead of '%s'", (*argv_ptr)[1], additive_sign[5], additive_sign[4], additive_sign[2], additive_sign[3], additive_sign[0], additive_sign[1], (*argv_ptr)[argv_index]);
+    fprintf(stderr, "\n- \u2115%s* could have been specified using '%s', '%s', '%s', '%s', '%s' or '%s'		instead of '%s'", (*argv_ptr)[1], multiplicative_sign[5], multiplicative_sign[4], multiplicative_sign[2], multiplicative_sign[3], multiplicative_sign[0], multiplicative_sign[1], (*argv_ptr)[argv_index]);
 }
 
 unsigned long DH_public_key(STRUCT_DH_parameters *DH_parameters, ul DH_private_key) { return _exponentiate(DH_parameters->b, DH_private_key, DH_parameters->a); }
@@ -184,7 +184,7 @@ int pair_of_strs_represents_pair_of_coprime_ULs(error_function_ _first_instructi
     return exit_status;
 }
 
-group_operation_ operation_convert(char *str) { if (_match(str, 6, _multiplicative_signs)) return _multiply; else if (_match(str, 6, _additive_signs)) return _add; return NULL; }
+group_operation_ operation_convert(char *str) { if (_match(str, 6, multiplicative_sign)) return _multiply; else if (_match(str, 6, additive_sign)) return _add; return NULL; }
 
 int group_operation_parse_str(group_operation_ *_group_operation_ptr, char *str, int exit_status)
 {
@@ -196,6 +196,6 @@ struct group *group_parse(struct group *pass_through, error_function_ mod_instru
 {
     conditional_goodbye(n(n(error_specification(mod_instruction, n(            _ul_parse_str(&pass_through->_mod, (*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));
     conditional_goodbye(n(n(error_specification(_id_instruction, n(group_operation_parse_str(&pass_through->oper, (*argv_ptr)[argv_index + 1], - (argv_index + 1) ))))));
-    if (pass_through->oper == _multiply) pass_through->sign = _multiplicative_signs; else pass_through->sign = _additive_signs;
+    if (pass_through->oper == _multiply) pass_through->sign = multiplicative_sign; else pass_through->sign = additive_sign;
     return pass_through;
 }
