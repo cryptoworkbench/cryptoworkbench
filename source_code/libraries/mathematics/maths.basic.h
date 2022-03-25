@@ -14,6 +14,9 @@ struct group { operation_ oper; ul mod; const char **sign; };
 
 struct group *_group;
 
+struct group **__group;
+// this will point to an array of 'struct group' PTRs ^
+
 struct ordered_pair _isomorphism();
 // general function ^
 
