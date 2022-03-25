@@ -9,7 +9,7 @@
 char *failed_identity; char *argv_ZERO; FILE *logbook_fs;
 // variable definitions ^
 
-unsigned long group_group_operation(ul a, ul b);
+unsigned long group_operation(ul a, ul b);
 unsigned long group_exponentiate(ul base, ul exponent);
 unsigned long group_conditional_cap(ul result);
 unsigned long group_inverse(ul element_of_additive_group);

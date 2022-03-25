@@ -8,8 +8,8 @@
 // definitions ^^^
 
 struct ordered_pair { ul a; ul b; };
-typedef unsigned long (*group_operation_) (ul, ul, ul);
-struct group { group_operation_ oper; ul mod; const char **sign; };
+typedef unsigned long (*operation_) (ul, ul, ul);
+struct group { operation_ oper; ul mod; const char **sign; };
 // type declarations ^^
 
 struct group *_group;
@@ -75,7 +75,7 @@ unsigned long chinese_remainder_theorem(ul remainder, ul_ptr moduli, ul modulis)
 int pair_of_strs_represents_pair_of_coprime_ULs(error_function_ _first_instruction, error_function_ second_instruction, ul_ptr ptr_one, ul_ptr ptr_two, int _first_index, int second_index, int exit_status);
 
 // NEW:
-int _group_operation_parse_str(group_operation_ *_group_operation, char *str, int exit_status);
-void _group_operation_parse_str_ul_parse_str(char *operation_str, group_operation_ *operation_ptr, error_function_ operation_failed_to_parse, int operation_failed_to_parse_EXIT_CODE, char *modulus_str, ul_ptr modulus_ptr, error_function_ modulus_failed_to_parse, int modulus_failed_to_parse_EXIT_CODE);
+int _operation_parse_str(operation_ *_operation, char *str, int exit_status);
+void _operation_parse_str_ul_parse_str(char *operation_str, operation_ *operation_ptr, error_function_ operation_failed_to_parse, int operation_failed_to_parse_EXIT_CODE, char *modulus_str, ul_ptr modulus_ptr, error_function_ modulus_failed_to_parse, int modulus_failed_to_parse_EXIT_CODE);
 struct group *group_parse_strs(struct group *pass_through, char *operation_str, int operation_failed_to_parse_EXIT_CODE, error_function_ operation_failed_to_parse, char *modulus_str, int modulus_failed_to_parse_EXIT_CODE, error_function_ modulus_failed_to_parse);
-char ***argv_group_operation_parse_str_ul_parse_str(char ***pass_through, group_operation_ *operation_ptr, error_function_ operation_failed_to_parse, ul_ptr modulus_ptr, error_function_ modulus_failed_to_parse, int argv_index);
+char ***argv_operation_parse_str_ul_parse_str(char ***pass_through, operation_ *operation_ptr, error_function_ operation_failed_to_parse, ul_ptr modulus_ptr, error_function_ modulus_failed_to_parse, int argv_index);

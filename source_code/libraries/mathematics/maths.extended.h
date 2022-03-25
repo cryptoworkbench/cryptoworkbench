@@ -15,10 +15,10 @@
  */
 
 unsigned long *mod_;
-group_operation_ *_group_operation;
+operation_ *_operation;
 // first declaration ^
 
-unsigned long mod_group_operation(ul a, ul b);
+unsigned long mod_operation(ul a, ul b);
 
 
 /* ===================== corresponds to 'string.h' (!) =========================== */

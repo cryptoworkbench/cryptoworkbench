@@ -15,7 +15,7 @@ int mod_ul_parse_str(char *str, int exit_status) { return _ul_parse_str(mod_, st
 
 
 /* ================ these wrapper functions insert the modulus value pointed at by 'mod_' ================ */
-unsigned long mod_group_operation(ul a, ul b) { return (*_group_operation)(a, b, *mod_); }
+unsigned long mod_operation(ul a, ul b) { return (*_operation)(a, b, *mod_); }
 unsigned long mod_conditional_cap(ul result) { return (*mod_) ? _conditional_cap(result, *mod_) : result; }
 unsigned long mod_add(ul a, ul b) { return _add(a, b, *mod_); }
 unsigned long mod_inverse(ul element_of_additive_group) { return _inverse(element_of_additive_group, *mod_); }

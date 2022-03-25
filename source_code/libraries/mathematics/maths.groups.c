@@ -10,7 +10,7 @@
 char *path_to_group;
 
 /* ================ these wrapper functions insert the modulus value which is store in the sloth 'mod' from struct group. ================ */
-unsigned long group_group_operation(ul a, ul b) { return (*_group->oper)(a, b, _group->mod); }
+unsigned long group_operation(ul a, ul b) { return (*_group->oper)(a, b, _group->mod); }
 unsigned long group_conditional_cap(ul result) { return (_group->mod) ? _conditional_cap(result, _group->mod) : result; }
 unsigned long group_add(ul a, ul b) { return _add(a, b, _group->mod); }
 unsigned long group_inverse(ul element_of_additive_group) { return _inverse(element_of_additive_group, _group->mod); }

@@ -15,7 +15,7 @@ struct crux { unsigned long *base_permutation; char **ASCII; unsigned long **per
 
 struct group group;
 
-struct crux lookup_table; unsigned long *permutation_of_FIRST_GEN; unsigned long group_cardinality, horizontal_offset, vertical_offset; group_operation_ group_operation;
+struct crux lookup_table; unsigned long *permutation_of_FIRST_GEN; unsigned long group_cardinality, horizontal_offset, vertical_offset; operation_ operation;
 //          ^ global variables           ^                                       ^                  ^
 
 void INSERT(struct LL_ ***tracer_location, unsigned long new_ulong) {
@@ -52,7 +52,7 @@ unsigned long count_of_GENERATED_subgroup_elements(unsigned long index) { unsign
     unsigned long generated_element = (group.oper == _multiply);
     do {
 	INSERT((struct LL_ ***) &permutation_LL_pair.iterator, INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality, generated_element)); ret_val++;
-	generated_element = group_group_operation(generated_element, lookup_table.base_permutation[index]);
+	generated_element = group_operation(generated_element, lookup_table.base_permutation[index]);
     } while (generated_element != (group.oper == _multiply));
     lookup_table.permutation[index] = array_from_LL((struct LL_ **) permutation_LL_pair.head, ret_val);
     return ret_val;
@@ -65,7 +65,7 @@ unsigned long CONSULT_permutation_of_FIRST_GEN(unsigned long index) { unsigned l
 	lookup_table.permutation[index] = malloc(sizeof(unsigned long) * lookup_table.perm_length[index]);
 	unsigned long j = 0; lookup_table.permutation[index][j] = INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality, lookup_table.base_permutation[0]);
 	for (; j + 1 < lookup_table.perm_length[index]; j++) lookup_table.permutation[index][j + 1]
-	    = INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality, group_group_operation(lookup_table.base_permutation[index], lookup_table.base_permutation[lookup_table.permutation[index][j]]));
+	    = INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality, group_operation(lookup_table.base_permutation[index], lookup_table.base_permutation[lookup_table.permutation[index][j]]));
     } return generator_count;
 }
 
