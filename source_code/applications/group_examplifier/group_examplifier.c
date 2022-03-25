@@ -42,15 +42,17 @@ struct VOID_ptr_ptr_PAIR group_elements_LL(char **argv) {
 }
 
 unsigned long *array_from_LL(struct LL_ **head_TRACER, ul required_array_size) {
-    struct LL_ *iter; if (!(iter = (struct LL_ *) _close_CHANNEL((void **) head_TRACER))) return NULL; unsigned long *ulong_array = (unsigned long *) malloc(sizeof(unsigned long) * required_array_size);
+    struct LL_ *iter; if (!(iter = (struct LL_ *) _close_CHANNEL((void **) head_TRACER))) return NULL;
+    unsigned long *ulong_array = (unsigned long *) malloc(sizeof(unsigned long) * required_array_size);
     for (unsigned long i = 0; i < required_array_size; i++) { struct LL_ *process = iter; ulong_array[i] = process->e; iter = process->next; free(process); } return ulong_array;
 }
 
 unsigned long count_of_GENERATED_subgroup_elements(unsigned long index) { unsigned long ret_val = 0;
     struct VOID_ptr_ptr_PAIR permutation_LL_pair = initialize_CHANNEL_ptr_pair();
-    unsigned long generated_element = (group.oper == _multiply); do {
+    unsigned long generated_element = (group.oper == _multiply);
+    do {
 	INSERT((struct LL_ ***) &permutation_LL_pair.iterator, INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality, generated_element)); ret_val++;
-	generated_element = mod_group_operation(generated_element, lookup_table.base_permutation[index]);
+	generated_element = group_group_operation(generated_element, lookup_table.base_permutation[index]);
     } while (generated_element != (group.oper == _multiply));
     lookup_table.permutation[index] = array_from_LL((struct LL_ **) permutation_LL_pair.head, ret_val);
     return ret_val;
@@ -63,7 +65,7 @@ unsigned long CONSULT_permutation_of_FIRST_GEN(unsigned long index) { unsigned l
 	lookup_table.permutation[index] = malloc(sizeof(unsigned long) * lookup_table.perm_length[index]);
 	unsigned long j = 0; lookup_table.permutation[index][j] = INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality, lookup_table.base_permutation[0]);
 	for (; j + 1 < lookup_table.perm_length[index]; j++) lookup_table.permutation[index][j + 1]
-	    = INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality, mod_group_operation(lookup_table.base_permutation[index], lookup_table.base_permutation[lookup_table.permutation[index][j]]));
+	    = INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality, group_group_operation(lookup_table.base_permutation[index], lookup_table.base_permutation[lookup_table.permutation[index][j]]));
     } return generator_count;
 }
 
@@ -91,7 +93,11 @@ unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair
 	if (group.mod == 2) return 1;
 	for (index = 1; index < group_cardinality; index++) if ((lookup_table.perm_length[index] = count_of_GENERATED_subgroup_elements(index)) == group_cardinality) break;
 	if (index == group_cardinality) return 0; permutation_of_FIRST_GEN = lookup_table.permutation[index]; return CONSULT_permutation_of_FIRST_GEN(index + 1);
-    } lookup_table.perm_length[1] = group_cardinality; lookup_table.permutation[1] = lookup_table.base_permutation; return CONSULT_permutation_of_FIRST_GEN(2);
+    }
+
+    lookup_table.perm_length[1] = group_cardinality;
+    lookup_table.permutation[1] = lookup_table.base_permutation;
+    return CONSULT_permutation_of_FIRST_GEN(2);
 }
 
 void horizontal_offset_failed_to_parse() { fprintf(stderr, "Failed to interpret horizontal table offset! --- ^"); }
@@ -103,17 +109,12 @@ void invalid_group_parameters()
     else fprintf(stderr, "for multiplicative groups the modulus needs to be at least 2! (since multiplicative groups do not include the element '0')");
 }
 
-void _id_failed_to_parse() {
-    fprintf(stderr, "Please specify as second argument the operation associated with \u2115%s ->", (*argv_ptr)[1]);
-    list_plausable_group_identity_descriptions(2);
-}
+void _id_failed_to_parse() { fprintf(stderr, "Please specify as second argument the operation associated with \u2115%s ->", (*argv_ptr)[1]); list_plausable_group_identity_descriptions(2); }
+void mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument the modulus of the group whose subgroups to examplify. Neither '\u2115%s*' nor '\u2115%s+' makes any sense to me!", (*argv_ptr)[1], (*argv_ptr)[1]); }
+// '_failed_to_parse' functions ^
 
-void mod_failed_to_parse()
-{ fprintf(stderr, "Please specify as first argument the modulus of the group whose subgroups to examplify. Neither '\u2115%s*' nor '\u2115%s+' makes any sense to me!", (*argv_ptr)[1], (*argv_ptr)[1]); }
-// error functions ^ (function header format fits typedef '_error_message')
-
-int main(int argc, char **argv) { group_cardinality = group.mod = horizontal_offset = vertical_offset = ADDITIVE_IDENTITY; argv_ptr = &argv;
-    _group = group_parse_str(&group, mod_failed_to_parse, _id_failed_to_parse, 1);
+int main(int argc, char **argv) { group_cardinality = group.mod = horizontal_offset = vertical_offset = ADDITIVE_IDENTITY;
+    argv_ptr = &argv; _group = group_parse_strs(&group, argv[1], -1, _id_failed_to_parse, argv[2], -2, mod_failed_to_parse);
     conditional_goodbye(n(n(error_message(invalid_group_parameters,  - 3 * ( !group.mod || group.oper == _multiply && !(group.mod - 1)) ))));
     // process mandatory arguments ^ 
 
@@ -126,7 +127,7 @@ int main(int argc, char **argv) { group_cardinality = group.mod = horizontal_off
     // examplify subgroups ^
 
     if (generator_count) {
-	fprintf(stdout, "%lu generators are present within \u2115%s%s:\n", generator_count, argv[1], group.sign[1]);
+	fprintf(stdout, "%lu generators are present within \u2115%s%s:\n", generator_count, argv[2], group.sign[1]);
 	for (unsigned long printed_gens = 0, index = vertical_offset; printed_gens < generator_count; index = _add(index, 1, group_cardinality))
 	{ while (lookup_table.perm_length[index] != group_cardinality) index = _add(index, 1, group_cardinality); print_permutation(index); printed_gens++; }
     } else fprintf(stdout, "There are no generators in this group.\n");

@@ -10,6 +10,7 @@
 char *path_to_group;
 
 /* ================ these wrapper functions insert the modulus value which is store in the sloth 'mod' from struct group. ================ */
+unsigned long group_group_operation(ul a, ul b) { return (*_group->oper)(a, b, _group->mod); }
 unsigned long group_conditional_cap(ul result) { return (_group->mod) ? _conditional_cap(result, _group->mod) : result; }
 unsigned long group_add(ul a, ul b) { return _add(a, b, _group->mod); }
 unsigned long group_inverse(ul element_of_additive_group) { return _inverse(element_of_additive_group, _group->mod); }
@@ -17,7 +18,7 @@ unsigned long group_subtract(ul a, ul b) { return _subtract(a, b, _group->mod); 
 unsigned long group_multiply(ul a, ul b) { return _conditional_cap(a * b, _group->mod); } 
 unsigned long group_divide(ul numerator, ul denominator) { return _divide(numerator, denominator, _group->mod); }
 unsigned long group_exponentiate(ul base, ul exponent) { return _exponentiate(base, exponent, _group->mod); }
-unsigned long group_polynomial(ul x, ul *coefficient, int number_of_coefficients) { return _polynomial(x, coefficient, number_of_coefficients, _group->mod); }
+unsigned long group_polynomial(ul x, ul_ptr coefficient, int number_of_coefficients) { return _polynomial(x, coefficient, number_of_coefficients, _group->mod); }
 /* ======= ^ = ^ == these wrapper functions insert the modulus value which is store in the sloth 'mod' from struct group. == ^ = ^ ======= */
 
 void append_to_LOGBOOK(char *TO_BE_APPENDED_logbook_line) {
@@ -39,7 +40,7 @@ FILE *open_group(char **argv) { argv_ZERO = argv[0];
     const char *group_ID = _group->sign[0];
     // ^^ Prepare the char pointers that 'open_group_as_INNER' feeds on
 
-    return open_group_INNER(argv[1], argv[2], adjective, operation_symbol, BUFFER_OF_SIZE(200));
+    return open_group_INNER(argv[2], argv[1], adjective, operation_symbol, BUFFER_OF_SIZE(200));
 }
 
 FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, const char *adjective, const char *symbol, char *LINE) {
@@ -64,7 +65,7 @@ FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, cons
 	append_to_LOGBOOK(LINE);
 
 	sprintf(LINE, "%s using " ELEMENT_EXPORTER, argv_ZERO); // << Use LINE in order to send along a special "argv[0]" to "group_exporter"
-	char *ELEMENT_EXPORTER_argv[] = {LINE, group_MOD, (char *) numerical_denomination, 0};
+	char *ELEMENT_EXPORTER_argv[] = {LINE, (char *) numerical_denomination, group_MOD, 0};
 	// ^^ Prepare the char pointer array "group_exporter" will receive as "char *argv[]" (a.k.a. "char **argv")
 
 	int fd[2]; if (pipe(fd) == -1) { fprintf(stderr, "Failed to open pipe.\n"); exit(-1); } // < Open pipe
@@ -86,16 +87,22 @@ FILE *open_group_INNER(char *group_MOD, const char *numerical_denomination, cons
 	// ^^ Wait for the child process to finish
 
 	int ELEMENT_EXPORTER_exit_status = WEXITSTATUS(ELEMENT_EXPORTER_exit_status_RAW);
-	if (!ELEMENT_EXPORTER_exit_status && (group_fs = fopen(path_to_group, "r"))) {
+	if (!ELEMENT_EXPORTER_exit_status && (group_fs = fopen(path_to_group, "r")))
+	{
 	    sprintf(LINE, ELEMENT_EXPORTER " returned an exit status of '%i' \u21D2 \u2115%s%s should be registered now", ELEMENT_EXPORTER_exit_status, group_MOD, symbol); append_to_LOGBOOK(LINE);
-	} else {
-	    sprintf(LINE, "FATAL ERROR: failed to create the required registry file using '"ELEMENT_EXPORTER"'"); append_to_LOGBOOK(LINE); exit(0);
-	} } return group_fs;
-    // ^ force open
+	} else 
+	{ 
+	    sprintf(LINE, "FATAL ERROR: failed to create the required registry file using '" ELEMENT_EXPORTER "'");
+	    append_to_LOGBOOK(LINE);
+	    exit(0);
+	}
+    } return group_fs;
 }
 
-void close_group(char *mod, FILE *opened_group) { char *BUFFER = BUFFER_OF_SIZE(200);
+void close_group(char *mod, FILE *opened_group) {
+char *BUFFER = BUFFER_OF_SIZE(200);
     sprintf(BUFFER, "Sourced \u2115%s%s from '%s'", mod, _group->sign[1], path_to_group); append_to_LOGBOOK(BUFFER); fclose(opened_group);
     sprintf(BUFFER, "Closed '%s'", path_to_group); free(path_to_group); append_to_LOGBOOK(BUFFER); free(BUFFER); close_logbook();
-} void close_logbook() { fclose(logbook_fs); }
+} 
+void close_logbook() { fclose(logbook_fs); }
 // ^ ^ close group and logbook

@@ -11,7 +11,7 @@ void mod_instruction() { fprintf(stderr, "Please provide as first argument the a
 //   ^ error functions 
 
 int main(int argc, char **argv) { argv_ptr = &argv;
-    _group = group_parse_str(&group, mod_instruction, _id_instruction, 1);
+    _group = group_parse_strs(&group, argv[1], -1, _id_instruction, argv[2], -2, mod_instruction);
 
     unsigned long count = 0;
     for (unsigned long element = (group.oper == _multiply); element < group.mod; element++)

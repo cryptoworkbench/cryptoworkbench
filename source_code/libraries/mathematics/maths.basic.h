@@ -75,5 +75,7 @@ unsigned long chinese_remainder_theorem(ul remainder, ul_ptr moduli, ul modulis)
 int pair_of_strs_represents_pair_of_coprime_ULs(error_function_ _first_instruction, error_function_ second_instruction, ul_ptr ptr_one, ul_ptr ptr_two, int _first_index, int second_index, int exit_status);
 
 // NEW:
-int group_operation_parse_str(group_operation_ *_group_operation, char *str, int exit_status);
-struct group *group_parse_str(struct group *pass_through, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index);
+int _group_operation_parse_str(group_operation_ *_group_operation, char *str, int exit_status);
+void _group_operation_parse_str_ul_parse_str(char *operation_str, group_operation_ *operation_ptr, error_function_ operation_failed_to_parse, int operation_failed_to_parse_EXIT_CODE, char *modulus_str, ul_ptr modulus_ptr, error_function_ modulus_failed_to_parse, int modulus_failed_to_parse_EXIT_CODE);
+struct group *group_parse_strs(struct group *pass_through, char *operation_str, int operation_failed_to_parse_EXIT_CODE, error_function_ operation_failed_to_parse, char *modulus_str, int modulus_failed_to_parse_EXIT_CODE, error_function_ modulus_failed_to_parse);
+char ***argv_group_operation_parse_str_ul_parse_str(char ***pass_through, group_operation_ *operation_ptr, error_function_ operation_failed_to_parse, ul_ptr modulus_ptr, error_function_ modulus_failed_to_parse, int argv_index);

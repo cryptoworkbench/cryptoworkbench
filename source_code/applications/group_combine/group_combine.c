@@ -17,7 +17,7 @@ void       mod_instruction() { fprintf(stderr, "Please specify as first argument
 // '_failed_to_parse' functions ^^
 
 int main(int argc, char **argv) { i_ = &i; array_size_ = &function_arg_count; group.mod = ADDITIVE_IDENTITY; argv_ptr = &argv;
-    _group = group_parse_str(&group, mod_instruction, operation_instruction, 1);
+    _group = group_parse_strs(&group, argv[1], -1, operation_instruction, argv[2], -2, mod_instruction);
     // process first two arguments ^^
 
     conditional_goodbye(n(n(error_specification(sp_array_failed_to_parse, n(n(error_message(___array_failed_to_parse, (2 > (function_arg_count = argc - STARTING_INDEX_OF_ARGS_LIST)) * - STARTING_INDEX_OF_ARGS_LIST)))))));

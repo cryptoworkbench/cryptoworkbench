@@ -186,13 +186,24 @@ int pair_of_strs_represents_pair_of_coprime_ULs(error_function_ _first_instructi
 
 group_operation_ operation_convert(char *str) { if (_match(str, 6, multiplicative_sign)) return _multiply; else if (_match(str, 6, additive_sign)) return _add; return NULL; }
 
-int group_operation_parse_str(group_operation_ *_group_operation_ptr, char *str, int exit_status)
-{ if (!str || (*_group_operation_ptr = operation_convert(str)) == NULL) return n(error_message(not_parsable(identity_error, str), exit_status)); return 0; }
+int _group_operation_parse_str(group_operation_ *group_operation_ptr, char *str, int exit_status)
+{ if (!str || (*group_operation_ptr = operation_convert(str)) == NULL) return n(error_message(not_parsable(identity_error, str), exit_status)); return 0; }
 
-struct group *group_parse_str(struct group *pass_through, error_function_ mod_instruction, error_function_ _id_instruction, int argv_index)
+void _group_operation_parse_str_ul_parse_str(char *operation_str, group_operation_ *operation_ptr, error_function_ operation_failed_to_parse, int operation_failed_to_parse_EXIT_CODE, char *modulus_str, ul_ptr modulus_ptr, error_function_ modulus_failed_to_parse, int modulus_failed_to_parse_EXIT_CODE)
 {
-    conditional_goodbye(n(n(error_specification(_id_instruction, n(group_operation_parse_str(&pass_through->oper, (*argv_ptr)[argv_index + 1], - (argv_index + 1) ))))));
-    conditional_goodbye(n(n(error_specification(mod_instruction, n(            _ul_parse_str(&pass_through-> mod, (*argv_ptr)[argv_index + 0], - (argv_index + 0) ))))));
+    conditional_goodbye(n(n(error_specification(  modulus_failed_to_parse, n(_group_operation_parse_str(operation_ptr, operation_str, operation_failed_to_parse_EXIT_CODE ))))));
+    conditional_goodbye(n(n(error_specification(operation_failed_to_parse, n(             _ul_parse_str(  modulus_ptr,   modulus_str,   modulus_failed_to_parse_EXIT_CODE ))))));
+}
+
+struct group *group_parse_strs(struct group *pass_through, char *operation_str, int operation_failed_to_parse_EXIT_CODE, error_function_ operation_failed_to_parse, char *modulus_str, int modulus_failed_to_parse_EXIT_CODE, error_function_ modulus_failed_to_parse) 
+{
+    _group_operation_parse_str_ul_parse_str(operation_str, &pass_through->oper, operation_failed_to_parse, operation_failed_to_parse_EXIT_CODE, modulus_str, &pass_through->mod, modulus_failed_to_parse, modulus_failed_to_parse_EXIT_CODE);
     if (pass_through->oper == _multiply) pass_through->sign = multiplicative_sign; else pass_through->sign = additive_sign;
+    return pass_through;
+}
+
+char ***argv_group_operation_parse_str_ul_parse_str(char ***pass_through, group_operation_ *operation_ptr, error_function_ operation_failed_to_parse, ul_ptr modulus_ptr, error_function_ modulus_failed_to_parse, int argv_index)
+{
+    _group_operation_parse_str_ul_parse_str((*pass_through)[argv_index + 0], operation_ptr, operation_failed_to_parse, - argv_index - 0, (*pass_through)[argv_index + 1], modulus_ptr, modulus_failed_to_parse, - argv_index - 1);
     return pass_through;
 }
