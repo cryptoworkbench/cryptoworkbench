@@ -3,6 +3,9 @@
 #include <stdarg.h>
 #include "maths.basic.h"
 
+int group_array_size; int current_group;
+// two most important variables in this repository ^^
+
 FILE *urandom = NULL;
 const char *_standard_prime_table_filename = "shared_prime_table";
 
@@ -206,4 +209,38 @@ char ***argv_operation_parse_str_ul_parse_str(char ***pass_through, operation_ *
 {
     _operation_parse_str_ul_parse_str((*pass_through)[argv_index + 0], operation_ptr, operation_failed_to_parse, - argv_index - 0, (*pass_through)[argv_index + 1], modulus_ptr, modulus_failed_to_parse, - argv_index - 1);
     return pass_through;
+}
+
+void set_current_group(int index)
+{ current_group = index; }
+
+int retrieve_current_group() { return current_group; }
+
+void group_interpret(char *operation_str, int operation_failed_to_parse_EXIT_CODE, error_function_ operation_failed_to_parse, char *modulus_str, int modulus_failed_to_parse_EXIT_CODE, error_function_ modulus_failed_to_parse)
+{
+    _operation_parse_str_ul_parse_str(operation_str, &__group[group_array_size]->oper, operation_failed_to_parse, operation_failed_to_parse_EXIT_CODE, modulus_str, &__group[group_array_size]->mod, modulus_failed_to_parse, modulus_failed_to_parse_EXIT_CODE);
+    if (__group[group_array_size]->oper == _multiply) __group[group_array_size]->sign = multiplicative_sign; else __group[group_array_size]->sign = additive_sign;
+}
+
+void groups_initialize
+(char *operation_str, int operation_failed_to_parse_EXIT_CODE, error_function_ operation_failed_to_parse, char *modulus_str, int modulus_failed_to_parse_EXIT_CODE, error_function_ modulus_failed_to_parse) 
+{
+    current_group = group_array_size = 0;
+    // initialize variables needed to keep track of realloc()' array extension ^
+
+    (__group = (struct group **) malloc(sizeof(struct group *)))[group_array_size] = (struct group *) malloc(sizeof(struct group));
+    // allocate the array and the first sloth within the array ^
+
+    group_interpret(operation_str, operation_failed_to_parse_EXIT_CODE, operation_failed_to_parse, modulus_str, modulus_failed_to_parse_EXIT_CODE, modulus_failed_to_parse);
+    // initialize first sloth ^
+}
+
+void groups_add(char *operation_str, int operation_failed_to_parse_EXIT_CODE, error_function_ operation_failed_to_parse, char *modulus_str, int modulus_failed_to_parse_EXIT_CODE, error_function_ modulus_failed_to_parse) 
+{
+    (__group = (struct group **) realloc(__group, sizeof(struct group *) * (group_array_size = group_array_size + 1)))[group_array_size] = (struct group *) malloc(sizeof(struct group));
+    // extend the struct group pointers array which was initialized by 'groups_initialize' ^^
+
+    group_interpret(operation_str, operation_failed_to_parse_EXIT_CODE, operation_failed_to_parse, modulus_str, modulus_failed_to_parse_EXIT_CODE, modulus_failed_to_parse);
+    current_group = group_array_size;
+    // update configuration of pointers and indices such that the new group is initialized
 }

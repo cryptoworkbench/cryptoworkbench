@@ -82,3 +82,9 @@ int _operation_parse_str(operation_ *_operation, char *str, int exit_status);
 void _operation_parse_str_ul_parse_str(char *operation_str, operation_ *operation_ptr, error_function_ operation_failed_to_parse, int operation_failed_to_parse_EXIT_CODE, char *modulus_str, ul_ptr modulus_ptr, error_function_ modulus_failed_to_parse, int modulus_failed_to_parse_EXIT_CODE);
 struct group *group_parse_strs(struct group *pass_through, char *operation_str, int operation_failed_to_parse_EXIT_CODE, error_function_ operation_failed_to_parse, char *modulus_str, int modulus_failed_to_parse_EXIT_CODE, error_function_ modulus_failed_to_parse);
 char ***argv_operation_parse_str_ul_parse_str(char ***pass_through, operation_ *operation_ptr, error_function_ operation_failed_to_parse, ul_ptr modulus_ptr, error_function_ modulus_failed_to_parse, int argv_index);
+
+void set_current_group(int index);
+int retrieve_current_group();
+
+void groups_initialize(char *operation_str, int operation_failed_to_parse_EXIT_CODE, error_function_ operation_failed_to_parse, char *modulus_str, int modulus_failed_to_parse_EXIT_CODE, error_function_ modulus_failed_to_parse);
+void groups_add(char *operation_str, int operation_failed_to_parse_EXIT_CODE, error_function_ operation_failed_to_parse, char *modulus_str, int modulus_failed_to_parse_EXIT_CODE, error_function_ modulus_failed_to_parse);

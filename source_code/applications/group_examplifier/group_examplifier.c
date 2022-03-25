@@ -37,7 +37,7 @@ struct VOID_ptr_ptr_PAIR group_elements_LL(char **argv) {
     FILE *ELEMENT_database = open_group(argv);
     struct VOID_ptr_ptr_PAIR element_CHANNEL_ptr_pair = initialize_CHANNEL_ptr_pair(); unsigned long group_ELEMENT;
     while (fscanf(ELEMENT_database, "%lu\n", &group_ELEMENT) == 1) { INSERT((struct LL_ ***) &element_CHANNEL_ptr_pair.iterator, group_ELEMENT); group_cardinality++; }
-    close_group(argv[1], ELEMENT_database);
+    close_group(argv[2], ELEMENT_database);
     return element_CHANNEL_ptr_pair;
 }
 
@@ -49,11 +49,11 @@ unsigned long *array_from_LL(struct LL_ **head_TRACER, ul required_array_size) {
 
 unsigned long count_of_GENERATED_subgroup_elements(unsigned long index) { unsigned long ret_val = 0;
     struct VOID_ptr_ptr_PAIR permutation_LL_pair = initialize_CHANNEL_ptr_pair();
-    unsigned long generated_element = (group.oper == _multiply);
+    unsigned long generated_element = (__group[retrieve_current_group()]->oper == _multiply);
     do {
 	INSERT((struct LL_ ***) &permutation_LL_pair.iterator, INDEX_within_UL_array(lookup_table.base_permutation, group_cardinality, generated_element)); ret_val++;
 	generated_element = group_operation(generated_element, lookup_table.base_permutation[index]);
-    } while (generated_element != (group.oper == _multiply));
+    } while (generated_element != (__group[retrieve_current_group()]->oper == _multiply));
     lookup_table.permutation[index] = array_from_LL((struct LL_ **) permutation_LL_pair.head, ret_val);
     return ret_val;
 }
@@ -89,8 +89,8 @@ unsigned long found_generators(struct VOID_ptr_ptr_PAIR element_CHANNEL_PTR_pair
     *(lookup_table.permutation[0] = UL_array_of_SIZE(MULTIPLICATIVE_IDENTITY)) = 0;
     unsigned long index; for (index = 0; index < group_cardinality; index++) lookup_table.ASCII[index] = _str_from_ul(lookup_table.base_permutation[index], width);
 
-    if (group.oper == _multiply) {
-	if (group.mod == 2) return 1;
+    if (__group[retrieve_current_group()]->oper == _multiply) {
+	if (__group[retrieve_current_group()]->mod == 2) return 1;
 	for (index = 1; index < group_cardinality; index++) if ((lookup_table.perm_length[index] = count_of_GENERATED_subgroup_elements(index)) == group_cardinality) break;
 	if (index == group_cardinality) return 0; permutation_of_FIRST_GEN = lookup_table.permutation[index]; return CONSULT_permutation_of_FIRST_GEN(index + 1);
     }
@@ -105,7 +105,7 @@ void __vertical_offset_failed_to_parse() { fprintf(stderr, "Failed to interpret 
 void invalid_group_parameters()
 {
     fprintf(stderr, "\nInvalid group parameters: ");
-    if (!group.mod) fprintf(stderr, "the modulus cannot be 0!");
+    if (!__group[retrieve_current_group()]->mod) fprintf(stderr, "the modulus cannot be 0!");
     else fprintf(stderr, "for multiplicative groups the modulus needs to be at least 2! (since multiplicative groups do not include the element '0')");
 }
 
@@ -113,26 +113,39 @@ void _id_failed_to_parse() { fprintf(stderr, "Please specify as second argument 
 void mod_failed_to_parse() { fprintf(stderr, "Please specify as first argument the modulus of the group whose subgroups to examplify. Neither '\u2115%s*' nor '\u2115%s+' makes any sense to me!", (*argv_ptr)[1], (*argv_ptr)[1]); }
 // '_failed_to_parse' functions ^
 
-int main(int argc, char **argv) { group_cardinality = group.mod = horizontal_offset = vertical_offset = ADDITIVE_IDENTITY;
-    argv_ptr = &argv; _group = group_parse_strs(&group, argv[1], -1, _id_failed_to_parse, argv[2], -2, mod_failed_to_parse);
-    conditional_goodbye(n(n(error_message(invalid_group_parameters,  - 3 * ( !group.mod || group.oper == _multiply && !(group.mod - 1)) ))));
+int _main(int argc, char **argv) {
+    group_cardinality = horizontal_offset = vertical_offset = ADDITIVE_IDENTITY;
+    conditional_goodbye(n(n(error_message(invalid_group_parameters,  - 3 * ( !__group[retrieve_current_group()]->mod || __group[retrieve_current_group()]->oper == _multiply && !(__group[retrieve_current_group()]->mod - 1)) ))));
     // process mandatory arguments ^ 
 
+    /*
     n(n(error_specification(horizontal_offset_failed_to_parse, 3 < argc && _ul_parse_str(&horizontal_offset, argv[3], 1))));
     n(n(error_specification(__vertical_offset_failed_to_parse, 4 < argc && _ul_parse_str(&  vertical_offset, argv[4], 1))));
     // process optional arguments  ^
+    */
 
     unsigned long generator_count = found_generators(group_elements_LL(argv));
     unsigned long index = vertical_offset; do { print_permutation(index); index = _add(index, 1, group_cardinality); } while (index != vertical_offset); fprintf(stdout, "\n");
     // examplify subgroups ^
 
     if (generator_count) {
-	fprintf(stdout, "%lu generators are present within \u2115%s%s:\n", generator_count, argv[2], group.sign[1]);
+	fprintf(stdout, "%lu generators are present within \u2115%s%s:\n", generator_count, argv[2], __group[retrieve_current_group()]->sign[1]);
 	for (unsigned long printed_gens = 0, index = vertical_offset; printed_gens < generator_count; index = _add(index, 1, group_cardinality))
 	{ while (lookup_table.perm_length[index] != group_cardinality) index = _add(index, 1, group_cardinality); print_permutation(index); printed_gens++; }
     } else fprintf(stdout, "There are no generators in this group.\n");
     //   list generators afterwards ^
 
     for (unsigned long i = 0; i < group_cardinality; i++) { free(lookup_table.permutation[i]); free(lookup_table.ASCII[i]); } free(lookup_table.perm_length);
-    if (group.oper == _multiply) free(lookup_table.base_permutation); return 0;
+    if (__group[retrieve_current_group()]->oper == _multiply) free(lookup_table.base_permutation);
+
+    return 0;
+}
+
+int main(int argc, char **argv) { argv_ptr = &argv;
+    groups_initialize(argv[1], -1, _id_failed_to_parse, argv[2], -2, mod_failed_to_parse);
+    printf("\nexit status for first group: %i\n\n", _main(argc, argv));
+
+    groups_add(argv[3], -3, _id_failed_to_parse, argv[4], -4, mod_failed_to_parse);
+    printf("\nexit status for second group: %i\n", _main(argc, &argv[2]));
+
 } // * = 'member a will hold y offset, member b will hold x offset'
